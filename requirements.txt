@@ -1,0 +1,11 @@
+# Core dependencies
+pydantic>=2.0
+openai>=1.0
+
+# OCR support (optional – requires Tesseract installed on the system)
+pytesseract>=0.3.10
+Pillow>=10.0
+
+# Development / testing
+pytest>=7.0
+pytest-cov>=4.0
