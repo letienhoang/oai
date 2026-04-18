@@ -35,6 +35,21 @@ public static class InvoiceMappingExtensions
                 .ToList()
         };
     }
+    
+    public static InvoiceListItemDto ToListItemDto(this Invoice invoice)
+    {
+        return new InvoiceListItemDto
+        {
+            InvoiceId = invoice.Id,
+            InvoiceNumber = invoice.InvoiceNumber,
+            VendorName = invoice.Vendor?.Name ?? string.Empty,
+            IssueDate = invoice.IssueDate,
+            Currency = invoice.Currency,
+            TotalAmount = invoice.DeclaredTotalAmount.Amount,
+            Status = invoice.Status.ToString(),
+            LineItemCount = invoice.LineItems.Count
+        };
+    }
 
     private static InvoiceLineItemDto ToDto(this InvoiceLineItem item)
     {
