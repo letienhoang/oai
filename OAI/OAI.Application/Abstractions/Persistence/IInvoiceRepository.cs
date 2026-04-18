@@ -1,0 +1,22 @@
+﻿using OAI.Domain.Entities;
+
+namespace OAI.Application.Abstractions.Persistence;
+
+public interface IInvoiceRepository
+{
+    Task<Invoice?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Invoice?> GetByInvoiceNumberAsync(string invoiceNumber, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<Invoice>> GetPagedAsync(
+        int pageNumber,
+        int pageSize,
+        string? keyword = null,
+        CancellationToken cancellationToken = default);
+
+    Task<int> CountAsync(string? keyword = null, CancellationToken cancellationToken = default);
+
+    Task AddAsync(Invoice invoice, CancellationToken cancellationToken = default);
+    Task UpdateAsync(Invoice invoice, CancellationToken cancellationToken = default);
+    Task DeleteAsync(Invoice invoice, CancellationToken cancellationToken = default);
+
+    Task<bool> ExistsByInvoiceNumberAsync(string invoiceNumber, CancellationToken cancellationToken = default);
+}
