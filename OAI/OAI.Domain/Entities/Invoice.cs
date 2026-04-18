@@ -28,6 +28,7 @@ public sealed class Invoice : Entity
 
     public InvoiceStatus Status { get; private set; }
     public string? SourceFileName { get; private set; }
+    public string? SourceFilePath { get; private set; }
 
     public IReadOnlyCollection<InvoiceLineItem> LineItems => _lineItems.AsReadOnly();
     public IReadOnlyCollection<ValidationIssue> ValidationIssues => _validationIssues.AsReadOnly();
@@ -52,7 +53,8 @@ public sealed class Invoice : Entity
         Money declaredTaxAmount,
         Money declaredTotalAmount,
         DateOnly? dueDate = null,
-        string? sourceFileName = null)
+        string? sourceFileName = null,
+        string? sourceFilePath = null)
     {
         if (vendorId == Guid.Empty)
             throw new ArgumentException("VendorId cannot be empty.", nameof(vendorId));
@@ -78,6 +80,7 @@ public sealed class Invoice : Entity
         EnsureCurrencyMatch(DeclaredTotalAmount);
 
         SourceFileName = string.IsNullOrWhiteSpace(sourceFileName) ? null : sourceFileName.Trim();
+        SourceFilePath = string.IsNullOrWhiteSpace(sourceFilePath) ? null : sourceFilePath.Trim();
         Status = InvoiceStatus.PendingReview;
     }
 

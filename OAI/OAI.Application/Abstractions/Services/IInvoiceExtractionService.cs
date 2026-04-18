@@ -4,13 +4,11 @@ namespace OAI.Application.Abstractions.Services;
 
 public interface IInvoiceExtractionService
 {
-    Task<InvoiceDetailDto?> ExtractAsync(
-        Guid invoiceId,
-        string rawText,
+    Task<ExtractedInvoiceDto?> ExtractFromFileAsync(
+        string filePath,
         CancellationToken cancellationToken = default);
 
-    Task<InvoiceDetailDto?> ExtractFromFileAsync(
-        Guid invoiceId,
-        string filePath,
+    Task<ExtractedInvoiceDto?> ExtractFromTextAsync(
+        string rawText,
         CancellationToken cancellationToken = default);
 }
