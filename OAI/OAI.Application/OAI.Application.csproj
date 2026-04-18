@@ -10,4 +10,8 @@
     <ProjectReference Include="..\OAI.Domain\OAI.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Invoices\Queries\" />
+  </ItemGroup>
+
 </Project>
