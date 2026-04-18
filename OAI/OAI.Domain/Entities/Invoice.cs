@@ -137,6 +137,21 @@ public sealed class Invoice : Entity
         _validationIssues.Add(issue);
         Touch();
     }
+    
+    public void ReplaceValidationIssues(IEnumerable<ValidationIssue> issues)
+    {
+        _validationIssues.Clear();
+
+        foreach (var issue in issues)
+        {
+            if (issue.InvoiceId != Id)
+                throw new DomainException("Validation issue does not belong to this invoice.");
+
+            _validationIssues.Add(issue);
+        }
+
+        Touch();
+    }
 
     public void AddExtractionResult(InvoiceExtractionResult result)
     {
