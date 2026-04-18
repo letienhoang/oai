@@ -13,6 +13,7 @@ public sealed record InvoiceCreateRequestDto
     public decimal DeclaredTotalAmount { get; init; }
 
     public string? SourceFileName { get; init; }
+    public string? SourceFilePath { get; init; }
 
     public List<InvoiceLineItemRequestDto> LineItems { get; init; } = new();
 }

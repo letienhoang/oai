@@ -52,7 +52,8 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
             new Money(request.DeclaredTaxAmount, currency),
             new Money(request.DeclaredTotalAmount, currency),
             request.DueDate,
-            request.SourceFileName);
+            request.SourceFileName,
+            request.SourceFilePath);
 
         invoice.AssignVendor(vendor);
 

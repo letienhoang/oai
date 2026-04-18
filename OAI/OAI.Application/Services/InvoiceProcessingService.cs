@@ -67,6 +67,7 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
             DeclaredTaxAmount = extracted.DeclaredTaxAmount,
             DeclaredTotalAmount = extracted.DeclaredTotalAmount,
             SourceFileName = fileName,
+            SourceFilePath = savedPath,
             LineItems = extracted.LineItems
         };
 
