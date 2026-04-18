@@ -13,5 +13,5 @@ public sealed record InvoiceUpdateRequestDto
     public decimal DeclaredTaxAmount { get; init; }
     public decimal DeclaredTotalAmount { get; init; }
 
-    public List<InvoiceLineItemDto> LineItems { get; init; } = new();
+    public List<InvoiceLineItemRequestDto> LineItems { get; init; } = new();
 }

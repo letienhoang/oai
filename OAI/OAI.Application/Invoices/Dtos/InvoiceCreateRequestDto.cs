@@ -14,5 +14,5 @@ public sealed record InvoiceCreateRequestDto
 
     public string? SourceFileName { get; init; }
 
-    public List<InvoiceLineItemDto> LineItems { get; init; } = new();
+    public List<InvoiceLineItemRequestDto> LineItems { get; init; } = new();
 }
