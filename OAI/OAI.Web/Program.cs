@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OAI.Infrastructure;
 using OAI.Infrastructure.Persistence;
 using OAI.Web.Components;
 
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure the database context
 builder.Services.AddDbContext<OaiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
