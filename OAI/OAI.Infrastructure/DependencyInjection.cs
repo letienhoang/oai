@@ -2,8 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OAI.Application.Abstractions.Persistence;
+using OAI.Application.Abstractions.Services;
+using OAI.Infrastructure.Options;
 using OAI.Infrastructure.Persistence;
 using OAI.Infrastructure.Repositories;
+using OAI.Infrastructure.Services;
 
 namespace OAI.Infrastructure;
 
@@ -13,12 +16,15 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.Configure<FileStorageOptions>(configuration.GetSection("FileStorage"));
+        
         services.AddDbContext<OaiDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IFileStorageService, FileStorageService>();
 
         return services;
     }
