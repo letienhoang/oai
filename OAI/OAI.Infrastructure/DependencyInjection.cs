@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddScoped<IOcrService, TesseractOcrService>();
+        services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();
 
         return services;
     }
