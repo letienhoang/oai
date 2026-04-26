@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Ocr.Dtos;
 using OAI.Infrastructure.Options;
@@ -9,10 +10,12 @@ namespace OAI.Infrastructure.Services;
 public sealed class TesseractOcrService : IOcrService
 {
     private readonly OcrOptions _options;
+    private readonly ILogger<TesseractOcrService> _logger;
 
-    public TesseractOcrService(IOptions<OcrOptions> options)
+    public TesseractOcrService(IOptions<OcrOptions> options, ILogger<TesseractOcrService> logger)
     {
         _options = options.Value;
+        _logger = logger;
     }
 
     public async Task<OcrResultDto> ExtractTextAsync(
@@ -20,6 +23,7 @@ public sealed class TesseractOcrService : IOcrService
         string fileName,
         CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Start OCR for file {FileName}", fileName);
         if (content is null || !content.CanRead)
             throw new ArgumentException("OCR content stream is invalid.", nameof(content));
 
@@ -32,6 +36,7 @@ public sealed class TesseractOcrService : IOcrService
         // The PDF will have a separate converter added in a later step.
         if (extension == ".pdf")
         {
+            _logger.LogWarning("PDF OCR is not supported in current Tesseract wrapper. File: {FileName}", fileName);
             return new OcrResultDto
             {
                 IsSuccess = false,
@@ -42,36 +47,57 @@ public sealed class TesseractOcrService : IOcrService
 
         var imageBytes = await ReadAllBytesAsync(content, cancellationToken);
 
-        return await Task.Run(() =>
+        try
         {
-            var tessDataPath = GetAbsolutePath(_options.TessDataPath);
-            if (!Directory.Exists(tessDataPath))
-                throw new DirectoryNotFoundException($"Tessdata folder not found: {tessDataPath}");
+            return await Task.Run(() =>
+            {
+                var tessDataPath = GetAbsolutePath(_options.TessDataPath);
+                if (!Directory.Exists(tessDataPath))
+                    throw new DirectoryNotFoundException($"Tessdata folder not found: {tessDataPath}");
 
-            using var engine = new TesseractEngine(
-                tessDataPath,
-                _options.Languages,
-                EngineMode.Default);
+                using var engine = new TesseractEngine(
+                    tessDataPath,
+                    _options.Languages,
+                    EngineMode.Default);
 
-            using var pix = Pix.LoadFromMemory(imageBytes);
-            using var page = engine.Process(pix);
+                using var pix = Pix.LoadFromMemory(imageBytes);
+                using var page = engine.Process(pix);
 
-            var text = page.GetText()?.Trim() ?? string.Empty;
-            var confidence = page.GetMeanConfidence();
+                var text = page.GetText()?.Trim() ?? string.Empty;
+                var confidence = page.GetMeanConfidence();
 
-            var lines = text
-                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                .ToList();
+                var lines = text
+                    .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .ToList();
+
+                _logger.LogInformation(
+                    "OCR completed for file {FileName}. Confidence: {Confidence}, TextLength: {TextLength}",
+                    fileName,
+                    confidence,
+                    text.Length);
+            
+                return new OcrResultDto
+                {
+                    IsSuccess = true,
+                    SourceFileName = fileName,
+                    Text = text,
+                    Confidence = confidence,
+                    Lines = lines
+                };
+            }, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "OCR failed for file {FileName}", fileName);
 
             return new OcrResultDto
             {
-                IsSuccess = true,
+                IsSuccess = false,
                 SourceFileName = fileName,
-                Text = text,
-                Confidence = confidence,
-                Lines = lines
+                ErrorMessage = ex.Message
             };
-        }, cancellationToken);
+        }
+        
     }
 
     private static async Task<byte[]> ReadAllBytesAsync(Stream stream, CancellationToken cancellationToken)

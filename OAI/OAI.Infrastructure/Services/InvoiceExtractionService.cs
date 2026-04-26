@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Invoices.Dtos;
 
@@ -9,13 +10,16 @@ public sealed class InvoiceExtractionService : IInvoiceExtractionService
 {
     private readonly IFileStorageService _fileStorageService;
     private readonly IOcrService _ocrService;
+    private readonly ILogger<InvoiceExtractionService> _logger;
 
     public InvoiceExtractionService(
         IFileStorageService fileStorageService,
-        IOcrService ocrService)
+        IOcrService ocrService,
+        ILogger<InvoiceExtractionService> logger)
     {
         _fileStorageService = fileStorageService;
         _ocrService = ocrService;
+        _logger = logger;
     }
 
     public async Task<ExtractedInvoiceDto?> ExtractFromFileAsync(
@@ -25,9 +29,13 @@ public sealed class InvoiceExtractionService : IInvoiceExtractionService
         if (string.IsNullOrWhiteSpace(filePath))
             return null;
 
+        _logger.LogInformation("Start extracting invoice from file path {FilePath}", filePath);
         var stream = await _fileStorageService.OpenReadAsync(filePath, cancellationToken);
         if (stream is null)
+        {
+            _logger.LogWarning("Cannot extract invoice because file was not found at {FilePath}", filePath);
             return null;
+        }
 
         using (stream)
         {
@@ -35,12 +43,33 @@ public sealed class InvoiceExtractionService : IInvoiceExtractionService
 
             var ocrResult = await _ocrService.ExtractTextAsync(stream, fileName, cancellationToken);
             if (!ocrResult.IsSuccess || string.IsNullOrWhiteSpace(ocrResult.Text))
-                return null;
+            {
+                _logger.LogWarning(
+                    "OCR failed or returned empty text for file {FileName}. Error: {ErrorMessage}",
+                    fileName,
+                    ocrResult.ErrorMessage);
 
-            return ExtractFromTextInternal(
+                return null;
+            }
+
+            var extracted = ExtractFromTextInternal(
                 ocrResult.Text,
                 fileName,
                 ocrResult.Confidence);
+
+            if (extracted is null)
+            {
+                _logger.LogWarning("Cannot parse invoice data from OCR text for file {FileName}", fileName);
+                return null;
+            }
+
+            _logger.LogInformation(
+                "Invoice extraction succeeded for file {FileName}. InvoiceNumber: {InvoiceNumber}, Confidence: {Confidence}",
+                fileName,
+                extracted.InvoiceNumber,
+                extracted.ConfidenceScore);
+
+            return extracted;
         }
     }
 

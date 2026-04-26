@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
+using OAI.Infrastructure.Audit;
 using OAI.Infrastructure.Options;
 using OAI.Infrastructure.Persistence;
 using OAI.Infrastructure.Repositories;
@@ -21,8 +22,13 @@ public static class DependencyInjection
         services.AddOptions<OcrOptions>()
             .Bind(configuration.GetRequiredSection("Ocr"));
         
-        services.AddDbContext<OaiDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        services.AddScoped<AuditTrailInterceptor>();
+        
+        services.AddDbContext<OaiDbContext>((sp, options) =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.AddInterceptors(sp.GetRequiredService<AuditTrailInterceptor>());
+        });
 
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IVendorRepository, VendorRepository>();

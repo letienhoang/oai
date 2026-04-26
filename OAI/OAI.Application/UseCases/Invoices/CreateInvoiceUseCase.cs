@@ -1,4 +1,5 @@
-﻿using OAI.Application.Abstractions.Persistence;
+﻿using Microsoft.Extensions.Logging;
+using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
 using OAI.Application.Mappings;
@@ -13,15 +14,18 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IVendorRepository _vendorRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CreateInvoiceUseCase> _logger;
 
     public CreateInvoiceUseCase(
         IInvoiceRepository invoiceRepository,
         IVendorRepository vendorRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CreateInvoiceUseCase> logger)
     {
         _invoiceRepository = invoiceRepository;
         _vendorRepository = vendorRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<InvoiceDetailDto> ExecuteAsync(
@@ -30,16 +34,30 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
     {
         ArgumentNullException.ThrowIfNull(request);
 
+        using var scope = _logger.BeginScope(new Dictionary<string, object>
+        {
+            ["InvoiceNumber"] = request.InvoiceNumber,
+            ["VendorId"] = request.VendorId
+        });
+
+        _logger.LogInformation("Start creating invoice {InvoiceNumber}", request.InvoiceNumber);
+
         ValidateRequest(request);
 
         var vendor = await _vendorRepository.GetByIdAsync(request.VendorId, cancellationToken);
         if (vendor is null)
+        {
+            _logger.LogWarning("Cannot create invoice because vendor {VendorId} was not found", request.VendorId);
             throw new DomainException($"Vendor '{request.VendorId}' was not found.");
+        }
 
         var normalizedInvoiceNumber = request.InvoiceNumber.Trim();
 
         if (await _invoiceRepository.ExistsByInvoiceNumberAsync(normalizedInvoiceNumber, cancellationToken))
+        {
+            _logger.LogWarning("Cannot create invoice because invoice number {InvoiceNumber} already exists", normalizedInvoiceNumber);
             throw new DomainException($"Invoice number '{normalizedInvoiceNumber}' already exists.");
+        }
 
         var currency = request.Currency.Trim().ToUpperInvariant();
 
@@ -70,14 +88,27 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
             invoice.AddLineItem(lineItem);
         }
 
-        var issues = invoice.ValidateConsistency();
+        var issues = invoice.ValidateConsistency().ToList();
         foreach (var issue in issues)
         {
             invoice.AddValidationIssue(issue);
         }
 
+        if (issues.Count > 0)
+        {
+            _logger.LogWarning(
+                "Invoice {InvoiceNumber} created with {IssueCount} validation issue(s)",
+                normalizedInvoiceNumber,
+                issues.Count);
+        }
+
         await _invoiceRepository.AddAsync(invoice, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation(
+            "Invoice created successfully. InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}",
+            invoice.Id,
+            invoice.InvoiceNumber);
 
         return invoice.ToDetailDto();
     }

@@ -1,4 +1,5 @@
-﻿using OAI.Application.Abstractions.Persistence;
+﻿using Microsoft.Extensions.Logging;
+using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
 using OAI.Domain.Enums;
@@ -10,13 +11,16 @@ public sealed class ValidateInvoiceUseCase : IValidateInvoiceUseCase
 {
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ValidateInvoiceUseCase> _logger;
 
     public ValidateInvoiceUseCase(
         IInvoiceRepository invoiceRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<ValidateInvoiceUseCase> logger)
     {
         _invoiceRepository = invoiceRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<InvoiceValidationResultDto> ExecuteAsync(
@@ -28,9 +32,19 @@ public sealed class ValidateInvoiceUseCase : IValidateInvoiceUseCase
         if (request.InvoiceId == Guid.Empty)
             throw new DomainException("InvoiceId is required.");
 
+        using var scope = _logger.BeginScope(new Dictionary<string, object>
+        {
+            ["InvoiceId"] = request.InvoiceId
+        });
+
+        _logger.LogInformation("Start validating invoice {InvoiceId}", request.InvoiceId);
+
         var invoice = await _invoiceRepository.GetByIdAsync(request.InvoiceId, cancellationToken);
         if (invoice is null)
+        {
+            _logger.LogWarning("Cannot validate invoice because invoice {InvoiceId} was not found", request.InvoiceId);
             throw new DomainException($"Invoice '{request.InvoiceId}' was not found.");
+        }
 
         var issues = invoice.ValidateConsistency(request.Tolerance).ToList();
 
@@ -53,12 +67,19 @@ public sealed class ValidateInvoiceUseCase : IValidateInvoiceUseCase
             })
             .ToList();
 
-        var hasErrors = issues.Any(x => x.Severity == ValidationSeverity.Error);
+        var hasError = issues.Any(x => x.Severity == ValidationSeverity.Error);
+
+        _logger.LogInformation(
+            "Invoice validation completed. InvoiceId: {InvoiceId}, IsValid: {IsValid}, ErrorCount: {ErrorCount}, WarningCount: {WarningCount}",
+            invoice.Id,
+            !hasError,
+            issues.Count(x => x.Severity == ValidationSeverity.Error),
+            issues.Count(x => x.Severity == ValidationSeverity.Warning));
 
         return new InvoiceValidationResultDto
         {
             InvoiceId = invoice.Id,
-            IsValid = !hasErrors,
+            IsValid = !hasError,
             ErrorCount = issues.Count(x => x.Severity == ValidationSeverity.Error),
             WarningCount = issues.Count(x => x.Severity == ValidationSeverity.Warning),
             Issues = dtoIssues

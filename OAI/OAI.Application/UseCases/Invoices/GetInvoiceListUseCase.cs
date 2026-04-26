@@ -1,4 +1,5 @@
-﻿using OAI.Application.Abstractions.Persistence;
+﻿using Microsoft.Extensions.Logging;
+using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Common;
 using OAI.Application.Invoices.Dtos;
@@ -10,10 +11,12 @@ namespace OAI.Application.UseCases.Invoices;
 public sealed class GetInvoiceListUseCase : IGetInvoiceListUseCase
 {
     private readonly IInvoiceRepository _invoiceRepository;
+    private readonly ILogger<GetInvoiceListUseCase> _logger;
 
-    public GetInvoiceListUseCase(IInvoiceRepository invoiceRepository)
+    public GetInvoiceListUseCase(IInvoiceRepository invoiceRepository, ILogger<GetInvoiceListUseCase> logger)
     {
         _invoiceRepository = invoiceRepository;
+        _logger = logger;
     }
 
     public async Task<PagedResultDto<InvoiceListItemDto>> ExecuteAsync(
@@ -39,6 +42,12 @@ public sealed class GetInvoiceListUseCase : IGetInvoiceListUseCase
         var items = invoices
             .Select(x => x.ToListItemDto())
             .ToList();
+        
+        _logger.LogInformation(
+            "Getting invoice list. PageNumber: {PageNumber}, PageSize: {PageSize}, Keyword: {Keyword}",
+            request.PageNumber,
+            request.PageSize,
+            request.Keyword);
 
         return new PagedResultDto<InvoiceListItemDto>
         {

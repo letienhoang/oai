@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OAI.Application.Abstractions.Services;
 using OAI.Infrastructure.Options;
 
@@ -8,11 +9,13 @@ public sealed class FileStorageService : IFileStorageService
 {
     private readonly FileStorageOptions _options;
     private readonly string _basePath;
+    private readonly ILogger<FileStorageService> _logger;
 
-    public FileStorageService(IOptions<FileStorageOptions> options)
+    public FileStorageService(IOptions<FileStorageOptions> options,  ILogger<FileStorageService> logger)
     {
         _options = options.Value;
         _basePath = GetBasePath(_options.BasePath);
+        _logger = logger;
     }
 
     public async Task<string> SaveAsync(
@@ -20,6 +23,7 @@ public sealed class FileStorageService : IFileStorageService
         Stream content,
         CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Saving file {FileName}", fileName);
         if (string.IsNullOrWhiteSpace(fileName))
             throw new ArgumentException("File name is required.", nameof(fileName));
 
@@ -56,6 +60,8 @@ public sealed class FileStorageService : IFileStorageService
         }
 
         var relativePath = Path.Combine(relativeFolder, storedFileName);
+        
+        _logger.LogInformation("File {FileName} saved to {RelativePath}", fileName, relativePath);
         return NormalizePath(relativePath);
     }
 
@@ -69,7 +75,10 @@ public sealed class FileStorageService : IFileStorageService
         var physicalPath = GetPhysicalPath(path);
 
         if (!File.Exists(physicalPath))
+        {
+            _logger.LogWarning("File not found at {PhysicalPath}", physicalPath);
             return Task.FromResult<Stream?>(null);
+        }
 
         Stream stream = new FileStream(
             physicalPath,
@@ -86,6 +95,7 @@ public sealed class FileStorageService : IFileStorageService
         string path,
         CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Deleting file at {Path}", path);
         if (string.IsNullOrWhiteSpace(path))
             return Task.CompletedTask;
 

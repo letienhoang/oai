@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OAI.Domain.Entities;
+using OAI.Infrastructure.Audit;
 
 namespace OAI.Infrastructure.Persistence;
 
@@ -15,6 +16,7 @@ public sealed class OaiDbContext : DbContext
     public DbSet<InvoiceLineItem> InvoiceLineItems => Set<InvoiceLineItem>();
     public DbSet<InvoiceExtractionResult> InvoiceExtractionResults => Set<InvoiceExtractionResult>();
     public DbSet<ValidationIssue> ValidationIssues => Set<ValidationIssue>();
+    public DbSet<AuditLogEntry> AuditLogs => Set<AuditLogEntry>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
