@@ -18,6 +18,9 @@ public static class DependencyInjection
     {
         services.Configure<FileStorageOptions>(configuration.GetSection("FileStorage"));
         
+        services.AddOptions<OcrOptions>()
+            .Bind(configuration.GetRequiredSection("Ocr"));
+        
         services.AddDbContext<OaiDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
@@ -25,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IFileStorageService, FileStorageService>();
+        services.AddScoped<IOcrService, TesseractOcrService>();
 
         return services;
     }
