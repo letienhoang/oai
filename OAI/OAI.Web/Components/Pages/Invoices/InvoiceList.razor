@@ -1,0 +1,35 @@
+﻿@page "/invoices"
+
+<PageTitle>Danh sách hóa đơn - OAI</PageTitle>
+
+<section class="mb-4">
+    <h1 class="fw-bold mb-1">Danh sách hóa đơn</h1>
+    <p class="text-secondary mb-0">
+        Tra cứu và theo dõi trạng thái xử lý các hóa đơn đã upload.
+    </p>
+</section>
+
+<section class="card border-0 shadow-sm rounded-4">
+    <div class="card-body">
+        <div class="row g-2 mb-4">
+            <div class="col-12 col-md">
+                <input class="form-control"
+                       placeholder="Tìm theo số hóa đơn hoặc nhà cung cấp..." />
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-primary w-100">
+                    Tìm kiếm
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-light rounded-4 p-5 text-center">
+            <div class="fs-1 mb-3">🧾</div>
+            <h2 class="h5 fw-bold">Chưa có dữ liệu</h2>
+            <p class="text-secondary mb-0">
+                Sau này trang này sẽ gọi <code>IGetInvoiceListUseCase</code>.
+            </p>
+        </div>
+    </div>
+</section>

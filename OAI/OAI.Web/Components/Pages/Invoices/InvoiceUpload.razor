@@ -1,0 +1,26 @@
+﻿@page "/invoices/upload"
+
+<PageTitle>Upload hóa đơn - OAI</PageTitle>
+
+<section class="mb-4">
+    <h1 class="fw-bold mb-1">Upload hóa đơn</h1>
+    <p class="text-secondary mb-0">
+        Tải lên file hóa đơn để hệ thống lưu trữ, OCR và trích xuất dữ liệu.
+    </p>
+</section>
+
+<section class="card border-0 shadow-sm rounded-4">
+    <div class="card-body">
+        <div class="border border-2 border-dashed rounded-4 p-5 text-center bg-light">
+            <div class="fs-1 mb-3">⬆️</div>
+
+            <h2 class="h5 fw-bold">Upload UI sẽ được triển khai ở bước tiếp theo</h2>
+
+            <p class="text-secondary mb-0">
+                Trang này sẽ gọi
+                <code>IInvoiceProcessingService.UploadInvoiceAsync</code>
+                để xử lý luồng upload → OCR → extraction → create invoice.
+            </p>
+        </div>
+    </div>
+</section>

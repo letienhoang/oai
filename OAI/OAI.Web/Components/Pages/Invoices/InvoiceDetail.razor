@@ -1,0 +1,20 @@
+﻿@page "/invoices/{InvoiceId:guid}"
+
+<PageTitle>Chi tiết hóa đơn - OAI</PageTitle>
+
+<section class="mb-4">
+    <h1 class="fw-bold mb-1">Chi tiết hóa đơn</h1>
+    <p class="text-secondary mb-0">
+        InvoiceId: <code>@InvoiceId</code>
+    </p>
+</section>
+
+<section class="card border-0 shadow-sm rounded-4">
+    <div class="card-body">
+        <h2 class="h5 fw-bold mb-3">Thông tin hóa đơn</h2>
+        <p class="text-secondary mb-0">
+            Trang này sẽ gọi <code>IGetInvoiceDetailUseCase</code>
+            để lấy dữ liệu chi tiết.
+        </p>
+    </div>
+</section>
