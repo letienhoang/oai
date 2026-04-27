@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OAI.Application.Abstractions.Services;
+using OAI.Application.Abstractions.UseCases.Dashboard;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Services;
+using OAI.Application.UseCases.Dashboard;
 using OAI.Application.UseCases.Invoices;
 
 namespace OAI.Application;
@@ -16,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped<IGetInvoiceDetailUseCase, GetInvoiceDetailUseCase>();
         services.AddScoped<IGetValidationIssueListUseCase, GetValidationIssueListUseCase>();
         services.AddScoped<IUpdateInvoiceUseCase, UpdateInvoiceUseCase>();
+        services.AddScoped<IGetDashboardSummaryUseCase, GetDashboardSummaryUseCase>();
 
         services.AddScoped<IInvoiceProcessingService, InvoiceProcessingService>();
 

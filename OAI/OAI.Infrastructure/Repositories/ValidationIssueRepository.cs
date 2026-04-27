@@ -63,6 +63,33 @@ public sealed class ValidationIssueRepository : IValidationIssueRepository
 
         return await query.CountAsync(cancellationToken);
     }
+    
+    public async Task<int> CountOpenAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.ValidationIssues
+            .AsNoTracking()
+            .CountAsync(x => !x.IsResolved, cancellationToken);
+    }
+
+    public async Task<int> CountResolvedAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.ValidationIssues
+            .AsNoTracking()
+            .CountAsync(x => x.IsResolved, cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<ValidationIssue>> GetRecentAsync(
+        int take,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.ValidationIssues
+            .AsNoTracking()
+            .Include(x => x.Invoice)
+            .ThenInclude(x => x!.Vendor)
+            .OrderByDescending(x => x.DetectedAt)
+            .Take(take)
+            .ToListAsync(cancellationToken);
+    }
 
     public async Task AddAsync(
         ValidationIssue issue,

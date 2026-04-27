@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Domain.Entities;
+using OAI.Domain.Enums;
 using OAI.Infrastructure.Persistence;
 
 namespace OAI.Infrastructure.Repositories;
@@ -83,6 +84,37 @@ public sealed class InvoiceRepository : IInvoiceRepository
         }
 
         return await query.CountAsync(cancellationToken);
+    }
+    
+    public async Task<int> CountByStatusAsync(
+        InvoiceStatus status,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.Invoices
+            .AsNoTracking()
+            .CountAsync(x => x.Status == status, cancellationToken);
+    }
+
+    public async Task<int> CountWithValidationIssuesAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.Invoices
+            .AsNoTracking()
+            .CountAsync(
+                x => x.ValidationIssues.Any(v => !v.IsResolved),
+                cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<Invoice>> GetRecentAsync(
+        int take,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.Invoices
+            .AsNoTracking()
+            .Include(x => x.Vendor)
+            .OrderByDescending(x => x.CreatedAt)
+            .Take(take)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task AddAsync(Invoice invoice, CancellationToken cancellationToken = default)

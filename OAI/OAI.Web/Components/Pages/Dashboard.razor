@@ -1,67 +1,311 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Dashboard - OAI</PageTitle>
 
 <section class="mb-4">
-    <h1 class="fw-bold mb-1">Dashboard</h1>
-    <p class="text-secondary mb-0">
-        Tổng quan hệ thống trích xuất thông tin hóa đơn.
-    </p>
-</section>
-
-<section class="row g-3 mb-4">
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body">
-                <div class="text-secondary fw-semibold small">Tổng hóa đơn</div>
-                <div class="display-6 fw-bold mt-2">0</div>
-                <div class="text-secondary small">Đã upload vào hệ thống</div>
-            </div>
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">Dashboard</h1>
+            <p class="text-secondary mb-0">
+                Tổng quan hệ thống trích xuất thông tin hóa đơn.
+            </p>
         </div>
-    </div>
 
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body">
-                <div class="text-secondary fw-semibold small">Đã xử lý</div>
-                <div class="display-6 fw-bold mt-2">0</div>
-                <div class="text-secondary small">OCR/extraction completed</div>
-            </div>
-        </div>
-    </div>
+        <div class="d-flex gap-2 align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="ReloadAsync" disabled="@IsLoading">
+                Tải lại
+            </button>
 
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body">
-                <div class="text-secondary fw-semibold small">Cần kiểm tra</div>
-                <div class="display-6 fw-bold mt-2">0</div>
-                <div class="text-secondary small">Có validation issues</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body">
-                <div class="text-secondary fw-semibold small">Đã duyệt</div>
-                <div class="display-6 fw-bold mt-2">0</div>
-                <div class="text-secondary small">Approved invoices</div>
-            </div>
+            <button class="btn btn-primary" @onclick="GoToUpload">
+                Upload hóa đơn
+            </button>
         </div>
     </div>
 </section>
 
-<section class="card border-0 shadow-sm rounded-4">
-    <div class="card-body">
-        <h2 class="h5 fw-bold mb-3">Luồng xử lý chính</h2>
+@if (IsLoading)
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <div class="spinner-border text-primary" role="status"></div>
+            <div class="text-secondary mt-3">Đang tải dashboard...</div>
+        </div>
+    </section>
+}
+else if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5">
+            <div class="alert alert-danger mb-0">
+                @ErrorMessage
+            </div>
+        </div>
+    </section>
+}
+else if (Summary is not null)
+{
+    <section class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="text-secondary fw-semibold small">Tổng hóa đơn</div>
+                    <div class="display-6 fw-bold mt-2">@Summary.TotalInvoices</div>
+                    <div class="text-secondary small">Đã upload vào hệ thống</div>
+                </div>
+            </div>
+        </div>
 
-        <ol class="mb-0 lh-lg">
-            <li>Upload file hóa đơn PDF/ảnh.</li>
-            <li>Lưu file gốc vào storage.</li>
-            <li>Chạy OCR để lấy text thô.</li>
-            <li>Trích xuất dữ liệu hóa đơn.</li>
-            <li>Kiểm tra tính nhất quán dữ liệu.</li>
-            <li>Người dùng xem, chỉnh sửa và xác nhận.</li>
-        </ol>
-    </div>
-</section>
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="text-secondary fw-semibold small">Chờ kiểm tra</div>
+                    <div class="display-6 fw-bold mt-2">@Summary.PendingReviewInvoices</div>
+                    <div class="text-secondary small">Pending review</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="text-secondary fw-semibold small">Đã duyệt</div>
+                    <div class="display-6 fw-bold mt-2">@Summary.ApprovedInvoices</div>
+                    <div class="text-secondary small">Approved invoices</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="text-secondary fw-semibold small">Lỗi chưa xử lý</div>
+                    <div class="display-6 fw-bold mt-2">@Summary.OpenValidationIssues</div>
+                    <div class="text-secondary small">Open validation issues</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-12 col-xl-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">Trạng thái hóa đơn</h2>
+
+                    <div class="d-grid gap-3">
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>Draft</span>
+                                <strong>@Summary.DraftInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-secondary" style="width: @GetPercent(Summary.DraftInvoices)%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>Pending review</span>
+                                <strong>@Summary.PendingReviewInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-warning" style="width: @GetPercent(Summary.PendingReviewInvoices)%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>Approved</span>
+                                <strong>@Summary.ApprovedInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-success" style="width: @GetPercent(Summary.ApprovedInvoices)%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>Rejected</span>
+                                <strong>@Summary.RejectedInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-danger" style="width: @GetPercent(Summary.RejectedInvoices)%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>Exported</span>
+                                <strong>@Summary.ExportedInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-info" style="width: @GetPercent(Summary.ExportedInvoices)%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 fw-bold mb-0">Hóa đơn mới nhất</h2>
+                        <button class="btn btn-sm btn-outline-primary" @onclick="GoToInvoiceList">
+                            Xem tất cả
+                        </button>
+                    </div>
+
+                    @if (Summary.RecentInvoices.Count == 0)
+                    {
+                        <div class="bg-light rounded-4 p-4 text-center text-secondary">
+                            Chưa có hóa đơn nào.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                <tr>
+                                    <th>Số hóa đơn</th>
+                                    <th>Nhà cung cấp</th>
+                                    <th class="text-end">Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th class="text-end">Chi tiết</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach (var invoice in Summary.RecentInvoices)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold">@invoice.InvoiceNumber</div>
+                                            <div class="small text-secondary">@invoice.IssueDate.ToString("dd/MM/yyyy")</div>
+                                        </td>
+                                        <td>@DisplayOrFallback(invoice.VendorName)</td>
+                                        <td class="text-end">@FormatMoney(invoice.TotalAmount, invoice.Currency)</td>
+                                        <td>
+                                            <span class="badge @GetStatusBadgeClass(invoice.Status)">
+                                                @invoice.Status
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <button class="btn btn-sm btn-outline-primary"
+                                                    @onclick="() => GoToInvoiceDetail(invoice.InvoiceId)">
+                                                Xem
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-4">
+        <div class="col-12 col-xl-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">Validation overview</h2>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="border rounded-4 p-3 bg-light">
+                                <div class="text-secondary small">Tổng lỗi</div>
+                                <div class="h4 fw-bold mb-0">@Summary.TotalValidationIssues</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="border rounded-4 p-3 bg-light">
+                                <div class="text-secondary small">Hóa đơn có lỗi</div>
+                                <div class="h4 fw-bold mb-0">@Summary.InvoicesWithValidationIssues</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="border rounded-4 p-3 bg-light">
+                                <div class="text-secondary small">Đã xử lý</div>
+                                <div class="h4 fw-bold mb-0">@Summary.ResolvedValidationIssues</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline-primary w-100 mt-3" @onclick="GoToValidationIssues">
+                        Xem lỗi kiểm tra
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">Lỗi kiểm tra mới nhất</h2>
+
+                    @if (Summary.RecentValidationIssues.Count == 0)
+                    {
+                        <div class="bg-light rounded-4 p-4 text-center text-secondary">
+                            Chưa có validation issue nào.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var issue in Summary.RecentValidationIssues)
+                            {
+                                <div class="list-group-item px-0">
+                                    <div class="d-flex justify-content-between gap-2 mb-1">
+                                        <div>
+                                            <span class="badge @GetSeverityBadgeClass(issue.Severity)">
+                                                @issue.Severity
+                                            </span>
+                                            <span class="fw-semibold ms-2">@issue.RuleCode</span>
+                                        </div>
+
+                                        @if (issue.IsResolved)
+                                        {
+                                            <span class="badge text-bg-success">Resolved</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge text-bg-warning">Open</span>
+                                        }
+                                    </div>
+
+                                    <div class="small">
+                                        <strong>@DisplayOrFallback(issue.InvoiceNumber)</strong>
+                                        - @issue.FieldName
+                                    </div>
+
+                                    <div class="small text-secondary text-truncate">
+                                        @issue.Message
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <span class="small text-secondary">
+                                            @issue.DetectedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                        </span>
+
+                                        <button class="btn btn-sm btn-outline-primary"
+                                                @onclick="() => GoToInvoiceDetail(issue.InvoiceId)">
+                                            Xem hóa đơn
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}

@@ -20,6 +20,14 @@ public interface IValidationIssueRepository
         string? severity = null,
         bool? isResolved = null,
         CancellationToken cancellationToken = default);
+    
+    Task<int> CountOpenAsync(CancellationToken cancellationToken = default);
+
+    Task<int> CountResolvedAsync(CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<ValidationIssue>> GetRecentAsync(
+        int take,
+        CancellationToken cancellationToken = default);
 
     Task AddAsync(ValidationIssue issue, CancellationToken cancellationToken = default);
     Task AddRangeAsync(IEnumerable<ValidationIssue> issues, CancellationToken cancellationToken = default);
