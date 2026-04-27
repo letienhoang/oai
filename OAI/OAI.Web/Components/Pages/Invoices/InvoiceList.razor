@@ -1,35 +1,171 @@
 ﻿@page "/invoices"
+@rendermode InteractiveServer
 
 <PageTitle>Danh sách hóa đơn - OAI</PageTitle>
 
 <section class="mb-4">
-    <h1 class="fw-bold mb-1">Danh sách hóa đơn</h1>
-    <p class="text-secondary mb-0">
-        Tra cứu và theo dõi trạng thái xử lý các hóa đơn đã upload.
-    </p>
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">Danh sách hóa đơn</h1>
+            <p class="text-secondary mb-0">
+                Tra cứu và theo dõi trạng thái xử lý các hóa đơn đã upload.
+            </p>
+        </div>
+
+        <div class="d-flex align-items-start">
+            <button class="btn btn-primary" @onclick="GoToUpload">
+                Upload hóa đơn
+            </button>
+        </div>
+    </div>
 </section>
 
 <section class="card border-0 shadow-sm rounded-4">
-    <div class="card-body">
+    <div class="card-body p-4">
         <div class="row g-2 mb-4">
             <div class="col-12 col-md">
                 <input class="form-control"
-                       placeholder="Tìm theo số hóa đơn hoặc nhà cung cấp..." />
+                       placeholder="Tìm theo số hóa đơn hoặc nhà cung cấp..."
+                       @bind="Keyword"
+                       @bind:event="oninput"
+                       @onkeydown="HandleSearchKeyDown" />
             </div>
 
             <div class="col-12 col-md-auto">
-                <button class="btn btn-primary w-100">
+                <button class="btn btn-primary w-100"
+                        disabled="@IsLoading"
+                        @onclick="SearchAsync">
                     Tìm kiếm
+                </button>
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-outline-secondary w-100"
+                        disabled="@IsLoading"
+                        @onclick="ClearSearchAsync">
+                    Xóa lọc
                 </button>
             </div>
         </div>
 
-        <div class="bg-light rounded-4 p-5 text-center">
-            <div class="fs-1 mb-3">🧾</div>
-            <h2 class="h5 fw-bold">Chưa có dữ liệu</h2>
-            <p class="text-secondary mb-0">
-                Sau này trang này sẽ gọi <code>IGetInvoiceListUseCase</code>.
-            </p>
-        </div>
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                @ErrorMessage
+            </div>
+        }
+
+        @if (IsLoading)
+        {
+            <div class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <span class="ms-3 text-secondary">Đang tải danh sách hóa đơn...</span>
+            </div>
+        }
+        else if (Invoices.Count == 0)
+        {
+            <div class="bg-light rounded-4 p-5 text-center">
+                <div class="fs-1 mb-3">🧾</div>
+                <h2 class="h5 fw-bold">Chưa có dữ liệu</h2>
+                <p class="text-secondary mb-3">
+                    Chưa có hóa đơn nào phù hợp với điều kiện tìm kiếm.
+                </p>
+
+                <button class="btn btn-primary" @onclick="GoToUpload">
+                    Upload hóa đơn đầu tiên
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>Số hóa đơn</th>
+                        <th>Nhà cung cấp</th>
+                        <th>Ngày phát hành</th>
+                        <th class="text-end">Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Dòng hàng</th>
+                        <th class="text-end">Thao tác</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach (var invoice in Invoices)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@invoice.InvoiceNumber</div>
+                                <div class="small text-secondary">
+                                    <code>@invoice.InvoiceId</code>
+                                </div>
+                            </td>
+
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(invoice.VendorName))
+                                {
+                                    <span>@invoice.VendorName</span>
+                                }
+                                else
+                                {
+                                    <span class="text-secondary">Chưa xác định</span>
+                                }
+                            </td>
+
+                            <td>@invoice.IssueDate.ToString("dd/MM/yyyy")</td>
+
+                            <td class="text-end">
+                                <span class="fw-semibold">
+                                    @FormatMoney(invoice.TotalAmount, invoice.Currency)
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge @GetStatusBadgeClass(invoice.Status)">
+                                    @invoice.Status
+                                </span>
+                            </td>
+
+                            <td class="text-center">
+                                <span class="badge text-bg-light border">
+                                    @invoice.LineItemCount
+                                </span>
+                            </td>
+
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary"
+                                        @onclick="() => GoToDetail(invoice.InvoiceId)">
+                                    Chi tiết
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4">
+                <div class="text-secondary small">
+                    Hiển thị trang <strong>@PageNumber</strong>/<strong>@TotalPages</strong>,
+                    tổng <strong>@TotalItems</strong> hóa đơn.
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoPrevious || IsLoading)"
+                            @onclick="PreviousPageAsync">
+                        Trước
+                    </button>
+
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoNext || IsLoading)"
+                            @onclick="NextPageAsync">
+                        Sau
+                    </button>
+                </div>
+            </div>
+        }
     </div>
 </section>
