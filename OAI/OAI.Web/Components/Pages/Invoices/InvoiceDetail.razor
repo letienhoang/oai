@@ -1,20 +1,303 @@
 ﻿@page "/invoices/{InvoiceId:guid}"
+@rendermode InteractiveServer
 
 <PageTitle>Chi tiết hóa đơn - OAI</PageTitle>
 
 <section class="mb-4">
-    <h1 class="fw-bold mb-1">Chi tiết hóa đơn</h1>
-    <p class="text-secondary mb-0">
-        InvoiceId: <code>@InvoiceId</code>
-    </p>
-</section>
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">Chi tiết hóa đơn</h1>
+            <p class="text-secondary mb-0">
+                Theo dõi dữ liệu trích xuất, dòng hàng và lỗi kiểm tra của hóa đơn.
+            </p>
+        </div>
 
-<section class="card border-0 shadow-sm rounded-4">
-    <div class="card-body">
-        <h2 class="h5 fw-bold mb-3">Thông tin hóa đơn</h2>
-        <p class="text-secondary mb-0">
-            Trang này sẽ gọi <code>IGetInvoiceDetailUseCase</code>
-            để lấy dữ liệu chi tiết.
-        </p>
+        <div class="d-flex gap-2 align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="GoBack">
+                Quay lại danh sách
+            </button>
+
+            @if (Invoice is not null)
+            {
+                <button class="btn btn-primary" disabled>
+                    Chỉnh sửa
+                </button>
+            }
+        </div>
     </div>
 </section>
+
+@if (IsLoading)
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <div class="spinner-border text-primary" role="status"></div>
+            <div class="text-secondary mt-3">Đang tải chi tiết hóa đơn...</div>
+        </div>
+    </section>
+}
+else if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5">
+            <div class="alert alert-danger mb-0">
+                @ErrorMessage
+            </div>
+        </div>
+    </section>
+}
+else if (Invoice is null)
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <div class="fs-1 mb-3">🧾</div>
+            <h2 class="h5 fw-bold">Không tìm thấy hóa đơn</h2>
+            <p class="text-secondary mb-3">
+                Hóa đơn không tồn tại hoặc đã bị xóa.
+            </p>
+            <button class="btn btn-primary" @onclick="GoBack">
+                Quay lại danh sách
+            </button>
+        </div>
+    </section>
+}
+else
+{
+    <section class="row g-4">
+        <div class="col-12 col-xl-8">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4">
+                        <div>
+                            <div class="text-secondary small fw-semibold">Số hóa đơn</div>
+                            <h2 class="h4 fw-bold mb-0">@Invoice.InvoiceNumber</h2>
+                        </div>
+
+                        <div class="text-md-end">
+                            <div class="text-secondary small fw-semibold">Trạng thái</div>
+                            <span class="badge @GetStatusBadgeClass(Invoice.Status)">
+                                @Invoice.Status
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">Nhà cung cấp</div>
+                                <div class="fw-semibold">@DisplayOrFallback(Invoice.VendorName)</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">Ngày phát hành</div>
+                                <div class="fw-semibold">@Invoice.IssueDate.ToString("dd/MM/yyyy")</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">Ngày đến hạn</div>
+                                <div class="fw-semibold">
+                                    @(Invoice.DueDate?.ToString("dd/MM/yyyy") ?? "Chưa có")
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">File gốc</div>
+                                <div class="fw-semibold text-break">
+                                    @DisplayOrFallback(Invoice.SourceFileName)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">Tổng hợp số tiền</h2>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4">
+                            <div class="border rounded-4 p-3">
+                                <div class="text-secondary small">Subtotal</div>
+                                <div class="h5 fw-bold mb-0">
+                                    @FormatMoney(Invoice.DeclaredSubtotal, Invoice.Currency)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="border rounded-4 p-3">
+                                <div class="text-secondary small">Tax</div>
+                                <div class="h5 fw-bold mb-0">
+                                    @FormatMoney(Invoice.DeclaredTaxAmount, Invoice.Currency)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="border rounded-4 p-3 bg-primary-subtle">
+                                <div class="text-secondary small">Total</div>
+                                <div class="h5 fw-bold mb-0 text-primary">
+                                    @FormatMoney(Invoice.DeclaredTotalAmount, Invoice.Currency)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 fw-bold mb-0">Dòng hàng</h2>
+                        <span class="badge text-bg-light border">
+                            @Invoice.LineItems.Count dòng
+                        </span>
+                    </div>
+
+                    @if (Invoice.LineItems.Count == 0)
+                    {
+                        <div class="alert alert-warning mb-0">
+                            Không có dòng hàng nào được trích xuất.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Mô tả</th>
+                                    <th class="text-end">Số lượng</th>
+                                    <th class="text-end">Đơn giá</th>
+                                    <th class="text-end">Net</th>
+                                    <th class="text-end">Tax</th>
+                                    <th class="text-end">Thuế %</th>
+                                    <th class="text-end">Gross</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach (var item in Invoice.LineItems)
+                                {
+                                    <tr>
+                                        <td class="text-center">@item.LineNo</td>
+                                        <td>@item.Description</td>
+                                        <td class="text-end">@item.Quantity:N2</td>
+                                        <td class="text-end">@FormatMoney(item.UnitPrice, Invoice.Currency)</td>
+                                        <td class="text-end">@FormatMoney(item.NetAmount, Invoice.Currency)</td>
+                                        <td class="text-end">@FormatMoney(item.TaxAmount, Invoice.Currency)</td>
+                                        <td class="text-end">@item.TaxRate:N2</td>
+                                        <td class="text-end fw-semibold">
+                                            @FormatMoney(item.GrossAmount, Invoice.Currency)
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-4">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">Validation issues</h2>
+
+                    @if (Invoice.ValidationIssues.Count == 0)
+                    {
+                        <div class="alert alert-success mb-0">
+                            Không có lỗi kiểm tra tính nhất quán.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var issue in Invoice.ValidationIssues)
+                            {
+                                <div class="list-group-item px-0">
+                                    <div class="d-flex justify-content-between gap-2 mb-1">
+                                        <span class="badge @GetSeverityBadgeClass(issue.Severity)">
+                                            @issue.Severity
+                                        </span>
+
+                                        @if (issue.IsResolved)
+                                        {
+                                            <span class="badge text-bg-success">Resolved</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge text-bg-warning">Open</span>
+                                        }
+                                    </div>
+
+                                    <div class="fw-semibold">@issue.RuleCode - @issue.FieldName</div>
+                                    <div class="text-secondary small">@issue.Message</div>
+                                    <div class="text-secondary small mt-1">
+                                        @issue.DetectedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">Lịch sử trích xuất</h2>
+
+                    @if (Invoice.ExtractionResults.Count == 0)
+                    {
+                        <div class="alert alert-secondary mb-0">
+                            Chưa có lịch sử trích xuất.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var result in Invoice.ExtractionResults)
+                            {
+                                <div class="list-group-item px-0">
+                                    <div class="d-flex justify-content-between gap-2 mb-1">
+                                        <span class="fw-semibold">@result.EngineName</span>
+
+                                        @if (result.IsSuccessful)
+                                        {
+                                            <span class="badge text-bg-success">Success</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge text-bg-danger">Failed</span>
+                                        }
+                                    </div>
+
+                                    <div class="text-secondary small">
+                                        Attempt: @result.AttemptNo
+                                    </div>
+
+                                    <div class="text-secondary small">
+                                        Confidence: @result.ConfidenceScore.ToString("P0")
+                                    </div>
+
+                                    <div class="text-secondary small">
+                                        @result.ExtractedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
