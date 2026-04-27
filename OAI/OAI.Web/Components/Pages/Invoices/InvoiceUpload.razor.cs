@@ -29,19 +29,19 @@ public partial class InvoiceUpload
 
     private IBrowserFile? SelectedFile { get; set; }
 
-    protected string? SelectedFileName { get; private set; }
+    private string? SelectedFileName { get; set; }
 
-    protected string SelectedFileSizeText { get; private set; } = string.Empty;
+    private string SelectedFileSizeText { get; set; } = string.Empty;
 
-    protected bool IsUploading { get; private set; }
+    private bool IsUploading { get; set; }
 
-    protected bool CanUpload => SelectedFile is not null && string.IsNullOrWhiteSpace(ErrorMessage);
+    private bool CanUpload => SelectedFile is not null && string.IsNullOrWhiteSpace(ErrorMessage);
 
-    protected string? ErrorMessage { get; private set; }
+    private string? ErrorMessage { get; set; }
 
-    protected string? SuccessMessage { get; private set; }
+    private string? SuccessMessage { get; set; }
 
-    protected InvoiceUploadResultDto? UploadResult { get; private set; }
+    private InvoiceUploadResultDto? UploadResult { get; set; }
 
     protected Task HandleFileSelectedAsync(InputFileChangeEventArgs e)
     {
@@ -83,7 +83,7 @@ public partial class InvoiceUpload
         return Task.CompletedTask;
     }
 
-    protected async Task UploadAsync()
+    private async Task UploadAsync()
     {
         if (SelectedFile is null)
         {
@@ -135,7 +135,7 @@ public partial class InvoiceUpload
         }
     }
 
-    protected void ResetForm()
+    private void ResetForm()
     {
         SelectedFile = null;
         SelectedFileName = null;
@@ -144,7 +144,7 @@ public partial class InvoiceUpload
         ResetMessages();
     }
 
-    protected void GoToInvoiceDetail()
+    private void GoToInvoiceDetail()
     {
         if (UploadResult is null || UploadResult.InvoiceId == Guid.Empty)
             return;
@@ -152,7 +152,7 @@ public partial class InvoiceUpload
         NavigationManager.NavigateTo($"/invoices/{UploadResult.InvoiceId}");
     }
 
-    protected static string GetStatusBadgeClass(string status)
+    private static string GetStatusBadgeClass(string status)
     {
         return status.ToLowerInvariant() switch
         {

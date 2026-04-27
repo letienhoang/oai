@@ -18,47 +18,47 @@ public partial class InvoiceValidation
     [Inject]
     private ILogger<InvoiceValidation> Logger { get; set; } = default!;
 
-    protected List<ValidationIssueListItemDto> Issues { get; private set; } = new();
+    private List<ValidationIssueListItemDto> Issues { get; set; } = new();
 
-    protected string? Keyword { get; set; }
+    private string? Keyword { get; set; }
 
-    protected string? Severity { get; set; }
+    private string? Severity { get; set; }
 
-    protected string? ResolvedFilter { get; set; }
+    private string? ResolvedFilter { get; set; }
 
-    protected int PageNumber { get; private set; } = 1;
+    private int PageNumber { get; set; } = 1;
 
-    protected int PageSize { get; private set; } = DefaultPageSize;
+    private int PageSize { get; set; } = DefaultPageSize;
 
-    protected int TotalItems { get; private set; }
+    private int TotalItems { get; set; }
 
-    protected int TotalPages { get; private set; }
+    private int TotalPages { get; set; }
 
-    protected bool IsLoading { get; private set; }
+    private bool IsLoading { get; set; }
 
-    protected string? ErrorMessage { get; private set; }
+    private string? ErrorMessage { get; set; }
 
-    protected bool CanGoPrevious => PageNumber > 1;
+    private bool CanGoPrevious => PageNumber > 1;
 
-    protected bool CanGoNext => PageNumber < TotalPages;
+    private bool CanGoNext => PageNumber < TotalPages;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadIssuesAsync();
     }
 
-    protected async Task ReloadAsync()
+    private async Task ReloadAsync()
     {
         await LoadIssuesAsync();
     }
 
-    protected async Task SearchAsync()
+    private async Task SearchAsync()
     {
         PageNumber = 1;
         await LoadIssuesAsync();
     }
 
-    protected async Task ClearSearchAsync()
+    private async Task ClearSearchAsync()
     {
         Keyword = null;
         Severity = null;
@@ -67,7 +67,7 @@ public partial class InvoiceValidation
         await LoadIssuesAsync();
     }
 
-    protected async Task PreviousPageAsync()
+    private async Task PreviousPageAsync()
     {
         if (!CanGoPrevious)
             return;
@@ -76,7 +76,7 @@ public partial class InvoiceValidation
         await LoadIssuesAsync();
     }
 
-    protected async Task NextPageAsync()
+    private async Task NextPageAsync()
     {
         if (!CanGoNext)
             return;
@@ -85,7 +85,7 @@ public partial class InvoiceValidation
         await LoadIssuesAsync();
     }
 
-    protected async Task HandleSearchKeyDown(KeyboardEventArgs e)
+    private async Task HandleSearchKeyDown(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
@@ -93,17 +93,17 @@ public partial class InvoiceValidation
         }
     }
 
-    protected void GoToInvoiceDetail(Guid invoiceId)
+    private void GoToInvoiceDetail(Guid invoiceId)
     {
         NavigationManager.NavigateTo($"/invoices/{invoiceId}");
     }
 
-    protected static string DisplayOrFallback(string? value)
+    private static string DisplayOrFallback(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? "Chưa có" : value;
     }
 
-    protected static string GetSeverityBadgeClass(string severity)
+    private static string GetSeverityBadgeClass(string severity)
     {
         return severity.ToLowerInvariant() switch
         {

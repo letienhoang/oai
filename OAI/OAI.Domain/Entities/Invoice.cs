@@ -263,6 +263,46 @@ public sealed class Invoice : Entity
         Status = InvoiceStatus.Exported;
         Touch();
     }
+    
+    public void UpdateHeader(
+        Guid vendorId,
+        string invoiceNumber,
+        DateOnly issueDate,
+        DateOnly? dueDate,
+        string currency)
+    {
+        if (vendorId == Guid.Empty)
+            throw new ArgumentException("VendorId cannot be empty.", nameof(vendorId));
+
+        if (string.IsNullOrWhiteSpace(invoiceNumber))
+            throw new ArgumentException("Invoice number is required.", nameof(invoiceNumber));
+
+        if (string.IsNullOrWhiteSpace(currency))
+            throw new ArgumentException("Currency is required.", nameof(currency));
+
+        VendorId = vendorId;
+        InvoiceNumber = invoiceNumber.Trim();
+        IssueDate = issueDate;
+        DueDate = dueDate;
+        Currency = currency.Trim().ToUpperInvariant();
+
+        Touch();
+    }
+    
+    public void ReplaceLineItems(IEnumerable<InvoiceLineItem> lineItems)
+    {
+        _lineItems.Clear();
+
+        foreach (var item in lineItems)
+        {
+            if (item.InvoiceId != Id)
+                throw new DomainException("Line item does not belong to this invoice.");
+
+            _lineItems.Add(item);
+        }
+
+        Touch();
+    }
 
     private void EnsureCurrencyMatch(Money money)
     {

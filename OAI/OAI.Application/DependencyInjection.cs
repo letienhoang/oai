@@ -15,6 +15,7 @@ public static class DependencyInjection
         services.AddScoped<IGetInvoiceListUseCase, GetInvoiceListUseCase>();
         services.AddScoped<IGetInvoiceDetailUseCase, GetInvoiceDetailUseCase>();
         services.AddScoped<IGetValidationIssueListUseCase, GetValidationIssueListUseCase>();
+        services.AddScoped<IUpdateInvoiceUseCase, UpdateInvoiceUseCase>();
 
         services.AddScoped<IInvoiceProcessingService, InvoiceProcessingService>();
 

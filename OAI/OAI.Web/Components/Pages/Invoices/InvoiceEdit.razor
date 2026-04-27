@@ -1,0 +1,239 @@
+﻿@page "/invoices/{InvoiceId:guid}/edit"
+@rendermode InteractiveServer
+
+<PageTitle>Chỉnh sửa hóa đơn - OAI</PageTitle>
+
+<section class="mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">Chỉnh sửa dữ liệu hóa đơn</h1>
+            <p class="text-secondary mb-0">
+                Sửa lại dữ liệu được trích xuất từ OCR/AI, sau đó hệ thống sẽ kiểm tra tính nhất quán lại.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="GoBack" disabled="@IsSaving">
+                Quay lại
+            </button>
+        </div>
+    </div>
+</section>
+
+@if (IsLoading)
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <div class="spinner-border text-primary" role="status"></div>
+            <div class="text-secondary mt-3">Đang tải dữ liệu hóa đơn...</div>
+        </div>
+    </section>
+}
+else if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5">
+            <div class="alert alert-danger mb-0">
+                @ErrorMessage
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <EditForm Model="EditModel" OnValidSubmit="SaveAsync">
+        <DataAnnotationsValidator />
+
+        <div class="row g-4">
+            <div class="col-12 col-xl-8">
+                <section class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold mb-3">Thông tin chung</h2>
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Số hóa đơn</label>
+                                <InputText class="form-control" @bind-Value="EditModel.InvoiceNumber" />
+                                <ValidationMessage For="@(() => EditModel.InvoiceNumber)" />
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">VendorId</label>
+                                <InputText class="form-control" @bind-Value="EditModel.VendorIdText" />
+                                <ValidationMessage For="@(() => EditModel.VendorIdText)" />
+                                <div class="form-text">
+                                    Giai đoạn hiện tại dùng VendorId. Sau này có thể thay bằng dropdown Vendor.
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Ngày phát hành</label>
+                                <InputDate class="form-control" @bind-Value="EditModel.IssueDate" />
+                                <ValidationMessage For="@(() => EditModel.IssueDate)" />
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Ngày đến hạn</label>
+                                <InputDate class="form-control" @bind-Value="EditModel.DueDate" />
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label class="form-label">Currency</label>
+                                <InputSelect class="form-select" @bind-Value="EditModel.Currency">
+                                    <option value="VND">VND</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                </InputSelect>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label class="form-label">Subtotal</label>
+                                <InputNumber class="form-control" @bind-Value="EditModel.DeclaredSubtotal" />
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label class="form-label">Tax</label>
+                                <InputNumber class="form-control" @bind-Value="EditModel.DeclaredTaxAmount" />
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label class="form-label">Total</label>
+                                <InputNumber class="form-control" @bind-Value="EditModel.DeclaredTotalAmount" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2 class="h5 fw-bold mb-0">Dòng hàng</h2>
+
+                            <button type="button" class="btn btn-sm btn-outline-primary" @onclick="AddLineItem">
+                                Thêm dòng
+                            </button>
+                        </div>
+
+                        @if (EditModel.LineItems.Count == 0)
+                        {
+                            <div class="alert alert-warning mb-0">
+                                Hóa đơn cần có ít nhất một dòng hàng.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 80px;">#</th>
+                                        <th>Mô tả</th>
+                                        <th style="width: 130px;" class="text-end">Số lượng</th>
+                                        <th style="width: 150px;" class="text-end">Đơn giá</th>
+                                        <th style="width: 120px;" class="text-end">Thuế %</th>
+                                        <th style="width: 90px;" class="text-end"></th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    @for (var i = 0; i < EditModel.LineItems.Count; i++)
+                                    {
+                                        var index = i;
+                                        var item = EditModel.LineItems[index];
+
+                                        <tr>
+                                            <td>
+                                                <InputNumber class="form-control" @bind-Value="item.LineNo" />
+                                            </td>
+
+                                            <td>
+                                                <InputText class="form-control" @bind-Value="item.Description" />
+                                            </td>
+
+                                            <td>
+                                                <InputNumber class="form-control text-end" @bind-Value="item.Quantity" />
+                                            </td>
+
+                                            <td>
+                                                <InputNumber class="form-control text-end" @bind-Value="item.UnitPrice" />
+                                            </td>
+
+                                            <td>
+                                                <InputNumber class="form-control text-end" @bind-Value="item.TaxRate" />
+                                            </td>
+
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        @onclick="() => RemoveLineItem(index)"
+                                                        disabled="@(EditModel.LineItems.Count <= 1)">
+                                                    Xóa
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-12 col-xl-4">
+                <section class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold mb-3">Tác vụ</h2>
+
+                        @if (!string.IsNullOrWhiteSpace(SuccessMessage))
+                        {
+                            <div class="alert alert-success">
+                                @SuccessMessage
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(FormErrorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @FormErrorMessage
+                            </div>
+                        }
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" disabled="@IsSaving">
+                                @if (IsSaving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    <span>Đang lưu...</span>
+                                }
+                                else
+                                {
+                                    <span>Lưu và kiểm tra lại</span>
+                                }
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    @onclick="GoBack"
+                                    disabled="@IsSaving">
+                                Hủy
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold mb-3">Ghi chú</h2>
+
+                        <ul class="small text-secondary mb-0 lh-lg">
+                            <li>Sau khi lưu, hệ thống sẽ chạy lại consistency validation.</li>
+                            <li>Các lỗi cũ sẽ được thay bằng kết quả kiểm tra mới.</li>
+                            <li>Dữ liệu OCR ban đầu không bị sửa, chỉ dữ liệu hóa đơn đã chuẩn hóa được cập nhật.</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </EditForm>
+}

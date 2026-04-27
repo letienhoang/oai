@@ -18,45 +18,45 @@ public partial class InvoiceList
     [Inject]
     private ILogger<InvoiceList> Logger { get; set; } = default!;
 
-    protected List<InvoiceListItemDto> Invoices { get; private set; } = new();
+    private List<InvoiceListItemDto> Invoices { get; set; } = new();
 
-    protected string? Keyword { get; set; }
+    private string? Keyword { get; set; }
 
-    protected int PageNumber { get; private set; } = 1;
+    private int PageNumber { get; set; } = 1;
 
-    protected int PageSize { get; private set; } = DefaultPageSize;
+    private int PageSize { get; set; } = DefaultPageSize;
 
-    protected int TotalItems { get; private set; }
+    private int TotalItems { get; set; }
 
-    protected int TotalPages { get; private set; }
+    private int TotalPages { get; set; }
 
-    protected bool IsLoading { get; private set; }
+    private bool IsLoading { get; set; }
 
-    protected string? ErrorMessage { get; private set; }
+    private string? ErrorMessage { get; set; }
 
-    protected bool CanGoPrevious => PageNumber > 1;
+    private bool CanGoPrevious => PageNumber > 1;
 
-    protected bool CanGoNext => PageNumber < TotalPages;
+    private bool CanGoNext => PageNumber < TotalPages;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadInvoicesAsync();
     }
 
-    protected async Task SearchAsync()
+    private async Task SearchAsync()
     {
         PageNumber = 1;
         await LoadInvoicesAsync();
     }
 
-    protected async Task ClearSearchAsync()
+    private async Task ClearSearchAsync()
     {
         Keyword = null;
         PageNumber = 1;
         await LoadInvoicesAsync();
     }
 
-    protected async Task PreviousPageAsync()
+    private async Task PreviousPageAsync()
     {
         if (!CanGoPrevious)
             return;
@@ -65,7 +65,7 @@ public partial class InvoiceList
         await LoadInvoicesAsync();
     }
 
-    protected async Task NextPageAsync()
+    private async Task NextPageAsync()
     {
         if (!CanGoNext)
             return;
@@ -74,7 +74,7 @@ public partial class InvoiceList
         await LoadInvoicesAsync();
     }
 
-    protected async Task HandleSearchKeyDown(KeyboardEventArgs e)
+    private async Task HandleSearchKeyDown(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
@@ -82,17 +82,17 @@ public partial class InvoiceList
         }
     }
 
-    protected void GoToUpload()
+    private void GoToUpload()
     {
         NavigationManager.NavigateTo("/invoices/upload");
     }
 
-    protected void GoToDetail(Guid invoiceId)
+    private void GoToDetail(Guid invoiceId)
     {
         NavigationManager.NavigateTo($"/invoices/{invoiceId}");
     }
 
-    protected static string GetStatusBadgeClass(string status)
+    private static string GetStatusBadgeClass(string status)
     {
         return status.ToLowerInvariant() switch
         {
@@ -105,7 +105,7 @@ public partial class InvoiceList
         };
     }
 
-    protected static string FormatMoney(decimal amount, string currency)
+    private static string FormatMoney(decimal amount, string currency)
     {
         return $"{amount:N0} {currency}";
     }

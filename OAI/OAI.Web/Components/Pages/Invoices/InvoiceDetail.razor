@@ -19,7 +19,7 @@
 
             @if (Invoice is not null)
             {
-                <button class="btn btn-primary" disabled>
+                <button class="btn btn-primary" @onclick="GoToEdit">
                     Chỉnh sửa
                 </button>
             }

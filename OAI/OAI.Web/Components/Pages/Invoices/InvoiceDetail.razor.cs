@@ -18,33 +18,33 @@ public partial class InvoiceDetail
     [Inject]
     private ILogger<InvoiceDetail> Logger { get; set; } = default!;
 
-    protected InvoiceDetailDto? Invoice { get; private set; }
+    private InvoiceDetailDto? Invoice { get; set; }
 
-    protected bool IsLoading { get; private set; }
+    private bool IsLoading { get; set; }
 
-    protected string? ErrorMessage { get; private set; }
+    private string? ErrorMessage { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
         await LoadInvoiceDetailAsync();
     }
 
-    protected void GoBack()
+    private void GoBack()
     {
         NavigationManager.NavigateTo("/invoices");
     }
 
-    protected static string FormatMoney(decimal amount, string currency)
+    private static string FormatMoney(decimal amount, string currency)
     {
         return $"{amount:N0} {currency}";
     }
 
-    protected static string DisplayOrFallback(string? value)
+    private static string DisplayOrFallback(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? "Chưa có" : value;
     }
 
-    protected static string GetStatusBadgeClass(string status)
+    private static string GetStatusBadgeClass(string status)
     {
         return status.ToLowerInvariant() switch
         {
@@ -57,7 +57,7 @@ public partial class InvoiceDetail
         };
     }
 
-    protected static string GetSeverityBadgeClass(string severity)
+    private static string GetSeverityBadgeClass(string severity)
     {
         return severity.ToLowerInvariant() switch
         {
@@ -66,6 +66,11 @@ public partial class InvoiceDetail
             "error" => "text-bg-danger",
             _ => "text-bg-secondary"
         };
+    }
+
+    private void GoToEdit()
+    {
+        NavigationManager.NavigateTo($"/invoices/{InvoiceId}/edit");
     }
 
     private async Task LoadInvoiceDetailAsync()

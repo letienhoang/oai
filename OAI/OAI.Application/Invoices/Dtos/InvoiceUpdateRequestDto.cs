@@ -4,6 +4,7 @@ public sealed record InvoiceUpdateRequestDto
 {
     public Guid InvoiceId { get; init; }
     public Guid VendorId { get; init; }
+    
     public string InvoiceNumber { get; init; } = string.Empty;
     public DateOnly IssueDate { get; init; }
     public DateOnly? DueDate { get; init; }
