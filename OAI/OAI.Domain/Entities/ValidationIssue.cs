@@ -9,6 +9,7 @@ namespace OAI.Domain.Entities;
 public sealed class ValidationIssue : Entity
 {
     public Guid InvoiceId { get; private set; }
+    public Invoice? Invoice { get; private set; }
     public string FieldName { get; private set; }
     public string RuleCode { get; private set; }
     public string Message { get; private set; }

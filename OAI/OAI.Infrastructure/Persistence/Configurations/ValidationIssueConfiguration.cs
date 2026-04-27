@@ -34,5 +34,10 @@ public sealed class ValidationIssueConfiguration : IEntityTypeConfiguration<Vali
 
         builder.Property(x => x.IsResolved)
             .IsRequired();
+        
+        builder.HasOne(x => x.Invoice)
+            .WithMany(x => x.ValidationIssues)
+            .HasForeignKey(x => x.InvoiceId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

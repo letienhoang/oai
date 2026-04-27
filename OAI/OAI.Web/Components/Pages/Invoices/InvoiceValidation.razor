@@ -1,19 +1,186 @@
 ﻿@page "/invoices/validation"
+@rendermode InteractiveServer
 
 <PageTitle>Kiểm tra dữ liệu - OAI</PageTitle>
 
 <section class="mb-4">
-    <h1 class="fw-bold mb-1">Kiểm tra tính nhất quán</h1>
-    <p class="text-secondary mb-0">
-        Theo dõi các hóa đơn có lỗi tổng tiền, thuế hoặc dòng hàng.
-    </p>
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">Kiểm tra tính nhất quán</h1>
+            <p class="text-secondary mb-0">
+                Theo dõi các lỗi phát hiện trong quá trình kiểm tra dữ liệu hóa đơn.
+            </p>
+        </div>
+
+        <div class="d-flex align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="ReloadAsync" disabled="@IsLoading">
+                Tải lại
+            </button>
+        </div>
+    </div>
 </section>
 
 <section class="card border-0 shadow-sm rounded-4">
-    <div class="card-body">
-        <h2 class="h5 fw-bold mb-3">Validation issues</h2>
-        <p class="text-secondary mb-0">
-            Trang này sẽ hiển thị danh sách lỗi từ các hóa đơn cần kiểm tra.
-        </p>
+    <div class="card-body p-4">
+        <div class="row g-2 mb-4">
+            <div class="col-12 col-lg">
+                <input class="form-control"
+                       placeholder="Tìm theo số hóa đơn, nhà cung cấp, rule hoặc nội dung lỗi..."
+                       @bind="Keyword"
+                       @bind:event="oninput"
+                       @onkeydown="HandleSearchKeyDown" />
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-2">
+                <select class="form-select" @bind="Severity">
+                    <option value="">Tất cả mức độ</option>
+                    <option value="Info">Info</option>
+                    <option value="Warning">Warning</option>
+                    <option value="Error">Error</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-2">
+                <select class="form-select" @bind="ResolvedFilter">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="open">Chưa xử lý</option>
+                    <option value="resolved">Đã xử lý</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-primary w-100" @onclick="SearchAsync" disabled="@IsLoading">
+                    Tìm kiếm
+                </button>
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-outline-secondary w-100" @onclick="ClearSearchAsync" disabled="@IsLoading">
+                    Xóa lọc
+                </button>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                @ErrorMessage
+            </div>
+        }
+
+        @if (IsLoading)
+        {
+            <div class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <span class="ms-3 text-secondary">Đang tải danh sách lỗi...</span>
+            </div>
+        }
+        else if (Issues.Count == 0)
+        {
+            <div class="bg-light rounded-4 p-5 text-center">
+                <div class="fs-1 mb-3">✅</div>
+                <h2 class="h5 fw-bold">Không có lỗi kiểm tra</h2>
+                <p class="text-secondary mb-0">
+                    Chưa có validation issue nào phù hợp với điều kiện lọc.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>Hóa đơn</th>
+                        <th>Nhà cung cấp</th>
+                        <th>Rule</th>
+                        <th>Nội dung lỗi</th>
+                        <th>Mức độ</th>
+                        <th>Trạng thái</th>
+                        <th>Thời gian</th>
+                        <th class="text-end">Thao tác</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach (var issue in Issues)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">
+                                    @DisplayOrFallback(issue.InvoiceNumber)
+                                </div>
+                                <div class="small text-secondary">
+                                    <code>@issue.InvoiceId</code>
+                                </div>
+                            </td>
+
+                            <td>@DisplayOrFallback(issue.VendorName)</td>
+
+                            <td>
+                                <div class="fw-semibold">@issue.RuleCode</div>
+                                <div class="small text-secondary">@issue.FieldName</div>
+                            </td>
+
+                            <td>
+                                <div class="text-break">@issue.Message</div>
+                            </td>
+
+                            <td>
+                                <span class="badge @GetSeverityBadgeClass(issue.Severity)">
+                                    @issue.Severity
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (issue.IsResolved)
+                                {
+                                    <span class="badge text-bg-success">Đã xử lý</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-warning">Chưa xử lý</span>
+                                }
+                            </td>
+
+                            <td>
+                                <span class="small">
+                                    @issue.DetectedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                </span>
+                            </td>
+
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary"
+                                        @onclick="() => GoToInvoiceDetail(issue.InvoiceId)">
+                                    Xem hóa đơn
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4">
+                <div class="text-secondary small">
+                    Hiển thị trang <strong>@PageNumber</strong>/<strong>@TotalPages</strong>,
+                    tổng <strong>@TotalItems</strong> lỗi.
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoPrevious || IsLoading)"
+                            @onclick="PreviousPageAsync">
+                        Trước
+                    </button>
+
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoNext || IsLoading)"
+                            @onclick="NextPageAsync">
+                        Sau
+                    </button>
+                </div>
+            </div>
+        }
     </div>
 </section>

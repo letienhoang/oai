@@ -68,7 +68,7 @@ public sealed class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(x => x.ValidationIssues)
-            .WithOne()
+            .WithOne(x => x.Invoice)
             .HasForeignKey(x => x.InvoiceId)
             .OnDelete(DeleteBehavior.Cascade);
 
