@@ -87,6 +87,20 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
 
             invoice.AddLineItem(lineItem);
         }
+        
+        if (!string.IsNullOrWhiteSpace(request.ExtractionEngineName))
+        {
+            var extractionResult = new InvoiceExtractionResult(
+                invoice.Id,
+                request.ExtractionEngineName,
+                request.ExtractionConfidenceScore ?? 0m,
+                attemptNo: 1,
+                isSuccessful: true,
+                rawText: request.ExtractionRawText,
+                structuredJson: request.ExtractionStructuredJson);
+
+            invoice.AddExtractionResult(extractionResult);
+        }
 
         var issues = invoice.ValidateConsistency().ToList();
         foreach (var issue in issues)

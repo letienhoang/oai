@@ -420,3 +420,6 @@ FodyWeavers.xsd
 # Rider
 .idea/
 *.sln.iml
+
+# Dotnet Watcher temp files
+.dotnet-home/

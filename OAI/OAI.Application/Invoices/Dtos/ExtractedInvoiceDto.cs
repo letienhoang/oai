@@ -17,6 +17,7 @@ public sealed record ExtractedInvoiceDto
     public decimal DeclaredTotalAmount { get; init; }
 
     public decimal ConfidenceScore { get; init; }
+    public string EngineName { get; init; } = "Tesseract";
     public string? RawText { get; init; }
 
     public List<InvoiceLineItemRequestDto> LineItems { get; init; } = new();

@@ -3,6 +3,7 @@ using OAI.Application;
 using OAI.Infrastructure;
 using OAI.Infrastructure.Persistence;
 using OAI.Web.Components;
+using OAI.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<UserTimeZoneService>();
 
 var app = builder.Build();
 

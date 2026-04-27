@@ -22,44 +22,51 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
         _logger = logger;
     }
 
-    public async Task<DashboardSummaryDto> ExecuteAsync(
-        CancellationToken cancellationToken = default)
+    public async Task<DashboardSummaryDto> ExecuteAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting dashboard summary.");
 
-        var totalInvoicesTask = _invoiceRepository.CountAsync(cancellationToken: cancellationToken);
+        var totalInvoices = await _invoiceRepository.CountAsync(
+            cancellationToken: cancellationToken);
 
-        var draftTask = _invoiceRepository.CountByStatusAsync(InvoiceStatus.Draft, cancellationToken);
-        var pendingReviewTask = _invoiceRepository.CountByStatusAsync(InvoiceStatus.PendingReview, cancellationToken);
-        var approvedTask = _invoiceRepository.CountByStatusAsync(InvoiceStatus.Approved, cancellationToken);
-        var rejectedTask = _invoiceRepository.CountByStatusAsync(InvoiceStatus.Rejected, cancellationToken);
-        var exportedTask = _invoiceRepository.CountByStatusAsync(InvoiceStatus.Exported, cancellationToken);
+        var draftInvoices = await _invoiceRepository.CountByStatusAsync(
+            InvoiceStatus.Draft,
+            cancellationToken);
 
-        var invoicesWithIssuesTask = _invoiceRepository.CountWithValidationIssuesAsync(cancellationToken);
+        var pendingReviewInvoices = await _invoiceRepository.CountByStatusAsync(
+            InvoiceStatus.PendingReview,
+            cancellationToken);
 
-        var openIssuesTask = _validationIssueRepository.CountOpenAsync(cancellationToken);
-        var resolvedIssuesTask = _validationIssueRepository.CountResolvedAsync(cancellationToken);
+        var approvedInvoices = await _invoiceRepository.CountByStatusAsync(
+            InvoiceStatus.Approved,
+            cancellationToken);
 
-        var recentInvoicesTask = _invoiceRepository.GetRecentAsync(5, cancellationToken);
-        var recentIssuesTask = _validationIssueRepository.GetRecentAsync(5, cancellationToken);
+        var rejectedInvoices = await _invoiceRepository.CountByStatusAsync(
+            InvoiceStatus.Rejected,
+            cancellationToken);
 
-        await Task.WhenAll(
-            totalInvoicesTask,
-            draftTask,
-            pendingReviewTask,
-            approvedTask,
-            rejectedTask,
-            exportedTask,
-            invoicesWithIssuesTask,
-            openIssuesTask,
-            resolvedIssuesTask,
-            recentInvoicesTask,
-            recentIssuesTask);
+        var exportedInvoices = await _invoiceRepository.CountByStatusAsync(
+            InvoiceStatus.Exported,
+            cancellationToken);
 
-        var openIssues = await openIssuesTask;
-        var resolvedIssues = await resolvedIssuesTask;
+        var invoicesWithIssues = await _invoiceRepository.CountWithValidationIssuesAsync(
+            cancellationToken);
 
-        var recentInvoices = (await recentInvoicesTask)
+        var openIssues = await _validationIssueRepository.CountOpenAsync(
+            cancellationToken);
+
+        var resolvedIssues = await _validationIssueRepository.CountResolvedAsync(
+            cancellationToken);
+
+        var recentInvoicesRaw = await _invoiceRepository.GetRecentAsync(
+            5,
+            cancellationToken);
+
+        var recentIssuesRaw = await _validationIssueRepository.GetRecentAsync(
+            5,
+            cancellationToken);
+
+        var recentInvoices = recentInvoicesRaw
             .Select(invoice => new RecentInvoiceDto
             {
                 InvoiceId = invoice.Id,
@@ -72,7 +79,7 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
             })
             .ToList();
 
-        var recentIssues = (await recentIssuesTask)
+        var recentIssues = recentIssuesRaw
             .Select(issue => new RecentValidationIssueDto
             {
                 ValidationIssueId = issue.Id,
@@ -89,13 +96,13 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
 
         return new DashboardSummaryDto
         {
-            TotalInvoices = await totalInvoicesTask,
-            DraftInvoices = await draftTask,
-            PendingReviewInvoices = await pendingReviewTask,
-            ApprovedInvoices = await approvedTask,
-            RejectedInvoices = await rejectedTask,
-            ExportedInvoices = await exportedTask,
-            InvoicesWithValidationIssues = await invoicesWithIssuesTask,
+            TotalInvoices = totalInvoices,
+            DraftInvoices = draftInvoices,
+            PendingReviewInvoices = pendingReviewInvoices,
+            ApprovedInvoices = approvedInvoices,
+            RejectedInvoices = rejectedInvoices,
+            ExportedInvoices = exportedInvoices,
+            InvoicesWithValidationIssues = invoicesWithIssues,
             OpenValidationIssues = openIssues,
             ResolvedValidationIssues = resolvedIssues,
             TotalValidationIssues = openIssues + resolvedIssues,

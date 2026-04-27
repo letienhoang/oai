@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using OAI.Application.Abstractions.UseCases.Dashboard;
 using OAI.Application.Dashboard.Dtos;
+using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages;
 
@@ -15,7 +16,12 @@ public partial class Dashboard
     [Inject]
     private ILogger<Dashboard> Logger { get; set; } = default!;
 
+    [Inject]
+    private UserTimeZoneService UserTimeZoneService { get; set; } = default!;
+
     private DashboardSummaryDto? Summary { get; set; }
+
+    private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
 
     private bool IsLoading { get; set; }
 
@@ -24,6 +30,15 @@ public partial class Dashboard
     protected override async Task OnInitializedAsync()
     {
         await LoadDashboardAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        UserTimeZone = await UserTimeZoneService.GetUserTimeZoneAsync();
+        StateHasChanged();
     }
 
     private async Task ReloadAsync()
@@ -96,6 +111,12 @@ public partial class Dashboard
     private static string DisplayOrFallback(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? "Chưa có" : value;
+    }
+
+    private string FormatDateTime(DateTimeOffset value)
+    {
+        var localTime = TimeZoneInfo.ConvertTime(value, UserTimeZone);
+        return localTime.ToString("dd/MM/yyyy HH:mm");
     }
 
     private static string GetStatusBadgeClass(string status)

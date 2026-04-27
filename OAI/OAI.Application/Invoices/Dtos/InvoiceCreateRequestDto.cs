@@ -14,6 +14,11 @@ public sealed record InvoiceCreateRequestDto
 
     public string? SourceFileName { get; init; }
     public string? SourceFilePath { get; init; }
+    
+    public decimal? ExtractionConfidenceScore { get; init; }
+    public string? ExtractionEngineName { get; init; }
+    public string? ExtractionRawText { get; init; }
+    public string? ExtractionStructuredJson { get; init; }
 
     public List<InvoiceLineItemRequestDto> LineItems { get; init; } = new();
 }

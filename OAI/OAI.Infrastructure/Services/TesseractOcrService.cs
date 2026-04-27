@@ -45,16 +45,35 @@ public sealed class TesseractOcrService : IOcrService
             };
         }
 
-        var imageBytes = await ReadAllBytesAsync(content, cancellationToken);
-
         try
         {
+            _logger.LogInformation("Starting OCR for file {FileName}", fileName);
+
+            var imageBytes = await ReadAllBytesAsync(content, cancellationToken);
+            var tessDataPath = GetAbsolutePath(_options.TessDataPath);
+
+            if (!Directory.Exists(tessDataPath))
+            {
+                var message = $"Tessdata folder not found: {tessDataPath}";
+                _logger.LogError(message);
+
+                return new OcrResultDto
+                {
+                    IsSuccess = false,
+                    SourceFileName = fileName,
+                    ErrorMessage = message
+                };
+            }
+
             return await Task.Run(() =>
             {
-                var tessDataPath = GetAbsolutePath(_options.TessDataPath);
-                if (!Directory.Exists(tessDataPath))
-                    throw new DirectoryNotFoundException($"Tessdata folder not found: {tessDataPath}");
-
+                _logger.LogInformation(
+                    "Initializing Tesseract. TessDataPath: {TessDataPath}, Languages: {Languages}, Files: {Files}",
+                    tessDataPath,
+                    _options.Languages,
+                    Directory.Exists(tessDataPath)
+                        ? string.Join(", ", Directory.GetFiles(tessDataPath).Select(Path.GetFileName))
+                        : "Directory not found");
                 using var engine = new TesseractEngine(
                     tessDataPath,
                     _options.Languages,
@@ -71,11 +90,11 @@ public sealed class TesseractOcrService : IOcrService
                     .ToList();
 
                 _logger.LogInformation(
-                    "OCR completed for file {FileName}. Confidence: {Confidence}, TextLength: {TextLength}",
+                    "OCR completed. FileName: {FileName}, Confidence: {Confidence}, TextLength: {TextLength}",
                     fileName,
                     confidence,
                     text.Length);
-            
+
                 return new OcrResultDto
                 {
                     IsSuccess = true,
@@ -97,7 +116,6 @@ public sealed class TesseractOcrService : IOcrService
                 ErrorMessage = ex.Message
             };
         }
-        
     }
 
     private static async Task<byte[]> ReadAllBytesAsync(Stream stream, CancellationToken cancellationToken)

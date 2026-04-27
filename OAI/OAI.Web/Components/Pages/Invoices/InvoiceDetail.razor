@@ -243,7 +243,7 @@ else
                                     <div class="fw-semibold">@issue.RuleCode - @issue.FieldName</div>
                                     <div class="text-secondary small">@issue.Message</div>
                                     <div class="text-secondary small mt-1">
-                                        @issue.DetectedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                        @FormatDateTime(issue.DetectedAt)
                                     </div>
                                 </div>
                             }
@@ -290,7 +290,7 @@ else
                                     </div>
 
                                     <div class="text-secondary small">
-                                        @result.ExtractedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                        @FormatDateTime(result.ExtractedAt)
                                     </div>
                                 </div>
                             }

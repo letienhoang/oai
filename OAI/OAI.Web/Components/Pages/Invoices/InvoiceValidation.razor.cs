@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages.Invoices;
 
@@ -17,8 +18,13 @@ public partial class InvoiceValidation
 
     [Inject]
     private ILogger<InvoiceValidation> Logger { get; set; } = default!;
+    
+    [Inject]
+    private UserTimeZoneService UserTimeZoneService { get; set; } = default!;
 
     private List<ValidationIssueListItemDto> Issues { get; set; } = new();
+    
+    private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
 
     private string? Keyword { get; set; }
 
@@ -45,6 +51,15 @@ public partial class InvoiceValidation
     protected override async Task OnInitializedAsync()
     {
         await LoadIssuesAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        UserTimeZone = await UserTimeZoneService.GetUserTimeZoneAsync();
+        StateHasChanged();
     }
 
     private async Task ReloadAsync()
@@ -163,5 +178,11 @@ public partial class InvoiceValidation
         {
             IsLoading = false;
         }
+    }
+    
+    private string FormatDateTime(DateTimeOffset value)
+    {
+        var localTime = TimeZoneInfo.ConvertTime(value, UserTimeZone);
+        return localTime.ToString("dd/MM/yyyy HH:mm");
     }
 }

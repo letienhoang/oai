@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages.Invoices;
 
@@ -17,8 +18,13 @@ public partial class InvoiceDetail
 
     [Inject]
     private ILogger<InvoiceDetail> Logger { get; set; } = default!;
+    
+    [Inject]
+    private UserTimeZoneService UserTimeZoneService { get; set; } = default!;
 
     private InvoiceDetailDto? Invoice { get; set; }
+
+    private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
 
     private bool IsLoading { get; set; }
 
@@ -27,6 +33,15 @@ public partial class InvoiceDetail
     protected override async Task OnParametersSetAsync()
     {
         await LoadInvoiceDetailAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        UserTimeZone = await UserTimeZoneService.GetUserTimeZoneAsync();
+        StateHasChanged();
     }
 
     private void GoBack()
@@ -42,6 +57,12 @@ public partial class InvoiceDetail
     private static string DisplayOrFallback(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? "Chưa có" : value;
+    }
+
+    private string FormatDateTime(DateTimeOffset value)
+    {
+        var localTime = TimeZoneInfo.ConvertTime(value, UserTimeZone);
+        return localTime.ToString("dd/MM/yyyy HH:mm");
     }
 
     private static string GetStatusBadgeClass(string status)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Abstractions.UseCases.Invoices;
@@ -82,6 +83,12 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
             extracted.ConfidenceScore);
 
         var vendor = await GetOrCreateVendorAsync(extracted, cancellationToken);
+        var structuredJson = JsonSerializer.Serialize(
+            extracted,
+            new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
 
         var createRequest = new InvoiceCreateRequestDto
         {
@@ -95,7 +102,11 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
             DeclaredTotalAmount = extracted.DeclaredTotalAmount,
             SourceFileName = fileName,
             SourceFilePath = savedPath,
-            LineItems = extracted.LineItems
+            LineItems = extracted.LineItems,
+            ExtractionEngineName = extracted.EngineName,
+            ExtractionConfidenceScore = extracted.ConfidenceScore,
+            ExtractionRawText = extracted.RawText,
+            ExtractionStructuredJson = structuredJson
         };
 
         var createdInvoice = await _createInvoiceUseCase.ExecuteAsync(createRequest, cancellationToken);
