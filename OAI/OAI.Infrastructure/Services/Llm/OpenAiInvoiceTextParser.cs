@@ -21,6 +21,37 @@ public sealed class OpenAiInvoiceTextParser : IInvoiceTextParser
         _options = options.Value;
         _logger = logger;
     }
+    
+    private const string SystemPrompt = 
+        """
+        You are an invoice extraction engine.
+
+        Your task is to extract structured invoice data from OCR text.
+
+        Important rules:
+        - Return data that matches the provided JSON schema.
+        - Do not invent values that are not supported by the OCR text.
+        - Ignore OCR noise tokens such as single random characters, broken logo text, or isolated punctuation.
+        - The vendorName is usually the seller/company name near the top of the document.
+        - Preserve invoiceNumber exactly when possible, including prefixes such as INV-, HD-, VAT-, etc.
+        - Dates must be normalized to yyyy-MM-dd.
+        - Amounts must be numbers, not strings.
+        - If total appears on one line and the amount appears on the next line, treat the next numeric amount as the total.
+        - VAT, tax, and GTGT mean tax amount.
+        - If line item tax rate is not explicit but VAT is 10% of subtotal, use 10 as the taxRate.
+        - If a nullable field is not found, return null.
+        - If a required string field is not found, return an empty string.
+        """;
+    
+    private static string BuildUserPrompt(string rawText)
+    {
+        return $$"""
+                 Extract invoice data from the OCR text below.
+
+                 OCR text:
+                 {{rawText}}
+                 """;
+    }
 
     public async Task<ExtractedInvoiceDto?> ParseAsync(
         string rawText,
@@ -53,58 +84,21 @@ public sealed class OpenAiInvoiceTextParser : IInvoiceTextParser
 
             var messages = new ChatMessage[]
             {
-                new SystemChatMessage(
-                    """
-                    You extract invoice data from OCR text.
+                new SystemChatMessage(SystemPrompt),
+                new UserChatMessage(BuildUserPrompt(trimmedText))
+            };
 
-                    Return only valid JSON.
-                    Do not wrap the response in markdown.
-                    Do not explain.
-
-                    Rules:
-                    - Use null if a field is not found.
-                    - Dates must be ISO format yyyy-MM-dd.
-                    - Currency should be VND, USD, or EUR.
-                    - Amounts must be numbers, not strings.
-                    - Preserve invoice number exactly if possible, e.g. INV-2026-001.
-                    - VendorName should be the seller/company name, not a random OCR noise token.
-                    - LineItems must include description, quantity, unitPrice, and taxRate.
-                    """),
-                new UserChatMessage(
-                    $$"""
-                    Extract this invoice OCR text into the JSON shape below.
-
-                    JSON shape:
-                    {
-                      "vendorName": "",
-                      "vendorTaxNumber": null,
-                      "vendorAddress": null,
-                      "vendorEmail": null,
-                      "invoiceNumber": "",
-                      "issueDate": "yyyy-MM-dd",
-                      "dueDate": "yyyy-MM-dd or null",
-                      "currency": "VND",
-                      "declaredSubtotal": 0,
-                      "declaredTaxAmount": 0,
-                      "declaredTotalAmount": 0,
-                      "lineItems": [
-                        {
-                          "lineNo": 1,
-                          "description": "",
-                          "quantity": 1,
-                          "unitPrice": 0,
-                          "taxRate": 0
-                        }
-                      ]
-                    }
-
-                    OCR text:
-                    {{trimmedText}}
-                    """)
+            var options = new ChatCompletionOptions
+            {
+                ResponseFormat = ChatResponseFormat.CreateJsonSchemaFormat(
+                    jsonSchemaFormatName: "invoice_extraction",
+                    jsonSchema: BinaryData.FromString(InvoiceExtractionJsonSchema.Schema),
+                    jsonSchemaIsStrict: true)
             };
 
             var completion = await client.CompleteChatAsync(
                 messages,
+                options,
                 cancellationToken: cancellationToken);
 
             var json = completion.Value.Content
@@ -168,24 +162,38 @@ public sealed class OpenAiInvoiceTextParser : IInvoiceTextParser
             dueDate = parsedDueDate;
         }
 
-        if (parsed.DeclaredTotalAmount <= 0)
-            return null;
-
         var currency = string.IsNullOrWhiteSpace(parsed.Currency)
             ? "VND"
             : parsed.Currency.Trim().ToUpperInvariant();
 
+        var subtotal = parsed.DeclaredSubtotal;
+        var tax = parsed.DeclaredTaxAmount;
+        var total = parsed.DeclaredTotalAmount;
+
+        if (total <= 0)
+            return null;
+
+        if (subtotal <= 0 && total > 0)
+            subtotal = Math.Max(total - tax, 0m);
+
+        if (tax <= 0 && subtotal > 0 && total > subtotal)
+            tax = total - subtotal;
+
+        var inferredTaxRate = subtotal > 0 && tax > 0
+            ? Math.Round(tax / subtotal * 100m, 2, MidpointRounding.AwayFromZero)
+            : 0m;
+
         var lineItems = parsed.LineItems
             .OrderBy(x => x.LineNo)
-            .Select(x => new InvoiceLineItemRequestDto
+            .Select((x, index) => new InvoiceLineItemRequestDto
             {
-                LineNo = x.LineNo <= 0 ? 1 : x.LineNo,
+                LineNo = x.LineNo <= 0 ? index + 1 : x.LineNo,
                 Description = string.IsNullOrWhiteSpace(x.Description)
                     ? "Extracted item"
                     : x.Description.Trim(),
                 Quantity = x.Quantity <= 0 ? 1 : x.Quantity,
                 UnitPrice = x.UnitPrice < 0 ? 0 : x.UnitPrice,
-                TaxRate = x.TaxRate < 0 ? 0 : x.TaxRate
+                TaxRate = x.TaxRate > 0 ? x.TaxRate : inferredTaxRate
             })
             .ToList();
 
@@ -196,10 +204,8 @@ public sealed class OpenAiInvoiceTextParser : IInvoiceTextParser
                 LineNo = 1,
                 Description = "Auto extracted item",
                 Quantity = 1,
-                UnitPrice = parsed.DeclaredSubtotal > 0
-                    ? parsed.DeclaredSubtotal
-                    : parsed.DeclaredTotalAmount,
-                TaxRate = 0
+                UnitPrice = subtotal > 0 ? subtotal : total,
+                TaxRate = inferredTaxRate
             });
         }
 
@@ -211,18 +217,23 @@ public sealed class OpenAiInvoiceTextParser : IInvoiceTextParser
             VendorTaxNumber = parsed.VendorTaxNumber,
             VendorAddress = parsed.VendorAddress,
             VendorEmail = parsed.VendorEmail,
-            InvoiceNumber = parsed.InvoiceNumber.Trim(),
+            InvoiceNumber = NormalizeInvoiceNumber(parsed.InvoiceNumber),
             IssueDate = issueDate,
             DueDate = dueDate,
             Currency = currency,
-            DeclaredSubtotal = parsed.DeclaredSubtotal,
-            DeclaredTaxAmount = parsed.DeclaredTaxAmount,
-            DeclaredTotalAmount = parsed.DeclaredTotalAmount,
+            DeclaredSubtotal = subtotal,
+            DeclaredTaxAmount = tax,
+            DeclaredTotalAmount = total,
             ConfidenceScore = Math.Clamp(confidenceScore, 0m, 1m),
             EngineName = engineName,
             RawText = rawText,
             LineItems = lineItems
         };
+    }
+    
+    private static string NormalizeInvoiceNumber(string value)
+    {
+        return value.Trim();
     }
 
     private static bool TryParseDate(string? value, out DateOnly date)
