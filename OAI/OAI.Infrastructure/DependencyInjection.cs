@@ -46,7 +46,9 @@ public static class DependencyInjection
         services.AddScoped<RuleBasedInvoiceTextParser>();
         services.AddScoped<OpenAiInvoiceTextParser>();
         services.AddScoped<IInvoiceTextParser, HybridInvoiceTextParser>();
-
+        
+        services.AddScoped<IInvoiceExtractionComparisonService, InvoiceExtractionComparisonService>();
+        
         return services;
     }
 }

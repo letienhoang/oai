@@ -137,6 +137,11 @@ public sealed class OpenAiInvoiceTextParser : IInvoiceTextParser
                 confidenceScore,
                 engineName: $"{ocrEngineName}+OpenAI");
         }
+        catch (Exception ex) when (ex.Message.Contains("insufficient_quota", StringComparison.OrdinalIgnoreCase))
+        {
+            _logger.LogError(ex, "OpenAI API quota is insufficient. Please check billing and quota.");
+            return null;
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "LLM invoice parsing failed.");

@@ -19,6 +19,10 @@
 
             @if (Invoice is not null)
             {
+                <button class="btn btn-outline-primary" @onclick="GoToCompare">
+                    So sánh OCR / AI
+                </button>
+                
                 <button class="btn btn-primary" @onclick="GoToEdit">
                     Chỉnh sửa
                 </button>

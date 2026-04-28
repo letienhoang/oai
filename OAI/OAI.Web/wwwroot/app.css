@@ -52,3 +52,9 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.raw-text {
+    white-space: pre-wrap;
+    max-height: 420px;
+    overflow: auto;
+}

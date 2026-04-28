@@ -93,6 +93,11 @@ public partial class InvoiceDetail
     {
         NavigationManager.NavigateTo($"/invoices/{InvoiceId}/edit");
     }
+    
+    private void GoToCompare()
+    {
+        NavigationManager.NavigateTo($"/invoices/{InvoiceId}/compare");
+    }
 
     private async Task LoadInvoiceDetailAsync()
     {
