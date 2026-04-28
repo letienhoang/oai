@@ -109,7 +109,27 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
             ExtractionStructuredJson = structuredJson
         };
 
-        var createdInvoice = await _createInvoiceUseCase.ExecuteAsync(createRequest, cancellationToken);
+        InvoiceDetailDto createdInvoice;
+        try
+        {
+            createdInvoice = await _createInvoiceUseCase.ExecuteAsync(createRequest, cancellationToken);
+        }
+        catch (DomainException ex)
+        {
+            _logger.LogWarning(
+                ex,
+                "Invoice processing failed because of domain validation. FileName: {FileName}, InvoiceNumber: {InvoiceNumber}",
+                fileName,
+                extracted.InvoiceNumber);
+
+            return new InvoiceUploadResultDto
+            {
+                InvoiceId = Guid.Empty,
+                FileName = fileName,
+                Status = "Failed",
+                Message = ex.Message
+            };
+        }
 
         _logger.LogInformation(
             "Invoice created successfully. InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}",

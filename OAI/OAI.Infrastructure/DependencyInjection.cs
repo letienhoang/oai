@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddScoped<IOcrService, TesseractOcrService>();
         services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();
+        services.AddScoped<IInvoiceTextParser, RuleBasedInvoiceTextParser>();
 
         return services;
     }
