@@ -8,6 +8,7 @@ using OAI.Infrastructure.Options;
 using OAI.Infrastructure.Persistence;
 using OAI.Infrastructure.Repositories;
 using OAI.Infrastructure.Services;
+using OAI.Infrastructure.Services.Llm;
 
 namespace OAI.Infrastructure;
 
@@ -17,10 +18,14 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<FileStorageOptions>(configuration.GetSection("FileStorage"));
+        services.AddOptions<FileStorageOptions>()
+            .Bind(configuration.GetRequiredSection("FileStorage"));
         
         services.AddOptions<OcrOptions>()
             .Bind(configuration.GetRequiredSection("Ocr"));
+        
+        services.AddOptions<LlmOptions>()
+            .Bind(configuration.GetRequiredSection("Llm"));
         
         services.AddScoped<AuditTrailInterceptor>();
         
@@ -38,7 +43,9 @@ public static class DependencyInjection
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddScoped<IOcrService, TesseractOcrService>();
         services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();
-        services.AddScoped<IInvoiceTextParser, RuleBasedInvoiceTextParser>();
+        services.AddScoped<RuleBasedInvoiceTextParser>();
+        services.AddScoped<OpenAiInvoiceTextParser>();
+        services.AddScoped<IInvoiceTextParser, HybridInvoiceTextParser>();
 
         return services;
     }

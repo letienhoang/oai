@@ -107,7 +107,7 @@ public partial class InvoiceUpload
 
             if (UploadResult.Status.Equals("Processed", StringComparison.OrdinalIgnoreCase))
             {
-                SuccessMessage = "Upload và xử lý hóa đơn thành công.";
+                SuccessMessage = "Upload và xử lý hóa đơn thành công. Hóa đơn đang ở trạng thái chờ kiểm tra.";
             }
             else
             {

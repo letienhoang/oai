@@ -7,11 +7,22 @@ namespace OAI.Infrastructure.Services;
 
 public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
 {
-    public ExtractedInvoiceDto? Parse(
+    public Task<ExtractedInvoiceDto?> ParseAsync(
         string rawText,
         string sourceFileName,
         decimal confidenceScore,
-        string engineName)
+        string ocrEngineName,
+        CancellationToken cancellationToken = default)
+    {
+        var result = ParseInternal(rawText, sourceFileName, confidenceScore, ocrEngineName);
+        return Task.FromResult(result);
+    }
+    
+    public ExtractedInvoiceDto? ParseInternal(
+        string rawText,
+        string sourceFileName,
+        decimal confidenceScore,
+        string ocrEngineName)
     {
         if (string.IsNullOrWhiteSpace(rawText))
             return null;
@@ -130,7 +141,7 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
             DeclaredTaxAmount = taxAmount,
             DeclaredTotalAmount = totalValue,
             ConfidenceScore = Math.Clamp(confidenceScore, 0m, 1m),
-            EngineName = engineName,
+            EngineName = $"{ocrEngineName}+RuleBased",
             RawText = rawText,
             LineItems = lineItems
         };

@@ -54,11 +54,12 @@ public sealed class InvoiceExtractionService : IInvoiceExtractionService
                 return null;
             }
 
-            var extracted = _invoiceTextParser.Parse(
+            var extracted = await _invoiceTextParser.ParseAsync(
                 ocrResult.Text,
                 fileName,
                 (decimal)ocrResult.Confidence,
-                "Tesseract");
+                "Tesseract",
+                cancellationToken);
 
             if (extracted is null)
             {
@@ -80,12 +81,11 @@ public sealed class InvoiceExtractionService : IInvoiceExtractionService
         string rawText,
         CancellationToken cancellationToken = default)
     {
-        var extracted = _invoiceTextParser.Parse(
+        return _invoiceTextParser.ParseAsync(
             rawText,
             "raw-text",
             1.0m,
-            "RawText");
-
-        return Task.FromResult(extracted);
+            "RawText",
+            cancellationToken);
     }
 }

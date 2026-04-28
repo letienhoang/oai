@@ -4,9 +4,10 @@ namespace OAI.Application.Abstractions.Services;
 
 public interface IInvoiceTextParser
 {
-    ExtractedInvoiceDto? Parse(
+    Task<ExtractedInvoiceDto?> ParseAsync(
         string rawText,
         string sourceFileName,
         decimal confidenceScore,
-        string engineName);
+        string ocrEngineName,
+        CancellationToken cancellationToken = default);
 }
