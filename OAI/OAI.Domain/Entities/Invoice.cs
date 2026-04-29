@@ -264,6 +264,12 @@ public sealed class Invoice : Entity
 
     public void Reject()
     {
+        if (Status == InvoiceStatus.Exported)
+            throw new DomainException("Exported invoice cannot be rejected.");
+
+        if (Status == InvoiceStatus.Rejected)
+            return;
+
         Status = InvoiceStatus.Rejected;
         Touch();
     }
@@ -314,10 +320,13 @@ public sealed class Invoice : Entity
         Touch();
     }
     
-    public void MarkAsPendingReview()
+    public void MoveToPendingReview()
     {
         if (Status == InvoiceStatus.Exported)
             throw new DomainException("Exported invoice cannot be moved back to pending review.");
+
+        if (Status == InvoiceStatus.PendingReview)
+            return;
 
         Status = InvoiceStatus.PendingReview;
         Touch();

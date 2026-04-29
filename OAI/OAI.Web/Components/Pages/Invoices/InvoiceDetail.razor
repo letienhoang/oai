@@ -12,7 +12,7 @@
             </p>
         </div>
 
-        <div class="d-flex gap-2 align-items-start">
+        <div class="d-flex flex-wrap gap-2 align-items-start">
             <button class="btn btn-outline-secondary" @onclick="GoBack">
                 Quay lại danh sách
             </button>
@@ -23,23 +23,63 @@
                     So sánh OCR / AI
                 </button>
 
-                <button class="btn btn-outline-secondary" @onclick="GoToEdit">
-                    Chỉnh sửa
-                </button>
+                @if (CanShowEditButton)
+                {
+                    <button class="btn btn-outline-secondary" @onclick="GoToEdit">
+                        Chỉnh sửa
+                    </button>
+                }
 
-                <button class="btn btn-success"
-                        disabled="@(!CanApprove || IsApproving)"
-                        @onclick="ApproveAsync">
-                    @if (IsApproving)
-                    {
-                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                        <span>Đang xác nhận...</span>
-                    }
-                    else
-                    {
-                        <span>Xác nhận hóa đơn</span>
-                    }
-                </button>
+                @if (CanShowApproveButton)
+                {
+                    <button class="btn btn-success"
+                            disabled="@IsApproving"
+                            @onclick="ApproveAsync">
+                        @if (IsApproving)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            <span>Đang xác nhận...</span>
+                        }
+                        else
+                        {
+                            <span>Xác nhận hóa đơn</span>
+                        }
+                    </button>
+                }
+
+                @if (CanShowMoveToPendingReviewButton)
+                {
+                    <button class="btn btn-outline-warning"
+                            disabled="@IsMovingToPendingReview"
+                            @onclick="MoveToPendingReviewAsync">
+                        @if (IsMovingToPendingReview)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            <span>Đang chuyển...</span>
+                        }
+                        else
+                        {
+                            <span>Đưa về chờ kiểm tra</span>
+                        }
+                    </button>
+                }
+
+                @if (CanShowRejectButton)
+                {
+                    <button class="btn btn-outline-danger"
+                            disabled="@IsRejecting"
+                            @onclick="RejectAsync">
+                        @if (IsRejecting)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            <span>Đang từ chối...</span>
+                        }
+                        else
+                        {
+                            <span>Từ chối</span>
+                        }
+                    </button>
+                }
             }
         </div>
     </div>
@@ -56,6 +96,20 @@
 {
     <div class="alert alert-danger">
         @ActionErrorMessage
+    </div>
+}
+
+@if (Invoice is not null && string.Equals(Invoice.Status, "Rejected", StringComparison.OrdinalIgnoreCase))
+{
+    <div class="alert alert-warning">
+        Hóa đơn này đã bị từ chối. Bạn có thể đưa hóa đơn về trạng thái chờ kiểm tra nếu muốn xử lý lại.
+    </div>
+}
+
+@if (Invoice is not null && string.Equals(Invoice.Status, "Approved", StringComparison.OrdinalIgnoreCase))
+{
+    <div class="alert alert-success">
+        Hóa đơn này đã được xác nhận.
     </div>
 }
 

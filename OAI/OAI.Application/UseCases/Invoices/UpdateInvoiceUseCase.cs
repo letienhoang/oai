@@ -154,7 +154,7 @@ public sealed class UpdateInvoiceUseCase : IUpdateInvoiceUseCase
 
         var issues = invoice.ValidateConsistency().ToList();
         invoice.ReplaceValidationIssues(issues);
-        invoice.MarkAsPendingReview();
+        invoice.MoveToPendingReview();
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

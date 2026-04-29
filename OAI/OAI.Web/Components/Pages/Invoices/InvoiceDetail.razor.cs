@@ -24,6 +24,12 @@ public partial class InvoiceDetail
     
     [Inject]
     private IApproveInvoiceUseCase ApproveInvoiceUseCase { get; set; } = default!;
+    
+    [Inject]
+    private IRejectInvoiceUseCase RejectInvoiceUseCase { get; set; } = default!;
+
+    [Inject]
+    private IMoveInvoiceToPendingReviewUseCase MoveInvoiceToPendingReviewUseCase { get; set; } = default!;
 
     private InvoiceDetailDto? Invoice { get; set; }
 
@@ -45,6 +51,20 @@ public partial class InvoiceDetail
         !Invoice.ValidationIssues.Any(x =>
             string.Equals(x.Severity, "Error", StringComparison.OrdinalIgnoreCase) &&
             !x.IsResolved);
+    
+    private bool IsRejecting { get; set; }
+
+    private bool IsMovingToPendingReview { get; set; }
+
+    private bool CanReject =>
+        Invoice is not null &&
+        !string.Equals(Invoice.Status, "Rejected", StringComparison.OrdinalIgnoreCase) &&
+        !string.Equals(Invoice.Status, "Exported", StringComparison.OrdinalIgnoreCase);
+
+    private bool CanMoveToPendingReview =>
+        Invoice is not null &&
+        !string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase) &&
+        !string.Equals(Invoice.Status, "Exported", StringComparison.OrdinalIgnoreCase);
 
     protected override async Task OnParametersSetAsync()
     {
@@ -192,4 +212,115 @@ public partial class InvoiceDetail
             IsApproving = false;
         }
     }
+    
+    private async Task RejectAsync()
+    {
+        if (Invoice is null)
+            return;
+
+        SuccessMessage = null;
+        ActionErrorMessage = null;
+        IsRejecting = true;
+
+        try
+        {
+            Logger.LogInformation(
+                "Rejecting invoice from detail page. InvoiceId: {InvoiceId}",
+                Invoice.InvoiceId);
+
+            var result = await RejectInvoiceUseCase.ExecuteAsync(
+                new RejectInvoiceRequestDto
+                {
+                    InvoiceId = Invoice.InvoiceId
+                });
+
+            SuccessMessage = "Hóa đơn đã được từ chối.";
+
+            Logger.LogInformation(
+                "Invoice rejected from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
+                result.InvoiceId,
+                result.Status);
+
+            await LoadInvoiceDetailAsync();
+        }
+        catch (Exception ex)
+        {
+            ActionErrorMessage = "Không thể từ chối hóa đơn. Vui lòng kiểm tra log hệ thống.";
+
+            Logger.LogError(
+                ex,
+                "Failed to reject invoice from detail page. InvoiceId: {InvoiceId}",
+                Invoice.InvoiceId);
+        }
+        finally
+        {
+            IsRejecting = false;
+        }
+    }
+    
+    private async Task MoveToPendingReviewAsync()
+    {
+        if (Invoice is null)
+            return;
+
+        SuccessMessage = null;
+        ActionErrorMessage = null;
+        IsMovingToPendingReview = true;
+
+        try
+        {
+            Logger.LogInformation(
+                "Moving invoice to pending review from detail page. InvoiceId: {InvoiceId}",
+                Invoice.InvoiceId);
+
+            var result = await MoveInvoiceToPendingReviewUseCase.ExecuteAsync(
+                new MoveInvoiceToPendingReviewRequestDto
+                {
+                    InvoiceId = Invoice.InvoiceId
+                });
+
+            SuccessMessage = "Hóa đơn đã được đưa về trạng thái chờ kiểm tra.";
+
+            Logger.LogInformation(
+                "Invoice moved to pending review from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
+                result.InvoiceId,
+                result.Status);
+
+            await LoadInvoiceDetailAsync();
+        }
+        catch (Exception ex)
+        {
+            ActionErrorMessage = "Không thể đưa hóa đơn về trạng thái chờ kiểm tra. Vui lòng kiểm tra log hệ thống.";
+
+            Logger.LogError(
+                ex,
+                "Failed to move invoice to pending review from detail page. InvoiceId: {InvoiceId}",
+                Invoice.InvoiceId);
+        }
+        finally
+        {
+            IsMovingToPendingReview = false;
+        }
+    }
+    
+    private bool CanShowApproveButton =>
+        Invoice is not null &&
+        string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase) &&
+        !Invoice.ValidationIssues.Any(x =>
+            string.Equals(x.Severity, "Error", StringComparison.OrdinalIgnoreCase) &&
+            !x.IsResolved);
+
+    private bool CanShowRejectButton =>
+        Invoice is not null &&
+        !string.Equals(Invoice.Status, "Rejected", StringComparison.OrdinalIgnoreCase) &&
+        !string.Equals(Invoice.Status, "Exported", StringComparison.OrdinalIgnoreCase);
+
+    private bool CanShowMoveToPendingReviewButton =>
+        Invoice is not null &&
+        !string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase) &&
+        !string.Equals(Invoice.Status, "Exported", StringComparison.OrdinalIgnoreCase);
+    
+    private bool CanShowEditButton =>
+        Invoice is not null &&
+        !string.Equals(Invoice.Status, "Exported", StringComparison.OrdinalIgnoreCase);
 }
