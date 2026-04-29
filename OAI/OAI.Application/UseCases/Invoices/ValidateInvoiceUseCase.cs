@@ -49,8 +49,7 @@ public sealed class ValidateInvoiceUseCase : IValidateInvoiceUseCase
         var issues = invoice.ValidateConsistency(request.Tolerance).ToList();
 
         invoice.ReplaceValidationIssues(issues);
-
-        await _invoiceRepository.UpdateAsync(invoice, cancellationToken);
+        
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         var dtoIssues = issues

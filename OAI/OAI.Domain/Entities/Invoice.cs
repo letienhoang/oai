@@ -118,11 +118,11 @@ public sealed class Invoice : Entity
 
     public void RemoveLineItem(Guid lineItemId)
     {
-        var item = _lineItems.FirstOrDefault(x => x.Id == lineItemId);
-        if (item is null)
+        var lineItem = _lineItems.FirstOrDefault(x => x.Id == lineItemId);
+        if (lineItem is null)
             return;
 
-        _lineItems.Remove(item);
+        _lineItems.Remove(lineItem);
         Touch();
     }
 
@@ -245,8 +245,18 @@ public sealed class Invoice : Entity
 
     public void Approve()
     {
-        if (_validationIssues.Any(x => x.Severity == ValidationSeverity.Error && !x.IsResolved))
-            throw new DomainException("Cannot approve invoice with unresolved validation errors.");
+        if (Status == InvoiceStatus.Approved)
+            return;
+
+        if (Status == InvoiceStatus.Exported)
+            throw new DomainException("Exported invoice cannot be approved again.");
+
+        var hasOpenError = ValidationIssues.Any(x =>
+            x.Severity == ValidationSeverity.Error &&
+            !x.IsResolved);
+
+        if (hasOpenError)
+            throw new DomainException("Invoice cannot be approved because it still has unresolved validation errors.");
 
         Status = InvoiceStatus.Approved;
         Touch();
@@ -301,6 +311,15 @@ public sealed class Invoice : Entity
             _lineItems.Add(item);
         }
 
+        Touch();
+    }
+    
+    public void MarkAsPendingReview()
+    {
+        if (Status == InvoiceStatus.Exported)
+            throw new DomainException("Exported invoice cannot be moved back to pending review.");
+
+        Status = InvoiceStatus.PendingReview;
         Touch();
     }
 

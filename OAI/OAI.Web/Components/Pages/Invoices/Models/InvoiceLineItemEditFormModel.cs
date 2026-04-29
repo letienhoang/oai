@@ -4,6 +4,8 @@ namespace OAI.Web.Components.Pages.Invoices.Models;
 
 public sealed class InvoiceLineItemEditFormModel
 {
+    public Guid? InvoiceLineItemId { get; set; }
+    
     public int LineNo { get; set; }
 
     [Required(ErrorMessage = "Mô tả là bắt buộc.")]

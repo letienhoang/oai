@@ -3,6 +3,7 @@ using OAI.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using OAI.Domain.Exceptions;
 
 namespace OAI.Domain.Entities;
 
@@ -74,5 +75,31 @@ public sealed class InvoiceLineItem : Entity
 
         TaxRate = taxRate;
         Touch();
+    }
+    
+    public void Update(
+        int lineNo,
+        string description,
+        decimal quantity,
+        Money unitPrice,
+        decimal taxRate)
+    {
+        if (lineNo <= 0)
+            throw new DomainException("Line number must be greater than zero.");
+
+        if (string.IsNullOrWhiteSpace(description))
+            throw new DomainException("Line item description is required.");
+
+        if (quantity <= 0)
+            throw new DomainException("Quantity must be greater than zero.");
+
+        if (taxRate < 0)
+            throw new DomainException("Tax rate cannot be negative.");
+
+        LineNo = lineNo;
+        Description = description.Trim();
+        Quantity = quantity;
+        UnitPrice = unitPrice;
+        TaxRate = taxRate;
     }
 }

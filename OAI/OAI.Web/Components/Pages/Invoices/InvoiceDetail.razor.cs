@@ -21,6 +21,9 @@ public partial class InvoiceDetail
     
     [Inject]
     private UserTimeZoneService UserTimeZoneService { get; set; } = default!;
+    
+    [Inject]
+    private IApproveInvoiceUseCase ApproveInvoiceUseCase { get; set; } = default!;
 
     private InvoiceDetailDto? Invoice { get; set; }
 
@@ -29,6 +32,19 @@ public partial class InvoiceDetail
     private bool IsLoading { get; set; }
 
     private string? ErrorMessage { get; set; }
+    
+    private bool IsApproving { get; set; }
+
+    private string? SuccessMessage { get; set; }
+
+    private string? ActionErrorMessage { get; set; }
+
+    private bool CanApprove =>
+        Invoice is not null &&
+        string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase) &&
+        !Invoice.ValidationIssues.Any(x =>
+            string.Equals(x.Severity, "Error", StringComparison.OrdinalIgnoreCase) &&
+            !x.IsResolved);
 
     protected override async Task OnParametersSetAsync()
     {
@@ -129,6 +145,51 @@ public partial class InvoiceDetail
         finally
         {
             IsLoading = false;
+        }
+    }
+    
+    private async Task ApproveAsync()
+    {
+        if (Invoice is null)
+            return;
+
+        SuccessMessage = null;
+        ActionErrorMessage = null;
+        IsApproving = true;
+
+        try
+        {
+            Logger.LogInformation(
+                "Approving invoice from detail page. InvoiceId: {InvoiceId}",
+                Invoice.InvoiceId);
+
+            var result = await ApproveInvoiceUseCase.ExecuteAsync(
+                new ApproveInvoiceRequestDto
+                {
+                    InvoiceId = Invoice.InvoiceId
+                });
+
+            SuccessMessage = "Hóa đơn đã được xác nhận thành công.";
+
+            Logger.LogInformation(
+                "Invoice approved from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
+                result.InvoiceId,
+                result.Status);
+
+            await LoadInvoiceDetailAsync();
+        }
+        catch (Exception ex)
+        {
+            ActionErrorMessage = "Không thể xác nhận hóa đơn. Vui lòng kiểm tra lỗi validation hoặc log hệ thống.";
+
+            Logger.LogError(
+                ex,
+                "Failed to approve invoice from detail page. InvoiceId: {InvoiceId}",
+                Invoice.InvoiceId);
+        }
+        finally
+        {
+            IsApproving = false;
         }
     }
 }

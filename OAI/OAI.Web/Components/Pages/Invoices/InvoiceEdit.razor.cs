@@ -77,6 +77,7 @@ public partial class InvoiceEdit
                     .OrderBy(x => x.LineNo)
                     .Select(x => new InvoiceLineItemRequestDto
                     {
+                        InvoiceLineItemId = x.InvoiceLineItemId,
                         LineNo = x.LineNo,
                         Description = x.Description,
                         Quantity = x.Quantity,
@@ -117,6 +118,7 @@ public partial class InvoiceEdit
 
         EditModel.LineItems.Add(new InvoiceLineItemEditFormModel
         {
+            InvoiceLineItemId = null,
             LineNo = nextLineNo,
             Description = string.Empty,
             Quantity = 1,
@@ -173,6 +175,7 @@ public partial class InvoiceEdit
                     .OrderBy(x => x.LineNo)
                     .Select(x => new InvoiceLineItemEditFormModel
                     {
+                        InvoiceLineItemId = x.InvoiceLineItemId,
                         LineNo = x.LineNo,
                         Description = x.Description,
                         Quantity = x.Quantity,

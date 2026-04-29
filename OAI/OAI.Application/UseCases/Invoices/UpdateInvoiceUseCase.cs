@@ -99,23 +99,63 @@ public sealed class UpdateInvoiceUseCase : IUpdateInvoiceUseCase
             new Money(request.DeclaredTaxAmount, currency),
             new Money(request.DeclaredTotalAmount, currency));
 
-        var newLineItems = request.LineItems
-            .OrderBy(x => x.LineNo)
-            .Select(line => new InvoiceLineItem(
-                invoice.Id,
-                line.LineNo,
-                line.Description,
-                line.Quantity,
-                new Money(line.UnitPrice, currency),
-                line.TaxRate))
+        var existingLineItems = invoice.LineItems
+            .ToDictionary(x => x.Id);
+
+        var existingIdsBeforeUpdate = existingLineItems.Keys.ToHashSet();
+
+        var requestedExistingIds = new HashSet<Guid>();
+
+        foreach (var line in request.LineItems.OrderBy(x => x.LineNo))
+        {
+            if (line.InvoiceLineItemId.HasValue && line.InvoiceLineItemId.Value != Guid.Empty)
+            {
+                if (!existingLineItems.TryGetValue(line.InvoiceLineItemId.Value, out var existingLineItem))
+                {
+                    _logger.LogWarning(
+                        "Cannot update invoice because line item {InvoiceLineItemId} was not found on invoice {InvoiceId}",
+                        line.InvoiceLineItemId.Value,
+                        invoice.Id);
+
+                    throw new DomainException($"Invoice line item '{line.InvoiceLineItemId.Value}' was not found.");
+                }
+
+                existingLineItem.Update(
+                    line.LineNo,
+                    line.Description,
+                    line.Quantity,
+                    new Money(line.UnitPrice, currency),
+                    line.TaxRate);
+
+                requestedExistingIds.Add(existingLineItem.Id);
+            }
+            else
+            {
+                var newLineItem = new InvoiceLineItem(
+                    invoice.Id,
+                    line.LineNo,
+                    line.Description,
+                    line.Quantity,
+                    new Money(line.UnitPrice, currency),
+                    line.TaxRate);
+
+                invoice.AddLineItem(newLineItem);
+            }
+        }
+
+        var removedLineItemIds = existingIdsBeforeUpdate
+            .Where(id => !requestedExistingIds.Contains(id))
             .ToList();
 
-        invoice.ReplaceLineItems(newLineItems);
+        foreach (var removedLineItemId in removedLineItemIds)
+        {
+            invoice.RemoveLineItem(removedLineItemId);
+        }
 
         var issues = invoice.ValidateConsistency().ToList();
         invoice.ReplaceValidationIssues(issues);
+        invoice.MarkAsPendingReview();
 
-        await _invoiceRepository.UpdateAsync(invoice, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation(

@@ -55,6 +55,7 @@ public static class InvoiceMappingExtensions
     {
         return new InvoiceLineItemDto
         {
+            InvoiceLineItemId = item.Id,
             LineNo = item.LineNo,
             Description = item.Description,
             Quantity = item.Quantity,

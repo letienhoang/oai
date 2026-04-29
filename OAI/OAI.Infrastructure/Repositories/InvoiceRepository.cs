@@ -124,7 +124,9 @@ public sealed class InvoiceRepository : IInvoiceRepository
 
     public Task UpdateAsync(Invoice invoice, CancellationToken cancellationToken = default)
     {
-        _context.Invoices.Update(invoice);
+        // Entity loaded from the current DbContext has been tracked.
+        // Do not call DbSet.Update to avoid EF marking the entire aggregate graph as Modified.
+        // _context.Invoices.Update(invoice);
         return Task.CompletedTask;
     }
 
