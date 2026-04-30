@@ -1,19 +1,222 @@
 ﻿@page "/settings"
+@rendermode InteractiveServer
 
-<PageTitle>Cấu hình - OAI</PageTitle>
+<PageTitle>Cấu hình hệ thống - OAI</PageTitle>
 
 <section class="mb-4">
-    <h1 class="fw-bold mb-1">Cấu hình hệ thống</h1>
-    <p class="text-secondary mb-0">
-        Cấu hình OCR, file storage và rule kiểm tra dữ liệu.
-    </p>
-</section>
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">Cấu hình hệ thống</h1>
+            <p class="text-secondary mb-0">
+                Xem cấu hình hiện tại của OCR, AI, file storage và runtime.
+            </p>
+        </div>
 
-<section class="card border-0 shadow-sm rounded-4">
-    <div class="card-body">
-        <h2 class="h5 fw-bold mb-3">System settings</h2>
-        <p class="text-secondary mb-0">
-            Giai đoạn sau có thể thêm cấu hình tolerance, OCR engine, max file size.
-        </p>
+        <div class="d-flex align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="ReloadAsync" disabled="@IsLoading">
+                Tải lại
+            </button>
+        </div>
     </div>
 </section>
+
+@if (IsLoading)
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <div class="spinner-border text-primary" role="status"></div>
+            <div class="text-secondary mt-3">Đang tải cấu hình hệ thống...</div>
+        </div>
+    </section>
+}
+else if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5">
+            <div class="alert alert-danger mb-0">
+                @ErrorMessage
+            </div>
+        </div>
+    </section>
+}
+else if (Settings is not null)
+{
+    <section class="row g-4">
+        <div class="col-12 col-xl-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">File Storage</h2>
+                            <p class="text-secondary small mb-0">
+                                Cấu hình lưu trữ file hóa đơn đã upload.
+                            </p>
+                        </div>
+
+                        <span class="badge text-bg-primary">Storage</span>
+                    </div>
+
+                    <dl class="row small mb-0">
+                        <dt class="col-5">BasePath</dt>
+                        <dd class="col-7 text-break">@Settings.FileStorage.BasePath</dd>
+
+                        <dt class="col-5">RootPath</dt>
+                        <dd class="col-7 text-break">@Settings.FileStorage.RootPath</dd>
+
+                        <dt class="col-5">InvoiceFolder</dt>
+                        <dd class="col-7 text-break">@Settings.FileStorage.InvoiceFolder</dd>
+
+                        <dt class="col-5">MaxFileSize</dt>
+                        <dd class="col-7">
+                            @Settings.FileStorage.MaxFileSizeDisplay
+                            <span class="text-secondary">
+                                (@Settings.FileStorage.MaxFileSizeBytes bytes)
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">OCR</h2>
+                            <p class="text-secondary small mb-0">
+                                Cấu hình Tesseract OCR và bộ ngôn ngữ.
+                            </p>
+                        </div>
+
+                        <span class="badge text-bg-info">Tesseract</span>
+                    </div>
+
+                    <dl class="row small mb-0">
+                        <dt class="col-5">BasePath</dt>
+                        <dd class="col-7 text-break">@Settings.Ocr.BasePath</dd>
+
+                        <dt class="col-5">TessDataPath</dt>
+                        <dd class="col-7 text-break">@Settings.Ocr.TessDataPath</dd>
+
+                        <dt class="col-5">Languages</dt>
+                        <dd class="col-7">
+                            <span class="badge text-bg-light border">
+                                @Settings.Ocr.Languages
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">AI / LLM</h2>
+                            <p class="text-secondary small mb-0">
+                                Cấu hình parser dùng AI để chuẩn hóa kết quả OCR.
+                            </p>
+                        </div>
+
+                        @if (Settings.Llm.Enabled)
+                        {
+                            <span class="badge text-bg-success">Enabled</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-secondary">Disabled</span>
+                        }
+                    </div>
+
+                    <dl class="row small mb-0">
+                        <dt class="col-5">Provider</dt>
+                        <dd class="col-7">@Settings.Llm.Provider</dd>
+
+                        <dt class="col-5">Model</dt>
+                        <dd class="col-7">
+                            <code>@Settings.Llm.Model</code>
+                        </dd>
+
+                        <dt class="col-5">MaxInputCharacters</dt>
+                        <dd class="col-7">@Settings.Llm.MaxInputCharacters</dd>
+
+                        <dt class="col-5">API Key</dt>
+                        <dd class="col-7">
+                            @if (Settings.Llm.HasApiKey)
+                            {
+                                <span class="badge text-bg-success">@Settings.Llm.ApiKeyStatus</span>
+                            }
+                            else
+                            {
+                                <span class="badge text-bg-warning">@Settings.Llm.ApiKeyStatus</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <div class="alert alert-warning mt-3 mb-0 small">
+                        API key thật không được hiển thị trên giao diện để tránh lộ thông tin nhạy cảm.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">Runtime</h2>
+                            <p class="text-secondary small mb-0">
+                                Thông tin môi trường chạy ứng dụng.
+                            </p>
+                        </div>
+
+                        <span class="badge text-bg-dark">Runtime</span>
+                    </div>
+
+                    <dl class="row small mb-0">
+                        <dt class="col-5">Environment</dt>
+                        <dd class="col-7">
+                            <span class="badge @GetEnvironmentBadgeClass(Settings.Runtime.EnvironmentName)">
+                                @Settings.Runtime.EnvironmentName
+                            </span>
+                        </dd>
+
+                        <dt class="col-5">Application</dt>
+                        <dd class="col-7">@Settings.Runtime.ApplicationName</dd>
+
+                        <dt class="col-5">ContentRoot</dt>
+                        <dd class="col-7 text-break">
+                            @Settings.Runtime.ContentRootPath
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card border-0 shadow-sm rounded-4 mt-4">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Ghi chú cấu hình</h2>
+
+            <ul class="text-secondary small lh-lg mb-0">
+                <li>
+                    Màn hình này chỉ hiển thị cấu hình runtime hiện tại, chưa cho phép chỉnh sửa trực tiếp.
+                </li>
+                <li>
+                    Cấu hình OCR và AI nên được thay đổi qua <code>appsettings.Development.json</code>,
+                    environment variables hoặc user secrets.
+                </li>
+                <li>
+                    OpenAI API key nên lưu bằng <code>dotnet user-secrets</code>, không commit vào Git.
+                </li>
+                <li>
+                    Khi deploy production, nên cấu hình file storage ra thư mục riêng thay vì lưu trong <code>bin</code>.
+                </li>
+            </ul>
+        </div>
+    </section>
+}

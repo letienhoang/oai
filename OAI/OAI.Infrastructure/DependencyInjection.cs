@@ -35,20 +35,23 @@ public static class DependencyInjection
             options.AddInterceptors(sp.GetRequiredService<AuditTrailInterceptor>());
         });
 
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped<IValidationIssueRepository, ValidationIssueRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
-        services.AddScoped<IFileStorageService, FileStorageService>();
-        services.AddScoped<IOcrService, TesseractOcrService>();
-        services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();
         services.AddScoped<RuleBasedInvoiceTextParser>();
         services.AddScoped<OpenAiInvoiceTextParser>();
         services.AddScoped<IInvoiceTextParser, HybridInvoiceTextParser>();
         
+        services.AddScoped<IFileStorageService, FileStorageService>();
+        services.AddScoped<IOcrService, TesseractOcrService>();
+        
+        services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();
         services.AddScoped<IInvoiceExtractionComparisonService, InvoiceExtractionComparisonService>();
+        
+        services.AddScoped<ISystemSettingsService, SystemSettingsService>();
         
         return services;
     }

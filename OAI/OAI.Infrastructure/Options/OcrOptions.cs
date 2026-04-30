@@ -4,5 +4,5 @@ public sealed class OcrOptions
 {
     public string TessDataPath { get; set; } = "tessdata";
     public string Languages { get; set; } = "eng";
-    public string? BasePath { get; set; }
+    public string? BasePath { get; set; } = string.Empty;
 }
