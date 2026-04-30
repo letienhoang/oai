@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="OAI.Application/OAI.Application.csproj" />
+  <Project Path="OAI.Domain.Tests/OAI.Domain.Tests.csproj" />
   <Project Path="OAI.Domain/OAI.Domain.csproj" />
   <Project Path="OAI.Infrastructure/OAI.Infrastructure.csproj" />
   <Project Path="OAI.Web/OAI.Web.csproj" />
