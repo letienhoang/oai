@@ -1,4 +1,6 @@
-﻿namespace OAI.Infrastructure.Audit;
+﻿using OAI.Domain.Audit;
+
+namespace OAI.Infrastructure.Audit;
 
 public interface IAuditTrailService
 {

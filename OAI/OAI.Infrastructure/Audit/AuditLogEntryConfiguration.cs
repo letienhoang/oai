@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OAI.Domain.Audit;
 
 namespace OAI.Infrastructure.Audit;
 

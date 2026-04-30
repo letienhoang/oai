@@ -1,4 +1,4 @@
-﻿namespace OAI.Infrastructure.Audit;
+﻿namespace OAI.Domain.Audit;
 
 public sealed class AuditLogEntry
 {

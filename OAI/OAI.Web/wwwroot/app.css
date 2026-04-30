@@ -58,3 +58,9 @@ h1:focus {
     max-height: 420px;
     overflow: auto;
 }
+
+.audit-json {
+    white-space: pre-wrap;
+    max-height: 420px;
+    overflow: auto;
+}

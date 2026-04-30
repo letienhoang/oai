@@ -1,19 +1,260 @@
 ﻿@page "/audit-logs"
+@rendermode InteractiveServer
 
 <PageTitle>Audit logs - OAI</PageTitle>
 
 <section class="mb-4">
-    <h1 class="fw-bold mb-1">Audit logs</h1>
-    <p class="text-secondary mb-0">
-        Theo dõi các thao tác tạo, sửa, xóa và xử lý dữ liệu trong hệ thống.
-    </p>
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">Audit logs</h1>
+            <p class="text-secondary mb-0">
+                Theo dõi các thao tác tạo, sửa, xóa và xử lý dữ liệu trong hệ thống.
+            </p>
+        </div>
+
+        <div class="d-flex align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="ReloadAsync" disabled="@IsLoading">
+                Tải lại
+            </button>
+        </div>
+    </div>
 </section>
 
 <section class="card border-0 shadow-sm rounded-4">
-    <div class="card-body">
-        <h2 class="h5 fw-bold mb-3">Lịch sử thao tác</h2>
-        <p class="text-secondary mb-0">
-            Trang này sẽ hiển thị dữ liệu từ bảng <code>AuditLogs</code>.
-        </p>
+    <div class="card-body p-4">
+        <div class="row g-2 mb-4">
+            <div class="col-12 col-lg">
+                <input class="form-control"
+                       placeholder="Tìm theo entity, entity id, user, source hoặc JSON..."
+                       @bind="Keyword"
+                       @bind:event="oninput"
+                       @onkeydown="HandleSearchKeyDown" />
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-2">
+                <select class="form-select" @bind="EntityName">
+                    <option value="">Tất cả entity</option>
+                    <option value="Invoice">Invoice</option>
+                    <option value="InvoiceLineItem">InvoiceLineItem</option>
+                    <option value="ValidationIssue">ValidationIssue</option>
+                    <option value="InvoiceExtractionResult">InvoiceExtractionResult</option>
+                    <option value="Vendor">Vendor</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-2">
+                <select class="form-select" @bind="ActionType">
+                    <option value="">Tất cả hành động</option>
+                    <option value="Created">Created</option>
+                    <option value="Updated">Updated</option>
+                    <option value="Deleted">Deleted</option>
+                    <option value="Uploaded">Uploaded</option>
+                    <option value="Processed">Processed</option>
+                    <option value="Validated">Validated</option>
+                    <option value="Exported">Exported</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-primary w-100" @onclick="SearchAsync" disabled="@IsLoading">
+                    Tìm kiếm
+                </button>
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-outline-secondary w-100" @onclick="ClearSearchAsync" disabled="@IsLoading">
+                    Xóa lọc
+                </button>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                @ErrorMessage
+            </div>
+        }
+
+        @if (IsLoading)
+        {
+            <div class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <span class="ms-3 text-secondary">Đang tải audit logs...</span>
+            </div>
+        }
+        else if (Logs.Count == 0)
+        {
+            <div class="bg-light rounded-4 p-5 text-center">
+                <div class="fs-1 mb-3">🕘</div>
+                <h2 class="h5 fw-bold">Chưa có audit log</h2>
+                <p class="text-secondary mb-0">
+                    Chưa có log nào phù hợp với điều kiện lọc.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>Thời gian</th>
+                        <th>Entity</th>
+                        <th>Action</th>
+                        <th>EntityId</th>
+                        <th>User</th>
+                        <th>Source</th>
+                        <th class="text-end">Chi tiết</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach (var log in Logs)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">
+                                    @FormatDateTime(log.OccurredAt)
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge text-bg-light border">
+                                    @log.EntityName
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge @GetActionBadgeClass(log.ActionType)">
+                                    @log.ActionType
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(log.EntityId))
+                                {
+                                    <code class="small">@log.EntityId</code>
+                                }
+                                else
+                                {
+                                    <span class="text-secondary">N/A</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(log.UserName))
+                                {
+                                    <span>@log.UserName</span>
+                                }
+                                else if (!string.IsNullOrWhiteSpace(log.UserId))
+                                {
+                                    <span>@log.UserId</span>
+                                }
+                                else
+                                {
+                                    <span class="text-secondary">System</span>
+                                }
+                            </td>
+
+                            <td>
+                                <span class="small text-secondary">
+                                    @DisplayOrFallback(log.Source)
+                                </span>
+                            </td>
+
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary"
+                                        @onclick="() => SelectLog(log)">
+                                    Xem
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4">
+                <div class="text-secondary small">
+                    Hiển thị trang <strong>@PageNumber</strong>/<strong>@TotalPages</strong>,
+                    tổng <strong>@TotalItems</strong> audit logs.
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoPrevious || IsLoading)"
+                            @onclick="PreviousPageAsync">
+                        Trước
+                    </button>
+
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoNext || IsLoading)"
+                            @onclick="NextPageAsync">
+                        Sau
+                    </button>
+                </div>
+            </div>
+        }
     </div>
 </section>
+
+@if (SelectedLog is not null)
+{
+    <section class="card border-0 shadow-sm rounded-4 mt-4">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                <div>
+                    <h2 class="h5 fw-bold mb-1">Chi tiết audit log</h2>
+                    <p class="text-secondary mb-0">
+                        @SelectedLog.EntityName - @SelectedLog.ActionType
+                    </p>
+                </div>
+
+                <button class="btn btn-sm btn-outline-secondary" @onclick="CloseSelectedLog">
+                    Đóng
+                </button>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-md-4">
+                    <div class="border rounded-4 p-3 bg-light h-100">
+                        <div class="text-secondary small">EntityId</div>
+                        <div class="fw-semibold text-break">
+                            @DisplayOrFallback(SelectedLog.EntityId)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <div class="border rounded-4 p-3 bg-light h-100">
+                        <div class="text-secondary small">OccurredAt</div>
+                        <div class="fw-semibold">
+                            @FormatDateTime(SelectedLog.OccurredAt)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <div class="border rounded-4 p-3 bg-light h-100">
+                        <div class="text-secondary small">CorrelationId</div>
+                        <div class="fw-semibold text-break">
+                            @DisplayOrFallback(SelectedLog.CorrelationId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12 col-xl-6">
+                    <h3 class="h6 fw-bold">Old values</h3>
+                    <pre class="bg-light border rounded-4 p-3 small audit-json">@FormatJson(SelectedLog.OldValuesJson)</pre>
+                </div>
+
+                <div class="col-12 col-xl-6">
+                    <h3 class="h6 fw-bold">New values</h3>
+                    <pre class="bg-light border rounded-4 p-3 small audit-json">@FormatJson(SelectedLog.NewValuesJson)</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+}

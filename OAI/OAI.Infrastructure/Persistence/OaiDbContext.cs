@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OAI.Domain.Audit;
 using OAI.Domain.Entities;
 using OAI.Infrastructure.Audit;
 

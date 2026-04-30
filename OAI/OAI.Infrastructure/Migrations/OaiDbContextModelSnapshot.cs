@@ -317,7 +317,7 @@ namespace OAI.Infrastructure.Migrations
 
                             b1.HasKey("InvoiceId");
 
-                            b1.ToTable("Invoices");
+                            b1.ToTable("Invoices", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("InvoiceId");
@@ -340,7 +340,7 @@ namespace OAI.Infrastructure.Migrations
 
                             b1.HasKey("InvoiceId");
 
-                            b1.ToTable("Invoices");
+                            b1.ToTable("Invoices", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("InvoiceId");
@@ -363,7 +363,7 @@ namespace OAI.Infrastructure.Migrations
 
                             b1.HasKey("InvoiceId");
 
-                            b1.ToTable("Invoices");
+                            b1.ToTable("Invoices", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("InvoiceId");
@@ -415,7 +415,7 @@ namespace OAI.Infrastructure.Migrations
 
                             b1.HasKey("InvoiceLineItemId");
 
-                            b1.ToTable("InvoiceLineItems");
+                            b1.ToTable("InvoiceLineItems", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("InvoiceLineItemId");
