@@ -7,7 +7,7 @@ namespace OAI.Domain.Entities;
 
 public sealed class Vendor : Entity
 {
-    public string Name { get; private set; }
+    public string Name { get; private set; } = string.Empty;
     public string? TaxNumber { get; private set; }
     public string? Address { get; private set; }
     public string? Email { get; private set; }
