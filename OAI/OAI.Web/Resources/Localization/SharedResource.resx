@@ -834,4 +834,55 @@
   <data name="FieldMustBeBetween" xml:space="preserve">
     <value>{0} must be between {1} and {2}.</value>
   </data>
+  <data name="Validation.InvoiceTotalMismatch" xml:space="preserve">
+        <value>The declared total amount does not match subtotal plus tax. Subtotal: {Subtotal}, Tax: {Tax}, Total: {Total} {Currency}.</value>
+    </data>
+  <data name="Validation.InvoiceSubtotalMismatch" xml:space="preserve">
+        <value>The declared subtotal does not match the sum of line net amounts.</value>
+    </data>
+  <data name="Validation.InvoiceTaxMismatch" xml:space="preserve">
+        <value>The declared tax amount does not match the sum of line tax amounts.</value>
+    </data>
+  <data name="Validation.InvoiceMissingNumber" xml:space="preserve">
+        <value>The invoice number is missing.</value>
+    </data>
+  <data name="Validation.InvoiceMissingVendor" xml:space="preserve">
+        <value>The vendor information is missing.</value>
+    </data>
+  <data name="Validation.InvoiceMissingIssueDate" xml:space="preserve">
+        <value>The invoice issue date is missing.</value>
+    </data>
+  <data name="Validation.InvoiceMissingLineItems" xml:space="preserve">
+        <value>The invoice does not contain any line items.</value>
+    </data>
+  <data name="Validation.InvoiceLineAmountMismatch" xml:space="preserve">
+        <value>Line {LineNo} amount does not match quantity multiplied by unit price.</value>
+    </data>
+  <data name="Validation.InvoiceDueDateBeforeIssueDate" xml:space="preserve">
+        <value>The due date cannot be earlier than the issue date.</value>
+    </data>
+  <data name="Action.InvoiceUploadProcessed" xml:space="preserve">
+        <value>The invoice was uploaded and processed successfully.</value>
+    </data>
+  <data name="Action.InvoiceUploadFailed" xml:space="preserve">
+        <value>The invoice upload failed.</value>
+    </data>
+  <data name="Action.InvoiceFileStored" xml:space="preserve">
+        <value>The invoice file was stored successfully.</value>
+    </data>
+  <data name="System.OcrExtractionFailed" xml:space="preserve">
+        <value>OCR extraction failed. Please check the uploaded file quality or system logs.</value>
+    </data>
+  <data name="System.InvoiceCreationFailed" xml:space="preserve">
+        <value>Unable to create the invoice record.</value>
+    </data>
+  <data name="System.InvoiceNotFound" xml:space="preserve">
+        <value>The invoice could not be found.</value>
+    </data>
+  <data name="System.InvalidInvoiceStatus" xml:space="preserve">
+        <value>The current invoice status does not allow this action.</value>
+    </data>
+  <data name="System.UnexpectedError" xml:space="preserve">
+        <value>An unexpected error occurred. Please try again or check the system logs.</value>
+    </data>
 </root>

@@ -24,6 +24,9 @@ public partial class Dashboard
     [Inject]
     private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
+    [Inject]
+    private LocalizedMessageResolver LocalizedMessageResolver { get; set; } = default!;
+
     private DashboardSummaryDto? Summary { get; set; }
 
     private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
@@ -116,6 +119,14 @@ public partial class Dashboard
     private string DisplayOrFallback(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
+    }
+
+    private string LocalizeMessage(
+        string? messageCode,
+        IReadOnlyDictionary<string, string>? parameters,
+        string? fallbackMessage)
+    {
+        return LocalizedMessageResolver.Resolve(messageCode, parameters, fallbackMessage);
     }
 
     private string FormatDateTime(DateTimeOffset value)

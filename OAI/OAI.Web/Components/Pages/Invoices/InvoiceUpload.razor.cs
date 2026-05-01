@@ -33,6 +33,9 @@ public partial class InvoiceUpload
     [Inject]
     private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
+    [Inject]
+    private LocalizedMessageResolver LocalizedMessageResolver { get; set; } = default!;
+
     private IBrowserFile? SelectedFile { get; set; }
 
     private string? SelectedFileName { get; set; }
@@ -49,7 +52,7 @@ public partial class InvoiceUpload
 
     private InvoiceUploadResultDto? UploadResult { get; set; }
 
-    protected Task HandleFileSelectedAsync(InputFileChangeEventArgs e)
+    private Task HandleFileSelectedAsync(InputFileChangeEventArgs e)
     {
         ResetMessages();
 
@@ -116,11 +119,17 @@ public partial class InvoiceUpload
 
             if (UploadResult.Status.Equals("Processed", StringComparison.OrdinalIgnoreCase))
             {
-                SuccessMessage = L["InvoiceUploadProcessedSuccessfully"];
+                SuccessMessage = LocalizedMessageResolver.Resolve(
+                    UploadResult.MessageCode,
+                    UploadResult.MessageParameters,
+                    UploadResult.Message);
             }
             else
             {
-                ErrorMessage = UploadResult.Message;
+                ErrorMessage = LocalizedMessageResolver.Resolve(
+                    UploadResult.MessageCode,
+                    UploadResult.MessageParameters,
+                    UploadResult.Message);
             }
 
             Logger.LogInformation(
@@ -175,6 +184,14 @@ public partial class InvoiceUpload
     {
         ErrorMessage = null;
         SuccessMessage = null;
+    }
+
+    private string LocalizeMessage(
+        string? messageCode,
+        IReadOnlyDictionary<string, string>? parameters,
+        string? fallbackMessage)
+    {
+        return LocalizedMessageResolver.Resolve(messageCode, parameters, fallbackMessage);
     }
 
     private static string FormatFileSize(long bytes)

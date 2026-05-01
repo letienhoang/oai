@@ -6,6 +6,7 @@ using OAI.Infrastructure;
 using OAI.Infrastructure.Persistence;
 using OAI.Web.Components;
 using OAI.Web.Endpoints;
+using OAI.Web.Localization;
 using OAI.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,7 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddScoped<UserTimeZoneService>();
+builder.Services.AddScoped<LocalizedMessageResolver>();
 
 var app = builder.Build();
 

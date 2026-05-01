@@ -4,6 +4,7 @@ using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Application.Messaging;
 using OAI.Domain.Entities;
 using OAI.Domain.Exceptions;
 
@@ -58,7 +59,24 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
             throw new DomainException("File stream is invalid.");
         }
 
-        var savedPath = await _fileStorageService.SaveAsync(fileName, fileStream, cancellationToken);
+        string savedPath;
+        try
+        {
+            savedPath = await _fileStorageService.SaveAsync(fileName, fileStream, cancellationToken);
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            _logger.LogError(ex, "Invoice upload failed while storing file {FileName}", fileName);
+
+            return new InvoiceUploadResultDto
+            {
+                InvoiceId = Guid.Empty,
+                FileName = fileName,
+                Status = "Failed",
+                Message = "Invoice upload failed.",
+                MessageCode = ApplicationMessageCodes.InvoiceUploadFailed
+            };
+        }
 
         _logger.LogInformation("Invoice file {FileName} saved to {SavedPath}", fileName, savedPath);
 
@@ -72,7 +90,8 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
                 InvoiceId = Guid.Empty,
                 FileName = fileName,
                 Status = "Failed",
-                Message = "Invoice extraction failed."
+                Message = "Invoice extraction failed.",
+                MessageCode = ApplicationMessageCodes.OcrExtractionFailed
             };
         }
 
@@ -127,7 +146,8 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
                 InvoiceId = Guid.Empty,
                 FileName = fileName,
                 Status = "Failed",
-                Message = ex.Message
+                Message = ex.Message,
+                MessageCode = ApplicationMessageCodes.InvoiceCreationFailed
             };
         }
 
@@ -141,7 +161,8 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
             InvoiceId = createdInvoice.InvoiceId,
             FileName = fileName,
             Status = "Processed",
-            Message = $"Invoice uploaded and processed successfully. Confidence: {extracted.ConfidenceScore:P0}"
+            Message = $"Invoice uploaded and processed successfully. Confidence: {extracted.ConfidenceScore:P0}",
+            MessageCode = ApplicationMessageCodes.InvoiceUploadProcessed
         };
     }
 

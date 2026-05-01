@@ -2,6 +2,7 @@
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.UseCases.Dashboard;
 using OAI.Application.Dashboard.Dtos;
+using OAI.Application.Validation;
 using OAI.Domain.Enums;
 
 namespace OAI.Application.UseCases.Dashboard;
@@ -88,6 +89,8 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
                 RuleCode = issue.RuleCode,
                 FieldName = issue.FieldName,
                 Message = issue.Message,
+                MessageCode = ValidationIssueMessageMapper.GetMessageCode(issue),
+                MessageParameters = ValidationIssueMessageMapper.GetMessageParameters(issue, issue.Invoice),
                 Severity = issue.Severity.ToString(),
                 IsResolved = issue.IsResolved,
                 DetectedAt = issue.DetectedAt

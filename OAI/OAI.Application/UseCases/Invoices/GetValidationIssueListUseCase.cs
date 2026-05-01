@@ -3,6 +3,7 @@ using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Common;
 using OAI.Application.Invoices.Dtos;
+using OAI.Application.Validation;
 using OAI.Domain.Exceptions;
 
 namespace OAI.Application.UseCases.Invoices;
@@ -64,6 +65,8 @@ public sealed class GetValidationIssueListUseCase : IGetValidationIssueListUseCa
                 FieldName = issue.FieldName,
                 RuleCode = issue.RuleCode,
                 Message = issue.Message,
+                MessageCode = ValidationIssueMessageMapper.GetMessageCode(issue),
+                MessageParameters = ValidationIssueMessageMapper.GetMessageParameters(issue, issue.Invoice),
                 Severity = issue.Severity.ToString(),
                 IsResolved = issue.IsResolved,
                 DetectedAt = issue.DetectedAt

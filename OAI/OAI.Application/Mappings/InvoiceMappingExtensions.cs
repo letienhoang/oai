@@ -1,4 +1,5 @@
-﻿using OAI.Application.Invoices.Dtos;
+using OAI.Application.Invoices.Dtos;
+using OAI.Application.Validation;
 using OAI.Domain.Entities;
 
 namespace OAI.Application.Mappings;
@@ -27,7 +28,7 @@ public static class InvoiceMappingExtensions
                 .ToList(),
             ValidationIssues = invoice.ValidationIssues
                 .OrderBy(x => x.DetectedAt)
-                .Select(x => x.ToDto())
+                .Select(x => x.ToDto(invoice))
                 .ToList(),
             ExtractionResults = invoice.ExtractionResults
                 .OrderByDescending(x => x.ExtractedAt)
@@ -35,7 +36,7 @@ public static class InvoiceMappingExtensions
                 .ToList()
         };
     }
-    
+
     public static InvoiceListItemDto ToListItemDto(this Invoice invoice)
     {
         return new InvoiceListItemDto
@@ -67,7 +68,7 @@ public static class InvoiceMappingExtensions
         };
     }
 
-    private static ValidationIssueDto ToDto(this ValidationIssue issue)
+    private static ValidationIssueDto ToDto(this ValidationIssue issue, Invoice? invoice = null)
     {
         return new ValidationIssueDto
         {
@@ -75,6 +76,8 @@ public static class InvoiceMappingExtensions
             FieldName = issue.FieldName,
             RuleCode = issue.RuleCode,
             Message = issue.Message,
+            MessageCode = ValidationIssueMessageMapper.GetMessageCode(issue),
+            MessageParameters = ValidationIssueMessageMapper.GetMessageParameters(issue, invoice),
             Severity = issue.Severity.ToString(),
             IsResolved = issue.IsResolved,
             DetectedAt = issue.DetectedAt,

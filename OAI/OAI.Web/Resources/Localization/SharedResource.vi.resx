@@ -834,4 +834,55 @@
   <data name="FieldMustBeBetween" xml:space="preserve">
     <value>{0} phải nằm trong khoảng {1} đến {2}.</value>
   </data>
+  <data name="Validation.InvoiceTotalMismatch" xml:space="preserve">
+        <value>Tổng tiền khai báo không khớp với subtotal cộng thuế. Subtotal: {Subtotal}, Thuế: {Tax}, Tổng: {Total} {Currency}.</value>
+    </data>
+  <data name="Validation.InvoiceSubtotalMismatch" xml:space="preserve">
+        <value>Subtotal khai báo không khớp với tổng net amount của các dòng hàng.</value>
+    </data>
+  <data name="Validation.InvoiceTaxMismatch" xml:space="preserve">
+        <value>Tiền thuế khai báo không khớp với tổng tiền thuế của các dòng hàng.</value>
+    </data>
+  <data name="Validation.InvoiceMissingNumber" xml:space="preserve">
+        <value>Hóa đơn chưa có số hóa đơn.</value>
+    </data>
+  <data name="Validation.InvoiceMissingVendor" xml:space="preserve">
+        <value>Hóa đơn chưa có thông tin nhà cung cấp.</value>
+    </data>
+  <data name="Validation.InvoiceMissingIssueDate" xml:space="preserve">
+        <value>Hóa đơn chưa có ngày phát hành.</value>
+    </data>
+  <data name="Validation.InvoiceMissingLineItems" xml:space="preserve">
+        <value>Hóa đơn chưa có dòng hàng nào.</value>
+    </data>
+  <data name="Validation.InvoiceLineAmountMismatch" xml:space="preserve">
+        <value>Dòng {LineNo} có số tiền không khớp với số lượng nhân đơn giá.</value>
+    </data>
+  <data name="Validation.InvoiceDueDateBeforeIssueDate" xml:space="preserve">
+        <value>Ngày đến hạn không được nhỏ hơn ngày phát hành.</value>
+    </data>
+  <data name="Action.InvoiceUploadProcessed" xml:space="preserve">
+        <value>Hóa đơn đã được upload và xử lý thành công.</value>
+    </data>
+  <data name="Action.InvoiceUploadFailed" xml:space="preserve">
+        <value>Upload hóa đơn thất bại.</value>
+    </data>
+  <data name="Action.InvoiceFileStored" xml:space="preserve">
+        <value>File hóa đơn đã được lưu thành công.</value>
+    </data>
+  <data name="System.OcrExtractionFailed" xml:space="preserve">
+        <value>Trích xuất OCR thất bại. Vui lòng kiểm tra chất lượng file upload hoặc log hệ thống.</value>
+    </data>
+  <data name="System.InvoiceCreationFailed" xml:space="preserve">
+        <value>Không thể tạo bản ghi hóa đơn.</value>
+    </data>
+  <data name="System.InvoiceNotFound" xml:space="preserve">
+        <value>Không tìm thấy hóa đơn.</value>
+    </data>
+  <data name="System.InvalidInvoiceStatus" xml:space="preserve">
+        <value>Trạng thái hiện tại của hóa đơn không cho phép thực hiện thao tác này.</value>
+    </data>
+  <data name="System.UnexpectedError" xml:space="preserve">
+        <value>Đã xảy ra lỗi không mong muốn. Vui lòng thử lại hoặc kiểm tra log hệ thống.</value>
+    </data>
 </root>

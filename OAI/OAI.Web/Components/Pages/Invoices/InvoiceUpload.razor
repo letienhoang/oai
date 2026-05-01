@@ -25,7 +25,7 @@
                         @L["SupportedImageFormats"]
                     </p>
 
-                    <InputFile OnChange="HandleFileSelectedAsync"
+                    <InputFile OnChange="@HandleFileSelectedAsync"
                                accept=".jpg,.jpeg,.png,.tif,.tiff"
                                class="form-control" />
                 </div>
@@ -122,7 +122,7 @@
                         </dd>
 
                         <dt class="col-5">@L["Message"]</dt>
-                        <dd class="col-7">@UploadResult.Message</dd>
+                                <dd class="col-7">@LocalizeMessage(UploadResult.MessageCode, UploadResult.MessageParameters, UploadResult.Message)</dd>
                     </dl>
 
                     @if (UploadResult.InvoiceId != Guid.Empty)

@@ -334,7 +334,7 @@ else
                                     </div>
 
                                     <div class="fw-semibold">@issue.RuleCode - @issue.FieldName</div>
-                                    <div class="text-secondary small">@issue.Message</div>
+                                    <div class="text-secondary small">@LocalizeMessage(issue.MessageCode, issue.MessageParameters, issue.Message)</div>
                                     <div class="text-secondary small mt-1">
                                         @FormatDateTime(issue.DetectedAt)
                                     </div>

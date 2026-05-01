@@ -2,6 +2,7 @@
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Application.Validation;
 using OAI.Domain.Enums;
 using OAI.Domain.Exceptions;
 
@@ -59,6 +60,8 @@ public sealed class ValidateInvoiceUseCase : IValidateInvoiceUseCase
                 FieldName = x.FieldName,
                 RuleCode = x.RuleCode,
                 Message = x.Message,
+                MessageCode = ValidationIssueMessageMapper.GetMessageCode(x),
+                MessageParameters = ValidationIssueMessageMapper.GetMessageParameters(x, invoice),
                 Severity = x.Severity.ToString(),
                 IsResolved = x.IsResolved,
                 DetectedAt = x.DetectedAt,

@@ -27,6 +27,9 @@ public partial class InvoiceValidation
     [Inject]
     private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
+    [Inject]
+    private LocalizedMessageResolver LocalizedMessageResolver { get; set; } = default!;
+
     private List<ValidationIssueListItemDto> Issues { get; set; } = new();
 
     private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
@@ -121,6 +124,14 @@ public partial class InvoiceValidation
     private string DisplayOrFallback(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
+    }
+
+    private string LocalizeMessage(
+        string? messageCode,
+        IReadOnlyDictionary<string, string>? parameters,
+        string? fallbackMessage)
+    {
+        return LocalizedMessageResolver.Resolve(messageCode, parameters, fallbackMessage);
     }
 
     private static string GetSeverityBadgeClass(string severity)
