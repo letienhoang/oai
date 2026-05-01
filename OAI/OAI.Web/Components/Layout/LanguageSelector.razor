@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<SharedResource> L
+
+<div class="dropdown">
+    <button class="btn btn-outline-secondary btn-sm dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+        @L["Language"]: @CurrentCultureLabel
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+            <button type="button"
+                    class="dropdown-item"
+                    disabled="@IsCurrentCulture("en")"
+                    @onclick='() => ChangeCulture("en")'>
+                @L["English"]
+            </button>
+        </li>
+        <li>
+            <button type="button"
+                    class="dropdown-item"
+                    disabled="@IsCurrentCulture("vi")"
+                    @onclick='() => ChangeCulture("vi")'>
+                @L["Vietnamese"]
+            </button>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private string CurrentCultureName => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+
+    private string CurrentCultureLabel => CurrentCultureName switch
+    {
+        "vi" => "VI",
+        _ => "EN"
+    };
+
+    private bool IsCurrentCulture(string culture)
+    {
+        return string.Equals(CurrentCultureName, culture, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void ChangeCulture(string culture)
+    {
+        var currentUri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        var returnUrl = "/" + currentUri;
+
+        if (returnUrl == "/")
+        {
+            returnUrl = "/";
+        }
+
+        var url = QueryHelpers.AddQueryString(
+            "/culture/set",
+            new Dictionary<string, string?>
+            {
+                ["culture"] = culture,
+                ["returnUrl"] = returnUrl
+            });
+
+        NavigationManager.NavigateTo(url, forceLoad: true);
+    }
+}
