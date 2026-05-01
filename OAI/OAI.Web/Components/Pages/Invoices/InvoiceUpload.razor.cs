@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+using System.Globalization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Invoices.Dtos;
+using OAI.Web.Localization;
 
 namespace OAI.Web.Components.Pages.Invoices;
 
@@ -26,6 +29,9 @@ public partial class InvoiceUpload
 
     [Inject]
     private ILogger<InvoiceUpload> Logger { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
     private IBrowserFile? SelectedFile { get; set; }
 
@@ -52,7 +58,7 @@ public partial class InvoiceUpload
 
         if (SelectedFile is null)
         {
-            ErrorMessage = "Vui lòng chọn một file hóa đơn.";
+            ErrorMessage = L["PleaseSelectInvoiceFile"];
             return Task.CompletedTask;
         }
 
@@ -63,14 +69,17 @@ public partial class InvoiceUpload
 
         if (!AllowedExtensions.Contains(extension))
         {
-            ErrorMessage = "Định dạng file chưa được hỗ trợ. Vui lòng chọn JPG, JPEG, PNG, TIF hoặc TIFF.";
+            ErrorMessage = L["UnsupportedInvoiceFileFormat"];
             SelectedFile = null;
             return Task.CompletedTask;
         }
 
         if (SelectedFile.Size > MaxFileSize)
         {
-            ErrorMessage = $"File vượt quá dung lượng cho phép ({FormatFileSize(MaxFileSize)}).";
+            ErrorMessage = string.Format(
+                CultureInfo.CurrentCulture,
+                L["FileSizeExceeded"],
+                FormatFileSize(MaxFileSize));
             SelectedFile = null;
             return Task.CompletedTask;
         }
@@ -87,7 +96,7 @@ public partial class InvoiceUpload
     {
         if (SelectedFile is null)
         {
-            ErrorMessage = "Vui lòng chọn file trước khi upload.";
+            ErrorMessage = L["PleaseSelectFileBeforeUpload"];
             return;
         }
 
@@ -107,7 +116,7 @@ public partial class InvoiceUpload
 
             if (UploadResult.Status.Equals("Processed", StringComparison.OrdinalIgnoreCase))
             {
-                SuccessMessage = "Upload và xử lý hóa đơn thành công. Hóa đơn đang ở trạng thái chờ kiểm tra.";
+                SuccessMessage = L["InvoiceUploadProcessedSuccessfully"];
             }
             else
             {
@@ -122,7 +131,7 @@ public partial class InvoiceUpload
         }
         catch (Exception ex)
         {
-            ErrorMessage = "Đã xảy ra lỗi khi upload và xử lý hóa đơn. Vui lòng kiểm tra log để biết thêm chi tiết.";
+            ErrorMessage = L["InvoiceUploadFailed"];
 
             Logger.LogError(
                 ex,

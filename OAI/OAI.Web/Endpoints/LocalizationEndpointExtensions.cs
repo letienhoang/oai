@@ -25,6 +25,7 @@ public static class LocalizationEndpointExtensions
                 {
                     Expires = DateTimeOffset.UtcNow.AddYears(1),
                     IsEssential = true,
+                    Path = "/",
                     SameSite = SameSiteMode.Lax
                 });
 

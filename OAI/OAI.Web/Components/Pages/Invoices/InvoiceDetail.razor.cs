@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Web.Localization;
 using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages.Invoices;
@@ -18,18 +20,21 @@ public partial class InvoiceDetail
 
     [Inject]
     private ILogger<InvoiceDetail> Logger { get; set; } = default!;
-    
+
     [Inject]
     private UserTimeZoneService UserTimeZoneService { get; set; } = default!;
-    
+
     [Inject]
     private IApproveInvoiceUseCase ApproveInvoiceUseCase { get; set; } = default!;
-    
+
     [Inject]
     private IRejectInvoiceUseCase RejectInvoiceUseCase { get; set; } = default!;
 
     [Inject]
     private IMoveInvoiceToPendingReviewUseCase MoveInvoiceToPendingReviewUseCase { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
     private InvoiceDetailDto? Invoice { get; set; }
 
@@ -38,7 +43,7 @@ public partial class InvoiceDetail
     private bool IsLoading { get; set; }
 
     private string? ErrorMessage { get; set; }
-    
+
     private bool IsApproving { get; set; }
 
     private string? SuccessMessage { get; set; }
@@ -51,7 +56,7 @@ public partial class InvoiceDetail
         !Invoice.ValidationIssues.Any(x =>
             string.Equals(x.Severity, "Error", StringComparison.OrdinalIgnoreCase) &&
             !x.IsResolved);
-    
+
     private bool IsRejecting { get; set; }
 
     private bool IsMovingToPendingReview { get; set; }
@@ -90,9 +95,9 @@ public partial class InvoiceDetail
         return $"{amount:N0} {currency}";
     }
 
-    private static string DisplayOrFallback(string? value)
+    private string DisplayOrFallback(string? value)
     {
-        return string.IsNullOrWhiteSpace(value) ? "Chưa có" : value;
+        return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
     }
 
     private string FormatDateTime(DateTimeOffset value)
@@ -129,7 +134,7 @@ public partial class InvoiceDetail
     {
         NavigationManager.NavigateTo($"/invoices/{InvoiceId}/edit");
     }
-    
+
     private void GoToCompare()
     {
         NavigationManager.NavigateTo($"/invoices/{InvoiceId}/compare");
@@ -158,7 +163,7 @@ public partial class InvoiceDetail
         catch (Exception ex)
         {
             Invoice = null;
-            ErrorMessage = "Không thể tải chi tiết hóa đơn. Vui lòng kiểm tra log để biết thêm chi tiết.";
+            ErrorMessage = L["InvoiceDetailLoadFailed"];
 
             Logger.LogError(ex, "Failed to load invoice detail. InvoiceId: {InvoiceId}", InvoiceId);
         }
@@ -167,7 +172,7 @@ public partial class InvoiceDetail
             IsLoading = false;
         }
     }
-    
+
     private async Task ApproveAsync()
     {
         if (Invoice is null)
@@ -189,7 +194,7 @@ public partial class InvoiceDetail
                     InvoiceId = Invoice.InvoiceId
                 });
 
-            SuccessMessage = "Hóa đơn đã được xác nhận thành công.";
+            SuccessMessage = L["InvoiceApprovedSuccessfully"];
 
             Logger.LogInformation(
                 "Invoice approved from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
@@ -200,7 +205,7 @@ public partial class InvoiceDetail
         }
         catch (Exception ex)
         {
-            ActionErrorMessage = "Không thể xác nhận hóa đơn. Vui lòng kiểm tra lỗi validation hoặc log hệ thống.";
+            ActionErrorMessage = L["InvoiceApproveFailed"];
 
             Logger.LogError(
                 ex,
@@ -212,7 +217,7 @@ public partial class InvoiceDetail
             IsApproving = false;
         }
     }
-    
+
     private async Task RejectAsync()
     {
         if (Invoice is null)
@@ -234,7 +239,7 @@ public partial class InvoiceDetail
                     InvoiceId = Invoice.InvoiceId
                 });
 
-            SuccessMessage = "Hóa đơn đã được từ chối.";
+            SuccessMessage = L["InvoiceRejectedSuccessfully"];
 
             Logger.LogInformation(
                 "Invoice rejected from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
@@ -245,7 +250,7 @@ public partial class InvoiceDetail
         }
         catch (Exception ex)
         {
-            ActionErrorMessage = "Không thể từ chối hóa đơn. Vui lòng kiểm tra log hệ thống.";
+            ActionErrorMessage = L["InvoiceRejectFailed"];
 
             Logger.LogError(
                 ex,
@@ -257,7 +262,7 @@ public partial class InvoiceDetail
             IsRejecting = false;
         }
     }
-    
+
     private async Task MoveToPendingReviewAsync()
     {
         if (Invoice is null)
@@ -279,7 +284,7 @@ public partial class InvoiceDetail
                     InvoiceId = Invoice.InvoiceId
                 });
 
-            SuccessMessage = "Hóa đơn đã được đưa về trạng thái chờ kiểm tra.";
+            SuccessMessage = L["InvoiceMovedToPendingReviewSuccessfully"];
 
             Logger.LogInformation(
                 "Invoice moved to pending review from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
@@ -290,7 +295,7 @@ public partial class InvoiceDetail
         }
         catch (Exception ex)
         {
-            ActionErrorMessage = "Không thể đưa hóa đơn về trạng thái chờ kiểm tra. Vui lòng kiểm tra log hệ thống.";
+            ActionErrorMessage = L["InvoiceMoveToPendingReviewFailed"];
 
             Logger.LogError(
                 ex,
@@ -302,7 +307,7 @@ public partial class InvoiceDetail
             IsMovingToPendingReview = false;
         }
     }
-    
+
     private bool CanShowApproveButton =>
         Invoice is not null &&
         string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase) &&
@@ -319,7 +324,7 @@ public partial class InvoiceDetail
         Invoice is not null &&
         !string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase) &&
         !string.Equals(Invoice.Status, "Exported", StringComparison.OrdinalIgnoreCase);
-    
+
     private bool CanShowEditButton =>
         Invoice is not null &&
         !string.Equals(Invoice.Status, "Exported", StringComparison.OrdinalIgnoreCase);

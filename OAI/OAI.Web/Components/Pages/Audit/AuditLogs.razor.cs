@@ -1,8 +1,10 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Audit;
 using OAI.Application.Audit.Dtos;
+using OAI.Web.Localization;
 using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages.Audit;
@@ -19,6 +21,9 @@ public partial class AuditLogs
 
     [Inject]
     private ILogger<AuditLogs> Logger { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
     private List<AuditLogListItemDto> Logs { get; set; } = new();
 
@@ -157,7 +162,7 @@ public partial class AuditLogs
             TotalItems = 0;
             TotalPages = 0;
             SelectedLog = null;
-            ErrorMessage = "Không thể tải audit logs. Vui lòng kiểm tra log để biết thêm chi tiết.";
+            ErrorMessage = L["AuditLogsLoadFailed"];
 
             Logger.LogError(ex, "Failed to load audit logs.");
         }
@@ -173,9 +178,9 @@ public partial class AuditLogs
         return localTime.ToString("dd/MM/yyyy HH:mm:ss");
     }
 
-    private static string DisplayOrFallback(string? value)
+    private string DisplayOrFallback(string? value)
     {
-        return string.IsNullOrWhiteSpace(value) ? "N/A" : value;
+        return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
     }
 
     private static string GetActionBadgeClass(string actionType)
@@ -193,10 +198,10 @@ public partial class AuditLogs
         };
     }
 
-    private static string FormatJson(string? json)
+    private string FormatJson(string? json)
     {
         if (string.IsNullOrWhiteSpace(json))
-            return "N/A";
+            return L["NotAvailable"];
 
         try
         {

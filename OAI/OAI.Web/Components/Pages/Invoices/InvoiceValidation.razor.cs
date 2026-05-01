@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Web.Localization;
 using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages.Invoices;
@@ -18,12 +20,15 @@ public partial class InvoiceValidation
 
     [Inject]
     private ILogger<InvoiceValidation> Logger { get; set; } = default!;
-    
+
     [Inject]
     private UserTimeZoneService UserTimeZoneService { get; set; } = default!;
 
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
+
     private List<ValidationIssueListItemDto> Issues { get; set; } = new();
-    
+
     private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
 
     private string? Keyword { get; set; }
@@ -113,9 +118,9 @@ public partial class InvoiceValidation
         NavigationManager.NavigateTo($"/invoices/{invoiceId}");
     }
 
-    private static string DisplayOrFallback(string? value)
+    private string DisplayOrFallback(string? value)
     {
-        return string.IsNullOrWhiteSpace(value) ? "Chưa có" : value;
+        return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
     }
 
     private static string GetSeverityBadgeClass(string severity)
@@ -170,7 +175,7 @@ public partial class InvoiceValidation
             Issues.Clear();
             TotalItems = 0;
             TotalPages = 0;
-            ErrorMessage = "Không thể tải danh sách lỗi kiểm tra. Vui lòng kiểm tra log để biết thêm chi tiết.";
+            ErrorMessage = L["ValidationIssueListLoadFailed"];
 
             Logger.LogError(ex, "Failed to load validation issues.");
         }
@@ -179,7 +184,7 @@ public partial class InvoiceValidation
             IsLoading = false;
         }
     }
-    
+
     private string FormatDateTime(DateTimeOffset value)
     {
         var localTime = TimeZoneInfo.ConvertTime(value, UserTimeZone);

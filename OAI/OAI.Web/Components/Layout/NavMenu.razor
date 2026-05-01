@@ -1,54 +1,55 @@
-﻿<nav class="nav-menu p-3">
+﻿@inject IStringLocalizer<SharedResource> L
+<nav class="nav-menu p-3">
     <div class="d-flex align-items-center gap-3 mb-4 p-2">
         <div class="brand-logo rounded-3 bg-primary text-white d-grid place-items-center fw-bold">
             OAI
         </div>
 
         <div>
-            <div class="fw-bold text-white">Invoice System</div>
-            <div class="small text-secondary">Graduation Thesis</div>
+            <div class="fw-bold text-white">@L["InvoiceSystem"]</div>
+            <div class="small text-secondary">@L["GraduationThesis"]</div>
         </div>
     </div>
 
     <div class="mb-4">
-        <div class="nav-section-title">Overview</div>
+        <div class="nav-section-title">@L["Overview"]</div>
 
         <NavLink class="nav-link app-nav-link" href="/" Match="NavLinkMatch.All">
             <span class="nav-icon">📊</span>
-            <span>Dashboard</span>
+            <span>@L["Dashboard"]</span>
         </NavLink>
     </div>
 
     <div class="mb-4">
-        <div class="nav-section-title">Invoices</div>
+        <div class="nav-section-title">@L["Invoices"]</div>
 
         <NavLink class="nav-link app-nav-link" href="/invoices/upload">
             <span class="nav-icon">⬆️</span>
-            <span>Upload hóa đơn</span>
+            <span>@L["UploadInvoice"]</span>
         </NavLink>
 
         <NavLink class="nav-link app-nav-link" href="/invoices">
             <span class="nav-icon">🧾</span>
-            <span>Danh sách hóa đơn</span>
+            <span>@L["InvoiceList"]</span>
         </NavLink>
 
         <NavLink class="nav-link app-nav-link" href="/invoices/validation">
             <span class="nav-icon">✅</span>
-            <span>Kiểm tra dữ liệu</span>
+            <span>@L["DataValidation"]</span>
         </NavLink>
     </div>
 
     <div>
-        <div class="nav-section-title">System</div>
+        <div class="nav-section-title">@L["System"]</div>
 
         <NavLink class="nav-link app-nav-link" href="/audit-logs">
             <span class="nav-icon">🕘</span>
-            <span>Audit logs</span>
+            <span>@L["AuditLogs"]</span>
         </NavLink>
 
         <NavLink class="nav-link app-nav-link" href="/settings">
             <span class="nav-icon">⚙️</span>
-            <span>Cấu hình</span>
+            <span>@L["Settings"]</span>
         </NavLink>
     </div>
 </nav>

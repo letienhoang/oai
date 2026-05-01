@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
 using OAI.Web.Components.Pages.Invoices.Models;
+using OAI.Web.Localization;
+using System.Globalization;
 
 namespace OAI.Web.Components.Pages.Invoices;
 
@@ -22,7 +26,14 @@ public partial class InvoiceEdit
     [Inject]
     private ILogger<InvoiceEdit> Logger { get; set; } = default!;
 
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
+
     protected InvoiceEditFormModel EditModel { get; private set; } = new();
+
+    private EditContext EditContext { get; set; } = default!;
+
+    private ValidationMessageStore ValidationMessageStore { get; set; } = default!;
 
     private bool IsLoading { get; set; }
 
@@ -36,6 +47,8 @@ public partial class InvoiceEdit
 
     protected override async Task OnParametersSetAsync()
     {
+        EnsureEditContext();
+
         await LoadInvoiceAsync();
     }
 
@@ -46,13 +59,13 @@ public partial class InvoiceEdit
 
         if (!Guid.TryParse(EditModel.VendorIdText, out var vendorId))
         {
-            FormErrorMessage = "VendorId không hợp lệ.";
+            FormErrorMessage = L["InvalidVendorId"];
             return;
         }
 
         if (EditModel.LineItems.Count == 0)
         {
-            FormErrorMessage = "Hóa đơn phải có ít nhất một dòng hàng.";
+            FormErrorMessage = L["InvoiceMustHaveAtLeastOneLineItem"];
             return;
         }
 
@@ -89,7 +102,7 @@ public partial class InvoiceEdit
 
             var updated = await UpdateInvoiceUseCase.ExecuteAsync(request);
 
-            SuccessMessage = "Lưu hóa đơn thành công. Hệ thống đã kiểm tra lại tính nhất quán dữ liệu.";
+            SuccessMessage = L["InvoiceSavedAndRevalidatedSuccessfully"];
 
             Logger.LogInformation(
                 "Invoice edit form saved successfully. InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}",
@@ -100,7 +113,7 @@ public partial class InvoiceEdit
         }
         catch (Exception ex)
         {
-            FormErrorMessage = "Không thể lưu hóa đơn. Vui lòng kiểm tra dữ liệu hoặc xem log để biết thêm chi tiết.";
+            FormErrorMessage = L["InvoiceSaveFailed"];
 
             Logger.LogError(ex, "Failed to save invoice edit form. InvoiceId: {InvoiceId}", EditModel.InvoiceId);
         }
@@ -184,6 +197,7 @@ public partial class InvoiceEdit
                     })
                     .ToList()
             };
+            ConfigureEditContext();
 
             if (EditModel.LineItems.Count == 0)
             {
@@ -192,7 +206,7 @@ public partial class InvoiceEdit
         }
         catch (Exception ex)
         {
-            ErrorMessage = "Không thể tải dữ liệu hóa đơn để chỉnh sửa.";
+            ErrorMessage = L["InvoiceEditLoadFailed"];
 
             Logger.LogError(ex, "Failed to load invoice for edit. InvoiceId: {InvoiceId}", InvoiceId);
         }
@@ -200,5 +214,103 @@ public partial class InvoiceEdit
         {
             IsLoading = false;
         }
+    }
+
+    private void EnsureEditContext()
+    {
+        if (EditContext is null)
+        {
+            ConfigureEditContext();
+        }
+    }
+
+    private void ConfigureEditContext()
+    {
+        EditContext = new EditContext(EditModel);
+        ValidationMessageStore = new ValidationMessageStore(EditContext);
+
+        EditContext.OnValidationRequested += (_, _) => ValidateEditModel();
+        EditContext.OnFieldChanged += (_, _) =>
+        {
+            ValidateEditModel();
+            EditContext.NotifyValidationStateChanged();
+        };
+    }
+
+    private void ValidateEditModel()
+    {
+        ValidationMessageStore.Clear();
+
+        AddRequiredMessageIfEmpty(nameof(InvoiceEditFormModel.VendorIdText), "VendorId");
+        AddRequiredMessageIfEmpty(nameof(InvoiceEditFormModel.InvoiceNumber), "InvoiceNumber");
+        AddRequiredMessageIfEmpty(nameof(InvoiceEditFormModel.Currency), "Currency");
+
+        foreach (var item in EditModel.LineItems)
+        {
+            AddRequiredMessageIfEmpty(item, nameof(InvoiceLineItemEditFormModel.Description), "Description");
+
+            if (item.Quantity < 0.0001m)
+            {
+                AddValidationMessage(
+                    item,
+                    nameof(InvoiceLineItemEditFormModel.Quantity),
+                    "FieldMustBeGreaterThanZero",
+                    "Quantity");
+            }
+
+            if (item.UnitPrice < 0)
+            {
+                AddValidationMessage(
+                    item,
+                    nameof(InvoiceLineItemEditFormModel.UnitPrice),
+                    "FieldMustBeNonNegative",
+                    "UnitPrice");
+            }
+
+            if (item.TaxRate < 0 || item.TaxRate > 100)
+            {
+                AddValidationMessage(
+                    item,
+                    nameof(InvoiceLineItemEditFormModel.TaxRate),
+                    "FieldMustBeBetween",
+                    "TaxRate",
+                    "0",
+                    "100");
+            }
+        }
+    }
+
+    private void AddRequiredMessageIfEmpty(string fieldName, string labelKey)
+    {
+        var value = fieldName switch
+        {
+            nameof(InvoiceEditFormModel.VendorIdText) => EditModel.VendorIdText,
+            nameof(InvoiceEditFormModel.InvoiceNumber) => EditModel.InvoiceNumber,
+            nameof(InvoiceEditFormModel.Currency) => EditModel.Currency,
+            _ => string.Empty
+        };
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            AddValidationMessage(EditModel, fieldName, "RequiredFieldValidation", labelKey);
+        }
+    }
+
+    private void AddRequiredMessageIfEmpty(InvoiceLineItemEditFormModel item, string fieldName, string labelKey)
+    {
+        if (fieldName == nameof(InvoiceLineItemEditFormModel.Description) &&
+            string.IsNullOrWhiteSpace(item.Description))
+        {
+            AddValidationMessage(item, fieldName, "RequiredFieldValidation", labelKey);
+        }
+    }
+
+    private void AddValidationMessage(object model, string fieldName, string messageKey, string labelKey, params object[] arguments)
+    {
+        var label = L[labelKey].Value;
+        var formatArguments = new object[] { label }.Concat(arguments).ToArray();
+        var message = string.Format(CultureInfo.CurrentCulture, L[messageKey].Value, formatArguments);
+
+        ValidationMessageStore.Add(new FieldIdentifier(model, fieldName), message);
     }
 }

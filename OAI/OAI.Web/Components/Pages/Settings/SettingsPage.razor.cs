@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.System;
 using OAI.Application.System.Dtos;
+using OAI.Web.Localization;
 
 namespace OAI.Web.Components.Pages.Settings;
 
@@ -11,6 +13,9 @@ public partial class SettingsPage
 
     [Inject]
     private ILogger<SettingsPage> Logger { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
     private SystemSettingsDto? Settings { get; set; }
 
@@ -44,7 +49,7 @@ public partial class SettingsPage
         catch (Exception ex)
         {
             Settings = null;
-            ErrorMessage = "Không thể tải cấu hình hệ thống. Vui lòng kiểm tra log để biết thêm chi tiết.";
+            ErrorMessage = L["SystemSettingsLoadFailed"];
 
             Logger.LogError(ex, "Failed to load system settings.");
         }

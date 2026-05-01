@@ -30,28 +30,4 @@
         </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <EmbeddedResource Update="Resources\SharedResource.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>SharedResource.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\SharedResource.vi.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>SharedResource.vi.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Resources\SharedResource.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>SharedResource.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\SharedResource.vi.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>SharedResource.vi.resx</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
 </Project>

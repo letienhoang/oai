@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Web.Localization;
 
 namespace OAI.Web.Components.Pages.Invoices;
 
@@ -17,6 +19,9 @@ public partial class InvoiceList
 
     [Inject]
     private ILogger<InvoiceList> Logger { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
     private List<InvoiceListItemDto> Invoices { get; set; } = new();
 
@@ -142,7 +147,7 @@ public partial class InvoiceList
         }
         catch (Exception ex)
         {
-            ErrorMessage = "Không thể tải danh sách hóa đơn. Vui lòng kiểm tra log để biết thêm chi tiết.";
+            ErrorMessage = L["InvoiceListLoadFailed"];
             Invoices.Clear();
             TotalItems = 0;
             TotalPages = 0;

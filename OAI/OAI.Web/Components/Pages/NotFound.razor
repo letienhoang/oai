@@ -1,17 +1,18 @@
-﻿@page "/not-found"
+@page "/not-found"
 @layout MainLayout
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>Không tìm thấy trang - OAI</PageTitle>
+<PageTitle>@L["PageNotFoundTitle"]</PageTitle>
 
 <section class="card border-0 shadow-sm rounded-4">
     <div class="card-body p-5">
-        <h1 class="fw-bold text-danger mb-3">404 - Không tìm thấy trang</h1>
+        <h1 class="fw-bold text-danger mb-3">@L["PageNotFoundHeading"]</h1>
         <p class="text-secondary">
-            Trang bạn đang truy cập không tồn tại hoặc đã bị thay đổi.
+            @L["PageNotFoundDescription"]
         </p>
 
         <a class="btn btn-primary" href="/">
-            Quay về Dashboard
+            @L["BackToDashboard"]
         </a>
     </div>
 </section>

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos.ExtractionComparison;
+using OAI.Web.Localization;
 
 namespace OAI.Web.Components.Pages.Invoices;
 
@@ -17,6 +19,9 @@ public partial class InvoiceExtractionCompare
 
     [Inject]
     private ILogger<InvoiceExtractionCompare> Logger { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
     private InvoiceExtractionComparisonDto? Comparison { get; set; }
 
@@ -63,7 +68,7 @@ public partial class InvoiceExtractionCompare
         catch (Exception ex)
         {
             Comparison = null;
-            ErrorMessage = "Không thể so sánh kết quả trích xuất. Vui lòng kiểm tra log để biết thêm chi tiết.";
+            ErrorMessage = L["ExtractionComparisonLoadFailed"];
 
             Logger.LogError(
                 ex,
@@ -76,20 +81,20 @@ public partial class InvoiceExtractionCompare
         }
     }
 
-    private static string DisplayOrFallback(string? value)
+    private string DisplayOrFallback(string? value)
     {
-        return string.IsNullOrWhiteSpace(value) ? "Chưa có" : value;
+        return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
     }
 
-    private static string FormatDate(DateOnly? value)
+    private string FormatDate(DateOnly? value)
     {
-        return value?.ToString("dd/MM/yyyy") ?? "Chưa có";
+        return value?.ToString("dd/MM/yyyy") ?? L["NotAvailable"];
     }
 
-    private static string FormatMoney(decimal? amount, string currency)
+    private string FormatMoney(decimal? amount, string currency)
     {
         if (amount is null)
-            return "Chưa có";
+            return L["NotAvailable"];
 
         if (string.IsNullOrWhiteSpace(currency))
             currency = "VND";

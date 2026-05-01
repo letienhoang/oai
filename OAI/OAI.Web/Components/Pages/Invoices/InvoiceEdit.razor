@@ -1,20 +1,20 @@
-﻿@page "/invoices/{InvoiceId:guid}/edit"
+@page "/invoices/{InvoiceId:guid}/edit"
 @rendermode InteractiveServer
 
-<PageTitle>Chỉnh sửa hóa đơn - OAI</PageTitle>
+<PageTitle>@L["EditInvoicePageTitle"]</PageTitle>
 
 <section class="mb-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
         <div>
-            <h1 class="fw-bold mb-1">Chỉnh sửa dữ liệu hóa đơn</h1>
+            <h1 class="fw-bold mb-1">@L["EditInvoiceTitle"]</h1>
             <p class="text-secondary mb-0">
-                Sửa lại dữ liệu được trích xuất từ OCR/AI, sau đó hệ thống sẽ kiểm tra tính nhất quán lại.
+                @L["EditInvoiceSubtitle"]
             </p>
         </div>
 
         <div class="d-flex gap-2 align-items-start">
             <button class="btn btn-outline-secondary" @onclick="GoBack" disabled="@IsSaving">
-                Quay lại
+                @L["Back"]
             </button>
         </div>
     </div>
@@ -25,7 +25,7 @@
     <section class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-5 text-center">
             <div class="spinner-border text-primary" role="status"></div>
-            <div class="text-secondary mt-3">Đang tải dữ liệu hóa đơn...</div>
+            <div class="text-secondary mt-3">@L["LoadingInvoiceData"]</div>
         </div>
     </section>
 }
@@ -41,44 +41,42 @@ else if (!string.IsNullOrWhiteSpace(ErrorMessage))
 }
 else
 {
-    <EditForm Model="EditModel" OnValidSubmit="SaveAsync">
-        <DataAnnotationsValidator />
-
+    <EditForm EditContext="EditContext" OnValidSubmit="SaveAsync">
         <div class="row g-4">
             <div class="col-12 col-xl-8">
                 <section class="card border-0 shadow-sm rounded-4 mb-4">
                     <div class="card-body p-4">
-                        <h2 class="h5 fw-bold mb-3">Thông tin chung</h2>
+                        <h2 class="h5 fw-bold mb-3">@L["GeneralInformation"]</h2>
 
                         <div class="row g-3">
                             <div class="col-12 col-md-6">
-                                <label class="form-label">Số hóa đơn</label>
+                                <label class="form-label">@L["InvoiceNumber"]</label>
                                 <InputText class="form-control" @bind-Value="EditModel.InvoiceNumber" />
                                 <ValidationMessage For="@(() => EditModel.InvoiceNumber)" />
                             </div>
 
                             <div class="col-12 col-md-6">
-                                <label class="form-label">VendorId</label>
+                                <label class="form-label">@L["VendorId"]</label>
                                 <InputText class="form-control" @bind-Value="EditModel.VendorIdText" />
                                 <ValidationMessage For="@(() => EditModel.VendorIdText)" />
                                 <div class="form-text">
-                                    Giai đoạn hiện tại dùng VendorId. Sau này có thể thay bằng dropdown Vendor.
+                                    @L["VendorIdHelpText"]
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-6">
-                                <label class="form-label">Ngày phát hành</label>
+                                <label class="form-label">@L["IssueDate"]</label>
                                 <InputDate class="form-control" @bind-Value="EditModel.IssueDate" />
                                 <ValidationMessage For="@(() => EditModel.IssueDate)" />
                             </div>
 
                             <div class="col-12 col-md-6">
-                                <label class="form-label">Ngày đến hạn</label>
+                                <label class="form-label">@L["DueDate"]</label>
                                 <InputDate class="form-control" @bind-Value="EditModel.DueDate" />
                             </div>
 
                             <div class="col-12 col-md-4">
-                                <label class="form-label">Currency</label>
+                                <label class="form-label">@L["Currency"]</label>
                                 <InputSelect class="form-select" @bind-Value="EditModel.Currency">
                                     <option value="VND">VND</option>
                                     <option value="USD">USD</option>
@@ -87,17 +85,17 @@ else
                             </div>
 
                             <div class="col-12 col-md-4">
-                                <label class="form-label">Subtotal</label>
+                                <label class="form-label">@L["Subtotal"]</label>
                                 <InputNumber class="form-control" @bind-Value="EditModel.DeclaredSubtotal" />
                             </div>
 
                             <div class="col-12 col-md-4">
-                                <label class="form-label">Tax</label>
+                                <label class="form-label">@L["Tax"]</label>
                                 <InputNumber class="form-control" @bind-Value="EditModel.DeclaredTaxAmount" />
                             </div>
 
                             <div class="col-12 col-md-4">
-                                <label class="form-label">Total</label>
+                                <label class="form-label">@L["Total"]</label>
                                 <InputNumber class="form-control" @bind-Value="EditModel.DeclaredTotalAmount" />
                             </div>
                         </div>
@@ -107,17 +105,17 @@ else
                 <section class="card border-0 shadow-sm rounded-4">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h2 class="h5 fw-bold mb-0">Dòng hàng</h2>
+                            <h2 class="h5 fw-bold mb-0">@L["LineItems"]</h2>
 
                             <button type="button" class="btn btn-sm btn-outline-primary" @onclick="AddLineItem">
-                                Thêm dòng
+                                @L["AddLineItem"]
                             </button>
                         </div>
 
                         @if (EditModel.LineItems.Count == 0)
                         {
                             <div class="alert alert-warning mb-0">
-                                Hóa đơn cần có ít nhất một dòng hàng.
+                                @L["AtLeastOneLineItemRequired"]
                             </div>
                         }
                         else
@@ -127,10 +125,10 @@ else
                                     <thead>
                                     <tr>
                                         <th style="width: 80px;">#</th>
-                                        <th>Mô tả</th>
-                                        <th style="width: 130px;" class="text-end">Số lượng</th>
-                                        <th style="width: 150px;" class="text-end">Đơn giá</th>
-                                        <th style="width: 120px;" class="text-end">Thuế %</th>
+                                        <th>@L["Description"]</th>
+                                        <th style="width: 130px;" class="text-end">@L["Quantity"]</th>
+                                        <th style="width: 150px;" class="text-end">@L["UnitPrice"]</th>
+                                        <th style="width: 120px;" class="text-end">@L["TaxRate"]</th>
                                         <th style="width: 90px;" class="text-end"></th>
                                     </tr>
                                     </thead>
@@ -167,7 +165,7 @@ else
                                                         class="btn btn-sm btn-outline-danger"
                                                         @onclick="() => RemoveLineItem(index)"
                                                         disabled="@(EditModel.LineItems.Count <= 1)">
-                                                    Xóa
+                                                    @L["Delete"]
                                                 </button>
                                             </td>
                                         </tr>
@@ -183,7 +181,7 @@ else
             <div class="col-12 col-xl-4">
                 <section class="card border-0 shadow-sm rounded-4 mb-4">
                     <div class="card-body p-4">
-                        <h2 class="h5 fw-bold mb-3">Tác vụ</h2>
+                        <h2 class="h5 fw-bold mb-3">@L["Tasks"]</h2>
 
                         @if (!string.IsNullOrWhiteSpace(SuccessMessage))
                         {
@@ -204,11 +202,11 @@ else
                                 @if (IsSaving)
                                 {
                                     <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                                    <span>Đang lưu...</span>
+                                    <span>@L["Saving"]</span>
                                 }
                                 else
                                 {
-                                    <span>Lưu và kiểm tra lại</span>
+                                    <span>@L["SaveAndRevalidate"]</span>
                                 }
                             </button>
 
@@ -216,7 +214,7 @@ else
                                     class="btn btn-outline-secondary"
                                     @onclick="GoBack"
                                     disabled="@IsSaving">
-                                Hủy
+                                @L["Cancel"]
                             </button>
                         </div>
                     </div>
@@ -224,12 +222,12 @@ else
 
                 <section class="card border-0 shadow-sm rounded-4">
                     <div class="card-body p-4">
-                        <h2 class="h5 fw-bold mb-3">Ghi chú</h2>
+                        <h2 class="h5 fw-bold mb-3">@L["Notes"]</h2>
 
                         <ul class="small text-secondary mb-0 lh-lg">
-                            <li>Sau khi lưu, hệ thống sẽ chạy lại consistency validation.</li>
-                            <li>Các lỗi cũ sẽ được thay bằng kết quả kiểm tra mới.</li>
-                            <li>Dữ liệu OCR ban đầu không bị sửa, chỉ dữ liệu hóa đơn đã chuẩn hóa được cập nhật.</li>
+                            <li>@L["EditNoteRunValidation"]</li>
+                            <li>@L["EditNoteReplaceOldValidationIssues"]</li>
+                            <li>@L["EditNoteOriginalOcrNotModified"]</li>
                         </ul>
                     </div>
                 </section>

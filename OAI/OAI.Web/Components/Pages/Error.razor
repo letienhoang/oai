@@ -1,25 +1,26 @@
-﻿@page "/Error"
+@page "/Error"
 @using System.Diagnostics
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>Lỗi hệ thống - OAI</PageTitle>
+<PageTitle>@L["SystemErrorTitle"]</PageTitle>
 
 <section class="card border-0 shadow-sm rounded-4">
     <div class="card-body p-5">
-        <h1 class="fw-bold text-danger mb-3">Lỗi hệ thống</h1>
+        <h1 class="fw-bold text-danger mb-3">@L["SystemErrorHeading"]</h1>
         <p class="text-secondary">
-            Đã xảy ra lỗi trong quá trình xử lý yêu cầu.
+            @L["SystemErrorDescription"]
         </p>
 
         @if (ShowRequestId)
         {
             <div class="alert alert-warning">
-                <strong>Request ID:</strong> <code>@RequestId</code>
+                <strong>@L["RequestId"]:</strong> <code>@RequestId</code>
             </div>
         }
 
-        <h2 class="h5 fw-bold mt-4">Thông tin cho môi trường phát triển</h2>
+        <h2 class="h5 fw-bold mt-4">@L["DevelopmentInformation"]</h2>
         <p class="text-secondary mb-0">
-            Nếu đang chạy ở môi trường Development, bạn có thể xem log chi tiết hơn trong console hoặc output của ứng dụng.
+            @L["DevelopmentErrorDescription"]
         </p>
     </div>
 </section>

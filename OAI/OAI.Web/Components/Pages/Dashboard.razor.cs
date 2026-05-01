@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Dashboard;
 using OAI.Application.Dashboard.Dtos;
+using OAI.Web.Localization;
 using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages;
@@ -18,6 +20,9 @@ public partial class Dashboard
 
     [Inject]
     private UserTimeZoneService UserTimeZoneService { get; set; } = default!;
+    
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
 
     private DashboardSummaryDto? Summary { get; set; }
 
@@ -85,7 +90,7 @@ public partial class Dashboard
         catch (Exception ex)
         {
             Summary = null;
-            ErrorMessage = "Không thể tải dữ liệu dashboard. Vui lòng kiểm tra log để biết thêm chi tiết.";
+            ErrorMessage = L["DashboardLoadFailed"];
 
             Logger.LogError(ex, "Failed to load dashboard summary.");
         }
@@ -108,9 +113,9 @@ public partial class Dashboard
         return $"{amount:N0} {currency}";
     }
 
-    private static string DisplayOrFallback(string? value)
+    private string DisplayOrFallback(string? value)
     {
-        return string.IsNullOrWhiteSpace(value) ? "Chưa có" : value;
+        return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
     }
 
     private string FormatDateTime(DateTimeOffset value)

@@ -1,0 +1,837 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true"></xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppName" xml:space="preserve">
+        <value>Hệ thống xử lý hóa đơn OAI</value>
+    </data>
+  <data name="Dashboard" xml:space="preserve">
+        <value>Tổng quan</value>
+    </data>
+  <data name="Invoices" xml:space="preserve">
+        <value>Hóa đơn</value>
+    </data>
+  <data name="UploadInvoice" xml:space="preserve">
+        <value>Upload hóa đơn</value>
+    </data>
+  <data name="ValidationErrors" xml:space="preserve">
+        <value>Lỗi kiểm tra</value>
+    </data>
+  <data name="Settings" xml:space="preserve">
+        <value>Cài đặt</value>
+    </data>
+  <data name="Language" xml:space="preserve">
+        <value>Ngôn ngữ</value>
+    </data>
+  <data name="English" xml:space="preserve">
+        <value>Tiếng Anh</value>
+    </data>
+  <data name="Vietnamese" xml:space="preserve">
+        <value>Tiếng Việt</value>
+    </data>
+  <data name="Home" xml:space="preserve">
+        <value>Trang chủ</value>
+    </data>
+  <data name="InvoiceList" xml:space="preserve">
+        <value>Danh sách hóa đơn</value>
+    </data>
+  <data name="InvoiceDetail" xml:space="preserve">
+        <value>Chi tiết hóa đơn</value>
+    </data>
+  <data name="EditInvoice" xml:space="preserve">
+        <value>Chỉnh sửa hóa đơn</value>
+    </data>
+  <data name="Upload" xml:space="preserve">
+        <value>Tải lên</value>
+    </data>
+  <data name="Cancel" xml:space="preserve">
+        <value>Hủy</value>
+    </data>
+  <data name="Save" xml:space="preserve">
+        <value>Lưu</value>
+    </data>
+  <data name="Delete" xml:space="preserve">
+        <value>Xóa</value>
+    </data>
+  <data name="Search" xml:space="preserve">
+        <value>Tìm kiếm</value>
+    </data>
+  <data name="Status" xml:space="preserve">
+        <value>Trạng thái</value>
+    </data>
+  <data name="CreatedAt" xml:space="preserve">
+        <value>Ngày tạo</value>
+    </data>
+  <data name="Actions" xml:space="preserve">
+        <value>Thao tác</value>
+    </data>
+  <data name="TotalInvoices" xml:space="preserve">
+        <value>Tổng hóa đơn</value>
+    </data>
+  <data name="ProcessedInvoices" xml:space="preserve">
+        <value>Hóa đơn đã xử lý</value>
+    </data>
+  <data name="InvalidInvoices" xml:space="preserve">
+        <value>Hóa đơn không hợp lệ</value>
+    </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+        <value>Chào mừng đến với OAI</value>
+    </data>
+  <data name="WelcomeDescription" xml:space="preserve">
+        <value>Tải lên, trích xuất, kiểm tra và quản lý dữ liệu hóa đơn.</value>
+    </data>
+  <data name="AppSubtitle" xml:space="preserve">
+        <value>Quy trình OCR, trích xuất, kiểm tra và ghi nhận lịch sử</value>
+    </data>
+  <data name="InvoiceSystem" xml:space="preserve">
+        <value>Hệ thống hóa đơn</value>
+    </data>
+  <data name="GraduationThesis" xml:space="preserve">
+        <value>Khóa luận tốt nghiệp</value>
+    </data>
+  <data name="Overview" xml:space="preserve">
+        <value>Tổng quan</value>
+    </data>
+  <data name="DataValidation" xml:space="preserve">
+        <value>Kiểm tra dữ liệu</value>
+    </data>
+  <data name="System" xml:space="preserve">
+        <value>Hệ thống</value>
+    </data>
+  <data name="AuditLogs" xml:space="preserve">
+        <value>Nhật ký hệ thống</value>
+    </data>
+  <data name="SidebarSmall" xml:space="preserve">
+        <value>Nhỏ</value>
+    </data>
+  <data name="SidebarNormal" xml:space="preserve">
+        <value>Vừa</value>
+    </data>
+  <data name="SidebarLarge" xml:space="preserve">
+        <value>Rộng</value>
+    </data>
+  <data name="EnvironmentDevelopment" xml:space="preserve">
+        <value>Phát triển</value>
+    </data>
+  <data name="PageNotFoundTitle" xml:space="preserve">
+        <value>Không tìm thấy trang - OAI</value>
+    </data>
+  <data name="PageNotFoundHeading" xml:space="preserve">
+        <value>404 - Không tìm thấy trang</value>
+    </data>
+  <data name="PageNotFoundDescription" xml:space="preserve">
+        <value>Trang bạn đang truy cập không tồn tại hoặc đã bị thay đổi.</value>
+    </data>
+  <data name="BackToDashboard" xml:space="preserve">
+        <value>Quay về Tổng quan</value>
+    </data>
+  <data name="SystemErrorTitle" xml:space="preserve">
+        <value>Lỗi hệ thống - OAI</value>
+    </data>
+  <data name="SystemErrorHeading" xml:space="preserve">
+        <value>Lỗi hệ thống</value>
+    </data>
+  <data name="SystemErrorDescription" xml:space="preserve">
+        <value>Đã xảy ra lỗi trong quá trình xử lý yêu cầu.</value>
+    </data>
+  <data name="RequestId" xml:space="preserve">
+        <value>Mã yêu cầu</value>
+    </data>
+  <data name="DevelopmentInformation" xml:space="preserve">
+        <value>Thông tin cho môi trường phát triển</value>
+    </data>
+  <data name="DevelopmentErrorDescription" xml:space="preserve">
+        <value>Nếu ứng dụng đang chạy ở môi trường Development, bạn có thể xem log chi tiết hơn trong console hoặc output của ứng dụng.</value>
+    </data>
+  <data name="DashboardTitle" xml:space="preserve">
+        <value>Tổng quan</value>
+    </data>
+  <data name="DashboardPageTitle" xml:space="preserve">
+        <value>Tổng quan - OAI</value>
+    </data>
+  <data name="DashboardSubtitle" xml:space="preserve">
+        <value>Tổng quan hệ thống trích xuất thông tin hóa đơn.</value>
+    </data>
+  <data name="Reload" xml:space="preserve">
+        <value>Tải lại</value>
+    </data>
+  <data name="LoadingDashboard" xml:space="preserve">
+        <value>Đang tải dashboard...</value>
+    </data>
+  <data name="DashboardLoadFailed" xml:space="preserve">
+        <value>Không thể tải dữ liệu dashboard. Vui lòng kiểm tra log để biết thêm chi tiết.</value>
+    </data>
+  <data name="UploadedToSystem" xml:space="preserve">
+        <value>Đã upload vào hệ thống</value>
+    </data>
+  <data name="PendingReview" xml:space="preserve">
+        <value>Chờ kiểm tra</value>
+    </data>
+  <data name="ApprovedInvoices" xml:space="preserve">
+        <value>Hóa đơn đã duyệt</value>
+    </data>
+  <data name="OpenValidationIssues" xml:space="preserve">
+        <value>Lỗi chưa xử lý</value>
+    </data>
+  <data name="InvoiceStatus" xml:space="preserve">
+        <value>Trạng thái hóa đơn</value>
+    </data>
+  <data name="Draft" xml:space="preserve">
+        <value>Bản nháp</value>
+    </data>
+  <data name="Approved" xml:space="preserve">
+        <value>Đã duyệt</value>
+    </data>
+  <data name="Rejected" xml:space="preserve">
+        <value>Đã từ chối</value>
+    </data>
+  <data name="Exported" xml:space="preserve">
+        <value>Đã xuất</value>
+    </data>
+  <data name="RecentInvoices" xml:space="preserve">
+        <value>Hóa đơn mới nhất</value>
+    </data>
+  <data name="ViewAll" xml:space="preserve">
+        <value>Xem tất cả</value>
+    </data>
+  <data name="NoInvoices" xml:space="preserve">
+        <value>Chưa có hóa đơn nào.</value>
+    </data>
+  <data name="InvoiceNumber" xml:space="preserve">
+        <value>Số hóa đơn</value>
+    </data>
+  <data name="Vendor" xml:space="preserve">
+        <value>Nhà cung cấp</value>
+    </data>
+  <data name="TotalAmount" xml:space="preserve">
+        <value>Tổng tiền</value>
+    </data>
+  <data name="Detail" xml:space="preserve">
+        <value>Chi tiết</value>
+    </data>
+  <data name="View" xml:space="preserve">
+        <value>Xem</value>
+    </data>
+  <data name="ValidationOverview" xml:space="preserve">
+        <value>Tổng quan kiểm tra dữ liệu</value>
+    </data>
+  <data name="TotalValidationIssues" xml:space="preserve">
+        <value>Tổng lỗi</value>
+    </data>
+  <data name="InvoicesWithValidationIssues" xml:space="preserve">
+        <value>Hóa đơn có lỗi</value>
+    </data>
+  <data name="ResolvedValidationIssues" xml:space="preserve">
+        <value>Đã xử lý</value>
+    </data>
+  <data name="ViewValidationIssues" xml:space="preserve">
+        <value>Xem lỗi kiểm tra</value>
+    </data>
+  <data name="RecentValidationIssues" xml:space="preserve">
+        <value>Lỗi kiểm tra mới nhất</value>
+    </data>
+  <data name="NoValidationIssues" xml:space="preserve">
+        <value>Chưa có validation issue nào.</value>
+    </data>
+  <data name="Resolved" xml:space="preserve">
+        <value>Đã xử lý</value>
+    </data>
+  <data name="Open" xml:space="preserve">
+        <value>Chưa xử lý</value>
+    </data>
+  <data name="ViewInvoice" xml:space="preserve">
+        <value>Xem hóa đơn</value>
+    </data>
+  <data name="NotAvailable" xml:space="preserve">
+        <value>Chưa có</value>
+    </data>
+  <data name="InvoiceListPageTitle" xml:space="preserve">
+        <value>Danh sách hóa đơn - OAI</value>
+    </data>
+  <data name="InvoiceListTitle" xml:space="preserve">
+        <value>Danh sách hóa đơn</value>
+    </data>
+  <data name="InvoiceListSubtitle" xml:space="preserve">
+        <value>Tra cứu và theo dõi trạng thái xử lý các hóa đơn đã upload.</value>
+    </data>
+  <data name="InvoiceSearchPlaceholder" xml:space="preserve">
+        <value>Tìm theo số hóa đơn hoặc nhà cung cấp...</value>
+    </data>
+  <data name="ClearFilter" xml:space="preserve">
+        <value>Xóa lọc</value>
+    </data>
+  <data name="LoadingInvoiceList" xml:space="preserve">
+        <value>Đang tải danh sách hóa đơn...</value>
+    </data>
+  <data name="InvoiceListLoadFailed" xml:space="preserve">
+        <value>Không thể tải danh sách hóa đơn. Vui lòng kiểm tra log để biết thêm chi tiết.</value>
+    </data>
+  <data name="NoData" xml:space="preserve">
+        <value>Chưa có dữ liệu</value>
+    </data>
+  <data name="NoInvoicesMatchSearch" xml:space="preserve">
+        <value>Chưa có hóa đơn nào phù hợp với điều kiện tìm kiếm.</value>
+    </data>
+  <data name="UploadFirstInvoice" xml:space="preserve">
+        <value>Upload hóa đơn đầu tiên</value>
+    </data>
+  <data name="IssueDate" xml:space="preserve">
+        <value>Ngày phát hành</value>
+    </data>
+  <data name="LineItems" xml:space="preserve">
+        <value>Dòng hàng</value>
+    </data>
+  <data name="UnknownVendor" xml:space="preserve">
+        <value>Chưa xác định</value>
+    </data>
+  <data name="ShowingPage" xml:space="preserve">
+        <value>Hiển thị trang</value>
+    </data>
+  <data name="Of" xml:space="preserve">
+        <value>/</value>
+    </data>
+  <data name="Total" xml:space="preserve">
+        <value>Total</value>
+    </data>
+  <data name="InvoicesLower" xml:space="preserve">
+        <value>hóa đơn</value>
+    </data>
+  <data name="Previous" xml:space="preserve">
+        <value>Trước</value>
+    </data>
+  <data name="Next" xml:space="preserve">
+        <value>Sau</value>
+    </data>
+  <data name="UploadInvoicePageTitle" xml:space="preserve">
+        <value>Upload hóa đơn - OAI</value>
+    </data>
+  <data name="UploadInvoiceTitle" xml:space="preserve">
+        <value>Upload hóa đơn</value>
+    </data>
+  <data name="UploadInvoiceSubtitle" xml:space="preserve">
+        <value>Tải lên ảnh hóa đơn để hệ thống lưu trữ, OCR, trích xuất dữ liệu và tạo bản ghi hóa đơn.</value>
+    </data>
+  <data name="SelectInvoiceFile" xml:space="preserve">
+        <value>Chọn file hóa đơn</value>
+    </data>
+  <data name="UploadInvoiceImage" xml:space="preserve">
+        <value>Upload ảnh hóa đơn</value>
+    </data>
+  <data name="SupportedImageFormats" xml:space="preserve">
+        <value>Hỗ trợ hiện tại: JPG, JPEG, PNG, TIF, TIFF. PDF sẽ được hỗ trợ ở giai đoạn sau.</value>
+    </data>
+  <data name="SelectedFile" xml:space="preserve">
+        <value>File đã chọn</value>
+    </data>
+  <data name="FileSize" xml:space="preserve">
+        <value>Dung lượng</value>
+    </data>
+  <data name="Processing" xml:space="preserve">
+        <value>Đang xử lý...</value>
+    </data>
+  <data name="UploadAndProcess" xml:space="preserve">
+        <value>Upload và xử lý</value>
+    </data>
+  <data name="Reset" xml:space="preserve">
+        <value>Làm mới</value>
+    </data>
+  <data name="ProcessingFlow" xml:space="preserve">
+        <value>Luồng xử lý</value>
+    </data>
+  <data name="SaveInvoiceFileToStorage" xml:space="preserve">
+        <value>Lưu file hóa đơn vào storage.</value>
+    </data>
+  <data name="RunTesseractOcr" xml:space="preserve">
+        <value>Chạy OCR bằng Tesseract.</value>
+    </data>
+  <data name="ParseOcrTextToInvoiceData" xml:space="preserve">
+        <value>Parse text OCR thành dữ liệu hóa đơn.</value>
+    </data>
+  <data name="CreateInvoiceInDatabase" xml:space="preserve">
+        <value>Tạo invoice trong database.</value>
+    </data>
+  <data name="RunConsistencyValidation" xml:space="preserve">
+        <value>Kiểm tra tính nhất quán dữ liệu.</value>
+    </data>
+  <data name="ProcessingResult" xml:space="preserve">
+        <value>Kết quả xử lý</value>
+    </data>
+  <data name="File" xml:space="preserve">
+        <value>File</value>
+    </data>
+  <data name="InvoiceId" xml:space="preserve">
+        <value>InvoiceId</value>
+    </data>
+  <data name="Message" xml:space="preserve">
+        <value>Thông báo</value>
+    </data>
+  <data name="ViewInvoiceDetail" xml:space="preserve">
+        <value>Xem chi tiết hóa đơn</value>
+    </data>
+  <data name="PleaseSelectInvoiceFile" xml:space="preserve">
+        <value>Vui lòng chọn một file hóa đơn.</value>
+    </data>
+  <data name="UnsupportedInvoiceFileFormat" xml:space="preserve">
+        <value>Định dạng file chưa được hỗ trợ. Vui lòng chọn JPG, JPEG, PNG, TIF hoặc TIFF.</value>
+    </data>
+  <data name="FileSizeExceeded" xml:space="preserve">
+        <value>File vượt quá dung lượng cho phép ({0}).</value>
+    </data>
+  <data name="PleaseSelectFileBeforeUpload" xml:space="preserve">
+        <value>Vui lòng chọn file trước khi upload.</value>
+    </data>
+  <data name="InvoiceUploadProcessedSuccessfully" xml:space="preserve">
+        <value>Upload và xử lý hóa đơn thành công. Hóa đơn đang ở trạng thái chờ kiểm tra.</value>
+    </data>
+  <data name="InvoiceUploadFailed" xml:space="preserve">
+        <value>Đã xảy ra lỗi khi upload và xử lý hóa đơn. Vui lòng kiểm tra log để biết thêm chi tiết.</value>
+    </data>
+  <data name="InvoiceDetailPageTitle" xml:space="preserve">
+        <value>Chi tiết hóa đơn - OAI</value>
+    </data>
+  <data name="InvoiceDetailTitle" xml:space="preserve">
+        <value>Chi tiết hóa đơn</value>
+    </data>
+  <data name="InvoiceDetailSubtitle" xml:space="preserve">
+        <value>Theo dõi dữ liệu trích xuất, dòng hàng và lỗi kiểm tra của hóa đơn.</value>
+    </data>
+  <data name="BackToList" xml:space="preserve">
+        <value>Quay lại danh sách</value>
+    </data>
+  <data name="CompareOcrAi" xml:space="preserve">
+        <value>So sánh OCR / AI</value>
+    </data>
+  <data name="Edit" xml:space="preserve">
+        <value>Chỉnh sửa</value>
+    </data>
+  <data name="Approving" xml:space="preserve">
+        <value>Đang xác nhận...</value>
+    </data>
+  <data name="ApproveInvoice" xml:space="preserve">
+        <value>Xác nhận hóa đơn</value>
+    </data>
+  <data name="Moving" xml:space="preserve">
+        <value>Đang chuyển...</value>
+    </data>
+  <data name="MoveToPendingReview" xml:space="preserve">
+        <value>Đưa về chờ kiểm tra</value>
+    </data>
+  <data name="Rejecting" xml:space="preserve">
+        <value>Đang từ chối...</value>
+    </data>
+  <data name="Reject" xml:space="preserve">
+        <value>Từ chối</value>
+    </data>
+  <data name="InvoiceRejectedWarning" xml:space="preserve">
+        <value>Hóa đơn này đã bị từ chối. Bạn có thể đưa hóa đơn về trạng thái chờ kiểm tra nếu muốn xử lý lại.</value>
+    </data>
+  <data name="InvoiceApprovedMessage" xml:space="preserve">
+        <value>Hóa đơn này đã được xác nhận.</value>
+    </data>
+  <data name="LoadingInvoiceDetail" xml:space="preserve">
+        <value>Đang tải chi tiết hóa đơn...</value>
+    </data>
+  <data name="InvoiceNotFound" xml:space="preserve">
+        <value>Không tìm thấy hóa đơn</value>
+    </data>
+  <data name="InvoiceNotFoundDescription" xml:space="preserve">
+        <value>Hóa đơn không tồn tại hoặc đã bị xóa.</value>
+    </data>
+  <data name="DueDate" xml:space="preserve">
+        <value>Ngày đến hạn</value>
+    </data>
+  <data name="SourceFile" xml:space="preserve">
+        <value>File gốc</value>
+    </data>
+  <data name="AmountSummary" xml:space="preserve">
+        <value>Tổng hợp số tiền</value>
+    </data>
+  <data name="Subtotal" xml:space="preserve">
+        <value>Subtotal</value>
+    </data>
+  <data name="Tax" xml:space="preserve">
+        <value>Tax</value>
+    </data>
+  <data name="Rows" xml:space="preserve">
+        <value>dòng</value>
+    </data>
+  <data name="NoLineItemsExtracted" xml:space="preserve">
+        <value>Không có dòng hàng nào được trích xuất.</value>
+    </data>
+  <data name="Description" xml:space="preserve">
+        <value>Mô tả</value>
+    </data>
+  <data name="Quantity" xml:space="preserve">
+        <value>Số lượng</value>
+    </data>
+  <data name="UnitPrice" xml:space="preserve">
+        <value>Đơn giá</value>
+    </data>
+  <data name="Net" xml:space="preserve">
+        <value>Net</value>
+    </data>
+  <data name="Gross" xml:space="preserve">
+        <value>Gross</value>
+    </data>
+  <data name="TaxRate" xml:space="preserve">
+        <value>Thuế %</value>
+    </data>
+  <data name="CannotApproveDueToValidationErrors" xml:space="preserve">
+        <value>Hóa đơn chưa thể xác nhận nếu vẫn còn lỗi validation mức Error chưa xử lý.</value>
+    </data>
+  <data name="ValidationIssues" xml:space="preserve">
+        <value>Lỗi kiểm tra</value>
+    </data>
+  <data name="NoConsistencyValidationIssues" xml:space="preserve">
+        <value>Không có lỗi kiểm tra tính nhất quán.</value>
+    </data>
+  <data name="ExtractionHistory" xml:space="preserve">
+        <value>Lịch sử trích xuất</value>
+    </data>
+  <data name="NoExtractionHistory" xml:space="preserve">
+        <value>Chưa có lịch sử trích xuất.</value>
+    </data>
+  <data name="Success" xml:space="preserve">
+        <value>Thành công</value>
+    </data>
+  <data name="Failed" xml:space="preserve">
+        <value>Thất bại</value>
+    </data>
+  <data name="Attempt" xml:space="preserve">
+        <value>Lần thử</value>
+    </data>
+  <data name="Confidence" xml:space="preserve">
+        <value>Độ tin cậy</value>
+    </data>
+  <data name="InvoiceDetailLoadFailed" xml:space="preserve">
+        <value>Không thể tải chi tiết hóa đơn. Vui lòng kiểm tra log để biết thêm chi tiết.</value>
+    </data>
+  <data name="InvoiceApprovedSuccessfully" xml:space="preserve">
+        <value>Hóa đơn đã được xác nhận thành công.</value>
+    </data>
+  <data name="InvoiceApproveFailed" xml:space="preserve">
+        <value>Không thể xác nhận hóa đơn. Vui lòng kiểm tra lỗi validation hoặc log hệ thống.</value>
+    </data>
+  <data name="InvoiceRejectedSuccessfully" xml:space="preserve">
+        <value>Hóa đơn đã được từ chối.</value>
+    </data>
+  <data name="InvoiceRejectFailed" xml:space="preserve">
+        <value>Không thể từ chối hóa đơn. Vui lòng kiểm tra log hệ thống.</value>
+    </data>
+  <data name="InvoiceMovedToPendingReviewSuccessfully" xml:space="preserve">
+        <value>Hóa đơn đã được đưa về trạng thái chờ kiểm tra.</value>
+    </data>
+  <data name="InvoiceMoveToPendingReviewFailed" xml:space="preserve">
+        <value>Không thể đưa hóa đơn về trạng thái chờ kiểm tra. Vui lòng kiểm tra log hệ thống.</value>
+    </data>
+  <data name="ValidationPageTitle" xml:space="preserve">
+        <value>Kiểm tra dữ liệu - OAI</value>
+    </data>
+  <data name="ConsistencyValidationTitle" xml:space="preserve">
+        <value>Kiểm tra tính nhất quán</value>
+    </data>
+  <data name="ValidationPageSubtitle" xml:space="preserve">
+        <value>Theo dõi các lỗi phát hiện trong quá trình kiểm tra dữ liệu hóa đơn.</value>
+    </data>
+  <data name="SearchValidationIssuesPlaceholder" xml:space="preserve">
+        <value>Tìm theo số hóa đơn, nhà cung cấp, rule hoặc nội dung lỗi...</value>
+    </data>
+  <data name="AllSeverities" xml:space="preserve">
+        <value>Tất cả mức độ</value>
+    </data>
+  <data name="AllStatuses" xml:space="preserve">
+        <value>Tất cả trạng thái</value>
+    </data>
+  <data name="OpenStatus" xml:space="preserve">
+        <value>Chưa xử lý</value>
+    </data>
+  <data name="ResolvedStatus" xml:space="preserve">
+        <value>Đã xử lý</value>
+    </data>
+  <data name="LoadingValidationIssues" xml:space="preserve">
+        <value>Đang tải danh sách lỗi...</value>
+    </data>
+  <data name="NoValidationIssuesTitle" xml:space="preserve">
+        <value>Không có lỗi kiểm tra</value>
+    </data>
+  <data name="NoValidationIssuesDescription" xml:space="preserve">
+        <value>Chưa có validation issue nào phù hợp với điều kiện lọc.</value>
+    </data>
+  <data name="Invoice" xml:space="preserve">
+        <value>Hóa đơn</value>
+    </data>
+  <data name="Rule" xml:space="preserve">
+        <value>Rule</value>
+    </data>
+  <data name="ErrorContent" xml:space="preserve">
+        <value>Nội dung lỗi</value>
+    </data>
+  <data name="Severity" xml:space="preserve">
+        <value>Mức độ</value>
+    </data>
+  <data name="DetectedAt" xml:space="preserve">
+        <value>Thời gian</value>
+    </data>
+  <data name="TotalErrors" xml:space="preserve">
+        <value>tổng lỗi</value>
+    </data>
+  <data name="ValidationIssueListLoadFailed" xml:space="preserve">
+        <value>Không thể tải danh sách lỗi kiểm tra. Vui lòng kiểm tra log để biết thêm chi tiết.</value>
+    </data>
+  <data name="EditInvoicePageTitle" xml:space="preserve">
+        <value>Chỉnh sửa hóa đơn - OAI</value>
+    </data>
+  <data name="EditInvoiceTitle" xml:space="preserve">
+        <value>Chỉnh sửa dữ liệu hóa đơn</value>
+    </data>
+  <data name="EditInvoiceSubtitle" xml:space="preserve">
+        <value>Sửa lại dữ liệu được trích xuất từ OCR/AI, sau đó hệ thống sẽ kiểm tra tính nhất quán lại.</value>
+    </data>
+  <data name="Back" xml:space="preserve">
+        <value>Quay lại</value>
+    </data>
+  <data name="LoadingInvoiceData" xml:space="preserve">
+        <value>Đang tải dữ liệu hóa đơn...</value>
+    </data>
+  <data name="GeneralInformation" xml:space="preserve">
+        <value>Thông tin chung</value>
+    </data>
+  <data name="VendorId" xml:space="preserve">
+        <value>VendorId</value>
+    </data>
+  <data name="VendorIdHelpText" xml:space="preserve">
+        <value>Giai đoạn hiện tại dùng VendorId. Sau này có thể thay bằng dropdown Vendor.</value>
+    </data>
+  <data name="Currency" xml:space="preserve">
+        <value>Currency</value>
+    </data>
+  <data name="AddLineItem" xml:space="preserve">
+        <value>Thêm dòng</value>
+    </data>
+  <data name="AtLeastOneLineItemRequired" xml:space="preserve">
+        <value>Hóa đơn cần có ít nhất một dòng hàng.</value>
+    </data>
+  <data name="Tasks" xml:space="preserve">
+        <value>Tác vụ</value>
+    </data>
+  <data name="Saving" xml:space="preserve">
+        <value>Đang lưu...</value>
+    </data>
+  <data name="SaveAndRevalidate" xml:space="preserve">
+        <value>Lưu và kiểm tra lại</value>
+    </data>
+  <data name="Notes" xml:space="preserve">
+        <value>Ghi chú</value>
+    </data>
+  <data name="EditNoteRunValidation" xml:space="preserve">
+        <value>Sau khi lưu, hệ thống sẽ chạy lại consistency validation.</value>
+    </data>
+  <data name="EditNoteReplaceOldValidationIssues" xml:space="preserve">
+        <value>Các lỗi cũ sẽ được thay bằng kết quả kiểm tra mới.</value>
+    </data>
+  <data name="EditNoteOriginalOcrNotModified" xml:space="preserve">
+        <value>Dữ liệu OCR ban đầu không bị sửa, chỉ dữ liệu hóa đơn đã chuẩn hóa được cập nhật.</value>
+    </data>
+  <data name="InvalidVendorId" xml:space="preserve">
+        <value>VendorId không hợp lệ.</value>
+    </data>
+  <data name="InvoiceMustHaveAtLeastOneLineItem" xml:space="preserve">
+        <value>Hóa đơn phải có ít nhất một dòng hàng.</value>
+    </data>
+  <data name="InvoiceSavedAndRevalidatedSuccessfully" xml:space="preserve">
+        <value>Lưu hóa đơn thành công. Hệ thống đã kiểm tra lại tính nhất quán dữ liệu.</value>
+    </data>
+  <data name="InvoiceSaveFailed" xml:space="preserve">
+        <value>Không thể lưu hóa đơn. Vui lòng kiểm tra dữ liệu hoặc xem log để biết thêm chi tiết.</value>
+    </data>
+  <data name="InvoiceEditLoadFailed" xml:space="preserve">
+        <value>Không thể tải dữ liệu hóa đơn để chỉnh sửa.</value>
+    </data>
+  <data name="AuditLogsPageTitle" xml:space="preserve">
+        <value>Nhật ký hệ thống - OAI</value>
+    </data>
+  <data name="AuditLogsTitle" xml:space="preserve">
+        <value>Nhật ký hệ thống</value>
+    </data>
+  <data name="AuditLogsSubtitle" xml:space="preserve">
+        <value>Theo dõi các thao tác tạo, sửa, xóa và xử lý dữ liệu trong hệ thống.</value>
+    </data>
+  <data name="AuditSearchPlaceholder" xml:space="preserve">
+        <value>Tìm theo entity, entity id, user, source hoặc JSON...</value>
+    </data>
+  <data name="AllEntities" xml:space="preserve">
+        <value>Tất cả entity</value>
+    </data>
+  <data name="AllActions" xml:space="preserve">
+        <value>Tất cả hành động</value>
+    </data>
+  <data name="LoadingAuditLogs" xml:space="preserve">
+        <value>Đang tải audit logs...</value>
+    </data>
+  <data name="NoAuditLogs" xml:space="preserve">
+        <value>Chưa có audit log</value>
+    </data>
+  <data name="NoAuditLogsMatchFilter" xml:space="preserve">
+        <value>Chưa có log nào phù hợp với điều kiện lọc.</value>
+    </data>
+  <data name="OccurredAt" xml:space="preserve">
+        <value>Thời gian</value>
+    </data>
+  <data name="AuditLogsLower" xml:space="preserve">
+        <value>audit logs</value>
+    </data>
+  <data name="AuditLogDetail" xml:space="preserve">
+        <value>Chi tiết audit log</value>
+    </data>
+  <data name="Close" xml:space="preserve">
+        <value>Đóng</value>
+    </data>
+  <data name="OldValues" xml:space="preserve">
+        <value>Giá trị cũ</value>
+    </data>
+  <data name="NewValues" xml:space="preserve">
+        <value>Giá trị mới</value>
+    </data>
+  <data name="AuditLogsLoadFailed" xml:space="preserve">
+        <value>Không thể tải audit logs. Vui lòng kiểm tra log để biết thêm chi tiết.</value>
+    </data>
+  <data name="SettingsPageTitle" xml:space="preserve">
+        <value>Cấu hình hệ thống - OAI</value>
+    </data>
+  <data name="SettingsTitle" xml:space="preserve">
+        <value>Cấu hình hệ thống</value>
+    </data>
+  <data name="SettingsSubtitle" xml:space="preserve">
+        <value>Xem cấu hình hiện tại của OCR, AI, file storage và runtime.</value>
+    </data>
+  <data name="LoadingSystemSettings" xml:space="preserve">
+        <value>Đang tải cấu hình hệ thống...</value>
+    </data>
+  <data name="FileStorageDescription" xml:space="preserve">
+        <value>Cấu hình lưu trữ file hóa đơn đã upload.</value>
+    </data>
+  <data name="OcrSettingsDescription" xml:space="preserve">
+        <value>Cấu hình Tesseract OCR và bộ ngôn ngữ.</value>
+    </data>
+  <data name="AiSettingsDescription" xml:space="preserve">
+        <value>Cấu hình parser dùng AI để chuẩn hóa kết quả OCR.</value>
+    </data>
+  <data name="Enabled" xml:space="preserve">
+        <value>Bật</value>
+    </data>
+  <data name="Disabled" xml:space="preserve">
+        <value>Tắt</value>
+    </data>
+  <data name="ApiKeyHiddenWarning" xml:space="preserve">
+        <value>API key thật không được hiển thị trên giao diện để tránh lộ thông tin nhạy cảm.</value>
+    </data>
+  <data name="RuntimeSettingsDescription" xml:space="preserve">
+        <value>Thông tin môi trường chạy ứng dụng.</value>
+    </data>
+  <data name="ConfigurationNotes" xml:space="preserve">
+        <value>Ghi chú cấu hình</value>
+    </data>
+  <data name="SettingsReadOnlyNote" xml:space="preserve">
+        <value>Màn hình này chỉ hiển thị cấu hình runtime hiện tại, chưa cho phép chỉnh sửa trực tiếp.</value>
+    </data>
+  <data name="SettingsConfigSourceNote" xml:space="preserve">
+        <value>Cấu hình OCR và AI nên được thay đổi qua appsettings.Development.json, environment variables hoặc user secrets.</value>
+    </data>
+  <data name="OpenAiApiKeyUserSecretsNote" xml:space="preserve">
+        <value>OpenAI API key nên lưu bằng dotnet user-secrets, không commit vào Git.</value>
+    </data>
+  <data name="ProductionFileStorageNote" xml:space="preserve">
+        <value>Khi deploy production, nên cấu hình file storage ra thư mục riêng thay vì lưu trong bin.</value>
+    </data>
+  <data name="SystemSettingsLoadFailed" xml:space="preserve">
+        <value>Không thể tải cấu hình hệ thống. Vui lòng kiểm tra log để biết thêm chi tiết.</value>
+    </data>
+  <data name="ExtractionComparePageTitle" xml:space="preserve">
+        <value>So sánh OCR và OCR + AI - OAI</value>
+    </data>
+  <data name="ExtractionCompareTitle" xml:space="preserve">
+        <value>So sánh kết quả trích xuất</value>
+    </data>
+  <data name="ExtractionCompareSubtitle" xml:space="preserve">
+        <value>So sánh kết quả Rule-based OCR và OCR kết hợp AI trên cùng một raw text.</value>
+    </data>
+  <data name="BackToDetail" xml:space="preserve">
+        <value>Quay lại chi tiết</value>
+    </data>
+  <data name="RunComparisonAgain" xml:space="preserve">
+        <value>Chạy lại so sánh</value>
+    </data>
+  <data name="LoadingExtractionComparison" xml:space="preserve">
+        <value>Đang so sánh kết quả trích xuất...</value>
+    </data>
+  <data name="BasicOcr" xml:space="preserve">
+        <value>OCR cơ bản</value>
+    </data>
+  <data name="Available" xml:space="preserve">
+        <value>Có sẵn</value>
+    </data>
+  <data name="FieldComparison" xml:space="preserve">
+        <value>So sánh từng trường</value>
+    </data>
+  <data name="Field" xml:space="preserve">
+        <value>Trường</value>
+    </data>
+  <data name="Result" xml:space="preserve">
+        <value>Kết quả</value>
+    </data>
+  <data name="Same" xml:space="preserve">
+        <value>Giống</value>
+    </data>
+  <data name="Different" xml:space="preserve">
+        <value>Khác</value>
+    </data>
+  <data name="ExtractionComparisonLoadFailed" xml:space="preserve">
+        <value>Không thể so sánh kết quả trích xuất. Vui lòng kiểm tra log để biết thêm chi tiết.</value>
+    </data>
+  <data name="AuditAction" xml:space="preserve">
+    <value>Hành động</value>
+  </data>
+  <data name="AuditSource" xml:space="preserve">
+    <value>Nguồn</value>
+  </data>
+  <data name="AuditCorrelationId" xml:space="preserve">
+    <value>Correlation ID</value>
+  </data>
+  <data name="AuditEntityId" xml:space="preserve">
+    <value>Entity ID</value>
+  </data>
+  <data name="AuditUser" xml:space="preserve">
+    <value>Người dùng</value>
+  </data>
+  <data name="AuditOccurredAt" xml:space="preserve">
+    <value>Thời gian</value>
+  </data>
+  <data name="AuditEntity" xml:space="preserve">
+    <value>Entity</value>
+  </data>
+  <data name="FieldMustBeNonNegative" xml:space="preserve">
+    <value>{0} phải lớn hơn hoặc bằng 0.</value>
+  </data>
+  <data name="RequiredFieldValidation" xml:space="preserve">
+    <value>Vui lòng nhập {0}.</value>
+  </data>
+  <data name="FieldMustBeGreaterThanZero" xml:space="preserve">
+    <value>{0} phải lớn hơn 0.</value>
+  </data>
+  <data name="FieldMustBeBetween" xml:space="preserve">
+    <value>{0} phải nằm trong khoảng {1} đến {2}.</value>
+  </data>
+</root>

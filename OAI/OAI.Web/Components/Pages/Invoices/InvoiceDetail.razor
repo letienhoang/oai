@@ -1,32 +1,32 @@
-﻿@page "/invoices/{InvoiceId:guid}"
+@page "/invoices/{InvoiceId:guid}"
 @rendermode InteractiveServer
 
-<PageTitle>Chi tiết hóa đơn - OAI</PageTitle>
+<PageTitle>@L["InvoiceDetailPageTitle"]</PageTitle>
 
 <section class="mb-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
         <div>
-            <h1 class="fw-bold mb-1">Chi tiết hóa đơn</h1>
+            <h1 class="fw-bold mb-1">@L["InvoiceDetailTitle"]</h1>
             <p class="text-secondary mb-0">
-                Theo dõi dữ liệu trích xuất, dòng hàng và lỗi kiểm tra của hóa đơn.
+                @L["InvoiceDetailSubtitle"]
             </p>
         </div>
 
         <div class="d-flex flex-wrap gap-2 align-items-start">
             <button class="btn btn-outline-secondary" @onclick="GoBack">
-                Quay lại danh sách
+                @L["BackToList"]
             </button>
 
             @if (Invoice is not null)
             {
                 <button class="btn btn-outline-primary" @onclick="GoToCompare">
-                    So sánh OCR / AI
+                    @L["CompareOcrAi"]
                 </button>
 
                 @if (CanShowEditButton)
                 {
                     <button class="btn btn-outline-secondary" @onclick="GoToEdit">
-                        Chỉnh sửa
+                        @L["Edit"]
                     </button>
                 }
 
@@ -38,11 +38,11 @@
                         @if (IsApproving)
                         {
                             <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            <span>Đang xác nhận...</span>
+                            <span>@L["Approving"]</span>
                         }
                         else
                         {
-                            <span>Xác nhận hóa đơn</span>
+                            <span>@L["ApproveInvoice"]</span>
                         }
                     </button>
                 }
@@ -55,11 +55,11 @@
                         @if (IsMovingToPendingReview)
                         {
                             <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            <span>Đang chuyển...</span>
+                            <span>@L["Moving"]</span>
                         }
                         else
                         {
-                            <span>Đưa về chờ kiểm tra</span>
+                            <span>@L["MoveToPendingReview"]</span>
                         }
                     </button>
                 }
@@ -72,11 +72,11 @@
                         @if (IsRejecting)
                         {
                             <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            <span>Đang từ chối...</span>
+                            <span>@L["Rejecting"]</span>
                         }
                         else
                         {
-                            <span>Từ chối</span>
+                            <span>@L["Reject"]</span>
                         }
                     </button>
                 }
@@ -102,14 +102,14 @@
 @if (Invoice is not null && string.Equals(Invoice.Status, "Rejected", StringComparison.OrdinalIgnoreCase))
 {
     <div class="alert alert-warning">
-        Hóa đơn này đã bị từ chối. Bạn có thể đưa hóa đơn về trạng thái chờ kiểm tra nếu muốn xử lý lại.
+        @L["InvoiceRejectedWarning"]
     </div>
 }
 
 @if (Invoice is not null && string.Equals(Invoice.Status, "Approved", StringComparison.OrdinalIgnoreCase))
 {
     <div class="alert alert-success">
-        Hóa đơn này đã được xác nhận.
+        @L["InvoiceApprovedMessage"]
     </div>
 }
 
@@ -118,7 +118,7 @@
     <section class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-5 text-center">
             <div class="spinner-border text-primary" role="status"></div>
-            <div class="text-secondary mt-3">Đang tải chi tiết hóa đơn...</div>
+            <div class="text-secondary mt-3">@L["LoadingInvoiceDetail"]</div>
         </div>
     </section>
 }
@@ -136,13 +136,13 @@ else if (Invoice is null)
 {
     <section class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-5 text-center">
-            <div class="fs-1 mb-3">🧾</div>
-            <h2 class="h5 fw-bold">Không tìm thấy hóa đơn</h2>
+            <div class="fs-1 mb-3">&#x1F9FE;</div>
+            <h2 class="h5 fw-bold">@L["InvoiceNotFound"]</h2>
             <p class="text-secondary mb-3">
-                Hóa đơn không tồn tại hoặc đã bị xóa.
+                @L["InvoiceNotFoundDescription"]
             </p>
             <button class="btn btn-primary" @onclick="GoBack">
-                Quay lại danh sách
+                @L["BackToList"]
             </button>
         </div>
     </section>
@@ -155,12 +155,12 @@ else
                 <div class="card-body p-4">
                     <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4">
                         <div>
-                            <div class="text-secondary small fw-semibold">Số hóa đơn</div>
+                            <div class="text-secondary small fw-semibold">@L["InvoiceNumber"]</div>
                             <h2 class="h4 fw-bold mb-0">@Invoice.InvoiceNumber</h2>
                         </div>
 
                         <div class="text-md-end">
-                            <div class="text-secondary small fw-semibold">Trạng thái</div>
+                            <div class="text-secondary small fw-semibold">@L["Status"]</div>
                             <span class="badge @GetStatusBadgeClass(Invoice.Status)">
                                 @Invoice.Status
                             </span>
@@ -170,30 +170,30 @@ else
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
                             <div class="border rounded-4 p-3 bg-light h-100">
-                                <div class="text-secondary small">Nhà cung cấp</div>
+                                <div class="text-secondary small">@L["Vendor"]</div>
                                 <div class="fw-semibold">@DisplayOrFallback(Invoice.VendorName)</div>
                             </div>
                         </div>
 
                         <div class="col-12 col-md-6">
                             <div class="border rounded-4 p-3 bg-light h-100">
-                                <div class="text-secondary small">Ngày phát hành</div>
+                                <div class="text-secondary small">@L["IssueDate"]</div>
                                 <div class="fw-semibold">@Invoice.IssueDate.ToString("dd/MM/yyyy")</div>
                             </div>
                         </div>
 
                         <div class="col-12 col-md-6">
                             <div class="border rounded-4 p-3 bg-light h-100">
-                                <div class="text-secondary small">Ngày đến hạn</div>
+                                <div class="text-secondary small">@L["DueDate"]</div>
                                 <div class="fw-semibold">
-                                    @(Invoice.DueDate?.ToString("dd/MM/yyyy") ?? "Chưa có")
+                                    @(Invoice.DueDate?.ToString("dd/MM/yyyy") ?? L["NotAvailable"].Value)
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-12 col-md-6">
                             <div class="border rounded-4 p-3 bg-light h-100">
-                                <div class="text-secondary small">File gốc</div>
+                                <div class="text-secondary small">@L["SourceFile"]</div>
                                 <div class="fw-semibold text-break">
                                     @DisplayOrFallback(Invoice.SourceFileName)
                                 </div>
@@ -205,12 +205,12 @@ else
 
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">Tổng hợp số tiền</h2>
+                    <h2 class="h5 fw-bold mb-3">@L["AmountSummary"]</h2>
 
                     <div class="row g-3">
                         <div class="col-12 col-md-4">
                             <div class="border rounded-4 p-3">
-                                <div class="text-secondary small">Subtotal</div>
+                                <div class="text-secondary small">@L["Subtotal"]</div>
                                 <div class="h5 fw-bold mb-0">
                                     @FormatMoney(Invoice.DeclaredSubtotal, Invoice.Currency)
                                 </div>
@@ -219,7 +219,7 @@ else
 
                         <div class="col-12 col-md-4">
                             <div class="border rounded-4 p-3">
-                                <div class="text-secondary small">Tax</div>
+                                <div class="text-secondary small">@L["Tax"]</div>
                                 <div class="h5 fw-bold mb-0">
                                     @FormatMoney(Invoice.DeclaredTaxAmount, Invoice.Currency)
                                 </div>
@@ -228,7 +228,7 @@ else
 
                         <div class="col-12 col-md-4">
                             <div class="border rounded-4 p-3 bg-primary-subtle">
-                                <div class="text-secondary small">Total</div>
+                                <div class="text-secondary small">@L["Total"]</div>
                                 <div class="h5 fw-bold mb-0 text-primary">
                                     @FormatMoney(Invoice.DeclaredTotalAmount, Invoice.Currency)
                                 </div>
@@ -241,16 +241,16 @@ else
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h2 class="h5 fw-bold mb-0">Dòng hàng</h2>
+                        <h2 class="h5 fw-bold mb-0">@L["LineItems"]</h2>
                         <span class="badge text-bg-light border">
-                            @Invoice.LineItems.Count dòng
+                            @Invoice.LineItems.Count @L["Rows"]
                         </span>
                     </div>
 
                     @if (Invoice.LineItems.Count == 0)
                     {
                         <div class="alert alert-warning mb-0">
-                            Không có dòng hàng nào được trích xuất.
+                            @L["NoLineItemsExtracted"]
                         </div>
                     }
                     else
@@ -260,13 +260,13 @@ else
                                 <thead>
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th>Mô tả</th>
-                                    <th class="text-end">Số lượng</th>
-                                    <th class="text-end">Đơn giá</th>
-                                    <th class="text-end">Net</th>
-                                    <th class="text-end">Tax</th>
-                                    <th class="text-end">Thuế %</th>
-                                    <th class="text-end">Gross</th>
+                                    <th>@L["Description"]</th>
+                                    <th class="text-end">@L["Quantity"]</th>
+                                    <th class="text-end">@L["UnitPrice"]</th>
+                                    <th class="text-end">@L["Net"]</th>
+                                    <th class="text-end">@L["Tax"]</th>
+                                    <th class="text-end">@L["TaxRate"]</th>
+                                    <th class="text-end">@L["Gross"]</th>
                                 </tr>
                                 </thead>
 
@@ -293,23 +293,23 @@ else
                 </div>
             </div>
         </div>
-        
+
         @if (!CanApprove && string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase))
         {
             <div class="alert alert-warning">
-                Hóa đơn chưa thể xác nhận nếu vẫn còn lỗi validation mức Error chưa xử lý.
+                @L["CannotApproveDueToValidationErrors"]
             </div>
         }
 
         <div class="col-12 col-xl-4">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">Validation issues</h2>
+                    <h2 class="h5 fw-bold mb-3">@L["ValidationIssues"]</h2>
 
                     @if (Invoice.ValidationIssues.Count == 0)
                     {
                         <div class="alert alert-success mb-0">
-                            Không có lỗi kiểm tra tính nhất quán.
+                            @L["NoConsistencyValidationIssues"]
                         </div>
                     }
                     else
@@ -325,11 +325,11 @@ else
 
                                         @if (issue.IsResolved)
                                         {
-                                            <span class="badge text-bg-success">Resolved</span>
+                                            <span class="badge text-bg-success">@L["Resolved"]</span>
                                         }
                                         else
                                         {
-                                            <span class="badge text-bg-warning">Open</span>
+                                            <span class="badge text-bg-warning">@L["Open"]</span>
                                         }
                                     </div>
 
@@ -347,12 +347,12 @@ else
 
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">Lịch sử trích xuất</h2>
+                    <h2 class="h5 fw-bold mb-3">@L["ExtractionHistory"]</h2>
 
                     @if (Invoice.ExtractionResults.Count == 0)
                     {
                         <div class="alert alert-secondary mb-0">
-                            Chưa có lịch sử trích xuất.
+                            @L["NoExtractionHistory"]
                         </div>
                     }
                     else
@@ -366,20 +366,20 @@ else
 
                                         @if (result.IsSuccessful)
                                         {
-                                            <span class="badge text-bg-success">Success</span>
+                                            <span class="badge text-bg-success">@L["Success"]</span>
                                         }
                                         else
                                         {
-                                            <span class="badge text-bg-danger">Failed</span>
+                                            <span class="badge text-bg-danger">@L["Failed"]</span>
                                         }
                                     </div>
 
                                     <div class="text-secondary small">
-                                        Attempt: @result.AttemptNo
+                                        @L["Attempt"]: @result.AttemptNo
                                     </div>
 
                                     <div class="text-secondary small">
-                                        Confidence: @result.ConfidenceScore.ToString("P0")
+                                        @L["Confidence"]: @result.ConfidenceScore.ToString("P0")
                                     </div>
 
                                     <div class="text-secondary small">

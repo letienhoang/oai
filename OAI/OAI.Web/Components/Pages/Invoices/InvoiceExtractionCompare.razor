@@ -1,24 +1,24 @@
-﻿@page "/invoices/{InvoiceId:guid}/compare"
+@page "/invoices/{InvoiceId:guid}/compare"
 @rendermode InteractiveServer
 
-<PageTitle>So sánh OCR và OCR + AI - OAI</PageTitle>
+<PageTitle>@L["ExtractionComparePageTitle"]</PageTitle>
 
 <section class="mb-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
         <div>
-            <h1 class="fw-bold mb-1">So sánh kết quả trích xuất</h1>
+            <h1 class="fw-bold mb-1">@L["ExtractionCompareTitle"]</h1>
             <p class="text-secondary mb-0">
-                So sánh kết quả Rule-based OCR và OCR kết hợp AI trên cùng một raw text.
+                @L["ExtractionCompareSubtitle"]
             </p>
         </div>
 
         <div class="d-flex gap-2 align-items-start">
             <button class="btn btn-outline-secondary" @onclick="GoBack">
-                Quay lại chi tiết
+                @L["BackToDetail"]
             </button>
 
             <button class="btn btn-outline-primary" @onclick="ReloadAsync" disabled="@IsLoading">
-                Chạy lại so sánh
+                @L["RunComparisonAgain"]
             </button>
         </div>
     </div>
@@ -29,7 +29,7 @@
     <section class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-5 text-center">
             <div class="spinner-border text-primary" role="status"></div>
-            <div class="text-secondary mt-3">Đang so sánh kết quả trích xuất...</div>
+            <div class="text-secondary mt-3">@L["LoadingExtractionComparison"]</div>
         </div>
     </section>
 }
@@ -51,17 +51,17 @@ else if (Comparison is not null)
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div>
-                            <h2 class="h5 fw-bold mb-1">OCR cơ bản</h2>
+                            <h2 class="h5 fw-bold mb-1">@L["BasicOcr"]</h2>
                             <div class="text-secondary small">@Comparison.RuleBasedResult.EngineName</div>
                         </div>
 
                         @if (Comparison.RuleBasedResult.IsAvailable)
                         {
-                            <span class="badge text-bg-success">Available</span>
+                            <span class="badge text-bg-success">@L["Available"]</span>
                         }
                         else
                         {
-                            <span class="badge text-bg-danger">Failed</span>
+                            <span class="badge text-bg-danger">@L["Failed"]</span>
                         }
                     </div>
 
@@ -74,28 +74,28 @@ else if (Comparison is not null)
                     else
                     {
                         <dl class="row small mb-0">
-                            <dt class="col-5">Vendor</dt>
+                            <dt class="col-5">@L["Vendor"]</dt>
                             <dd class="col-7">@DisplayOrFallback(Comparison.RuleBasedResult.VendorName)</dd>
 
-                            <dt class="col-5">Invoice Number</dt>
+                            <dt class="col-5">@L["InvoiceNumber"]</dt>
                             <dd class="col-7">@DisplayOrFallback(Comparison.RuleBasedResult.InvoiceNumber)</dd>
 
-                            <dt class="col-5">Issue Date</dt>
+                            <dt class="col-5">@L["IssueDate"]</dt>
                             <dd class="col-7">@FormatDate(Comparison.RuleBasedResult.IssueDate)</dd>
 
-                            <dt class="col-5">Due Date</dt>
+                            <dt class="col-5">@L["DueDate"]</dt>
                             <dd class="col-7">@FormatDate(Comparison.RuleBasedResult.DueDate)</dd>
 
-                            <dt class="col-5">Subtotal</dt>
+                            <dt class="col-5">@L["Subtotal"]</dt>
                             <dd class="col-7">@FormatMoney(Comparison.RuleBasedResult.DeclaredSubtotal, Comparison.RuleBasedResult.Currency)</dd>
 
-                            <dt class="col-5">Tax</dt>
+                            <dt class="col-5">@L["Tax"]</dt>
                             <dd class="col-7">@FormatMoney(Comparison.RuleBasedResult.DeclaredTaxAmount, Comparison.RuleBasedResult.Currency)</dd>
 
-                            <dt class="col-5">Total</dt>
+                            <dt class="col-5">@L["Total"]</dt>
                             <dd class="col-7">@FormatMoney(Comparison.RuleBasedResult.DeclaredTotalAmount, Comparison.RuleBasedResult.Currency)</dd>
 
-                            <dt class="col-5">Line items</dt>
+                            <dt class="col-5">@L["LineItems"]</dt>
                             <dd class="col-7">@Comparison.RuleBasedResult.LineItemCount</dd>
                         </dl>
                     }
@@ -114,11 +114,11 @@ else if (Comparison is not null)
 
                         @if (Comparison.AiResult.IsAvailable)
                         {
-                            <span class="badge text-bg-success">Available</span>
+                            <span class="badge text-bg-success">@L["Available"]</span>
                         }
                         else
                         {
-                            <span class="badge text-bg-danger">Failed</span>
+                            <span class="badge text-bg-danger">@L["Failed"]</span>
                         }
                     </div>
 
@@ -131,28 +131,28 @@ else if (Comparison is not null)
                     else
                     {
                         <dl class="row small mb-0">
-                            <dt class="col-5">Vendor</dt>
+                            <dt class="col-5">@L["Vendor"]</dt>
                             <dd class="col-7">@DisplayOrFallback(Comparison.AiResult.VendorName)</dd>
 
-                            <dt class="col-5">Invoice Number</dt>
+                            <dt class="col-5">@L["InvoiceNumber"]</dt>
                             <dd class="col-7">@DisplayOrFallback(Comparison.AiResult.InvoiceNumber)</dd>
 
-                            <dt class="col-5">Issue Date</dt>
+                            <dt class="col-5">@L["IssueDate"]</dt>
                             <dd class="col-7">@FormatDate(Comparison.AiResult.IssueDate)</dd>
 
-                            <dt class="col-5">Due Date</dt>
+                            <dt class="col-5">@L["DueDate"]</dt>
                             <dd class="col-7">@FormatDate(Comparison.AiResult.DueDate)</dd>
 
-                            <dt class="col-5">Subtotal</dt>
+                            <dt class="col-5">@L["Subtotal"]</dt>
                             <dd class="col-7">@FormatMoney(Comparison.AiResult.DeclaredSubtotal, Comparison.AiResult.Currency)</dd>
 
-                            <dt class="col-5">Tax</dt>
+                            <dt class="col-5">@L["Tax"]</dt>
                             <dd class="col-7">@FormatMoney(Comparison.AiResult.DeclaredTaxAmount, Comparison.AiResult.Currency)</dd>
 
-                            <dt class="col-5">Total</dt>
+                            <dt class="col-5">@L["Total"]</dt>
                             <dd class="col-7">@FormatMoney(Comparison.AiResult.DeclaredTotalAmount, Comparison.AiResult.Currency)</dd>
 
-                            <dt class="col-5">Line items</dt>
+                            <dt class="col-5">@L["LineItems"]</dt>
                             <dd class="col-7">@Comparison.AiResult.LineItemCount</dd>
                         </dl>
                     }
@@ -163,16 +163,16 @@ else if (Comparison is not null)
 
     <section class="card border-0 shadow-sm rounded-4 mb-4">
         <div class="card-body p-4">
-            <h2 class="h5 fw-bold mb-3">So sánh từng trường</h2>
+            <h2 class="h5 fw-bold mb-3">@L["FieldComparison"]</h2>
 
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
                     <thead>
                     <tr>
-                        <th>Trường</th>
-                        <th>OCR cơ bản</th>
+                        <th>@L["Field"]</th>
+                        <th>@L["BasicOcr"]</th>
                         <th>OCR + AI</th>
-                        <th class="text-center">Kết quả</th>
+                        <th class="text-center">@L["Result"]</th>
                     </tr>
                     </thead>
 
@@ -186,11 +186,11 @@ else if (Comparison is not null)
                             <td class="text-center">
                                 @if (item.IsSame)
                                 {
-                                    <span class="badge text-bg-success">Giống</span>
+                                    <span class="badge text-bg-success">@L["Same"]</span>
                                 }
                                 else
                                 {
-                                    <span class="badge text-bg-warning">Khác</span>
+                                    <span class="badge text-bg-warning">@L["Different"]</span>
                                 }
                             </td>
                         </tr>

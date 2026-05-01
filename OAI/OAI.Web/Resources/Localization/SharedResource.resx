@@ -1,0 +1,837 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true"></xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppName" xml:space="preserve">
+        <value>OAI Invoice Processing</value>
+    </data>
+  <data name="Dashboard" xml:space="preserve">
+        <value>Dashboard</value>
+    </data>
+  <data name="Invoices" xml:space="preserve">
+        <value>Invoices</value>
+    </data>
+  <data name="UploadInvoice" xml:space="preserve">
+        <value>Upload Invoice</value>
+    </data>
+  <data name="ValidationErrors" xml:space="preserve">
+        <value>Validation Errors</value>
+    </data>
+  <data name="Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+  <data name="Language" xml:space="preserve">
+        <value>Language</value>
+    </data>
+  <data name="English" xml:space="preserve">
+        <value>English</value>
+    </data>
+  <data name="Vietnamese" xml:space="preserve">
+        <value>Vietnamese</value>
+    </data>
+  <data name="Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+  <data name="InvoiceList" xml:space="preserve">
+        <value>Invoice List</value>
+    </data>
+  <data name="InvoiceDetail" xml:space="preserve">
+        <value>Invoice Detail</value>
+    </data>
+  <data name="EditInvoice" xml:space="preserve">
+        <value>Edit Invoice</value>
+    </data>
+  <data name="Upload" xml:space="preserve">
+        <value>Upload</value>
+    </data>
+  <data name="Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+  <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+  <data name="Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+  <data name="Search" xml:space="preserve">
+        <value>Search</value>
+    </data>
+  <data name="Status" xml:space="preserve">
+        <value>Status</value>
+    </data>
+  <data name="CreatedAt" xml:space="preserve">
+        <value>Created At</value>
+    </data>
+  <data name="Actions" xml:space="preserve">
+        <value>Actions</value>
+    </data>
+  <data name="TotalInvoices" xml:space="preserve">
+        <value>Total invoices</value>
+    </data>
+  <data name="ProcessedInvoices" xml:space="preserve">
+        <value>Processed Invoices</value>
+    </data>
+  <data name="InvalidInvoices" xml:space="preserve">
+        <value>Invalid Invoices</value>
+    </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+        <value>Welcome to OAI</value>
+    </data>
+  <data name="WelcomeDescription" xml:space="preserve">
+        <value>Upload, extract, validate, and manage invoice data.</value>
+    </data>
+  <data name="AppSubtitle" xml:space="preserve">
+        <value>OCR, extraction, validation and audit workflow</value>
+    </data>
+  <data name="InvoiceSystem" xml:space="preserve">
+        <value>Invoice System</value>
+    </data>
+  <data name="GraduationThesis" xml:space="preserve">
+        <value>Graduation Thesis</value>
+    </data>
+  <data name="Overview" xml:space="preserve">
+        <value>Overview</value>
+    </data>
+  <data name="DataValidation" xml:space="preserve">
+        <value>Data Validation</value>
+    </data>
+  <data name="System" xml:space="preserve">
+        <value>System</value>
+    </data>
+  <data name="AuditLogs" xml:space="preserve">
+        <value>Audit Logs</value>
+    </data>
+  <data name="SidebarSmall" xml:space="preserve">
+        <value>Small</value>
+    </data>
+  <data name="SidebarNormal" xml:space="preserve">
+        <value>Normal</value>
+    </data>
+  <data name="SidebarLarge" xml:space="preserve">
+        <value>Large</value>
+    </data>
+  <data name="EnvironmentDevelopment" xml:space="preserve">
+        <value>Development</value>
+    </data>
+  <data name="PageNotFoundTitle" xml:space="preserve">
+        <value>Page not found - OAI</value>
+    </data>
+  <data name="PageNotFoundHeading" xml:space="preserve">
+        <value>404 - Page not found</value>
+    </data>
+  <data name="PageNotFoundDescription" xml:space="preserve">
+        <value>The page you are trying to access does not exist or has been changed.</value>
+    </data>
+  <data name="BackToDashboard" xml:space="preserve">
+        <value>Back to Dashboard</value>
+    </data>
+  <data name="SystemErrorTitle" xml:space="preserve">
+        <value>System error - OAI</value>
+    </data>
+  <data name="SystemErrorHeading" xml:space="preserve">
+        <value>System error</value>
+    </data>
+  <data name="SystemErrorDescription" xml:space="preserve">
+        <value>An error occurred while processing the request.</value>
+    </data>
+  <data name="RequestId" xml:space="preserve">
+        <value>Request ID</value>
+    </data>
+  <data name="DevelopmentInformation" xml:space="preserve">
+        <value>Development information</value>
+    </data>
+  <data name="DevelopmentErrorDescription" xml:space="preserve">
+        <value>If the application is running in Development, you can view more details in the console or application output.</value>
+    </data>
+  <data name="DashboardTitle" xml:space="preserve">
+        <value>Dashboard</value>
+    </data>
+  <data name="DashboardPageTitle" xml:space="preserve">
+        <value>Dashboard - OAI</value>
+    </data>
+  <data name="DashboardSubtitle" xml:space="preserve">
+        <value>Overview of the invoice information extraction system.</value>
+    </data>
+  <data name="Reload" xml:space="preserve">
+        <value>Reload</value>
+    </data>
+  <data name="LoadingDashboard" xml:space="preserve">
+        <value>Loading dashboard...</value>
+    </data>
+  <data name="DashboardLoadFailed" xml:space="preserve">
+        <value>Unable to load dashboard data. Please check the logs for more details.</value>
+    </data>
+  <data name="UploadedToSystem" xml:space="preserve">
+        <value>Uploaded to the system</value>
+    </data>
+  <data name="PendingReview" xml:space="preserve">
+        <value>Pending review</value>
+    </data>
+  <data name="ApprovedInvoices" xml:space="preserve">
+        <value>Approved invoices</value>
+    </data>
+  <data name="OpenValidationIssues" xml:space="preserve">
+        <value>Open validation issues</value>
+    </data>
+  <data name="InvoiceStatus" xml:space="preserve">
+        <value>Invoice status</value>
+    </data>
+  <data name="Draft" xml:space="preserve">
+        <value>Draft</value>
+    </data>
+  <data name="Approved" xml:space="preserve">
+        <value>Approved</value>
+    </data>
+  <data name="Rejected" xml:space="preserve">
+        <value>Rejected</value>
+    </data>
+  <data name="Exported" xml:space="preserve">
+        <value>Exported</value>
+    </data>
+  <data name="RecentInvoices" xml:space="preserve">
+        <value>Recent invoices</value>
+    </data>
+  <data name="ViewAll" xml:space="preserve">
+        <value>View all</value>
+    </data>
+  <data name="NoInvoices" xml:space="preserve">
+        <value>No invoices yet.</value>
+    </data>
+  <data name="InvoiceNumber" xml:space="preserve">
+        <value>Invoice number</value>
+    </data>
+  <data name="Vendor" xml:space="preserve">
+        <value>Vendor</value>
+    </data>
+  <data name="TotalAmount" xml:space="preserve">
+        <value>Total amount</value>
+    </data>
+  <data name="Detail" xml:space="preserve">
+        <value>Detail</value>
+    </data>
+  <data name="View" xml:space="preserve">
+        <value>View</value>
+    </data>
+  <data name="ValidationOverview" xml:space="preserve">
+        <value>Validation overview</value>
+    </data>
+  <data name="TotalValidationIssues" xml:space="preserve">
+        <value>Total issues</value>
+    </data>
+  <data name="InvoicesWithValidationIssues" xml:space="preserve">
+        <value>Invoices with issues</value>
+    </data>
+  <data name="ResolvedValidationIssues" xml:space="preserve">
+        <value>Resolved issues</value>
+    </data>
+  <data name="ViewValidationIssues" xml:space="preserve">
+        <value>View validation issues</value>
+    </data>
+  <data name="RecentValidationIssues" xml:space="preserve">
+        <value>Recent validation issues</value>
+    </data>
+  <data name="NoValidationIssues" xml:space="preserve">
+        <value>No validation issues yet.</value>
+    </data>
+  <data name="Resolved" xml:space="preserve">
+        <value>Resolved</value>
+    </data>
+  <data name="Open" xml:space="preserve">
+        <value>Open</value>
+    </data>
+  <data name="ViewInvoice" xml:space="preserve">
+        <value>View invoice</value>
+    </data>
+  <data name="NotAvailable" xml:space="preserve">
+        <value>Not available</value>
+    </data>
+  <data name="InvoiceListPageTitle" xml:space="preserve">
+        <value>Invoice List - OAI</value>
+    </data>
+  <data name="InvoiceListTitle" xml:space="preserve">
+        <value>Invoice List</value>
+    </data>
+  <data name="InvoiceListSubtitle" xml:space="preserve">
+        <value>Search and track the processing status of uploaded invoices.</value>
+    </data>
+  <data name="InvoiceSearchPlaceholder" xml:space="preserve">
+        <value>Search by invoice number or vendor...</value>
+    </data>
+  <data name="ClearFilter" xml:space="preserve">
+        <value>Clear filter</value>
+    </data>
+  <data name="LoadingInvoiceList" xml:space="preserve">
+        <value>Loading invoice list...</value>
+    </data>
+  <data name="InvoiceListLoadFailed" xml:space="preserve">
+        <value>Unable to load the invoice list. Please check the logs for more details.</value>
+    </data>
+  <data name="NoData" xml:space="preserve">
+        <value>No data</value>
+    </data>
+  <data name="NoInvoicesMatchSearch" xml:space="preserve">
+        <value>No invoices match the current search criteria.</value>
+    </data>
+  <data name="UploadFirstInvoice" xml:space="preserve">
+        <value>Upload first invoice</value>
+    </data>
+  <data name="IssueDate" xml:space="preserve">
+        <value>Issue date</value>
+    </data>
+  <data name="LineItems" xml:space="preserve">
+        <value>Line items</value>
+    </data>
+  <data name="UnknownVendor" xml:space="preserve">
+        <value>Unknown</value>
+    </data>
+  <data name="ShowingPage" xml:space="preserve">
+        <value>Showing page</value>
+    </data>
+  <data name="Of" xml:space="preserve">
+        <value>of</value>
+    </data>
+  <data name="Total" xml:space="preserve">
+        <value>Total</value>
+    </data>
+  <data name="InvoicesLower" xml:space="preserve">
+        <value>invoices</value>
+    </data>
+  <data name="Previous" xml:space="preserve">
+        <value>Previous</value>
+    </data>
+  <data name="Next" xml:space="preserve">
+        <value>Next</value>
+    </data>
+  <data name="UploadInvoicePageTitle" xml:space="preserve">
+        <value>Upload Invoice - OAI</value>
+    </data>
+  <data name="UploadInvoiceTitle" xml:space="preserve">
+        <value>Upload Invoice</value>
+    </data>
+  <data name="UploadInvoiceSubtitle" xml:space="preserve">
+        <value>Upload an invoice image so the system can store it, run OCR, extract data, and create an invoice record.</value>
+    </data>
+  <data name="SelectInvoiceFile" xml:space="preserve">
+        <value>Select invoice file</value>
+    </data>
+  <data name="UploadInvoiceImage" xml:space="preserve">
+        <value>Upload invoice image</value>
+    </data>
+  <data name="SupportedImageFormats" xml:space="preserve">
+        <value>Currently supported: JPG, JPEG, PNG, TIF, TIFF. PDF will be supported in a later phase.</value>
+    </data>
+  <data name="SelectedFile" xml:space="preserve">
+        <value>Selected file</value>
+    </data>
+  <data name="FileSize" xml:space="preserve">
+        <value>File size</value>
+    </data>
+  <data name="Processing" xml:space="preserve">
+        <value>Processing...</value>
+    </data>
+  <data name="UploadAndProcess" xml:space="preserve">
+        <value>Upload and process</value>
+    </data>
+  <data name="Reset" xml:space="preserve">
+        <value>Reset</value>
+    </data>
+  <data name="ProcessingFlow" xml:space="preserve">
+        <value>Processing flow</value>
+    </data>
+  <data name="SaveInvoiceFileToStorage" xml:space="preserve">
+        <value>Save the invoice file to storage.</value>
+    </data>
+  <data name="RunTesseractOcr" xml:space="preserve">
+        <value>Run OCR using Tesseract.</value>
+    </data>
+  <data name="ParseOcrTextToInvoiceData" xml:space="preserve">
+        <value>Parse OCR text into invoice data.</value>
+    </data>
+  <data name="CreateInvoiceInDatabase" xml:space="preserve">
+        <value>Create an invoice in the database.</value>
+    </data>
+  <data name="RunConsistencyValidation" xml:space="preserve">
+        <value>Run data consistency validation.</value>
+    </data>
+  <data name="ProcessingResult" xml:space="preserve">
+        <value>Processing result</value>
+    </data>
+  <data name="File" xml:space="preserve">
+        <value>File</value>
+    </data>
+  <data name="InvoiceId" xml:space="preserve">
+        <value>InvoiceId</value>
+    </data>
+  <data name="Message" xml:space="preserve">
+        <value>Message</value>
+    </data>
+  <data name="ViewInvoiceDetail" xml:space="preserve">
+        <value>View invoice detail</value>
+    </data>
+  <data name="PleaseSelectInvoiceFile" xml:space="preserve">
+        <value>Please select an invoice file.</value>
+    </data>
+  <data name="UnsupportedInvoiceFileFormat" xml:space="preserve">
+        <value>Unsupported file format. Please select JPG, JPEG, PNG, TIF, or TIFF.</value>
+    </data>
+  <data name="FileSizeExceeded" xml:space="preserve">
+        <value>The file exceeds the allowed size ({0}).</value>
+    </data>
+  <data name="PleaseSelectFileBeforeUpload" xml:space="preserve">
+        <value>Please select a file before uploading.</value>
+    </data>
+  <data name="InvoiceUploadProcessedSuccessfully" xml:space="preserve">
+        <value>The invoice was uploaded and processed successfully. It is now pending review.</value>
+    </data>
+  <data name="InvoiceUploadFailed" xml:space="preserve">
+        <value>An error occurred while uploading and processing the invoice. Please check the logs for more details.</value>
+    </data>
+  <data name="InvoiceDetailPageTitle" xml:space="preserve">
+        <value>Invoice Detail - OAI</value>
+    </data>
+  <data name="InvoiceDetailTitle" xml:space="preserve">
+        <value>Invoice Detail</value>
+    </data>
+  <data name="InvoiceDetailSubtitle" xml:space="preserve">
+        <value>Track extracted data, line items, and validation issues for this invoice.</value>
+    </data>
+  <data name="BackToList" xml:space="preserve">
+        <value>Back to list</value>
+    </data>
+  <data name="CompareOcrAi" xml:space="preserve">
+        <value>Compare OCR / AI</value>
+    </data>
+  <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+  <data name="Approving" xml:space="preserve">
+        <value>Approving...</value>
+    </data>
+  <data name="ApproveInvoice" xml:space="preserve">
+        <value>Approve invoice</value>
+    </data>
+  <data name="Moving" xml:space="preserve">
+        <value>Moving...</value>
+    </data>
+  <data name="MoveToPendingReview" xml:space="preserve">
+        <value>Move to pending review</value>
+    </data>
+  <data name="Rejecting" xml:space="preserve">
+        <value>Rejecting...</value>
+    </data>
+  <data name="Reject" xml:space="preserve">
+        <value>Reject</value>
+    </data>
+  <data name="InvoiceRejectedWarning" xml:space="preserve">
+        <value>This invoice has been rejected. You can move it back to pending review if you want to process it again.</value>
+    </data>
+  <data name="InvoiceApprovedMessage" xml:space="preserve">
+        <value>This invoice has been approved.</value>
+    </data>
+  <data name="LoadingInvoiceDetail" xml:space="preserve">
+        <value>Loading invoice detail...</value>
+    </data>
+  <data name="InvoiceNotFound" xml:space="preserve">
+        <value>Invoice not found</value>
+    </data>
+  <data name="InvoiceNotFoundDescription" xml:space="preserve">
+        <value>The invoice does not exist or has been deleted.</value>
+    </data>
+  <data name="DueDate" xml:space="preserve">
+        <value>Due date</value>
+    </data>
+  <data name="SourceFile" xml:space="preserve">
+        <value>Source file</value>
+    </data>
+  <data name="AmountSummary" xml:space="preserve">
+        <value>Amount summary</value>
+    </data>
+  <data name="Subtotal" xml:space="preserve">
+        <value>Subtotal</value>
+    </data>
+  <data name="Tax" xml:space="preserve">
+        <value>Tax</value>
+    </data>
+  <data name="Rows" xml:space="preserve">
+        <value>rows</value>
+    </data>
+  <data name="NoLineItemsExtracted" xml:space="preserve">
+        <value>No line items were extracted.</value>
+    </data>
+  <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+  <data name="Quantity" xml:space="preserve">
+        <value>Quantity</value>
+    </data>
+  <data name="UnitPrice" xml:space="preserve">
+        <value>Unit price</value>
+    </data>
+  <data name="Net" xml:space="preserve">
+        <value>Net</value>
+    </data>
+  <data name="Gross" xml:space="preserve">
+        <value>Gross</value>
+    </data>
+  <data name="TaxRate" xml:space="preserve">
+        <value>Tax %</value>
+    </data>
+  <data name="CannotApproveDueToValidationErrors" xml:space="preserve">
+        <value>The invoice cannot be approved while unresolved Error-level validation issues remain.</value>
+    </data>
+  <data name="ValidationIssues" xml:space="preserve">
+        <value>Validation issues</value>
+    </data>
+  <data name="NoConsistencyValidationIssues" xml:space="preserve">
+        <value>No data consistency validation issues.</value>
+    </data>
+  <data name="ExtractionHistory" xml:space="preserve">
+        <value>Extraction history</value>
+    </data>
+  <data name="NoExtractionHistory" xml:space="preserve">
+        <value>No extraction history yet.</value>
+    </data>
+  <data name="Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+  <data name="Failed" xml:space="preserve">
+        <value>Failed</value>
+    </data>
+  <data name="Attempt" xml:space="preserve">
+        <value>Attempt</value>
+    </data>
+  <data name="Confidence" xml:space="preserve">
+        <value>Confidence</value>
+    </data>
+  <data name="InvoiceDetailLoadFailed" xml:space="preserve">
+        <value>Unable to load invoice detail. Please check the logs for more details.</value>
+    </data>
+  <data name="InvoiceApprovedSuccessfully" xml:space="preserve">
+        <value>The invoice has been approved successfully.</value>
+    </data>
+  <data name="InvoiceApproveFailed" xml:space="preserve">
+        <value>Unable to approve the invoice. Please check validation errors or system logs.</value>
+    </data>
+  <data name="InvoiceRejectedSuccessfully" xml:space="preserve">
+        <value>The invoice has been rejected.</value>
+    </data>
+  <data name="InvoiceRejectFailed" xml:space="preserve">
+        <value>Unable to reject the invoice. Please check the system logs.</value>
+    </data>
+  <data name="InvoiceMovedToPendingReviewSuccessfully" xml:space="preserve">
+        <value>The invoice has been moved back to pending review.</value>
+    </data>
+  <data name="InvoiceMoveToPendingReviewFailed" xml:space="preserve">
+        <value>Unable to move the invoice back to pending review. Please check the system logs.</value>
+    </data>
+  <data name="ValidationPageTitle" xml:space="preserve">
+        <value>Data Validation - OAI</value>
+    </data>
+  <data name="ConsistencyValidationTitle" xml:space="preserve">
+        <value>Consistency Validation</value>
+    </data>
+  <data name="ValidationPageSubtitle" xml:space="preserve">
+        <value>Track issues detected during invoice data validation.</value>
+    </data>
+  <data name="SearchValidationIssuesPlaceholder" xml:space="preserve">
+        <value>Search by invoice number, vendor, rule, or error message...</value>
+    </data>
+  <data name="AllSeverities" xml:space="preserve">
+        <value>All severities</value>
+    </data>
+  <data name="AllStatuses" xml:space="preserve">
+        <value>All statuses</value>
+    </data>
+  <data name="OpenStatus" xml:space="preserve">
+        <value>Open</value>
+    </data>
+  <data name="ResolvedStatus" xml:space="preserve">
+        <value>Resolved</value>
+    </data>
+  <data name="LoadingValidationIssues" xml:space="preserve">
+        <value>Loading validation issues...</value>
+    </data>
+  <data name="NoValidationIssuesTitle" xml:space="preserve">
+        <value>No validation issues</value>
+    </data>
+  <data name="NoValidationIssuesDescription" xml:space="preserve">
+        <value>No validation issues match the current filter.</value>
+    </data>
+  <data name="Invoice" xml:space="preserve">
+        <value>Invoice</value>
+    </data>
+  <data name="Rule" xml:space="preserve">
+        <value>Rule</value>
+    </data>
+  <data name="ErrorContent" xml:space="preserve">
+        <value>Error content</value>
+    </data>
+  <data name="Severity" xml:space="preserve">
+        <value>Severity</value>
+    </data>
+  <data name="DetectedAt" xml:space="preserve">
+        <value>Detected at</value>
+    </data>
+  <data name="TotalErrors" xml:space="preserve">
+        <value>total errors</value>
+    </data>
+  <data name="ValidationIssueListLoadFailed" xml:space="preserve">
+        <value>Unable to load validation issues. Please check the logs for more details.</value>
+    </data>
+  <data name="EditInvoicePageTitle" xml:space="preserve">
+        <value>Edit Invoice - OAI</value>
+    </data>
+  <data name="EditInvoiceTitle" xml:space="preserve">
+        <value>Edit Invoice Data</value>
+    </data>
+  <data name="EditInvoiceSubtitle" xml:space="preserve">
+        <value>Correct data extracted from OCR/AI. The system will then re-run consistency validation.</value>
+    </data>
+  <data name="Back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+  <data name="LoadingInvoiceData" xml:space="preserve">
+        <value>Loading invoice data...</value>
+    </data>
+  <data name="GeneralInformation" xml:space="preserve">
+        <value>General information</value>
+    </data>
+  <data name="VendorId" xml:space="preserve">
+        <value>VendorId</value>
+    </data>
+  <data name="VendorIdHelpText" xml:space="preserve">
+        <value>This phase uses VendorId. It can be replaced by a Vendor dropdown later.</value>
+    </data>
+  <data name="Currency" xml:space="preserve">
+        <value>Currency</value>
+    </data>
+  <data name="AddLineItem" xml:space="preserve">
+        <value>Add line</value>
+    </data>
+  <data name="AtLeastOneLineItemRequired" xml:space="preserve">
+        <value>The invoice must have at least one line item.</value>
+    </data>
+  <data name="Tasks" xml:space="preserve">
+        <value>Tasks</value>
+    </data>
+  <data name="Saving" xml:space="preserve">
+        <value>Saving...</value>
+    </data>
+  <data name="SaveAndRevalidate" xml:space="preserve">
+        <value>Save and revalidate</value>
+    </data>
+  <data name="Notes" xml:space="preserve">
+        <value>Notes</value>
+    </data>
+  <data name="EditNoteRunValidation" xml:space="preserve">
+        <value>After saving, the system will re-run consistency validation.</value>
+    </data>
+  <data name="EditNoteReplaceOldValidationIssues" xml:space="preserve">
+        <value>Previous issues will be replaced by the new validation result.</value>
+    </data>
+  <data name="EditNoteOriginalOcrNotModified" xml:space="preserve">
+        <value>The original OCR data is not modified. Only normalized invoice data is updated.</value>
+    </data>
+  <data name="InvalidVendorId" xml:space="preserve">
+        <value>VendorId is invalid.</value>
+    </data>
+  <data name="InvoiceMustHaveAtLeastOneLineItem" xml:space="preserve">
+        <value>The invoice must have at least one line item.</value>
+    </data>
+  <data name="InvoiceSavedAndRevalidatedSuccessfully" xml:space="preserve">
+        <value>The invoice was saved successfully. The system has re-run data consistency validation.</value>
+    </data>
+  <data name="InvoiceSaveFailed" xml:space="preserve">
+        <value>Unable to save the invoice. Please check the data or logs for more details.</value>
+    </data>
+  <data name="InvoiceEditLoadFailed" xml:space="preserve">
+        <value>Unable to load invoice data for editing.</value>
+    </data>
+  <data name="AuditLogsPageTitle" xml:space="preserve">
+        <value>Audit Logs - OAI</value>
+    </data>
+  <data name="AuditLogsTitle" xml:space="preserve">
+        <value>Audit Logs</value>
+    </data>
+  <data name="AuditLogsSubtitle" xml:space="preserve">
+        <value>Track create, update, delete, and processing actions in the system.</value>
+    </data>
+  <data name="AuditSearchPlaceholder" xml:space="preserve">
+        <value>Search by entity, entity id, user, source, or JSON...</value>
+    </data>
+  <data name="AllEntities" xml:space="preserve">
+        <value>All entities</value>
+    </data>
+  <data name="AllActions" xml:space="preserve">
+        <value>All actions</value>
+    </data>
+  <data name="LoadingAuditLogs" xml:space="preserve">
+        <value>Loading audit logs...</value>
+    </data>
+  <data name="NoAuditLogs" xml:space="preserve">
+        <value>No audit logs</value>
+    </data>
+  <data name="NoAuditLogsMatchFilter" xml:space="preserve">
+        <value>No logs match the current filter.</value>
+    </data>
+  <data name="OccurredAt" xml:space="preserve">
+        <value>Occurred at</value>
+    </data>
+  <data name="AuditLogsLower" xml:space="preserve">
+        <value>audit logs</value>
+    </data>
+  <data name="AuditLogDetail" xml:space="preserve">
+        <value>Audit log detail</value>
+    </data>
+  <data name="Close" xml:space="preserve">
+        <value>Close</value>
+    </data>
+  <data name="OldValues" xml:space="preserve">
+        <value>Old values</value>
+    </data>
+  <data name="NewValues" xml:space="preserve">
+        <value>New values</value>
+    </data>
+  <data name="AuditLogsLoadFailed" xml:space="preserve">
+        <value>Unable to load audit logs. Please check the logs for more details.</value>
+    </data>
+  <data name="SettingsPageTitle" xml:space="preserve">
+        <value>System Settings - OAI</value>
+    </data>
+  <data name="SettingsTitle" xml:space="preserve">
+        <value>System Settings</value>
+    </data>
+  <data name="SettingsSubtitle" xml:space="preserve">
+        <value>View the current OCR, AI, file storage, and runtime configuration.</value>
+    </data>
+  <data name="LoadingSystemSettings" xml:space="preserve">
+        <value>Loading system settings...</value>
+    </data>
+  <data name="FileStorageDescription" xml:space="preserve">
+        <value>Configuration for storing uploaded invoice files.</value>
+    </data>
+  <data name="OcrSettingsDescription" xml:space="preserve">
+        <value>Tesseract OCR and language configuration.</value>
+    </data>
+  <data name="AiSettingsDescription" xml:space="preserve">
+        <value>AI parser configuration for normalizing OCR results.</value>
+    </data>
+  <data name="Enabled" xml:space="preserve">
+        <value>Enabled</value>
+    </data>
+  <data name="Disabled" xml:space="preserve">
+        <value>Disabled</value>
+    </data>
+  <data name="ApiKeyHiddenWarning" xml:space="preserve">
+        <value>The real API key is not displayed in the UI to avoid exposing sensitive information.</value>
+    </data>
+  <data name="RuntimeSettingsDescription" xml:space="preserve">
+        <value>Application runtime environment information.</value>
+    </data>
+  <data name="ConfigurationNotes" xml:space="preserve">
+        <value>Configuration notes</value>
+    </data>
+  <data name="SettingsReadOnlyNote" xml:space="preserve">
+        <value>This screen only displays the current runtime configuration and does not allow direct editing yet.</value>
+    </data>
+  <data name="SettingsConfigSourceNote" xml:space="preserve">
+        <value>OCR and AI configuration should be changed through appsettings.Development.json, environment variables, or user secrets.</value>
+    </data>
+  <data name="OpenAiApiKeyUserSecretsNote" xml:space="preserve">
+        <value>The OpenAI API key should be stored with dotnet user-secrets and not committed to Git.</value>
+    </data>
+  <data name="ProductionFileStorageNote" xml:space="preserve">
+        <value>For production deployment, configure file storage to a dedicated folder instead of storing files under bin.</value>
+    </data>
+  <data name="SystemSettingsLoadFailed" xml:space="preserve">
+        <value>Unable to load system settings. Please check the logs for more details.</value>
+    </data>
+  <data name="ExtractionComparePageTitle" xml:space="preserve">
+        <value>OCR and OCR + AI Comparison - OAI</value>
+    </data>
+  <data name="ExtractionCompareTitle" xml:space="preserve">
+        <value>Extraction Result Comparison</value>
+    </data>
+  <data name="ExtractionCompareSubtitle" xml:space="preserve">
+        <value>Compare rule-based OCR and OCR combined with AI on the same raw text.</value>
+    </data>
+  <data name="BackToDetail" xml:space="preserve">
+        <value>Back to detail</value>
+    </data>
+  <data name="RunComparisonAgain" xml:space="preserve">
+        <value>Run comparison again</value>
+    </data>
+  <data name="LoadingExtractionComparison" xml:space="preserve">
+        <value>Comparing extraction results...</value>
+    </data>
+  <data name="BasicOcr" xml:space="preserve">
+        <value>Basic OCR</value>
+    </data>
+  <data name="Available" xml:space="preserve">
+        <value>Available</value>
+    </data>
+  <data name="FieldComparison" xml:space="preserve">
+        <value>Field comparison</value>
+    </data>
+  <data name="Field" xml:space="preserve">
+        <value>Field</value>
+    </data>
+  <data name="Result" xml:space="preserve">
+        <value>Result</value>
+    </data>
+  <data name="Same" xml:space="preserve">
+        <value>Same</value>
+    </data>
+  <data name="Different" xml:space="preserve">
+        <value>Different</value>
+    </data>
+  <data name="ExtractionComparisonLoadFailed" xml:space="preserve">
+        <value>Unable to compare extraction results. Please check the logs for more details.</value>
+    </data>
+  <data name="AuditAction" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="AuditSource" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="AuditCorrelationId" xml:space="preserve">
+    <value>Correlation ID</value>
+  </data>
+  <data name="AuditEntityId" xml:space="preserve">
+    <value>Entity ID</value>
+  </data>
+  <data name="AuditUser" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="AuditOccurredAt" xml:space="preserve">
+    <value>Occurred at</value>
+  </data>
+  <data name="AuditEntity" xml:space="preserve">
+    <value>Entity</value>
+  </data>
+  <data name="FieldMustBeNonNegative" xml:space="preserve">
+    <value>{0} must be greater than or equal to 0.</value>
+  </data>
+  <data name="RequiredFieldValidation" xml:space="preserve">
+    <value>{0} is required.</value>
+  </data>
+  <data name="FieldMustBeGreaterThanZero" xml:space="preserve">
+    <value>{0} must be greater than 0.</value>
+  </data>
+  <data name="FieldMustBeBetween" xml:space="preserve">
+    <value>{0} must be between {1} and {2}.</value>
+  </data>
+</root>

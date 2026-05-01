@@ -1,24 +1,24 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 
-<PageTitle>Dashboard - OAI</PageTitle>
+<PageTitle>@L["DashboardPageTitle"]</PageTitle>
 
 <section class="mb-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
         <div>
-            <h1 class="fw-bold mb-1">Dashboard</h1>
+            <h1 class="fw-bold mb-1">@L["DashboardTitle"]</h1>
             <p class="text-secondary mb-0">
-                Tổng quan hệ thống trích xuất thông tin hóa đơn.
+                @L["DashboardSubtitle"]
             </p>
         </div>
 
         <div class="d-flex gap-2 align-items-start">
             <button class="btn btn-outline-secondary" @onclick="ReloadAsync" disabled="@IsLoading">
-                Tải lại
+                @L["Reload"]
             </button>
 
             <button class="btn btn-primary" @onclick="GoToUpload">
-                Upload hóa đơn
+                @L["UploadInvoice"]
             </button>
         </div>
     </div>
@@ -29,7 +29,7 @@
     <section class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-5 text-center">
             <div class="spinner-border text-primary" role="status"></div>
-            <div class="text-secondary mt-3">Đang tải dashboard...</div>
+            <div class="text-secondary mt-3">@L["LoadingDashboard"]</div>
         </div>
     </section>
 }
@@ -49,9 +49,9 @@ else if (Summary is not null)
         <div class="col-12 col-md-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body">
-                    <div class="text-secondary fw-semibold small">Tổng hóa đơn</div>
+                    <div class="text-secondary fw-semibold small">@L["TotalInvoices"]</div>
                     <div class="display-6 fw-bold mt-2">@Summary.TotalInvoices</div>
-                    <div class="text-secondary small">Đã upload vào hệ thống</div>
+                    <div class="text-secondary small">@L["UploadedToSystem"]</div>
                 </div>
             </div>
         </div>
@@ -59,9 +59,9 @@ else if (Summary is not null)
         <div class="col-12 col-md-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body">
-                    <div class="text-secondary fw-semibold small">Chờ kiểm tra</div>
+                    <div class="text-secondary fw-semibold small">@L["PendingReview"]</div>
                     <div class="display-6 fw-bold mt-2">@Summary.PendingReviewInvoices</div>
-                    <div class="text-secondary small">Pending review</div>
+                    <div class="text-secondary small">@L["PendingReview"]</div>
                 </div>
             </div>
         </div>
@@ -69,9 +69,9 @@ else if (Summary is not null)
         <div class="col-12 col-md-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body">
-                    <div class="text-secondary fw-semibold small">Đã duyệt</div>
+                    <div class="text-secondary fw-semibold small">@L["ApprovedInvoices"]</div>
                     <div class="display-6 fw-bold mt-2">@Summary.ApprovedInvoices</div>
-                    <div class="text-secondary small">Approved invoices</div>
+                    <div class="text-secondary small">@L["ApprovedInvoices"]</div>
                 </div>
             </div>
         </div>
@@ -79,9 +79,9 @@ else if (Summary is not null)
         <div class="col-12 col-md-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body">
-                    <div class="text-secondary fw-semibold small">Lỗi chưa xử lý</div>
+                    <div class="text-secondary fw-semibold small">@L["OpenValidationIssues"]</div>
                     <div class="display-6 fw-bold mt-2">@Summary.OpenValidationIssues</div>
-                    <div class="text-secondary small">Open validation issues</div>
+                    <div class="text-secondary small">@L["OpenValidationIssues"]</div>
                 </div>
             </div>
         </div>
@@ -91,12 +91,12 @@ else if (Summary is not null)
         <div class="col-12 col-xl-5">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">Trạng thái hóa đơn</h2>
+                    <h2 class="h5 fw-bold mb-3">@L["InvoiceStatus"]</h2>
 
                     <div class="d-grid gap-3">
                         <div>
                             <div class="d-flex justify-content-between small mb-1">
-                                <span>Draft</span>
+                                <span>@L["Draft"]</span>
                                 <strong>@Summary.DraftInvoices</strong>
                             </div>
                             <div class="progress" role="progressbar">
@@ -106,7 +106,7 @@ else if (Summary is not null)
 
                         <div>
                             <div class="d-flex justify-content-between small mb-1">
-                                <span>Pending review</span>
+                                <span>@L["PendingReview"]</span>
                                 <strong>@Summary.PendingReviewInvoices</strong>
                             </div>
                             <div class="progress" role="progressbar">
@@ -116,7 +116,7 @@ else if (Summary is not null)
 
                         <div>
                             <div class="d-flex justify-content-between small mb-1">
-                                <span>Approved</span>
+                                <span>@L["Approved"]</span>
                                 <strong>@Summary.ApprovedInvoices</strong>
                             </div>
                             <div class="progress" role="progressbar">
@@ -126,7 +126,7 @@ else if (Summary is not null)
 
                         <div>
                             <div class="d-flex justify-content-between small mb-1">
-                                <span>Rejected</span>
+                                <span>@L["Rejected"]</span>
                                 <strong>@Summary.RejectedInvoices</strong>
                             </div>
                             <div class="progress" role="progressbar">
@@ -136,7 +136,7 @@ else if (Summary is not null)
 
                         <div>
                             <div class="d-flex justify-content-between small mb-1">
-                                <span>Exported</span>
+                                <span>@L["Exported"]</span>
                                 <strong>@Summary.ExportedInvoices</strong>
                             </div>
                             <div class="progress" role="progressbar">
@@ -152,16 +152,16 @@ else if (Summary is not null)
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h2 class="h5 fw-bold mb-0">Hóa đơn mới nhất</h2>
+                        <h2 class="h5 fw-bold mb-0">@L["RecentInvoices"]</h2>
                         <button class="btn btn-sm btn-outline-primary" @onclick="GoToInvoiceList">
-                            Xem tất cả
+                            @L["ViewAll"]
                         </button>
                     </div>
 
                     @if (Summary.RecentInvoices.Count == 0)
                     {
                         <div class="bg-light rounded-4 p-4 text-center text-secondary">
-                            Chưa có hóa đơn nào.
+                            @L["NoInvoices"]
                         </div>
                     }
                     else
@@ -170,11 +170,11 @@ else if (Summary is not null)
                             <table class="table table-hover align-middle mb-0">
                                 <thead>
                                 <tr>
-                                    <th>Số hóa đơn</th>
-                                    <th>Nhà cung cấp</th>
-                                    <th class="text-end">Tổng tiền</th>
-                                    <th>Trạng thái</th>
-                                    <th class="text-end">Chi tiết</th>
+                                    <th>@L["InvoiceNumber"]</th>
+                                    <th>@L["Vendor"]</th>
+                                    <th class="text-end">@L["TotalAmount"]</th>
+                                    <th>@L["Status"]</th>
+                                    <th class="text-end">@L["Detail"]</th>
                                 </tr>
                                 </thead>
 
@@ -196,7 +196,7 @@ else if (Summary is not null)
                                         <td class="text-end">
                                             <button class="btn btn-sm btn-outline-primary"
                                                     @onclick="() => GoToInvoiceDetail(invoice.InvoiceId)">
-                                                Xem
+                                                @L["View"]
                                             </button>
                                         </td>
                                     </tr>
@@ -214,33 +214,33 @@ else if (Summary is not null)
         <div class="col-12 col-xl-5">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">Validation overview</h2>
+                    <h2 class="h5 fw-bold mb-3">@L["ValidationOverview"]</h2>
 
                     <div class="row g-3">
                         <div class="col-12 col-md-6 col-xl-12">
                             <div class="border rounded-4 p-3 bg-light">
-                                <div class="text-secondary small">Tổng lỗi</div>
+                                <div class="text-secondary small">@L["TotalValidationIssues"]</div>
                                 <div class="h4 fw-bold mb-0">@Summary.TotalValidationIssues</div>
                             </div>
                         </div>
 
                         <div class="col-12 col-md-6 col-xl-12">
                             <div class="border rounded-4 p-3 bg-light">
-                                <div class="text-secondary small">Hóa đơn có lỗi</div>
+                                <div class="text-secondary small">@L["InvoicesWithValidationIssues"]</div>
                                 <div class="h4 fw-bold mb-0">@Summary.InvoicesWithValidationIssues</div>
                             </div>
                         </div>
 
                         <div class="col-12 col-md-6 col-xl-12">
                             <div class="border rounded-4 p-3 bg-light">
-                                <div class="text-secondary small">Đã xử lý</div>
+                                <div class="text-secondary small">@L["ResolvedValidationIssues"]</div>
                                 <div class="h4 fw-bold mb-0">@Summary.ResolvedValidationIssues</div>
                             </div>
                         </div>
                     </div>
 
                     <button class="btn btn-outline-primary w-100 mt-3" @onclick="GoToValidationIssues">
-                        Xem lỗi kiểm tra
+                        @L["ViewValidationIssues"]
                     </button>
                 </div>
             </div>
@@ -249,12 +249,12 @@ else if (Summary is not null)
         <div class="col-12 col-xl-7">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">Lỗi kiểm tra mới nhất</h2>
+                    <h2 class="h5 fw-bold mb-3">@L["RecentValidationIssues"]</h2>
 
                     @if (Summary.RecentValidationIssues.Count == 0)
                     {
                         <div class="bg-light rounded-4 p-4 text-center text-secondary">
-                            Chưa có validation issue nào.
+                            @L["NoValidationIssues"]
                         </div>
                     }
                     else
@@ -273,11 +273,11 @@ else if (Summary is not null)
 
                                         @if (issue.IsResolved)
                                         {
-                                            <span class="badge text-bg-success">Resolved</span>
+                                            <span class="badge text-bg-success">@L["Resolved"]</span>
                                         }
                                         else
                                         {
-                                            <span class="badge text-bg-warning">Open</span>
+                                            <span class="badge text-bg-warning">@L["Open"]</span>
                                         }
                                     </div>
 
@@ -297,7 +297,7 @@ else if (Summary is not null)
 
                                         <button class="btn btn-sm btn-outline-primary"
                                                 @onclick="() => GoToInvoiceDetail(issue.InvoiceId)">
-                                            Xem hóa đơn
+                                            @L["ViewInvoice"]
                                         </button>
                                     </div>
                                 </div>
