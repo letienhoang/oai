@@ -936,4 +936,40 @@
   <data name="DashboardEmptyDescription" xml:space="preserve">
         <value>Chưa có dữ liệu tổng quan để hiển thị.</value>
     </data>
+  <data name="LoginPageTitle" xml:space="preserve">
+        <value>Đăng nhập - OAI</value>
+    </data>
+  <data name="LoginTitle" xml:space="preserve">
+        <value>Đăng nhập</value>
+    </data>
+  <data name="LoginSubtitle" xml:space="preserve">
+        <value>Đăng nhập để truy cập hệ thống xử lý hóa đơn OAI.</value>
+    </data>
+  <data name="Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+  <data name="Password" xml:space="preserve">
+        <value>Mật khẩu</value>
+    </data>
+  <data name="RememberMe" xml:space="preserve">
+        <value>Ghi nhớ đăng nhập</value>
+    </data>
+  <data name="Login" xml:space="preserve">
+        <value>Đăng nhập</value>
+    </data>
+  <data name="Logout" xml:space="preserve">
+        <value>Đăng xuất</value>
+    </data>
+  <data name="SigningIn" xml:space="preserve">
+        <value>Đang đăng nhập...</value>
+    </data>
+  <data name="InvalidLoginAttempt" xml:space="preserve">
+        <value>Email hoặc mật khẩu không đúng.</value>
+    </data>
+  <data name="SignedIn" xml:space="preserve">
+        <value>Đã đăng nhập</value>
+    </data>
+  <data name="AuthorizationLoading" xml:space="preserve">
+        <value>Đang kiểm tra quyền truy cập...</value>
+    </data>
 </root>

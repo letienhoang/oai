@@ -1,0 +1,56 @@
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<SharedResource> L
+
+<AuthorizeView>
+    <Authorized Context="authState">
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                @UserDisplayName(authState.User)
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li>
+                    <span class="dropdown-item-text text-secondary small">@L["SignedIn"]</span>
+                </li>
+                <li>
+                    <hr class="dropdown-divider" />
+                </li>
+                <li>
+                    <form method="post" action="/auth/logout?returnUrl=/login">
+                        <button type="submit" class="dropdown-item">@L["Logout"]</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <a class="btn btn-primary btn-sm" href="@LoginUrl">@L["Login"]</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string LoginUrl
+    {
+        get
+        {
+            var currentUri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+            var returnUrl = string.IsNullOrWhiteSpace(currentUri)
+                ? "/"
+                : $"/{currentUri}";
+
+            return QueryHelpers.AddQueryString(
+                "/login",
+                "returnUrl",
+                returnUrl);
+        }
+    }
+
+    private static string UserDisplayName(System.Security.Claims.ClaimsPrincipal user)
+    {
+        return user.Identity?.Name ?? string.Empty;
+    }
+}

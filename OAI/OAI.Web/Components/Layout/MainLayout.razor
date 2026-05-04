@@ -1,4 +1,4 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 @inject IStringLocalizer<SharedResource> L
 
 <div class="@AppShellClass" style="@SidebarStyle">
@@ -55,6 +55,7 @@
                     }
 
                     <LanguageSelector/>
+                    <AuthMenu />
 
                     <span class="badge rounded-pill text-bg-primary">@L["EnvironmentDevelopment"]</span>
                 </div>

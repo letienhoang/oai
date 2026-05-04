@@ -936,4 +936,40 @@
   <data name="DashboardEmptyDescription" xml:space="preserve">
         <value>No dashboard data is available yet.</value>
     </data>
+  <data name="LoginPageTitle" xml:space="preserve">
+        <value>Login - OAI</value>
+    </data>
+  <data name="LoginTitle" xml:space="preserve">
+        <value>Sign in</value>
+    </data>
+  <data name="LoginSubtitle" xml:space="preserve">
+        <value>Sign in to access the OAI invoice processing system.</value>
+    </data>
+  <data name="Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+  <data name="Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+  <data name="RememberMe" xml:space="preserve">
+        <value>Remember me</value>
+    </data>
+  <data name="Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+  <data name="Logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
+  <data name="SigningIn" xml:space="preserve">
+        <value>Signing in...</value>
+    </data>
+  <data name="InvalidLoginAttempt" xml:space="preserve">
+        <value>Invalid email or password.</value>
+    </data>
+  <data name="SignedIn" xml:space="preserve">
+        <value>Signed in</value>
+    </data>
+  <data name="AuthorizationLoading" xml:space="preserve">
+        <value>Checking authorization...</value>
+    </data>
 </root>

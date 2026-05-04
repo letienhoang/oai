@@ -1,8 +1,10 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using OAI.Application;
 using OAI.Infrastructure;
+using OAI.Infrastructure.Identity;
 using OAI.Infrastructure.Persistence;
 using OAI.Web.Components;
 using OAI.Web.Endpoints;
@@ -15,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddCascadingAuthenticationState();
+
 builder.Services.AddLocalization(options =>
 {
     options.ResourcesPath = "Resources";
@@ -26,6 +30,40 @@ builder.Services.AddDbContext<OaiDbContext>(options =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.Configure<IdentitySeedOptions>(
+    builder.Configuration.GetSection("IdentitySeed"));
+
+builder.Services
+    .AddIdentityCore<ApplicationUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddRoles<IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<OaiDbContext>()
+    .AddSignInManager()
+    .AddDefaultTokenProviders();
+
+builder.Services
+    .AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddIdentityCookies();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/login";
+    options.AccessDeniedPath = "/login";
+    options.LogoutPath = "/auth/logout";
+    options.ReturnUrlParameter = "returnUrl";
+});
+
+builder.Services.AddAuthorization();
+builder.Services.AddScoped<IdentityDataSeeder>();
 
 builder.Services.AddScoped<UserTimeZoneService>();
 builder.Services.AddScoped<LocalizedMessageResolver>();
@@ -63,12 +101,21 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 app.UseHttpsRedirection();
 
 app.UseAntiforgery();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapStaticAssets();
 
 app.MapLocalizationEndpoints();
+app.MapAuthEndpoints();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+using (var scope = app.Services.CreateScope())
+{
+    var identitySeeder = scope.ServiceProvider.GetRequiredService<IdentityDataSeeder>();
+    await identitySeeder.SeedAsync();
+}
 
 app.Run();

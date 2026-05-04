@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OAI.Domain.Audit;
 using OAI.Domain.Entities;
-using OAI.Infrastructure.Audit;
+using OAI.Infrastructure.Identity;
 
 namespace OAI.Infrastructure.Persistence;
 
-public sealed class OaiDbContext : DbContext
+public sealed class OaiDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public OaiDbContext(DbContextOptions<OaiDbContext> options)
         : base(options)
