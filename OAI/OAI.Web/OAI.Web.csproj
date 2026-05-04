@@ -20,10 +20,6 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components\Shared\" />
-  </ItemGroup>
-
     <ItemGroup>
         <Content Include="tessdata\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

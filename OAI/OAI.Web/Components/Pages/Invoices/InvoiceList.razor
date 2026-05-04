@@ -48,36 +48,21 @@
             </div>
         </div>
 
-        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
-        {
-            <div class="alert alert-danger">
-                @ErrorMessage
-            </div>
-        }
-
-        @if (IsLoading)
-        {
-            <div class="d-flex justify-content-center align-items-center py-5">
-                <div class="spinner-border text-primary" role="status"></div>
-                <span class="ms-3 text-secondary">@L["LoadingInvoiceList"]</span>
-            </div>
-        }
-        else if (Invoices.Count == 0)
-        {
-            <div class="bg-light rounded-4 p-5 text-center">
-                <div class="fs-1 mb-3">&#x1F9FE;</div>
-                <h2 class="h5 fw-bold">@L["NoData"]</h2>
-                <p class="text-secondary mb-3">
-                    @L["NoInvoicesMatchSearch"]
-                </p>
-
+        <PageState IsLoading="@IsLoading"
+                   LoadingMessage="@L["LoadingInvoiceList"]"
+                   ErrorTitle="@L["GenericErrorTitle"]"
+                   ErrorMessage="@ErrorMessage"
+                   IsEmpty="@(Invoices.Count == 0)"
+                   EmptyIcon="🧾"
+                   EmptyTitle="@L["NoData"]"
+                   EmptyMessage="@L["NoInvoicesMatchSearch"]"
+                   InCard="false">
+            <EmptyActions>
                 <button class="btn btn-primary" @onclick="GoToUpload">
                     @L["UploadFirstInvoice"]
                 </button>
-            </div>
-        }
-        else
-        {
+            </EmptyActions>
+            <ChildContent>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
                     <thead>
@@ -166,6 +151,7 @@
                     </button>
                 </div>
             </div>
-        }
+            </ChildContent>
+        </PageState>
     </div>
 </section>

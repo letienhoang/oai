@@ -921,4 +921,19 @@
   <data name="System.UnexpectedError" xml:space="preserve">
         <value>Đã xảy ra lỗi không mong muốn. Vui lòng thử lại hoặc kiểm tra log hệ thống.</value>
     </data>
+  <data name="GenericLoading" xml:space="preserve">
+        <value>Đang tải...</value>
+    </data>
+  <data name="GenericErrorTitle" xml:space="preserve">
+        <value>Đã xảy ra lỗi</value>
+    </data>
+  <data name="GenericEmptyTitle" xml:space="preserve">
+        <value>Chưa có dữ liệu</value>
+    </data>
+  <data name="Retry" xml:space="preserve">
+        <value>Thử lại</value>
+    </data>
+  <data name="DashboardEmptyDescription" xml:space="preserve">
+        <value>Chưa có dữ liệu tổng quan để hiển thị.</value>
+    </data>
 </root>

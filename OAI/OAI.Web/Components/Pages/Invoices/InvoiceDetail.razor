@@ -113,42 +113,28 @@
     </div>
 }
 
-@if (IsLoading)
-{
-    <section class="card border-0 shadow-sm rounded-4">
-        <div class="card-body p-5 text-center">
-            <div class="spinner-border text-primary" role="status"></div>
-            <div class="text-secondary mt-3">@L["LoadingInvoiceDetail"]</div>
-        </div>
-    </section>
-}
-else if (!string.IsNullOrWhiteSpace(ErrorMessage))
-{
-    <section class="card border-0 shadow-sm rounded-4">
-        <div class="card-body p-5">
-            <div class="alert alert-danger mb-0">
-                @ErrorMessage
-            </div>
-        </div>
-    </section>
-}
-else if (Invoice is null)
-{
-    <section class="card border-0 shadow-sm rounded-4">
-        <div class="card-body p-5 text-center">
-            <div class="fs-1 mb-3">&#x1F9FE;</div>
-            <h2 class="h5 fw-bold">@L["InvoiceNotFound"]</h2>
-            <p class="text-secondary mb-3">
-                @L["InvoiceNotFoundDescription"]
-            </p>
-            <button class="btn btn-primary" @onclick="GoBack">
-                @L["BackToList"]
-            </button>
-        </div>
-    </section>
-}
-else
-{
+<PageState IsLoading="@IsLoading"
+           LoadingMessage="@L["LoadingInvoiceDetail"]"
+           ErrorTitle="@L["GenericErrorTitle"]"
+           ErrorMessage="@ErrorMessage"
+           IsEmpty="@(Invoice is null)"
+           EmptyIcon="🧾"
+           EmptyTitle="@L["InvoiceNotFound"]"
+           EmptyMessage="@L["InvoiceNotFoundDescription"]"
+           InCard="true">
+    <ErrorActions>
+        <button class="btn btn-outline-danger" @onclick="LoadInvoiceDetailAsync">
+            @L["Retry"]
+        </button>
+    </ErrorActions>
+    <EmptyActions>
+        <button class="btn btn-primary" @onclick="GoBack">
+            @L["BackToList"]
+        </button>
+    </EmptyActions>
+    <ChildContent>
+        @if (Invoice is not null)
+        {
     <section class="row g-4">
         <div class="col-12 col-xl-8">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
@@ -393,4 +379,6 @@ else
             </div>
         </div>
     </section>
-}
+        }
+    </ChildContent>
+</PageState>

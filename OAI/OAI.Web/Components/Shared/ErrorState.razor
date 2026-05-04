@@ -1,0 +1,47 @@
+@if (InCard)
+{
+    <section class="@($"card border-0 shadow-sm rounded-4 {CssClass}")">
+        <div class="card-body p-5">
+            <div class="alert alert-danger mb-0">
+                @AlertBody
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <div class="@($"alert alert-danger mb-0 {CssClass}")">
+        @AlertBody
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? Actions { get; set; }
+
+    [Parameter]
+    public bool InCard { get; set; } = true;
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    private RenderFragment AlertBody => @<text>
+        @if (!string.IsNullOrWhiteSpace(Title))
+        {
+            <h2 class="h5 fw-bold">@Title</h2>
+        }
+        <div>@Message</div>
+        @if (Actions is not null)
+        {
+            <div class="mt-3">
+                @Actions
+            </div>
+        }
+    </text>;
+}

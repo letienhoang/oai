@@ -61,32 +61,16 @@
             </div>
         </div>
 
-        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
-        {
-            <div class="alert alert-danger">
-                @ErrorMessage
-            </div>
-        }
-
-        @if (IsLoading)
-        {
-            <div class="d-flex justify-content-center align-items-center py-5">
-                <div class="spinner-border text-primary" role="status"></div>
-                <span class="ms-3 text-secondary">@L["LoadingValidationIssues"]</span>
-            </div>
-        }
-        else if (Issues.Count == 0)
-        {
-            <div class="bg-light rounded-4 p-5 text-center">
-                <div class="fs-1 mb-3">&#x2705;</div>
-                <h2 class="h5 fw-bold">@L["NoValidationIssuesTitle"]</h2>
-                <p class="text-secondary mb-0">
-                    @L["NoValidationIssuesDescription"]
-                </p>
-            </div>
-        }
-        else
-        {
+        <PageState IsLoading="@IsLoading"
+                   LoadingMessage="@L["LoadingValidationIssues"]"
+                   ErrorTitle="@L["GenericErrorTitle"]"
+                   ErrorMessage="@ErrorMessage"
+                   IsEmpty="@(Issues.Count == 0)"
+                   EmptyIcon="✅"
+                   EmptyTitle="@L["NoValidationIssuesTitle"]"
+                   EmptyMessage="@L["NoValidationIssuesDescription"]"
+                   InCard="false">
+            <ChildContent>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
                     <thead>
@@ -181,6 +165,7 @@
                     </button>
                 </div>
             </div>
-        }
+            </ChildContent>
+        </PageState>
     </div>
 </section>

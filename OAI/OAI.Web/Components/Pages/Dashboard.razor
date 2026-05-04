@@ -24,27 +24,23 @@
     </div>
 </section>
 
-@if (IsLoading)
-{
-    <section class="card border-0 shadow-sm rounded-4">
-        <div class="card-body p-5 text-center">
-            <div class="spinner-border text-primary" role="status"></div>
-            <div class="text-secondary mt-3">@L["LoadingDashboard"]</div>
-        </div>
-    </section>
-}
-else if (!string.IsNullOrWhiteSpace(ErrorMessage))
-{
-    <section class="card border-0 shadow-sm rounded-4">
-        <div class="card-body p-5">
-            <div class="alert alert-danger mb-0">
-                @ErrorMessage
-            </div>
-        </div>
-    </section>
-}
-else if (Summary is not null)
-{
+<PageState IsLoading="@IsLoading"
+           LoadingMessage="@L["LoadingDashboard"]"
+           ErrorTitle="@L["GenericErrorTitle"]"
+           ErrorMessage="@ErrorMessage"
+           IsEmpty="@(Summary is null)"
+           EmptyIcon="📊"
+           EmptyTitle="@L["NoData"]"
+           EmptyMessage="@L["DashboardEmptyDescription"]"
+           InCard="true">
+    <ErrorActions>
+        <button class="btn btn-outline-danger" @onclick="ReloadAsync">
+            @L["Retry"]
+        </button>
+    </ErrorActions>
+    <ChildContent>
+        @if (Summary is not null)
+        {
     <section class="row g-3 mb-4">
         <div class="col-12 col-md-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100">
@@ -308,4 +304,6 @@ else if (Summary is not null)
             </div>
         </div>
     </section>
-}
+        }
+    </ChildContent>
+</PageState>
