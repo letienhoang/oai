@@ -249,7 +249,7 @@ public sealed class Invoice : Entity
             return;
 
         if (Status == InvoiceStatus.Exported)
-            throw new DomainException("Exported invoice cannot be approved again.");
+            throw InvoiceDomainExceptionFactory.InvalidStatusForApprove(Status.ToString());
 
         var hasOpenError = ValidationIssues.Any(x =>
             x.Severity == ValidationSeverity.Error &&
@@ -265,7 +265,7 @@ public sealed class Invoice : Entity
     public void Reject()
     {
         if (Status == InvoiceStatus.Exported)
-            throw new DomainException("Exported invoice cannot be rejected.");
+            throw InvoiceDomainExceptionFactory.InvalidStatusForReject(Status.ToString());
 
         if (Status == InvoiceStatus.Rejected)
             return;
@@ -323,7 +323,7 @@ public sealed class Invoice : Entity
     public void MoveToPendingReview()
     {
         if (Status == InvoiceStatus.Exported)
-            throw new DomainException("Exported invoice cannot be moved back to pending review.");
+            throw InvoiceDomainExceptionFactory.InvalidStatusForMoveToPendingReview(Status.ToString());
 
         if (Status == InvoiceStatus.PendingReview)
             return;

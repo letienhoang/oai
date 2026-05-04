@@ -28,7 +28,7 @@ public sealed class CompareInvoiceExtractionUseCase : ICompareInvoiceExtractionU
         CancellationToken cancellationToken = default)
     {
         if (request.InvoiceId == Guid.Empty)
-            throw new DomainException("InvoiceId is required.");
+            throw InvoiceDomainExceptionFactory.InvoiceIdRequired();
 
         _logger.LogInformation(
             "Comparing extraction results. InvoiceId: {InvoiceId}",
@@ -39,7 +39,7 @@ public sealed class CompareInvoiceExtractionUseCase : ICompareInvoiceExtractionU
             cancellationToken);
 
         if (invoice is null)
-            throw new DomainException($"Invoice '{request.InvoiceId}' was not found.");
+            throw InvoiceDomainExceptionFactory.InvoiceNotFound(request.InvoiceId);
 
         var latestExtraction = invoice.ExtractionResults
             .OrderByDescending(x => x.ExtractedAt)

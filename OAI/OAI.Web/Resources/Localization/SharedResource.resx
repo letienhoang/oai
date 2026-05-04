@@ -879,8 +879,14 @@
   <data name="Invoice.VendorRequired" xml:space="preserve">
         <value>Vendor is required.</value>
     </data>
+  <data name="Invoice.InvoiceIdRequired" xml:space="preserve">
+        <value>InvoiceId is required.</value>
+    </data>
   <data name="Invoice.VendorNotFound" xml:space="preserve">
         <value>Vendor '{VendorId}' was not found.</value>
+    </data>
+  <data name="Invoice.InvoiceNotFound" xml:space="preserve">
+        <value>Invoice '{InvoiceId}' was not found.</value>
     </data>
   <data name="Invoice.InvoiceNumberRequired" xml:space="preserve">
         <value>Invoice number is required.</value>
@@ -893,6 +899,18 @@
     </data>
   <data name="Invoice.LineItemsRequired" xml:space="preserve">
         <value>At least one line item is required.</value>
+    </data>
+  <data name="Invoice.LineItemNotFound" xml:space="preserve">
+        <value>Invoice line item '{LineItemId}' was not found.</value>
+    </data>
+  <data name="Invoice.InvalidStatusForApprove" xml:space="preserve">
+        <value>Invoice status '{Status}' does not allow approval.</value>
+    </data>
+  <data name="Invoice.InvalidStatusForReject" xml:space="preserve">
+        <value>Invoice status '{Status}' does not allow rejection.</value>
+    </data>
+  <data name="Invoice.InvalidStatusForMoveToPendingReview" xml:space="preserve">
+        <value>Invoice status '{Status}' does not allow moving to pending review.</value>
     </data>
   <data name="System.InvoiceNotFound" xml:space="preserve">
         <value>The invoice could not be found.</value>

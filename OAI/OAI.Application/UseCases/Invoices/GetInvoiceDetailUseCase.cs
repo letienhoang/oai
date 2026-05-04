@@ -26,13 +26,13 @@ public sealed class GetInvoiceDetailUseCase : IGetInvoiceDetailUseCase
         ArgumentNullException.ThrowIfNull(request);
 
         if (request.InvoiceId == Guid.Empty)
-            throw new DomainException("InvoiceId is required.");
+            throw InvoiceDomainExceptionFactory.InvoiceIdRequired();
 
         var invoice = await _invoiceRepository.GetByIdAsync(request.InvoiceId, cancellationToken);
         if (invoice is null)
         {
             _logger.LogWarning("Invoice detail not found. InvoiceId: {InvoiceId}", request.InvoiceId);
-            throw new DomainException($"Invoice '{request.InvoiceId}' was not found.");
+            throw InvoiceDomainExceptionFactory.InvoiceNotFound(request.InvoiceId);
         }
 
         return invoice.ToDetailDto();

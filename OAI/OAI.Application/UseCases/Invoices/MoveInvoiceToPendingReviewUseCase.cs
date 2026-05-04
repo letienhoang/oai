@@ -29,7 +29,7 @@ public sealed class MoveInvoiceToPendingReviewUseCase : IMoveInvoiceToPendingRev
         ArgumentNullException.ThrowIfNull(request);
 
         if (request.InvoiceId == Guid.Empty)
-            throw new DomainException("InvoiceId is required.");
+            throw InvoiceDomainExceptionFactory.InvoiceIdRequired();
 
         using var scope = _logger.BeginScope(new Dictionary<string, object>
         {
@@ -50,7 +50,7 @@ public sealed class MoveInvoiceToPendingReviewUseCase : IMoveInvoiceToPendingRev
                 "Cannot move invoice to pending review because invoice {InvoiceId} was not found",
                 request.InvoiceId);
 
-            throw new DomainException($"Invoice '{request.InvoiceId}' was not found.");
+            throw InvoiceDomainExceptionFactory.InvoiceNotFound(request.InvoiceId);
         }
 
         invoice.MoveToPendingReview();

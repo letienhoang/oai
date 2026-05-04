@@ -879,8 +879,14 @@
   <data name="Invoice.VendorRequired" xml:space="preserve">
         <value>Nhà cung cấp là bắt buộc.</value>
     </data>
+  <data name="Invoice.InvoiceIdRequired" xml:space="preserve">
+        <value>Mã hóa đơn là bắt buộc.</value>
+    </data>
   <data name="Invoice.VendorNotFound" xml:space="preserve">
         <value>Không tìm thấy nhà cung cấp '{VendorId}'.</value>
+    </data>
+  <data name="Invoice.InvoiceNotFound" xml:space="preserve">
+        <value>Không tìm thấy hóa đơn '{InvoiceId}'.</value>
     </data>
   <data name="Invoice.InvoiceNumberRequired" xml:space="preserve">
         <value>Số hóa đơn là bắt buộc.</value>
@@ -893,6 +899,18 @@
     </data>
   <data name="Invoice.LineItemsRequired" xml:space="preserve">
         <value>Hóa đơn phải có ít nhất một dòng hàng.</value>
+    </data>
+  <data name="Invoice.LineItemNotFound" xml:space="preserve">
+        <value>Không tìm thấy dòng hàng '{LineItemId}' trong hóa đơn.</value>
+    </data>
+  <data name="Invoice.InvalidStatusForApprove" xml:space="preserve">
+        <value>Trạng thái hóa đơn '{Status}' không cho phép xác nhận.</value>
+    </data>
+  <data name="Invoice.InvalidStatusForReject" xml:space="preserve">
+        <value>Trạng thái hóa đơn '{Status}' không cho phép từ chối.</value>
+    </data>
+  <data name="Invoice.InvalidStatusForMoveToPendingReview" xml:space="preserve">
+        <value>Trạng thái hóa đơn '{Status}' không cho phép đưa về chờ kiểm tra.</value>
     </data>
   <data name="System.InvoiceNotFound" xml:space="preserve">
         <value>Không tìm thấy hóa đơn.</value>

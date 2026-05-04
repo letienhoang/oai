@@ -35,19 +35,19 @@ public sealed class UpdateInvoiceUseCase : IUpdateInvoiceUseCase
         ArgumentNullException.ThrowIfNull(request);
 
         if (request.InvoiceId == Guid.Empty)
-            throw new DomainException("InvoiceId is required.");
+            throw InvoiceDomainExceptionFactory.InvoiceIdRequired();
 
         if (request.VendorId == Guid.Empty)
-            throw new DomainException("Vendor is required.");
+            throw InvoiceDomainExceptionFactory.VendorRequired();
 
         if (string.IsNullOrWhiteSpace(request.InvoiceNumber))
-            throw new DomainException("Invoice number is required.");
+            throw InvoiceDomainExceptionFactory.InvoiceNumberRequired();
 
         if (string.IsNullOrWhiteSpace(request.Currency))
-            throw new DomainException("Currency is required.");
+            throw InvoiceDomainExceptionFactory.CurrencyRequired();
 
         if (request.LineItems.Count == 0)
-            throw new DomainException("At least one line item is required.");
+            throw InvoiceDomainExceptionFactory.LineItemsRequired();
 
         using var scope = _logger.BeginScope(new Dictionary<string, object>
         {
@@ -61,14 +61,14 @@ public sealed class UpdateInvoiceUseCase : IUpdateInvoiceUseCase
         if (invoice is null)
         {
             _logger.LogWarning("Cannot update invoice because invoice {InvoiceId} was not found", request.InvoiceId);
-            throw new DomainException($"Invoice '{request.InvoiceId}' was not found.");
+            throw InvoiceDomainExceptionFactory.InvoiceNotFound(request.InvoiceId);
         }
 
         var vendor = await _vendorRepository.GetByIdAsync(request.VendorId, cancellationToken);
         if (vendor is null)
         {
             _logger.LogWarning("Cannot update invoice because vendor {VendorId} was not found", request.VendorId);
-            throw new DomainException($"Vendor '{request.VendorId}' was not found.");
+            throw InvoiceDomainExceptionFactory.VendorNotFound(request.VendorId);
         }
 
         var normalizedInvoiceNumber = request.InvoiceNumber.Trim();
@@ -80,7 +80,7 @@ public sealed class UpdateInvoiceUseCase : IUpdateInvoiceUseCase
                 "Cannot update invoice because invoice number {InvoiceNumber} already exists",
                 normalizedInvoiceNumber);
 
-            throw new DomainException($"Invoice number '{normalizedInvoiceNumber}' already exists.");
+            throw InvoiceDomainExceptionFactory.InvoiceNumberAlreadyExists(normalizedInvoiceNumber);
         }
 
         var currency = request.Currency.Trim().ToUpperInvariant();
@@ -117,7 +117,7 @@ public sealed class UpdateInvoiceUseCase : IUpdateInvoiceUseCase
                         line.InvoiceLineItemId.Value,
                         invoice.Id);
 
-                    throw new DomainException($"Invoice line item '{line.InvoiceLineItemId.Value}' was not found.");
+                    throw InvoiceDomainExceptionFactory.LineItemNotFound(line.InvoiceLineItemId.Value);
                 }
 
                 existingLineItem.Update(
