@@ -48,7 +48,13 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
         if (vendor is null)
         {
             _logger.LogWarning("Cannot create invoice because vendor {VendorId} was not found", request.VendorId);
-            throw new DomainException($"Vendor '{request.VendorId}' was not found.");
+            throw new DomainException(
+                message: $"Vendor '{request.VendorId}' was not found.",
+                code: InvoiceDomainErrorCodes.VendorNotFound,
+                parameters: new Dictionary<string, string>
+                {
+                    ["VendorId"] = request.VendorId.ToString()
+                });
         }
 
         var normalizedInvoiceNumber = request.InvoiceNumber.Trim();
@@ -56,7 +62,13 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
         if (await _invoiceRepository.ExistsByInvoiceNumberAsync(normalizedInvoiceNumber, cancellationToken))
         {
             _logger.LogWarning("Cannot create invoice because invoice number {InvoiceNumber} already exists", normalizedInvoiceNumber);
-            throw new DomainException($"Invoice number '{normalizedInvoiceNumber}' already exists.");
+            throw new DomainException(
+                message: $"Invoice number '{normalizedInvoiceNumber}' already exists.",
+                code: InvoiceDomainErrorCodes.InvoiceNumberAlreadyExists,
+                parameters: new Dictionary<string, string>
+                {
+                    ["InvoiceNumber"] = normalizedInvoiceNumber
+                });
         }
 
         var currency = request.Currency.Trim().ToUpperInvariant();
@@ -130,15 +142,23 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
     private static void ValidateRequest(InvoiceCreateRequestDto request)
     {
         if (request.VendorId == Guid.Empty)
-            throw new DomainException("Vendor is required.");
+            throw new DomainException(
+                message: "Vendor is required.",
+                code: InvoiceDomainErrorCodes.VendorRequired);
 
         if (string.IsNullOrWhiteSpace(request.InvoiceNumber))
-            throw new DomainException("Invoice number is required.");
+            throw new DomainException(
+                message: "Invoice number is required.",
+                code: InvoiceDomainErrorCodes.InvoiceNumberRequired);
 
         if (string.IsNullOrWhiteSpace(request.Currency))
-            throw new DomainException("Currency is required.");
+            throw new DomainException(
+                message: "Currency is required.",
+                code: InvoiceDomainErrorCodes.CurrencyRequired);
 
         if (request.LineItems is null || request.LineItems.Count == 0)
-            throw new DomainException("At least one line item is required.");
+            throw new DomainException(
+                message: "At least one line item is required.",
+                code: InvoiceDomainErrorCodes.LineItemsRequired);
     }
 }

@@ -876,6 +876,24 @@
   <data name="System.InvoiceCreationFailed" xml:space="preserve">
         <value>Unable to create the invoice record.</value>
     </data>
+  <data name="Invoice.VendorRequired" xml:space="preserve">
+        <value>Vendor is required.</value>
+    </data>
+  <data name="Invoice.VendorNotFound" xml:space="preserve">
+        <value>Vendor '{VendorId}' was not found.</value>
+    </data>
+  <data name="Invoice.InvoiceNumberRequired" xml:space="preserve">
+        <value>Invoice number is required.</value>
+    </data>
+  <data name="Invoice.InvoiceNumberAlreadyExists" xml:space="preserve">
+        <value>Invoice number '{InvoiceNumber}' already exists.</value>
+    </data>
+  <data name="Invoice.CurrencyRequired" xml:space="preserve">
+        <value>Currency is required.</value>
+    </data>
+  <data name="Invoice.LineItemsRequired" xml:space="preserve">
+        <value>At least one line item is required.</value>
+    </data>
   <data name="System.InvoiceNotFound" xml:space="preserve">
         <value>The invoice could not be found.</value>
     </data>

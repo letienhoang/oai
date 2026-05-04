@@ -147,7 +147,8 @@ public sealed class InvoiceProcessingService : IInvoiceProcessingService
                 FileName = fileName,
                 Status = "Failed",
                 Message = ex.Message,
-                MessageCode = ApplicationMessageCodes.InvoiceCreationFailed
+                MessageCode = ex.Code ?? ApplicationMessageCodes.InvoiceCreationFailed,
+                MessageParameters = ex.Parameters
             };
         }
 
