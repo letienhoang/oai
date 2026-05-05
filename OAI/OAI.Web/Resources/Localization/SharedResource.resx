@@ -111,6 +111,12 @@
   <data name="System" xml:space="preserve">
         <value>System</value>
     </data>
+  <data name="User" xml:space="preserve">
+        <value>User</value>
+    </data>
+  <data name="SystemUser" xml:space="preserve">
+        <value>System</value>
+    </data>
   <data name="AuditLogs" xml:space="preserve">
         <value>Audit Logs</value>
     </data>

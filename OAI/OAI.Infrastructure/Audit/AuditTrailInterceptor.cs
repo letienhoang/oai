@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
+using OAI.Application.Abstractions.Services;
 using OAI.Domain.Audit;
 
 namespace OAI.Infrastructure.Audit;
@@ -9,10 +10,14 @@ namespace OAI.Infrastructure.Audit;
 public sealed class AuditTrailInterceptor : SaveChangesInterceptor
 {
     private readonly ILogger<AuditTrailInterceptor> _logger;
+    private readonly ICurrentUserContext _currentUserContext;
 
-    public AuditTrailInterceptor(ILogger<AuditTrailInterceptor> logger)
+    public AuditTrailInterceptor(
+        ILogger<AuditTrailInterceptor> logger,
+        ICurrentUserContext currentUserContext)
     {
         _logger = logger;
+        _currentUserContext = currentUserContext;
     }
 
     public override InterceptionResult<int> SavingChanges(
@@ -42,7 +47,7 @@ public sealed class AuditTrailInterceptor : SaveChangesInterceptor
             SavingChanges(eventData, result));
     }
 
-    private static List<AuditLogEntry> BuildAuditEntries(DbContext context)
+    private List<AuditLogEntry> BuildAuditEntries(DbContext context)
     {
         var auditEntries = new List<AuditLogEntry>();
 
@@ -78,12 +83,32 @@ public sealed class AuditTrailInterceptor : SaveChangesInterceptor
                 ActionType = actionType,
                 OldValuesJson = oldValues,
                 NewValuesJson = newValues,
+                UserId = _currentUserContext.UserId,
+                UserName = GetAuditUserName(),
                 OccurredAt = DateTimeOffset.UtcNow,
-                Source = "EF Core SaveChanges"
+                Source = GetAuditSource()
             });
         }
 
         return auditEntries;
+    }
+
+    private string GetAuditUserName()
+    {
+        if (_currentUserContext.IsAuthenticated &&
+            !string.IsNullOrWhiteSpace(_currentUserContext.UserName))
+        {
+            return _currentUserContext.UserName;
+        }
+
+        return "System";
+    }
+
+    private string GetAuditSource()
+    {
+        return _currentUserContext.IsAuthenticated
+            ? "Blazor Server"
+            : "System";
     }
 
     private static string? GetEntityId(Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry entry)

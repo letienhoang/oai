@@ -143,18 +143,7 @@
                             </td>
 
                             <td>
-                                @if (!string.IsNullOrWhiteSpace(log.UserName))
-                                {
-                                    <span>@log.UserName</span>
-                                }
-                                else if (!string.IsNullOrWhiteSpace(log.UserId))
-                                {
-                                    <span>@log.UserId</span>
-                                }
-                                else
-                                {
-                                    <span class="text-secondary">@L["System"]</span>
-                                }
+                                <span>@DisplayAuditUserName(log)</span>
                             </td>
 
                             <td>

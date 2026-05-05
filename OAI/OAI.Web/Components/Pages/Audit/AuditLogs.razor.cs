@@ -183,6 +183,13 @@ public partial class AuditLogs
         return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
     }
 
+    private string DisplayAuditUserName(AuditLogListItemDto log)
+    {
+        return string.IsNullOrWhiteSpace(log.UserName)
+            ? L["SystemUser"]
+            : log.UserName;
+    }
+
     private static string GetActionBadgeClass(string actionType)
     {
         return actionType.ToLowerInvariant() switch

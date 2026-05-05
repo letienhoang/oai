@@ -1,8 +1,8 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using OAI.Application;
+using OAI.Application.Abstractions.Services;
 using OAI.Infrastructure;
 using OAI.Infrastructure.Identity;
 using OAI.Infrastructure.Persistence;
@@ -23,10 +23,6 @@ builder.Services.AddLocalization(options =>
 {
     options.ResourcesPath = "Resources";
 });
-
-// Configure the database context
-builder.Services.AddDbContext<OaiDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -68,7 +64,9 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddScoped<IdentityDataSeeder>();
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserTimeZoneService>();
+builder.Services.AddScoped<ICurrentUserContext, CurrentUserContext>();
 builder.Services.AddScoped<CurrentUserAuthorizationService>();
 builder.Services.AddScoped<LocalizedMessageResolver>();
 
