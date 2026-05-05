@@ -528,8 +528,38 @@
   <data name="ExtractionHistory" xml:space="preserve">
         <value>Lịch sử trích xuất</value>
     </data>
+  <data name="ExtractionHistoryDescription" xml:space="preserve">
+        <value>Xem lại các lần trích xuất OCR và AI của hóa đơn này.</value>
+    </data>
   <data name="NoExtractionHistory" xml:space="preserve">
         <value>Chưa có lịch sử trích xuất.</value>
+    </data>
+  <data name="Attempts" xml:space="preserve">
+        <value>lần xử lý</value>
+    </data>
+  <data name="TotalAttempts" xml:space="preserve">
+        <value>Tổng số lần xử lý</value>
+    </data>
+  <data name="SuccessfulAttempts" xml:space="preserve">
+        <value>Số lần thành công</value>
+    </data>
+  <data name="LatestConfidence" xml:space="preserve">
+        <value>Độ tin cậy mới nhất</value>
+    </data>
+  <data name="ExtractionResultDetailTitle" xml:space="preserve">
+        <value>Chi tiết kết quả trích xuất</value>
+    </data>
+  <data name="Engine" xml:space="preserve">
+        <value>Bộ xử lý</value>
+    </data>
+  <data name="ExtractedAt" xml:space="preserve">
+        <value>Thời điểm trích xuất</value>
+    </data>
+  <data name="RawText" xml:space="preserve">
+        <value>Văn bản thô</value>
+    </data>
+  <data name="StructuredJson" xml:space="preserve">
+        <value>JSON có cấu trúc</value>
     </data>
   <data name="Success" xml:space="preserve">
         <value>Thành công</value>

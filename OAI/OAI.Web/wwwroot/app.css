@@ -72,6 +72,13 @@ h1:focus {
     word-break: break-word;
 }
 
+.extraction-detail-block {
+    max-height: 520px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
 .invoice-detail-tabs {
     overflow-x: auto;
     flex-wrap: nowrap;

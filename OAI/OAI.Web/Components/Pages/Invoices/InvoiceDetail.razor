@@ -5,6 +5,7 @@
 <PageTitle>@L["InvoiceDetailPageTitle"]</PageTitle>
 
 <ConfirmDialog @ref="ConfirmDialog" />
+<ExtractionResultDetailDialog @ref="ExtractionResultDetailDialog" />
 
 <section class="mb-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
@@ -129,7 +130,7 @@
            ErrorTitle="@L["GenericErrorTitle"]"
            ErrorMessage="@ErrorMessage"
            IsEmpty="@(Invoice is null)"
-           EmptyIcon="ðŸ§¾"
+           EmptyIcon="🧾"
            EmptyTitle="@L["InvoiceNotFound"]"
            EmptyMessage="@L["InvoiceNotFoundDescription"]"
            InCard="true">
@@ -400,11 +401,19 @@
 
                         case InvoiceDetailTab.ExtractionHistory:
                             <div>
-                                <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                                    <h3 class="h5 fw-bold mb-0">@L["ExtractionHistory"]</h3>
-                                    <span class="badge text-bg-light border">
-                                        @Invoice.ExtractionResults.Count
-                                    </span>
+                                <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
+                                    <div>
+                                        <h3 class="h5 fw-bold mb-1">@L["ExtractionHistory"]</h3>
+                                        <p class="text-secondary mb-0">
+                                            @L["ExtractionHistoryDescription"]
+                                        </p>
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2 align-items-start">
+                                        <span class="badge text-bg-light border">
+                                            @Invoice.ExtractionResults.Count @L["Attempts"]
+                                        </span>
+                                    </div>
                                 </div>
 
                                 @if (Invoice.ExtractionResults.Count == 0)
@@ -415,36 +424,73 @@
                                 }
                                 else
                                 {
-                                    <div class="list-group list-group-flush">
-                                        @foreach (var result in Invoice.ExtractionResults)
-                                        {
-                                            <div class="list-group-item px-0">
-                                                <div class="d-flex justify-content-between gap-2 mb-1">
-                                                    <span class="fw-semibold">@result.EngineName</span>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-12 col-md-4">
+                                            <div class="border rounded-4 p-3 bg-light h-100">
+                                                <div class="text-secondary small">@L["TotalAttempts"]</div>
+                                                <div class="h4 fw-bold mb-0">@Invoice.ExtractionResults.Count</div>
+                                            </div>
+                                        </div>
 
-                                                    @if (result.IsSuccessful)
-                                                    {
-                                                        <span class="badge text-bg-success">@L["Success"]</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge text-bg-danger">@L["Failed"]</span>
-                                                    }
-                                                </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="border rounded-4 p-3 bg-light h-100">
+                                                <div class="text-secondary small">@L["SuccessfulAttempts"]</div>
+                                                <div class="h4 fw-bold mb-0">@SuccessfulExtractionCount</div>
+                                            </div>
+                                        </div>
 
-                                                <div class="text-secondary small">
-                                                    @L["Attempt"]: @result.AttemptNo
-                                                </div>
-
-                                                <div class="text-secondary small">
-                                                    @L["Confidence"]: @result.ConfidenceScore.ToString("P0")
-                                                </div>
-
-                                                <div class="text-secondary small">
-                                                    @FormatDateTime(result.ExtractedAt)
+                                        <div class="col-12 col-md-4">
+                                            <div class="border rounded-4 p-3 bg-light h-100">
+                                                <div class="text-secondary small">@L["LatestConfidence"]</div>
+                                                <div class="h4 fw-bold mb-0">
+                                                    @(LatestExtractionResult?.ConfidenceScore.ToString("P0") ?? L["NoData"].Value)
                                                 </div>
                                             </div>
-                                        }
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th>@L["Attempt"]</th>
+                                                <th>@L["Engine"]</th>
+                                                <th>@L["Status"]</th>
+                                                <th class="text-end">@L["Confidence"]</th>
+                                                <th>@L["ExtractedAt"]</th>
+                                                <th class="text-end">@L["Actions"]</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            @foreach (var result in Invoice.ExtractionResults.OrderByDescending(x => x.ExtractedAt))
+                                            {
+                                                <tr>
+                                                    <td class="fw-semibold">@result.AttemptNo</td>
+                                                    <td class="text-break">@result.EngineName</td>
+                                                    <td>
+                                                        @if (result.IsSuccessful)
+                                                        {
+                                                            <span class="badge text-bg-success">@L["Success"]</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge text-bg-danger">@L["Failed"]</span>
+                                                        }
+                                                    </td>
+                                                    <td class="text-end">@result.ConfidenceScore.ToString("P0")</td>
+                                                    <td>@FormatDateTime(result.ExtractedAt)</td>
+                                                    <td class="text-end">
+                                                        <button type="button"
+                                                                class="btn btn-sm btn-outline-primary"
+                                                                @onclick="() => OpenExtractionResultDetailAsync(result)">
+                                                            @L["Detail"]
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            </tbody>
+                                        </table>
                                     </div>
                                 }
                             </div>

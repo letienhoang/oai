@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Web.Components.Invoices;
 using OAI.Infrastructure.Identity;
 using OAI.Web.Components.Shared;
 using OAI.Web.Localization;
@@ -60,6 +61,8 @@ public partial class InvoiceDetail
 
     private ConfirmDialog? ConfirmDialog { get; set; }
 
+    private ExtractionResultDetailDialog? ExtractionResultDetailDialog { get; set; }
+
     private InvoiceDetailTab ActiveTab { get; set; } = InvoiceDetailTab.Overview;
 
     private enum InvoiceDetailTab
@@ -77,6 +80,14 @@ public partial class InvoiceDetail
         Invoice?.ValidationIssues.Count(x =>
             string.Equals(x.Severity, "Error", StringComparison.OrdinalIgnoreCase) &&
             !x.IsResolved) ?? 0;
+
+    private int SuccessfulExtractionCount =>
+        Invoice?.ExtractionResults.Count(x => x.IsSuccessful) ?? 0;
+
+    private InvoiceExtractionResultDto? LatestExtractionResult =>
+        Invoice?.ExtractionResults
+            .OrderByDescending(x => x.ExtractedAt)
+            .FirstOrDefault();
 
     private bool CanApprove =>
         Invoice is not null &&
@@ -195,6 +206,16 @@ public partial class InvoiceDetail
     private void GoToCompare()
     {
         NavigationManager.NavigateTo($"/invoices/{InvoiceId}/compare");
+    }
+
+    private async Task OpenExtractionResultDetailAsync(InvoiceExtractionResultDto extractionResult)
+    {
+        if (ExtractionResultDetailDialog is null)
+        {
+            return;
+        }
+
+        await ExtractionResultDetailDialog.OpenAsync(extractionResult);
     }
 
     private void ConfirmApprove()

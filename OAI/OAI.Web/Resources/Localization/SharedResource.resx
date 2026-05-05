@@ -528,8 +528,38 @@
   <data name="ExtractionHistory" xml:space="preserve">
         <value>Extraction history</value>
     </data>
+  <data name="ExtractionHistoryDescription" xml:space="preserve">
+        <value>Review OCR and AI extraction attempts for this invoice.</value>
+    </data>
   <data name="NoExtractionHistory" xml:space="preserve">
         <value>No extraction history yet.</value>
+    </data>
+  <data name="Attempts" xml:space="preserve">
+        <value>attempts</value>
+    </data>
+  <data name="TotalAttempts" xml:space="preserve">
+        <value>Total attempts</value>
+    </data>
+  <data name="SuccessfulAttempts" xml:space="preserve">
+        <value>Successful attempts</value>
+    </data>
+  <data name="LatestConfidence" xml:space="preserve">
+        <value>Latest confidence</value>
+    </data>
+  <data name="ExtractionResultDetailTitle" xml:space="preserve">
+        <value>Extraction result detail</value>
+    </data>
+  <data name="Engine" xml:space="preserve">
+        <value>Engine</value>
+    </data>
+  <data name="ExtractedAt" xml:space="preserve">
+        <value>Extracted at</value>
+    </data>
+  <data name="RawText" xml:space="preserve">
+        <value>Raw text</value>
+    </data>
+  <data name="StructuredJson" xml:space="preserve">
+        <value>Structured JSON</value>
     </data>
   <data name="Success" xml:space="preserve">
         <value>Success</value>

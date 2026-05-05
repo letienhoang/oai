@@ -1,0 +1,189 @@
+@using System.Text.Json
+@using OAI.Application.Invoices.Dtos
+@inject IStringLocalizer<SharedResource> L
+@inject UserTimeZoneService UserTimeZoneService
+
+@if (IsOpen && ExtractionResult is not null)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="extraction-result-detail-title">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h2 class="modal-title h5 fw-bold" id="extraction-result-detail-title">@L["ExtractionResultDetailTitle"]</h2>
+                        <p class="text-secondary mb-0">
+                            @ExtractionResult.EngineName - @L["Attempt"] @ExtractionResult.AttemptNo
+                        </p>
+                    </div>
+
+                    <button type="button" class="btn-close" aria-label="@L["Close"]" @onclick="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["Engine"]</div>
+                                <div class="fw-semibold text-break">@ExtractionResult.EngineName</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["Attempt"]</div>
+                                <div class="fw-semibold">@ExtractionResult.AttemptNo</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["Status"]</div>
+                                @if (ExtractionResult.IsSuccessful)
+                                {
+                                    <span class="badge text-bg-success">@L["Success"]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-danger">@L["Failed"]</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["Confidence"]</div>
+                                <div class="fw-semibold">@ExtractionResult.ConfidenceScore.ToString("P0")</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["ExtractedAt"]</div>
+                                <div class="fw-semibold">@FormatDateTime(ExtractionResult.ExtractedAt)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="@GetTabButtonClass(ExtractionResultDetailTab.RawText)"
+                                    @onclick="() => SetActiveTab(ExtractionResultDetailTab.RawText)">
+                                @L["RawText"]
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="@GetTabButtonClass(ExtractionResultDetailTab.StructuredJson)"
+                                    @onclick="() => SetActiveTab(ExtractionResultDetailTab.StructuredJson)">
+                                @L["StructuredJson"]
+                            </button>
+                        </li>
+                    </ul>
+
+                    @if (ActiveTab == ExtractionResultDetailTab.RawText)
+                    {
+                        <pre class="bg-light border rounded-4 p-3 small extraction-detail-block">@DisplayText(ExtractionResult.RawText)</pre>
+                    }
+                    else
+                    {
+                        <pre class="bg-light border rounded-4 p-3 small extraction-detail-block">@FormatJson(ExtractionResult.StructuredJson)</pre>
+                    }
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" @onclick="Close">
+                        @L["Close"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        WriteIndented = true
+    };
+
+    private InvoiceExtractionResultDto? ExtractionResult { get; set; }
+
+    private bool IsOpen { get; set; }
+
+    private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
+
+    private ExtractionResultDetailTab ActiveTab { get; set; } = ExtractionResultDetailTab.RawText;
+
+    private enum ExtractionResultDetailTab
+    {
+        RawText,
+        StructuredJson
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        UserTimeZone = await UserTimeZoneService.GetUserTimeZoneAsync();
+        StateHasChanged();
+    }
+
+    public Task OpenAsync(InvoiceExtractionResultDto extractionResult)
+    {
+        ExtractionResult = extractionResult;
+        ActiveTab = ExtractionResultDetailTab.RawText;
+        IsOpen = true;
+        StateHasChanged();
+
+        return Task.CompletedTask;
+    }
+
+    private void Close()
+    {
+        IsOpen = false;
+        ExtractionResult = null;
+        StateHasChanged();
+    }
+
+    private void SetActiveTab(ExtractionResultDetailTab tab)
+    {
+        ActiveTab = tab;
+    }
+
+    private string GetTabButtonClass(ExtractionResultDetailTab tab)
+    {
+        return ActiveTab == tab
+            ? "nav-link active"
+            : "nav-link";
+    }
+
+    private string FormatDateTime(DateTimeOffset value)
+    {
+        var localTime = TimeZoneInfo.ConvertTime(value, UserTimeZone);
+        return localTime.ToString("dd/MM/yyyy HH:mm:ss");
+    }
+
+    private string DisplayText(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? L["NoData"] : value;
+    }
+
+    private string FormatJson(string? json)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+            return L["NoData"];
+
+        try
+        {
+            using var document = JsonDocument.Parse(json);
+            return JsonSerializer.Serialize(document.RootElement, JsonSerializerOptions);
+        }
+        catch
+        {
+            return json;
+        }
+    }
+}

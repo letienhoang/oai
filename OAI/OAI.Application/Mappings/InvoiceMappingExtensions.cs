@@ -94,7 +94,9 @@ public static class InvoiceMappingExtensions
             ConfidenceScore = result.ConfidenceScore,
             ExtractedAt = result.ExtractedAt,
             IsSuccessful = result.IsSuccessful,
-            AttemptNo = result.AttemptNo
+            AttemptNo = result.AttemptNo,
+            RawText = result.RawText,
+            StructuredJson = result.StructuredJson
         };
     }
 }
