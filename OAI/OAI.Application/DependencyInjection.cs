@@ -24,6 +24,8 @@ public static class DependencyInjection
         services.AddScoped<IGetAuditLogFilterOptionsUseCase, GetAuditLogFilterOptionsUseCase>();
         services.AddScoped<IGetSystemSettingsUseCase, GetSystemSettingsUseCase>();
         services.AddScoped<IGetVendorOptionsUseCase, GetVendorOptionsUseCase>();
+        services.AddScoped<IGetVendorListUseCase, GetVendorListUseCase>();
+        services.AddScoped<IUpsertVendorUseCase, UpsertVendorUseCase>();
         
         services.AddScoped<ICreateInvoiceUseCase, CreateInvoiceUseCase>();
         services.AddScoped<IValidateInvoiceUseCase, ValidateInvoiceUseCase>();

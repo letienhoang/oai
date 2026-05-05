@@ -1062,4 +1062,67 @@
   <data name="MoveInvoiceToPendingReviewNotAllowed" xml:space="preserve">
         <value>You do not have permission to move invoices to pending review.</value>
     </data>
+  <data name="Vendors" xml:space="preserve">
+        <value>Vendors</value>
+    </data>
+  <data name="VendorManagementPageTitle" xml:space="preserve">
+        <value>Vendor Management - OAI</value>
+    </data>
+  <data name="VendorManagementTitle" xml:space="preserve">
+        <value>Vendor Management</value>
+    </data>
+  <data name="VendorManagementSubtitle" xml:space="preserve">
+        <value>Create, update, and search vendors used in invoice processing.</value>
+    </data>
+  <data name="VendorSearchPlaceholder" xml:space="preserve">
+        <value>Search by vendor name...</value>
+    </data>
+  <data name="LoadingVendors" xml:space="preserve">
+        <value>Loading vendors...</value>
+    </data>
+  <data name="NoVendors" xml:space="preserve">
+        <value>No vendors</value>
+    </data>
+  <data name="NoVendorsDescription" xml:space="preserve">
+        <value>No vendors match the current filter.</value>
+    </data>
+  <data name="VendorName" xml:space="preserve">
+        <value>Vendor name</value>
+    </data>
+  <data name="CreateVendor" xml:space="preserve">
+        <value>Create vendor</value>
+    </data>
+  <data name="EditVendor" xml:space="preserve">
+        <value>Edit vendor</value>
+    </data>
+  <data name="NewVendor" xml:space="preserve">
+        <value>New vendor</value>
+    </data>
+  <data name="VendorCreatedSuccessfully" xml:space="preserve">
+        <value>Vendor was created successfully.</value>
+    </data>
+  <data name="VendorUpdatedSuccessfully" xml:space="preserve">
+        <value>Vendor was updated successfully.</value>
+    </data>
+  <data name="VendorSaveFailed" xml:space="preserve">
+        <value>Unable to save vendor. Please check the data or system logs.</value>
+    </data>
+  <data name="VendorListLoadFailed" xml:space="preserve">
+        <value>Unable to load vendors. Please check the system logs.</value>
+    </data>
+  <data name="VendorNameRequired" xml:space="preserve">
+        <value>Vendor name is required.</value>
+    </data>
+  <data name="ManageVendorsNotAllowed" xml:space="preserve">
+        <value>You do not have permission to manage vendors.</value>
+    </data>
+  <data name="VendorsLower" xml:space="preserve">
+        <value>vendors</value>
+    </data>
+  <data name="TaxCode" xml:space="preserve">
+        <value>Tax code</value>
+    </data>
+  <data name="Address" xml:space="preserve">
+        <value>Address</value>
+    </data>
 </root>

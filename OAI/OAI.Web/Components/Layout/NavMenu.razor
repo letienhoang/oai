@@ -45,6 +45,13 @@
                 <span>@L["DataValidation"]</span>
             </NavLink>
         </AuthorizeView>
+
+        <AuthorizeView Policy="@ApplicationPolicies.ViewVendors">
+            <NavLink class="nav-link app-nav-link" href="/vendors">
+                <span class="nav-icon">🏢</span>
+                <span>@L["Vendors"]</span>
+            </NavLink>
+        </AuthorizeView>
     </div>
 
     <div>

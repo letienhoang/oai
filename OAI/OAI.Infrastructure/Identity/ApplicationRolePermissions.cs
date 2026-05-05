@@ -15,20 +15,24 @@ public static class ApplicationRolePermissions
                 ApplicationPermissions.ApproveInvoices,
                 ApplicationPermissions.RejectInvoices,
                 ApplicationPermissions.MoveInvoicesToPendingReview,
-                ApplicationPermissions.ViewValidationIssues
+                ApplicationPermissions.ViewValidationIssues,
+                ApplicationPermissions.ViewVendors,
+                ApplicationPermissions.ManageVendors
             ],
             [ApplicationRoles.Auditor] =
             [
                 ApplicationPermissions.ViewDashboard,
                 ApplicationPermissions.ViewInvoices,
                 ApplicationPermissions.ViewValidationIssues,
+                ApplicationPermissions.ViewVendors,
                 ApplicationPermissions.ViewAuditLogs
             ],
             [ApplicationRoles.Viewer] =
             [
                 ApplicationPermissions.ViewDashboard,
                 ApplicationPermissions.ViewInvoices,
-                ApplicationPermissions.ViewValidationIssues
+                ApplicationPermissions.ViewValidationIssues,
+                ApplicationPermissions.ViewVendors
             ]
         };
 

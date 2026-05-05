@@ -1,0 +1,221 @@
+@page "/vendors"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.ViewVendors)]
+
+<PageTitle>@L["VendorManagementPageTitle"]</PageTitle>
+
+<section class="mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">@L["VendorManagementTitle"]</h1>
+            <p class="text-secondary mb-0">
+                @L["VendorManagementSubtitle"]
+            </p>
+        </div>
+
+        <div class="d-flex align-items-start gap-2">
+            @if (CanManageVendors)
+            {
+                <button class="btn btn-primary" @onclick="StartCreate" disabled="@IsSaving">
+                    @L["NewVendor"]
+                </button>
+            }
+
+            <button class="btn btn-outline-secondary" @onclick="LoadVendorsAsync" disabled="@IsLoading">
+                @L["Reload"]
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4">
+    <div class="col-12 @(CanManageVendors ? "col-xl-8" : string.Empty)">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4">
+                <div class="row g-2 mb-4">
+                    <div class="col-12 col-md">
+                        <input class="form-control"
+                               placeholder="@L["VendorSearchPlaceholder"]"
+                               @bind="Keyword"
+                               @bind:event="oninput"
+                               @onkeydown="HandleSearchKeyDown"
+                               disabled="@IsLoading" />
+                    </div>
+
+                    <div class="col-12 col-md-auto">
+                        <button class="btn btn-primary w-100"
+                                disabled="@IsLoading"
+                                @onclick="SearchAsync">
+                            @L["Search"]
+                        </button>
+                    </div>
+
+                    <div class="col-12 col-md-auto">
+                        <button class="btn btn-outline-secondary w-100"
+                                disabled="@IsLoading"
+                                @onclick="ClearFilterAsync">
+                            @L["ClearFilter"]
+                        </button>
+                    </div>
+                </div>
+
+                <PageState IsLoading="@IsLoading"
+                           LoadingMessage="@L["LoadingVendors"]"
+                           ErrorTitle="@L["GenericErrorTitle"]"
+                           ErrorMessage="@ErrorMessage"
+                           IsEmpty="@(Vendors.Count == 0)"
+                           EmptyIcon="i"
+                           EmptyTitle="@L["NoVendors"]"
+                           EmptyMessage="@L["NoVendorsDescription"]"
+                           InCard="false">
+                    <ChildContent>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                <tr>
+                                    <th>@L["VendorName"]</th>
+                                    <th>@L["TaxCode"]</th>
+                                    <th>@L["Email"]</th>
+                                    <th>@L["Address"]</th>
+                                    <th>@L["CreatedAt"]</th>
+                                    @if (CanManageVendors)
+                                    {
+                                        <th class="text-end">@L["Actions"]</th>
+                                    }
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach (var vendor in Vendors)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold">@vendor.Name</div>
+                                            <div class="small text-secondary">
+                                                <code>@vendor.VendorId</code>
+                                            </div>
+                                        </td>
+                                        <td>@DisplayOrFallback(vendor.TaxNumber)</td>
+                                        <td>@DisplayOrFallback(vendor.Email)</td>
+                                        <td class="text-break">@DisplayOrFallback(vendor.Address)</td>
+                                        <td>@FormatDateTime(vendor.CreatedAt)</td>
+                                        @if (CanManageVendors)
+                                        {
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                        @onclick="() => StartEdit(vendor)"
+                                                        disabled="@IsSaving">
+                                                    @L["Edit"]
+                                                </button>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4">
+                            <div class="text-secondary small">
+                                @L["ShowingPage"] <strong>@PageNumber</strong>@L["Of"]<strong>@TotalPages</strong>,
+                                @L["Total"] <strong>@TotalItems</strong> @L["VendorsLower"].
+                            </div>
+
+                            <div class="btn-group">
+                                <button class="btn btn-outline-secondary"
+                                        disabled="@(!CanGoPrevious || IsLoading)"
+                                        @onclick="PreviousPageAsync">
+                                    @L["Previous"]
+                                </button>
+
+                                <button class="btn btn-outline-secondary"
+                                        disabled="@(!CanGoNext || IsLoading)"
+                                        @onclick="NextPageAsync">
+                                    @L["Next"]
+                                </button>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </PageState>
+            </div>
+        </div>
+    </div>
+
+    @if (CanManageVendors)
+    {
+        <div class="col-12 col-xl-4">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">@FormTitle</h2>
+                            <p class="text-secondary small mb-0">@L["VendorManagementSubtitle"]</p>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(SuccessMessage))
+                    {
+                        <div class="alert alert-success">
+                            @SuccessMessage
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(FormErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            @FormErrorMessage
+                        </div>
+                    }
+
+                    <EditForm Model="@FormModel" OnSubmit="@SaveVendorAsync">
+                        <div class="mb-3">
+                            <label class="form-label" for="vendor-name">@L["VendorName"]</label>
+                            <InputText id="vendor-name"
+                                       class="form-control"
+                                       @bind-Value="FormModel.Name"
+                                       disabled="@IsSaving" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="vendor-tax-number">@L["TaxCode"]</label>
+                            <InputText id="vendor-tax-number"
+                                       class="form-control"
+                                       @bind-Value="FormModel.TaxNumber"
+                                       disabled="@IsSaving" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="vendor-email">@L["Email"]</label>
+                            <InputText id="vendor-email"
+                                       class="form-control"
+                                       @bind-Value="FormModel.Email"
+                                       disabled="@IsSaving" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label" for="vendor-address">@L["Address"]</label>
+                            <InputTextArea id="vendor-address"
+                                           class="form-control"
+                                           rows="3"
+                                           @bind-Value="FormModel.Address"
+                                           disabled="@IsSaving" />
+                        </div>
+
+                        <div class="d-flex flex-column flex-md-row gap-2">
+                            <button type="submit" class="btn btn-primary" disabled="@IsSaving">
+                                @L["Save"]
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    @onclick="StartCreate"
+                                    disabled="@IsSaving">
+                                @L["NewVendor"]
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    }
+</section>

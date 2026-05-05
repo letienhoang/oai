@@ -13,6 +13,9 @@ public static class ApplicationPermissions
 
     public const string ViewValidationIssues = "validation_issues.view";
 
+    public const string ViewVendors = "vendors.view";
+    public const string ManageVendors = "vendors.manage";
+
     public const string ViewAuditLogs = "audit_logs.view";
 
     public const string ViewSettings = "settings.view";
@@ -30,6 +33,8 @@ public static class ApplicationPermissions
         RejectInvoices,
         MoveInvoicesToPendingReview,
         ViewValidationIssues,
+        ViewVendors,
+        ManageVendors,
         ViewAuditLogs,
         ViewSettings,
         ManageUsers,

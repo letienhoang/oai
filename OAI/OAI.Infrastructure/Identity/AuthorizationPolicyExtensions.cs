@@ -22,6 +22,10 @@ public static class AuthorizationPolicyExtensions
             policy.RequirePermission(ApplicationPermissions.MoveInvoicesToPendingReview));
         options.AddPolicy(ApplicationPolicies.ViewValidationIssues, policy =>
             policy.RequirePermission(ApplicationPermissions.ViewValidationIssues));
+        options.AddPolicy(ApplicationPolicies.ViewVendors, policy =>
+            policy.RequirePermission(ApplicationPermissions.ViewVendors));
+        options.AddPolicy(ApplicationPolicies.ManageVendors, policy =>
+            policy.RequirePermission(ApplicationPermissions.ManageVendors));
         options.AddPolicy(ApplicationPolicies.ViewAuditLogs, policy =>
             policy.RequirePermission(ApplicationPermissions.ViewAuditLogs));
         options.AddPolicy(ApplicationPolicies.ViewSettings, policy =>

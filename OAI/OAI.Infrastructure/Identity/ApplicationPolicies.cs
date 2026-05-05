@@ -10,6 +10,8 @@ public static class ApplicationPolicies
     public const string RejectInvoices = "Policy.Invoices.Reject";
     public const string MoveInvoicesToPendingReview = "Policy.Invoices.MoveToPendingReview";
     public const string ViewValidationIssues = "Policy.ValidationIssues.View";
+    public const string ViewVendors = "Policy.Vendors.View";
+    public const string ManageVendors = "Policy.Vendors.Manage";
     public const string ViewAuditLogs = "Policy.AuditLogs.View";
     public const string ViewSettings = "Policy.Settings.View";
     public const string ManageUsers = "Policy.Users.Manage";
