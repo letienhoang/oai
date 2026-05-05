@@ -25,7 +25,7 @@
 
 <section class="card border-0 shadow-sm rounded-4">
     <div class="card-body p-4">
-        <div class="row g-2 mb-4">
+        <div class="row g-2 mb-3">
             <div class="col-12 col-md">
                 <input class="form-control"
                        placeholder="@L["InvoiceSearchPlaceholder"]"
@@ -48,6 +48,52 @@
                         @onclick="ClearSearchAsync">
                     @L["ClearFilter"]
                 </button>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" for="invoice-status-filter">@L["Status"]</label>
+                <select id="invoice-status-filter"
+                        class="form-select"
+                        @bind="SelectedStatus"
+                        disabled="@IsLoading">
+                    <option value="">@L["AllStatuses"]</option>
+                    @foreach (var status in StatusOptions)
+                    {
+                        <option value="@status.ToString()">@GetStatusLabel(status)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" for="invoice-vendor-filter">@L["Vendor"]</label>
+                <select id="invoice-vendor-filter"
+                        class="form-select"
+                        @bind="SelectedVendorId"
+                        disabled="@IsLoading">
+                    <option value="">@L["AllVendors"]</option>
+                    @foreach (var vendor in VendorOptions)
+                    {
+                        <option value="@vendor.VendorId.ToString()">@vendor.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" for="invoice-issue-date-from-filter">@L["IssueDateFrom"]</label>
+                <InputDate id="invoice-issue-date-from-filter"
+                           class="form-control"
+                           @bind-Value="IssueDateFrom"
+                           disabled="@IsLoading" />
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-3">
+                <label class="form-label" for="invoice-issue-date-to-filter">@L["IssueDateTo"]</label>
+                <InputDate id="invoice-issue-date-to-filter"
+                           class="form-control"
+                           @bind-Value="IssueDateTo"
+                           disabled="@IsLoading" />
             </div>
         </div>
 

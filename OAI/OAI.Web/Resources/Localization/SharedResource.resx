@@ -570,6 +570,15 @@
   <data name="AllStatuses" xml:space="preserve">
         <value>All statuses</value>
     </data>
+  <data name="AllVendors" xml:space="preserve">
+        <value>All vendors</value>
+    </data>
+  <data name="IssueDateFrom" xml:space="preserve">
+        <value>Issue date from</value>
+    </data>
+  <data name="IssueDateTo" xml:space="preserve">
+        <value>Issue date to</value>
+    </data>
   <data name="OpenStatus" xml:space="preserve">
         <value>Open</value>
     </data>

@@ -570,6 +570,15 @@
   <data name="AllStatuses" xml:space="preserve">
         <value>Tất cả trạng thái</value>
     </data>
+  <data name="AllVendors" xml:space="preserve">
+        <value>Tất cả nhà cung cấp</value>
+    </data>
+  <data name="IssueDateFrom" xml:space="preserve">
+        <value>Ngày phát hành từ</value>
+    </data>
+  <data name="IssueDateTo" xml:space="preserve">
+        <value>Ngày phát hành đến</value>
+    </data>
   <data name="OpenStatus" xml:space="preserve">
         <value>Chưa xử lý</value>
     </data>
