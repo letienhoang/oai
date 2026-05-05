@@ -111,6 +111,11 @@ app.MapStaticAssets();
 app.MapLocalizationEndpoints();
 app.MapAuthEndpoints();
 
+if (app.Environment.IsDevelopment())
+{
+    app.MapDemoDataEndpoints();
+}
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

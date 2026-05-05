@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Infrastructure.Audit;
+using OAI.Infrastructure.DemoData;
 using OAI.Infrastructure.Options;
 using OAI.Infrastructure.Persistence;
 using OAI.Infrastructure.Repositories;
@@ -26,6 +27,9 @@ public static class DependencyInjection
         
         services.AddOptions<LlmOptions>()
             .Bind(configuration.GetRequiredSection("Llm"));
+
+        services.Configure<DemoDataSeedOptions>(
+            configuration.GetSection("DemoDataSeed"));
         
         services.AddScoped<AuditTrailInterceptor>();
         
@@ -52,6 +56,7 @@ public static class DependencyInjection
         services.AddScoped<IInvoiceExtractionComparisonService, InvoiceExtractionComparisonService>();
         
         services.AddScoped<ISystemSettingsService, SystemSettingsService>();
+        services.AddScoped<DemoDataSeeder>();
         
         return services;
     }
