@@ -12,6 +12,6 @@ public sealed record InvoiceListFilterDto
     public decimal? TotalAmountFrom { get; init; }
     public decimal? TotalAmountTo { get; init; }
     public bool? HasOpenValidationIssues { get; init; }
-    public string? SortBy { get; init; } = "IssueDate";
+    public string? SortBy { get; init; } = InvoiceListSortFields.IssueDate;
     public bool SortDescending { get; init; } = true;
 }

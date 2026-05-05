@@ -78,9 +78,11 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
             cancellationToken);
 
         var openIssues = await _validationIssueRepository.CountOpenAsync(
+            filter,
             cancellationToken);
 
         var resolvedIssues = await _validationIssueRepository.CountResolvedAsync(
+            filter,
             cancellationToken);
 
         var recentInvoicesRaw = await _invoiceRepository.GetRecentAsync(
@@ -90,6 +92,7 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
 
         var recentIssuesRaw = await _validationIssueRepository.GetRecentAsync(
             recentValidationIssueCount,
+            filter,
             cancellationToken);
 
         var recentInvoices = recentInvoicesRaw

@@ -1,33 +1,30 @@
-using Microsoft.EntityFrameworkCore;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Dashboard.Dtos;
 using OAI.Domain.Entities;
 using OAI.Domain.Enums;
-using OAI.Infrastructure.Persistence;
 
-namespace OAI.Infrastructure.Repositories;
+namespace OAI.Application.Tests.Fakes;
 
-public sealed class ValidationIssueRepository : IValidationIssueRepository
+public sealed class FakeValidationIssueRepository : IValidationIssueRepository
 {
-    private readonly OaiDbContext _context;
+    private readonly List<ValidationIssue> _issues = new();
 
-    public ValidationIssueRepository(OaiDbContext context)
-    {
-        _context = context;
-    }
+    public IReadOnlyList<ValidationIssue> Issues => _issues.AsReadOnly();
 
-    public async Task<IReadOnlyList<ValidationIssue>> GetByInvoiceIdAsync(
+    public Task<IReadOnlyList<ValidationIssue>> GetByInvoiceIdAsync(
         Guid invoiceId,
         CancellationToken cancellationToken = default)
     {
-        return await _context.ValidationIssues
-            .AsNoTracking()
+        var result = _issues
             .Where(x => x.InvoiceId == invoiceId)
             .OrderByDescending(x => x.DetectedAt)
-            .ToListAsync(cancellationToken);
+            .ToList()
+            .AsReadOnly();
+
+        return Task.FromResult<IReadOnlyList<ValidationIssue>>(result);
     }
 
-    public async Task<IReadOnlyList<ValidationIssue>> GetPagedAsync(
+    public Task<IReadOnlyList<ValidationIssue>> GetPagedAsync(
         int pageNumber,
         int pageSize,
         string? keyword = null,
@@ -35,34 +32,23 @@ public sealed class ValidationIssueRepository : IValidationIssueRepository
         bool? isResolved = null,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<ValidationIssue> query = _context.ValidationIssues
-            .AsNoTracking()
-            .Include(x => x.Invoice)
-                .ThenInclude(x => x!.Vendor);
-
-        query = ApplyFilters(query, keyword, severity, isResolved);
-
-        return await query
+        var result = ApplyFilters(_issues, keyword, severity, isResolved)
             .OrderByDescending(x => x.DetectedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .ToListAsync(cancellationToken);
+            .ToList()
+            .AsReadOnly();
+
+        return Task.FromResult<IReadOnlyList<ValidationIssue>>(result);
     }
 
-    public async Task<int> CountAsync(
+    public Task<int> CountAsync(
         string? keyword = null,
         string? severity = null,
         bool? isResolved = null,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<ValidationIssue> query = _context.ValidationIssues
-            .AsNoTracking()
-            .Include(x => x.Invoice)
-                .ThenInclude(x => x!.Vendor);
-
-        query = ApplyFilters(query, keyword, severity, isResolved);
-
-        return await query.CountAsync(cancellationToken);
+        return Task.FromResult(ApplyFilters(_issues, keyword, severity, isResolved).Count());
     }
 
     public Task<int> CountOpenAsync(CancellationToken cancellationToken = default)
@@ -70,13 +56,11 @@ public sealed class ValidationIssueRepository : IValidationIssueRepository
         return CountOpenAsync(new DashboardFilterDto(), cancellationToken);
     }
 
-    public async Task<int> CountOpenAsync(
+    public Task<int> CountOpenAsync(
         DashboardFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = ApplyDashboardFilter(_context.ValidationIssues.AsNoTracking(), filter);
-
-        return await query.CountAsync(x => !x.IsResolved, cancellationToken);
+        return Task.FromResult(ApplyDashboardFilter(_issues, filter).Count(x => !x.IsResolved));
     }
 
     public Task<int> CountResolvedAsync(CancellationToken cancellationToken = default)
@@ -84,13 +68,11 @@ public sealed class ValidationIssueRepository : IValidationIssueRepository
         return CountResolvedAsync(new DashboardFilterDto(), cancellationToken);
     }
 
-    public async Task<int> CountResolvedAsync(
+    public Task<int> CountResolvedAsync(
         DashboardFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = ApplyDashboardFilter(_context.ValidationIssues.AsNoTracking(), filter);
-
-        return await query.CountAsync(x => x.IsResolved, cancellationToken);
+        return Task.FromResult(ApplyDashboardFilter(_issues, filter).Count(x => x.IsResolved));
     }
 
     public Task<IReadOnlyList<ValidationIssue>> GetRecentAsync(
@@ -100,65 +82,70 @@ public sealed class ValidationIssueRepository : IValidationIssueRepository
         return GetRecentAsync(take, new DashboardFilterDto(), cancellationToken);
     }
 
-    public async Task<IReadOnlyList<ValidationIssue>> GetRecentAsync(
+    public Task<IReadOnlyList<ValidationIssue>> GetRecentAsync(
         int take,
         DashboardFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = ApplyDashboardFilter(_context.ValidationIssues, filter)
-            .AsNoTracking()
-            .Include(x => x.Invoice)
-                .ThenInclude(x => x!.Vendor);
-
-        return await query
+        var result = ApplyDashboardFilter(_issues, filter)
             .OrderByDescending(x => x.DetectedAt)
             .Take(take)
-            .ToListAsync(cancellationToken);
+            .ToList()
+            .AsReadOnly();
+
+        return Task.FromResult<IReadOnlyList<ValidationIssue>>(result);
     }
 
-    public async Task AddAsync(
+    public Task AddAsync(
         ValidationIssue issue,
         CancellationToken cancellationToken = default)
     {
-        await _context.ValidationIssues.AddAsync(issue, cancellationToken);
+        _issues.Add(issue);
+        return Task.CompletedTask;
     }
 
-    public async Task AddRangeAsync(
+    public Task AddRangeAsync(
         IEnumerable<ValidationIssue> issues,
         CancellationToken cancellationToken = default)
     {
-        await _context.ValidationIssues.AddRangeAsync(issues, cancellationToken);
+        _issues.AddRange(issues);
+        return Task.CompletedTask;
     }
 
-    public async Task MarkResolvedAsync(
+    public Task MarkResolvedAsync(
         Guid validationIssueId,
         CancellationToken cancellationToken = default)
     {
-        var issue = await _context.ValidationIssues
-            .FirstOrDefaultAsync(x => x.Id == validationIssueId, cancellationToken);
-
-        if (issue is null)
-            return;
-
-        issue.Resolve();
+        _issues.FirstOrDefault(x => x.Id == validationIssueId)?.Resolve();
+        return Task.CompletedTask;
     }
 
-    private static IQueryable<ValidationIssue> ApplyFilters(
-        IQueryable<ValidationIssue> query,
+    public void Seed(ValidationIssue issue, Invoice? invoice = null)
+    {
+        if (invoice is not null)
+            SetInvoice(issue, invoice);
+
+        _issues.Add(issue);
+    }
+
+    private static IEnumerable<ValidationIssue> ApplyFilters(
+        IEnumerable<ValidationIssue> issues,
         string? keyword,
         string? severity,
         bool? isResolved)
     {
+        var query = issues;
+
         if (!string.IsNullOrWhiteSpace(keyword))
         {
             var normalized = keyword.Trim();
 
             query = query.Where(x =>
-                x.FieldName.Contains(normalized) ||
-                x.RuleCode.Contains(normalized) ||
-                x.Message.Contains(normalized) ||
-                (x.Invoice != null && x.Invoice.InvoiceNumber.Contains(normalized)) ||
-                (x.Invoice != null && x.Invoice.Vendor != null && x.Invoice.Vendor.Name.Contains(normalized)));
+                x.FieldName.Contains(normalized, StringComparison.OrdinalIgnoreCase) ||
+                x.RuleCode.Contains(normalized, StringComparison.OrdinalIgnoreCase) ||
+                x.Message.Contains(normalized, StringComparison.OrdinalIgnoreCase) ||
+                (x.Invoice?.InvoiceNumber.Contains(normalized, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (x.Invoice?.Vendor?.Name.Contains(normalized, StringComparison.OrdinalIgnoreCase) ?? false));
         }
 
         if (!string.IsNullOrWhiteSpace(severity) &&
@@ -168,40 +155,47 @@ public sealed class ValidationIssueRepository : IValidationIssueRepository
         }
 
         if (isResolved.HasValue)
-        {
             query = query.Where(x => x.IsResolved == isResolved.Value);
-        }
 
         return query;
     }
 
-    private static IQueryable<ValidationIssue> ApplyDashboardFilter(
-        IQueryable<ValidationIssue> query,
+    private static IEnumerable<ValidationIssue> ApplyDashboardFilter(
+        IEnumerable<ValidationIssue> issues,
         DashboardFilterDto filter)
     {
         ArgumentNullException.ThrowIfNull(filter);
 
+        var query = issues;
+
         if (filter.VendorId.HasValue)
         {
             query = query.Where(x =>
-                x.Invoice != null &&
+                x.Invoice is not null &&
                 x.Invoice.VendorId == filter.VendorId.Value);
         }
 
         if (filter.IssueDateFrom.HasValue)
         {
             query = query.Where(x =>
-                x.Invoice != null &&
+                x.Invoice is not null &&
                 x.Invoice.IssueDate >= filter.IssueDateFrom.Value);
         }
 
         if (filter.IssueDateTo.HasValue)
         {
             query = query.Where(x =>
-                x.Invoice != null &&
+                x.Invoice is not null &&
                 x.Invoice.IssueDate <= filter.IssueDateTo.Value);
         }
 
         return query;
+    }
+
+    private static void SetInvoice(ValidationIssue issue, Invoice invoice)
+    {
+        typeof(ValidationIssue)
+            .GetProperty(nameof(ValidationIssue.Invoice))!
+            .SetValue(issue, invoice);
     }
 }

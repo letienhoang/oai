@@ -232,13 +232,13 @@ public sealed class FakeInvoiceRepository : IInvoiceRepository
 
         return sortBy switch
         {
-            "CreatedAt" => filter.SortDescending
+            InvoiceListSortFields.CreatedAt => filter.SortDescending
                 ? invoices.OrderByDescending(x => x.CreatedAt)
                 : invoices.OrderBy(x => x.CreatedAt),
-            "InvoiceNumber" => filter.SortDescending
+            InvoiceListSortFields.InvoiceNumber => filter.SortDescending
                 ? invoices.OrderByDescending(x => x.InvoiceNumber)
                 : invoices.OrderBy(x => x.InvoiceNumber),
-            "TotalAmount" => filter.SortDescending
+            InvoiceListSortFields.TotalAmount => filter.SortDescending
                 ? invoices.OrderByDescending(x => x.DeclaredTotalAmount.Amount)
                 : invoices.OrderBy(x => x.DeclaredTotalAmount.Amount),
             _ => filter.SortDescending

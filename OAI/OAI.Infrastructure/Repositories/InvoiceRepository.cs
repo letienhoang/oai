@@ -239,13 +239,13 @@ public sealed class InvoiceRepository : IInvoiceRepository
 
         return sortBy switch
         {
-            "CreatedAt" => filter.SortDescending
+            InvoiceListSortFields.CreatedAt => filter.SortDescending
                 ? query.OrderByDescending(x => x.CreatedAt)
                 : query.OrderBy(x => x.CreatedAt),
-            "InvoiceNumber" => filter.SortDescending
+            InvoiceListSortFields.InvoiceNumber => filter.SortDescending
                 ? query.OrderByDescending(x => x.InvoiceNumber)
                 : query.OrderBy(x => x.InvoiceNumber),
-            "TotalAmount" => filter.SortDescending
+            InvoiceListSortFields.TotalAmount => filter.SortDescending
                 ? query.OrderByDescending(x => x.DeclaredTotalAmount.Amount)
                 : query.OrderBy(x => x.DeclaredTotalAmount.Amount),
             _ => filter.SortDescending
