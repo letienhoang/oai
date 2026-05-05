@@ -43,12 +43,25 @@
                             </div>
 
                             <div class="col-12 col-md-6">
-                                <label class="form-label">@L["VendorId"]</label>
-                                <InputText class="form-control" @bind-Value="EditModel.VendorIdText" />
+                                <label class="form-label">@L["Vendor"]</label>
+                                <InputSelect class="form-select"
+                                             @bind-Value="EditModel.VendorIdText"
+                                             disabled="@IsSaving">
+                                    <option value="">@L["SelectVendor"]</option>
+                                    @foreach (var vendor in VendorOptions)
+                                    {
+                                        <option value="@vendor.VendorId.ToString()">
+                                            @vendor.Name
+                                        </option>
+                                    }
+                                </InputSelect>
                                 <ValidationMessage For="@(() => EditModel.VendorIdText)" />
-                                <div class="form-text">
-                                    @L["VendorIdHelpText"]
-                                </div>
+                                @if (VendorOptions.Count == 0)
+                                {
+                                    <div class="form-text text-warning">
+                                        @L["NoVendorsAvailable"]
+                                    </div>
+                                }
                             </div>
 
                             <div class="col-12 col-md-6">

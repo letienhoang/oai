@@ -651,6 +651,15 @@
   <data name="VendorIdHelpText" xml:space="preserve">
         <value>Giai đoạn hiện tại dùng VendorId. Sau này có thể thay bằng dropdown Vendor.</value>
     </data>
+  <data name="SelectVendor" xml:space="preserve">
+        <value>Chọn nhà cung cấp</value>
+    </data>
+  <data name="PleaseSelectVendor" xml:space="preserve">
+        <value>Vui lòng chọn nhà cung cấp.</value>
+    </data>
+  <data name="NoVendorsAvailable" xml:space="preserve">
+        <value>Chưa có nhà cung cấp nào. Vui lòng tạo nhà cung cấp trước khi chỉnh sửa hóa đơn.</value>
+    </data>
   <data name="Currency" xml:space="preserve">
         <value>Currency</value>
     </data>

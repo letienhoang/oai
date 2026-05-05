@@ -651,6 +651,15 @@
   <data name="VendorIdHelpText" xml:space="preserve">
         <value>This phase uses VendorId. It can be replaced by a Vendor dropdown later.</value>
     </data>
+  <data name="SelectVendor" xml:space="preserve">
+        <value>Select vendor</value>
+    </data>
+  <data name="PleaseSelectVendor" xml:space="preserve">
+        <value>Please select a vendor.</value>
+    </data>
+  <data name="NoVendorsAvailable" xml:space="preserve">
+        <value>No vendors are available. Please create a vendor before editing this invoice.</value>
+    </data>
   <data name="Currency" xml:space="preserve">
         <value>Currency</value>
     </data>

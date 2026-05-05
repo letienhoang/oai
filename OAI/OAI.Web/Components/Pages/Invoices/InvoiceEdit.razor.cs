@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
+using OAI.Application.Abstractions.UseCases.Vendors;
 using OAI.Application.Invoices.Dtos;
+using OAI.Application.Vendors.Dtos;
 using OAI.Infrastructure.Identity;
 using OAI.Web.Components.Pages.Invoices.Models;
 using OAI.Web.Localization;
@@ -21,6 +23,9 @@ public partial class InvoiceEdit
 
     [Inject]
     private IUpdateInvoiceUseCase UpdateInvoiceUseCase { get; set; } = default!;
+
+    [Inject]
+    private IGetVendorOptionsUseCase GetVendorOptionsUseCase { get; set; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
@@ -50,10 +55,13 @@ public partial class InvoiceEdit
 
     private string? SuccessMessage { get; set; }
 
+    private List<VendorOptionDto> VendorOptions { get; set; } = new();
+
     protected override async Task OnParametersSetAsync()
     {
         EnsureEditContext();
 
+        await LoadVendorOptionsAsync();
         await LoadInvoiceAsync();
     }
 
@@ -70,7 +78,7 @@ public partial class InvoiceEdit
 
         if (!Guid.TryParse(EditModel.VendorIdText, out var vendorId))
         {
-            FormErrorMessage = L["InvalidVendorId"];
+            FormErrorMessage = L["PleaseSelectVendor"];
             return;
         }
 
@@ -227,6 +235,20 @@ public partial class InvoiceEdit
         }
     }
 
+    private async Task LoadVendorOptionsAsync()
+    {
+        try
+        {
+            var vendors = await GetVendorOptionsUseCase.ExecuteAsync();
+            VendorOptions = vendors.ToList();
+        }
+        catch (Exception ex)
+        {
+            VendorOptions.Clear();
+            Logger.LogError(ex, "Failed to load vendor options for invoice edit screen.");
+        }
+    }
+
     private void EnsureEditContext()
     {
         if (EditContext is null)
@@ -252,7 +274,7 @@ public partial class InvoiceEdit
     {
         ValidationMessageStore.Clear();
 
-        AddRequiredMessageIfEmpty(nameof(InvoiceEditFormModel.VendorIdText), "VendorId");
+        AddRequiredMessageIfEmpty(nameof(InvoiceEditFormModel.VendorIdText), "Vendor");
         AddRequiredMessageIfEmpty(nameof(InvoiceEditFormModel.InvoiceNumber), "InvoiceNumber");
         AddRequiredMessageIfEmpty(nameof(InvoiceEditFormModel.Currency), "Currency");
 
@@ -303,6 +325,15 @@ public partial class InvoiceEdit
 
         if (string.IsNullOrWhiteSpace(value))
         {
+            if (fieldName == nameof(InvoiceEditFormModel.VendorIdText))
+            {
+                ValidationMessageStore.Add(
+                    new FieldIdentifier(EditModel, fieldName),
+                    L["PleaseSelectVendor"]);
+
+                return;
+            }
+
             AddValidationMessage(EditModel, fieldName, "RequiredFieldValidation", labelKey);
         }
     }
