@@ -4,6 +4,8 @@
 
 <PageTitle>@L["EditInvoicePageTitle"]</PageTitle>
 
+<ConfirmDialog @ref="ConfirmDialog" />
+
 <section class="mb-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
         <div>
@@ -28,7 +30,7 @@
            IsEmpty="false"
            InCard="true">
     <ChildContent>
-    <EditForm EditContext="EditContext" OnValidSubmit="SaveAsync">
+    <EditForm EditContext="EditContext" OnValidSubmit="ConfirmSave">
         <div class="row g-4">
             <div class="col-12 col-xl-8">
                 <section class="card border-0 shadow-sm rounded-4 mb-4">

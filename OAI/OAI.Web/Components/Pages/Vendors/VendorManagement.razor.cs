@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Vendors;
 using OAI.Application.Vendors.Dtos;
 using OAI.Infrastructure.Identity;
+using OAI.Web.Components.Shared;
 using OAI.Web.Localization;
 using OAI.Web.Services;
 
@@ -54,6 +54,8 @@ public partial class VendorManagement
     private string? FormErrorMessage { get; set; }
 
     private string? SuccessMessage { get; set; }
+
+    private ConfirmDialog? ConfirmDialog { get; set; }
 
     private bool CanGoPrevious => PageNumber > 1;
 
@@ -134,7 +136,20 @@ public partial class VendorManagement
         SuccessMessage = null;
     }
 
-    private async Task SaveVendorAsync(EditContext editContext)
+    private void ConfirmSaveVendor()
+    {
+        var isEdit = FormModel.VendorId.HasValue;
+
+        ConfirmDialog?.Open(
+            title: isEdit ? L["ConfirmUpdateVendorTitle"] : L["ConfirmCreateVendorTitle"],
+            message: isEdit ? L["ConfirmUpdateVendorMessage"] : L["ConfirmCreateVendorMessage"],
+            confirmText: L["Save"],
+            cancelText: L["Cancel"],
+            onConfirm: SaveVendorAsync,
+            confirmButtonClass: "btn btn-primary");
+    }
+
+    private async Task SaveVendorAsync()
     {
         if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.ManageVendors))
         {

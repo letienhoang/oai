@@ -1146,4 +1146,49 @@
   <data name="VendorCreatedSuccessfullyWithName" xml:space="preserve">
         <value>Vendor '{0}' was created successfully.</value>
     </data>
+  <data name="Confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+  <data name="ConfirmApproveInvoiceTitle" xml:space="preserve">
+        <value>Approve invoice?</value>
+    </data>
+  <data name="ConfirmApproveInvoiceMessage" xml:space="preserve">
+        <value>This invoice will be marked as approved. This action will be recorded in the audit log.</value>
+    </data>
+  <data name="ConfirmRejectInvoiceTitle" xml:space="preserve">
+        <value>Reject invoice?</value>
+    </data>
+  <data name="ConfirmRejectInvoiceMessage" xml:space="preserve">
+        <value>This invoice will be marked as rejected. This action will be recorded in the audit log.</value>
+    </data>
+  <data name="ConfirmMoveToPendingReviewTitle" xml:space="preserve">
+        <value>Move invoice to pending review?</value>
+    </data>
+  <data name="ConfirmMoveToPendingReviewMessage" xml:space="preserve">
+        <value>This invoice will be moved back to pending review for further checking.</value>
+    </data>
+  <data name="ConfirmSaveInvoiceTitle" xml:space="preserve">
+        <value>Save invoice changes?</value>
+    </data>
+  <data name="ConfirmSaveInvoiceMessage" xml:space="preserve">
+        <value>The invoice data will be saved and validation will run again.</value>
+    </data>
+  <data name="ConfirmUploadInvoiceTitle" xml:space="preserve">
+        <value>Upload and process invoice?</value>
+    </data>
+  <data name="ConfirmUploadInvoiceMessage" xml:space="preserve">
+        <value>The selected file will be uploaded, processed by OCR, and stored as an invoice record.</value>
+    </data>
+  <data name="ConfirmCreateVendorTitle" xml:space="preserve">
+        <value>Create vendor?</value>
+    </data>
+  <data name="ConfirmCreateVendorMessage" xml:space="preserve">
+        <value>A new vendor will be created and can be used in invoice processing.</value>
+    </data>
+  <data name="ConfirmUpdateVendorTitle" xml:space="preserve">
+        <value>Update vendor?</value>
+    </data>
+  <data name="ConfirmUpdateVendorMessage" xml:space="preserve">
+        <value>The vendor information will be updated.</value>
+    </data>
 </root>

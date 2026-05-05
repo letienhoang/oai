@@ -4,6 +4,8 @@
 
 <PageTitle>@L["UploadInvoicePageTitle"]</PageTitle>
 
+<ConfirmDialog @ref="ConfirmDialog" />
+
 <section class="mb-4">
     <h1 class="fw-bold mb-1">@L["UploadInvoiceTitle"]</h1>
     <p class="text-secondary mb-0">
@@ -56,7 +58,7 @@
                 <div class="d-flex gap-2 mt-4">
                     <button class="btn btn-primary"
                             disabled="@(!CanUpload || IsUploading)"
-                            @onclick="UploadAsync">
+                            @onclick="ConfirmUpload">
                         @if (IsUploading)
                         {
                             <span class="spinner-border spinner-border-sm me-2" role="status"></span>

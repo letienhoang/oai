@@ -8,6 +8,7 @@ using OAI.Application.Vendors.Dtos;
 using OAI.Web.Components.Vendors;
 using OAI.Infrastructure.Identity;
 using OAI.Web.Components.Pages.Invoices.Models;
+using OAI.Web.Components.Shared;
 using OAI.Web.Localization;
 using OAI.Web.Services;
 using System.Globalization;
@@ -59,6 +60,8 @@ public partial class InvoiceEdit
     private List<VendorOptionDto> VendorOptions { get; set; } = new();
 
     private QuickCreateVendorDialog? QuickCreateVendorDialog { get; set; }
+
+    private ConfirmDialog? ConfirmDialog { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -143,6 +146,17 @@ public partial class InvoiceEdit
         {
             IsSaving = false;
         }
+    }
+
+    private void ConfirmSave()
+    {
+        ConfirmDialog?.Open(
+            title: L["ConfirmSaveInvoiceTitle"],
+            message: L["ConfirmSaveInvoiceMessage"],
+            confirmText: L["SaveAndRevalidate"],
+            cancelText: L["Cancel"],
+            onConfirm: SaveAsync,
+            confirmButtonClass: "btn btn-primary");
     }
 
     private void AddLineItem()

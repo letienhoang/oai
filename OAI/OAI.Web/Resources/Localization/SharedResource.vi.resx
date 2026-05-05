@@ -1146,4 +1146,49 @@
   <data name="VendorCreatedSuccessfullyWithName" xml:space="preserve">
         <value>Nhà cung cấp '{0}' đã được tạo thành công.</value>
     </data>
+  <data name="Confirm" xml:space="preserve">
+        <value>Xác nhận</value>
+    </data>
+  <data name="ConfirmApproveInvoiceTitle" xml:space="preserve">
+        <value>Xác nhận hóa đơn?</value>
+    </data>
+  <data name="ConfirmApproveInvoiceMessage" xml:space="preserve">
+        <value>Hóa đơn này sẽ được đánh dấu là đã xác nhận. Thao tác này sẽ được ghi vào nhật ký hệ thống.</value>
+    </data>
+  <data name="ConfirmRejectInvoiceTitle" xml:space="preserve">
+        <value>Từ chối hóa đơn?</value>
+    </data>
+  <data name="ConfirmRejectInvoiceMessage" xml:space="preserve">
+        <value>Hóa đơn này sẽ được đánh dấu là đã từ chối. Thao tác này sẽ được ghi vào nhật ký hệ thống.</value>
+    </data>
+  <data name="ConfirmMoveToPendingReviewTitle" xml:space="preserve">
+        <value>Đưa hóa đơn về chờ kiểm tra?</value>
+    </data>
+  <data name="ConfirmMoveToPendingReviewMessage" xml:space="preserve">
+        <value>Hóa đơn này sẽ được đưa về trạng thái chờ kiểm tra để tiếp tục rà soát.</value>
+    </data>
+  <data name="ConfirmSaveInvoiceTitle" xml:space="preserve">
+        <value>Lưu thay đổi hóa đơn?</value>
+    </data>
+  <data name="ConfirmSaveInvoiceMessage" xml:space="preserve">
+        <value>Dữ liệu hóa đơn sẽ được lưu và hệ thống sẽ chạy kiểm tra lại.</value>
+    </data>
+  <data name="ConfirmUploadInvoiceTitle" xml:space="preserve">
+        <value>Upload và xử lý hóa đơn?</value>
+    </data>
+  <data name="ConfirmUploadInvoiceMessage" xml:space="preserve">
+        <value>File đã chọn sẽ được upload, xử lý bằng OCR và lưu thành bản ghi hóa đơn.</value>
+    </data>
+  <data name="ConfirmCreateVendorTitle" xml:space="preserve">
+        <value>Tạo nhà cung cấp?</value>
+    </data>
+  <data name="ConfirmCreateVendorMessage" xml:space="preserve">
+        <value>Nhà cung cấp mới sẽ được tạo và có thể sử dụng trong xử lý hóa đơn.</value>
+    </data>
+  <data name="ConfirmUpdateVendorTitle" xml:space="preserve">
+        <value>Cập nhật nhà cung cấp?</value>
+    </data>
+  <data name="ConfirmUpdateVendorMessage" xml:space="preserve">
+        <value>Thông tin nhà cung cấp sẽ được cập nhật.</value>
+    </data>
 </root>

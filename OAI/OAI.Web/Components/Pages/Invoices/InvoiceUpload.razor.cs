@@ -7,6 +7,7 @@ using OAI.Application.Invoices.Dtos;
 using OAI.Application.Vendors.Dtos;
 using OAI.Infrastructure.Identity;
 using OAI.Web.Components.Vendors;
+using OAI.Web.Components.Shared;
 using OAI.Web.Localization;
 using OAI.Web.Services;
 
@@ -60,6 +61,8 @@ public partial class InvoiceUpload
     private InvoiceUploadResultDto? UploadResult { get; set; }
 
     private QuickCreateVendorDialog? QuickCreateVendorDialog { get; set; }
+
+    private ConfirmDialog? ConfirmDialog { get; set; }
 
     private Task HandleFileSelectedAsync(InputFileChangeEventArgs e)
     {
@@ -166,6 +169,23 @@ public partial class InvoiceUpload
         {
             IsUploading = false;
         }
+    }
+
+    private void ConfirmUpload()
+    {
+        if (SelectedFile is null)
+        {
+            ErrorMessage = L["PleaseSelectFileBeforeUpload"];
+            return;
+        }
+
+        ConfirmDialog?.Open(
+            title: L["ConfirmUploadInvoiceTitle"],
+            message: L["ConfirmUploadInvoiceMessage"],
+            confirmText: L["UploadAndProcess"],
+            cancelText: L["Cancel"],
+            onConfirm: UploadAsync,
+            confirmButtonClass: "btn btn-primary");
     }
 
     private void ResetForm()

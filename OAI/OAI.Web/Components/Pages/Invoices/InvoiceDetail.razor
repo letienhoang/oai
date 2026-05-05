@@ -4,6 +4,8 @@
 
 <PageTitle>@L["InvoiceDetailPageTitle"]</PageTitle>
 
+<ConfirmDialog @ref="ConfirmDialog" />
+
 <section class="mb-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
         <div>
@@ -38,7 +40,7 @@
                     {
                         <button class="btn btn-success"
                                 disabled="@IsApproving"
-                                @onclick="ApproveAsync">
+                                @onclick="ConfirmApprove">
                             @if (IsApproving)
                             {
                                 <span class="spinner-border spinner-border-sm me-2" role="status"></span>
@@ -57,7 +59,7 @@
                     {
                         <button class="btn btn-outline-warning"
                                 disabled="@IsMovingToPendingReview"
-                                @onclick="MoveToPendingReviewAsync">
+                                @onclick="ConfirmMoveToPendingReview">
                             @if (IsMovingToPendingReview)
                             {
                                 <span class="spinner-border spinner-border-sm me-2" role="status"></span>
@@ -76,7 +78,7 @@
                     {
                         <button class="btn btn-outline-danger"
                                 disabled="@IsRejecting"
-                                @onclick="RejectAsync">
+                                @onclick="ConfirmReject">
                             @if (IsRejecting)
                             {
                                 <span class="spinner-border spinner-border-sm me-2" role="status"></span>

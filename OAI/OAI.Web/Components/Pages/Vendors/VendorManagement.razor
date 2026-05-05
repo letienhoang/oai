@@ -4,6 +4,8 @@
 
 <PageTitle>@L["VendorManagementPageTitle"]</PageTitle>
 
+<ConfirmDialog @ref="ConfirmDialog" />
+
 <section class="mb-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
         <div>
@@ -167,7 +169,7 @@
                         </div>
                     }
 
-                    <EditForm Model="@FormModel" OnSubmit="@SaveVendorAsync">
+                    <EditForm Model="@FormModel" OnSubmit="@(_ => ConfirmSaveVendor())">
                         <div class="mb-3">
                             <label class="form-label" for="vendor-name">@L["VendorName"]</label>
                             <InputText id="vendor-name"

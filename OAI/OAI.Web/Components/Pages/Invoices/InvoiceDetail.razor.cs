@@ -3,6 +3,7 @@ using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
 using OAI.Infrastructure.Identity;
+using OAI.Web.Components.Shared;
 using OAI.Web.Localization;
 using OAI.Web.Services;
 
@@ -56,6 +57,8 @@ public partial class InvoiceDetail
     private string? SuccessMessage { get; set; }
 
     private string? ActionErrorMessage { get; set; }
+
+    private ConfirmDialog? ConfirmDialog { get; set; }
 
     private bool CanApprove =>
         Invoice is not null &&
@@ -162,6 +165,39 @@ public partial class InvoiceDetail
     private void GoToCompare()
     {
         NavigationManager.NavigateTo($"/invoices/{InvoiceId}/compare");
+    }
+
+    private void ConfirmApprove()
+    {
+        ConfirmDialog?.Open(
+            title: L["ConfirmApproveInvoiceTitle"],
+            message: L["ConfirmApproveInvoiceMessage"],
+            confirmText: L["Confirm"],
+            cancelText: L["Cancel"],
+            onConfirm: ApproveAsync,
+            confirmButtonClass: "btn btn-success");
+    }
+
+    private void ConfirmReject()
+    {
+        ConfirmDialog?.Open(
+            title: L["ConfirmRejectInvoiceTitle"],
+            message: L["ConfirmRejectInvoiceMessage"],
+            confirmText: L["Confirm"],
+            cancelText: L["Cancel"],
+            onConfirm: RejectAsync,
+            confirmButtonClass: "btn btn-danger");
+    }
+
+    private void ConfirmMoveToPendingReview()
+    {
+        ConfirmDialog?.Open(
+            title: L["ConfirmMoveToPendingReviewTitle"],
+            message: L["ConfirmMoveToPendingReviewMessage"],
+            confirmText: L["Confirm"],
+            cancelText: L["Cancel"],
+            onConfirm: MoveToPendingReviewAsync,
+            confirmButtonClass: "btn btn-warning");
     }
 
     private async Task LoadInvoiceDetailAsync()
