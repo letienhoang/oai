@@ -69,6 +69,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<IdentityDataSeeder>();
 
 builder.Services.AddScoped<UserTimeZoneService>();
+builder.Services.AddScoped<CurrentUserAuthorizationService>();
 builder.Services.AddScoped<LocalizedMessageResolver>();
 
 var app = builder.Build();

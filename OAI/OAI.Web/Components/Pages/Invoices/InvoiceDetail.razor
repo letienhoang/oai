@@ -27,7 +27,7 @@
                 <AuthorizeView Policy="@ApplicationPolicies.EditInvoices">
                     @if (CanShowEditButton)
                     {
-                        <button class="btn btn-outline-secondary" @onclick="GoToEdit">
+                        <button class="btn btn-outline-secondary" @onclick="GoToEditAsync">
                             @L["Edit"]
                         </button>
                     }

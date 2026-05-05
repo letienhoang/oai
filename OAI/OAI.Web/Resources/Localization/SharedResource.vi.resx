@@ -981,4 +981,22 @@
   <data name="AuthorizationLoading" xml:space="preserve">
         <value>Đang kiểm tra quyền truy cập...</value>
     </data>
+  <data name="ActionNotAllowed" xml:space="preserve">
+        <value>Bạn không có quyền thực hiện thao tác này.</value>
+    </data>
+  <data name="UploadNotAllowed" xml:space="preserve">
+        <value>Bạn không có quyền upload hóa đơn.</value>
+    </data>
+  <data name="EditInvoiceNotAllowed" xml:space="preserve">
+        <value>Bạn không có quyền chỉnh sửa hóa đơn.</value>
+    </data>
+  <data name="ApproveInvoiceNotAllowed" xml:space="preserve">
+        <value>Bạn không có quyền xác nhận hóa đơn.</value>
+    </data>
+  <data name="RejectInvoiceNotAllowed" xml:space="preserve">
+        <value>Bạn không có quyền từ chối hóa đơn.</value>
+    </data>
+  <data name="MoveInvoiceToPendingReviewNotAllowed" xml:space="preserve">
+        <value>Bạn không có quyền đưa hóa đơn về trạng thái chờ kiểm tra.</value>
+    </data>
 </root>

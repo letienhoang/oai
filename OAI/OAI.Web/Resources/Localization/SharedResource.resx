@@ -981,4 +981,22 @@
   <data name="AuthorizationLoading" xml:space="preserve">
         <value>Checking authorization...</value>
     </data>
+  <data name="ActionNotAllowed" xml:space="preserve">
+        <value>You do not have permission to perform this action.</value>
+    </data>
+  <data name="UploadNotAllowed" xml:space="preserve">
+        <value>You do not have permission to upload invoices.</value>
+    </data>
+  <data name="EditInvoiceNotAllowed" xml:space="preserve">
+        <value>You do not have permission to edit invoices.</value>
+    </data>
+  <data name="ApproveInvoiceNotAllowed" xml:space="preserve">
+        <value>You do not have permission to approve invoices.</value>
+    </data>
+  <data name="RejectInvoiceNotAllowed" xml:space="preserve">
+        <value>You do not have permission to reject invoices.</value>
+    </data>
+  <data name="MoveInvoiceToPendingReviewNotAllowed" xml:space="preserve">
+        <value>You do not have permission to move invoices to pending review.</value>
+    </data>
 </root>

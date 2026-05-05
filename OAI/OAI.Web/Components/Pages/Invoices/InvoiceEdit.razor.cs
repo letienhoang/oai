@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Infrastructure.Identity;
 using OAI.Web.Components.Pages.Invoices.Models;
 using OAI.Web.Localization;
+using OAI.Web.Services;
 using System.Globalization;
 
 namespace OAI.Web.Components.Pages.Invoices;
@@ -28,6 +30,9 @@ public partial class InvoiceEdit
 
     [Inject]
     private IStringLocalizer<SharedResource> L { get; set; } = default!;
+
+    [Inject]
+    private CurrentUserAuthorizationService AuthorizationService { get; set; } = default!;
 
     protected InvoiceEditFormModel EditModel { get; private set; } = new();
 
@@ -56,6 +61,12 @@ public partial class InvoiceEdit
     {
         FormErrorMessage = null;
         SuccessMessage = null;
+
+        if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.EditInvoices))
+        {
+            FormErrorMessage = L["EditInvoiceNotAllowed"];
+            return;
+        }
 
         if (!Guid.TryParse(EditModel.VendorIdText, out var vendorId))
         {

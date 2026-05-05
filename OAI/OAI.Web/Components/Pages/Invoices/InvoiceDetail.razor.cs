@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Infrastructure.Identity;
 using OAI.Web.Localization;
 using OAI.Web.Services;
 
@@ -38,6 +39,9 @@ public partial class InvoiceDetail
 
     [Inject]
     private LocalizedMessageResolver LocalizedMessageResolver { get; set; } = default!;
+
+    [Inject]
+    private CurrentUserAuthorizationService AuthorizationService { get; set; } = default!;
 
     private InvoiceDetailDto? Invoice { get; set; }
 
@@ -141,8 +145,17 @@ public partial class InvoiceDetail
         };
     }
 
-    private void GoToEdit()
+    private async Task GoToEditAsync()
     {
+        SuccessMessage = null;
+        ActionErrorMessage = null;
+
+        if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.EditInvoices))
+        {
+            ActionErrorMessage = L["EditInvoiceNotAllowed"];
+            return;
+        }
+
         NavigationManager.NavigateTo($"/invoices/{InvoiceId}/edit");
     }
 
@@ -191,6 +204,13 @@ public partial class InvoiceDetail
 
         SuccessMessage = null;
         ActionErrorMessage = null;
+
+        if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.ApproveInvoices))
+        {
+            ActionErrorMessage = L["ApproveInvoiceNotAllowed"];
+            return;
+        }
+
         IsApproving = true;
 
         try
@@ -236,6 +256,13 @@ public partial class InvoiceDetail
 
         SuccessMessage = null;
         ActionErrorMessage = null;
+
+        if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.RejectInvoices))
+        {
+            ActionErrorMessage = L["RejectInvoiceNotAllowed"];
+            return;
+        }
+
         IsRejecting = true;
 
         try
@@ -281,6 +308,13 @@ public partial class InvoiceDetail
 
         SuccessMessage = null;
         ActionErrorMessage = null;
+
+        if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.MoveInvoicesToPendingReview))
+        {
+            ActionErrorMessage = L["MoveInvoiceToPendingReviewNotAllowed"];
+            return;
+        }
+
         IsMovingToPendingReview = true;
 
         try

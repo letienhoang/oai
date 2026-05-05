@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Invoices.Dtos;
+using OAI.Infrastructure.Identity;
 using OAI.Web.Localization;
+using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages.Invoices;
 
@@ -35,6 +37,9 @@ public partial class InvoiceUpload
 
     [Inject]
     private LocalizedMessageResolver LocalizedMessageResolver { get; set; } = default!;
+
+    [Inject]
+    private CurrentUserAuthorizationService AuthorizationService { get; set; } = default!;
 
     private IBrowserFile? SelectedFile { get; set; }
 
@@ -97,6 +102,12 @@ public partial class InvoiceUpload
 
     private async Task UploadAsync()
     {
+        if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.UploadInvoices))
+        {
+            ErrorMessage = L["UploadNotAllowed"];
+            return;
+        }
+
         if (SelectedFile is null)
         {
             ErrorMessage = L["PleaseSelectFileBeforeUpload"];
