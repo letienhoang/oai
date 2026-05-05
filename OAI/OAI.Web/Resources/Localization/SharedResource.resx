@@ -1125,4 +1125,19 @@
   <data name="Address" xml:space="preserve">
         <value>Address</value>
     </data>
+  <data name="QuickCreateVendor" xml:space="preserve">
+        <value>Quick create vendor</value>
+    </data>
+  <data name="QuickCreateVendorTitle" xml:space="preserve">
+        <value>Quick create vendor</value>
+    </data>
+  <data name="QuickCreateVendorDescription" xml:space="preserve">
+        <value>Create a vendor without leaving the current workflow.</value>
+    </data>
+  <data name="VendorCreatedAndSelected" xml:space="preserve">
+        <value>Vendor '{0}' was created and selected.</value>
+    </data>
+  <data name="VendorCreatedSuccessfullyWithName" xml:space="preserve">
+        <value>Vendor '{0}' was created successfully.</value>
+    </data>
 </root>

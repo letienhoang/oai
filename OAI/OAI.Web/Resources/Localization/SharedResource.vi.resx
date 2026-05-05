@@ -1125,4 +1125,19 @@
   <data name="Address" xml:space="preserve">
         <value>Địa chỉ</value>
     </data>
+  <data name="QuickCreateVendor" xml:space="preserve">
+        <value>Tạo nhanh nhà cung cấp</value>
+    </data>
+  <data name="QuickCreateVendorTitle" xml:space="preserve">
+        <value>Tạo nhanh nhà cung cấp</value>
+    </data>
+  <data name="QuickCreateVendorDescription" xml:space="preserve">
+        <value>Tạo nhà cung cấp mà không cần rời khỏi luồng xử lý hiện tại.</value>
+    </data>
+  <data name="VendorCreatedAndSelected" xml:space="preserve">
+        <value>Nhà cung cấp '{0}' đã được tạo và chọn.</value>
+    </data>
+  <data name="VendorCreatedSuccessfullyWithName" xml:space="preserve">
+        <value>Nhà cung cấp '{0}' đã được tạo thành công.</value>
+    </data>
 </root>

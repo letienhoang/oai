@@ -43,7 +43,17 @@
                             </div>
 
                             <div class="col-12 col-md-6">
-                                <label class="form-label">@L["Vendor"]</label>
+                                <div class="d-flex justify-content-between align-items-center gap-2">
+                                    <label class="form-label mb-0">@L["Vendor"]</label>
+                                    <AuthorizeView Policy="@ApplicationPolicies.ManageVendors" Context="vendorAuth">
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-primary"
+                                                @onclick="OpenQuickCreateVendorDialog"
+                                                disabled="@IsSaving">
+                                            @L["QuickCreateVendor"]
+                                        </button>
+                                    </AuthorizeView>
+                                </div>
                                 <InputSelect class="form-select"
                                              @bind-Value="EditModel.VendorIdText"
                                              disabled="@IsSaving">
@@ -236,3 +246,6 @@
     </EditForm>
     </ChildContent>
 </PageState>
+
+<QuickCreateVendorDialog @ref="QuickCreateVendorDialog"
+                         VendorCreated="HandleVendorCreatedAsync" />

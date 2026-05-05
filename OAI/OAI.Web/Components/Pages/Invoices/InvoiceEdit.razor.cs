@@ -5,6 +5,7 @@ using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Abstractions.UseCases.Vendors;
 using OAI.Application.Invoices.Dtos;
 using OAI.Application.Vendors.Dtos;
+using OAI.Web.Components.Vendors;
 using OAI.Infrastructure.Identity;
 using OAI.Web.Components.Pages.Invoices.Models;
 using OAI.Web.Localization;
@@ -56,6 +57,8 @@ public partial class InvoiceEdit
     private string? SuccessMessage { get; set; }
 
     private List<VendorOptionDto> VendorOptions { get; set; } = new();
+
+    private QuickCreateVendorDialog? QuickCreateVendorDialog { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -173,6 +176,26 @@ public partial class InvoiceEdit
     private void GoBack()
     {
         NavigationManager.NavigateTo($"/invoices/{InvoiceId}");
+    }
+
+    private void OpenQuickCreateVendorDialog()
+    {
+        QuickCreateVendorDialog?.Open();
+    }
+
+    private async Task HandleVendorCreatedAsync(VendorListItemDto vendor)
+    {
+        await LoadVendorOptionsAsync();
+
+        EditModel.VendorIdText = vendor.VendorId.ToString();
+
+        SuccessMessage = string.Format(
+            CultureInfo.CurrentCulture,
+            L["VendorCreatedAndSelected"].Value,
+            vendor.Name);
+
+        ValidateEditModel();
+        EditContext.NotifyValidationStateChanged();
     }
 
     private async Task LoadInvoiceAsync()

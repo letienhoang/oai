@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Invoices.Dtos;
+using OAI.Application.Vendors.Dtos;
 using OAI.Infrastructure.Identity;
+using OAI.Web.Components.Vendors;
 using OAI.Web.Localization;
 using OAI.Web.Services;
 
@@ -56,6 +58,8 @@ public partial class InvoiceUpload
     private string? SuccessMessage { get; set; }
 
     private InvoiceUploadResultDto? UploadResult { get; set; }
+
+    private QuickCreateVendorDialog? QuickCreateVendorDialog { get; set; }
 
     private Task HandleFileSelectedAsync(InputFileChangeEventArgs e)
     {
@@ -179,6 +183,21 @@ public partial class InvoiceUpload
             return;
 
         NavigationManager.NavigateTo($"/invoices/{UploadResult.InvoiceId}");
+    }
+
+    private void OpenQuickCreateVendorDialog()
+    {
+        QuickCreateVendorDialog?.Open();
+    }
+
+    private Task HandleUploadVendorCreatedAsync(VendorListItemDto vendor)
+    {
+        SuccessMessage = string.Format(
+            CultureInfo.CurrentCulture,
+            L["VendorCreatedSuccessfullyWithName"].Value,
+            vendor.Name);
+
+        return Task.CompletedTask;
     }
 
     private static string GetStatusBadgeClass(string status)

@@ -79,6 +79,21 @@
     </div>
 
     <div class="col-12 col-xl-4">
+        <AuthorizeView Policy="@ApplicationPolicies.ManageVendors">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-1">@L["QuickCreateVendorTitle"]</h2>
+                    <p class="text-secondary small mb-3">@L["QuickCreateVendorDescription"]</p>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            @onclick="OpenQuickCreateVendorDialog"
+                            disabled="@IsUploading">
+                        @L["QuickCreateVendor"]
+                    </button>
+                </div>
+            </div>
+        </AuthorizeView>
+
         <div class="card border-0 shadow-sm rounded-4 mb-4">
             <div class="card-body p-4">
                 <h2 class="h5 fw-bold mb-3">@L["ProcessingFlow"]</h2>
@@ -138,3 +153,6 @@
         }
     </div>
 </section>
+
+<QuickCreateVendorDialog @ref="QuickCreateVendorDialog"
+                         VendorCreated="HandleUploadVendorCreatedAsync" />
