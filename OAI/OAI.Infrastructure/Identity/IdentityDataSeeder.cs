@@ -22,6 +22,16 @@ public sealed class IdentityDataSeeder
 
     public async Task SeedAsync()
     {
+        await SeedRolesAndPermissionsAsync();
+
+        foreach (var userOptions in GetSeedUsers())
+        {
+            await SeedUserAsync(userOptions);
+        }
+    }
+
+    private async Task SeedRolesAndPermissionsAsync()
+    {
         foreach (var roleName in ApplicationRoles.All)
         {
             if (!await _roleManager.RoleExistsAsync(roleName))
@@ -36,58 +46,105 @@ public sealed class IdentityDataSeeder
                 throw new InvalidOperationException($"Unable to load role '{roleName}'.");
             }
 
-            var expectedPermissions = ApplicationRolePermissions.GetPermissions(roleName);
-            var existingClaims = await _roleManager.GetClaimsAsync(role);
-            var existingPermissions = existingClaims
-                .Where(claim => claim.Type == ApplicationClaimTypes.Permission)
-                .Select(claim => claim.Value)
-                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            await SeedRolePermissionsAsync(role, roleName);
+        }
+    }
 
-            foreach (var permission in expectedPermissions)
+    private async Task SeedRolePermissionsAsync(IdentityRole<Guid> role, string roleName)
+    {
+        var expectedPermissions = ApplicationRolePermissions.GetPermissions(roleName);
+        var existingClaims = await _roleManager.GetClaimsAsync(role);
+        var existingPermissions = existingClaims
+            .Where(claim => claim.Type == ApplicationClaimTypes.Permission)
+            .Select(claim => claim.Value)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var permission in expectedPermissions)
+        {
+            if (existingPermissions.Contains(permission))
             {
-                if (existingPermissions.Contains(permission))
-                {
-                    continue;
-                }
-
-                var claimResult = await _roleManager.AddClaimAsync(
-                    role,
-                    new Claim(ApplicationClaimTypes.Permission, permission));
-
-                ThrowIfFailed(claimResult, $"Unable to add permission '{permission}' to role '{roleName}'.");
+                continue;
             }
+
+            var claimResult = await _roleManager.AddClaimAsync(
+                role,
+                new Claim(ApplicationClaimTypes.Permission, permission));
+
+            ThrowIfFailed(claimResult, $"Unable to add permission '{permission}' to role '{roleName}'.");
+        }
+    }
+
+    private IEnumerable<IdentitySeedUserOptions> GetSeedUsers()
+    {
+        if (_options.Users.Count > 0)
+        {
+            return _options.Users;
         }
 
-        var adminUser = await _userManager.FindByEmailAsync(_options.AdminEmail);
-
-        if (adminUser is null)
-        {
-            adminUser = new ApplicationUser
+        return
+        [
+            new()
             {
-                UserName = _options.AdminEmail,
                 Email = _options.AdminEmail,
+                Password = _options.AdminPassword,
                 DisplayName = _options.AdminDisplayName,
+                Role = ApplicationRoles.Administrator
+            }
+        ];
+    }
+
+    private async Task SeedUserAsync(IdentitySeedUserOptions userOptions)
+    {
+        if (string.IsNullOrWhiteSpace(userOptions.Email))
+        {
+            throw new InvalidOperationException("Seed user email is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(userOptions.Password))
+        {
+            throw new InvalidOperationException($"Seed user '{userOptions.Email}' requires a password.");
+        }
+
+        if (string.IsNullOrWhiteSpace(userOptions.Role))
+        {
+            throw new InvalidOperationException($"Seed user '{userOptions.Email}' requires a role.");
+        }
+
+        if (!await _roleManager.RoleExistsAsync(userOptions.Role))
+        {
+            throw new InvalidOperationException($"Unable to find role '{userOptions.Role}' for seed user '{userOptions.Email}'.");
+        }
+
+        var user = await _userManager.FindByEmailAsync(userOptions.Email);
+
+        if (user is null)
+        {
+            user = new ApplicationUser
+            {
+                UserName = userOptions.Email,
+                Email = userOptions.Email,
+                DisplayName = userOptions.DisplayName,
                 EmailConfirmed = true,
-                IsActive = true
+                IsActive = userOptions.IsActive
             };
 
-            var userResult = await _userManager.CreateAsync(adminUser, _options.AdminPassword);
-            ThrowIfFailed(userResult, $"Unable to create admin user '{_options.AdminEmail}'.");
+            var userResult = await _userManager.CreateAsync(user, userOptions.Password);
+            ThrowIfFailed(userResult, $"Unable to create seed user '{userOptions.Email}'.");
         }
         else
         {
-            adminUser.DisplayName = _options.AdminDisplayName;
-            adminUser.EmailConfirmed = true;
-            adminUser.IsActive = true;
+            user.DisplayName = userOptions.DisplayName;
+            user.EmailConfirmed = true;
+            user.IsActive = userOptions.IsActive;
 
-            var updateResult = await _userManager.UpdateAsync(adminUser);
-            ThrowIfFailed(updateResult, $"Unable to update admin user '{_options.AdminEmail}'.");
+            var updateResult = await _userManager.UpdateAsync(user);
+            ThrowIfFailed(updateResult, $"Unable to update seed user '{userOptions.Email}'.");
         }
 
-        if (!await _userManager.IsInRoleAsync(adminUser, ApplicationRoles.Administrator))
+        if (!await _userManager.IsInRoleAsync(user, userOptions.Role))
         {
-            var addRoleResult = await _userManager.AddToRoleAsync(adminUser, ApplicationRoles.Administrator);
-            ThrowIfFailed(addRoleResult, $"Unable to add admin user '{_options.AdminEmail}' to Administrator role.");
+            var addRoleResult = await _userManager.AddToRoleAsync(user, userOptions.Role);
+            ThrowIfFailed(addRoleResult, $"Unable to add seed user '{userOptions.Email}' to role '{userOptions.Role}'.");
         }
     }
 
