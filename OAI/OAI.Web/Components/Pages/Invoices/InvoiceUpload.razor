@@ -1,6 +1,6 @@
 @page "/invoices/upload"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.UploadInvoices)]
 
 <PageTitle>@L["UploadInvoicePageTitle"]</PageTitle>
 

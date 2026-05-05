@@ -1,6 +1,6 @@
 @page "/invoices/validation"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.ViewValidationIssues)]
 
 <PageTitle>@L["ValidationPageTitle"]</PageTitle>
 

@@ -1,0 +1,15 @@
+@page "/access-denied"
+@attribute [Authorize]
+@inject IStringLocalizer<SharedResource> L
+
+<PageTitle>@L["AccessDeniedPageTitle"]</PageTitle>
+
+<EmptyState Icon="⛔"
+            Title="@L["AccessDeniedTitle"]"
+            Message="@L["AccessDeniedDescription"]">
+    <Actions>
+        <a class="btn btn-primary" href="/">
+            @L["BackToDashboard"]
+        </a>
+    </Actions>
+</EmptyState>

@@ -14,42 +14,54 @@
     <div class="mb-4">
         <div class="nav-section-title">@L["Overview"]</div>
 
-        <NavLink class="nav-link app-nav-link" href="/" Match="NavLinkMatch.All">
-            <span class="nav-icon">📊</span>
-            <span>@L["Dashboard"]</span>
-        </NavLink>
+        <AuthorizeView Policy="@ApplicationPolicies.ViewDashboard">
+            <NavLink class="nav-link app-nav-link" href="/" Match="NavLinkMatch.All">
+                <span class="nav-icon">📊</span>
+                <span>@L["Dashboard"]</span>
+            </NavLink>
+        </AuthorizeView>
     </div>
 
     <div class="mb-4">
         <div class="nav-section-title">@L["Invoices"]</div>
 
-        <NavLink class="nav-link app-nav-link" href="/invoices/upload">
-            <span class="nav-icon">⬆️</span>
-            <span>@L["UploadInvoice"]</span>
-        </NavLink>
+        <AuthorizeView Policy="@ApplicationPolicies.UploadInvoices">
+            <NavLink class="nav-link app-nav-link" href="/invoices/upload">
+                <span class="nav-icon">⬆️</span>
+                <span>@L["UploadInvoice"]</span>
+            </NavLink>
+        </AuthorizeView>
 
-        <NavLink class="nav-link app-nav-link" href="/invoices">
-            <span class="nav-icon">🧾</span>
-            <span>@L["InvoiceList"]</span>
-        </NavLink>
+        <AuthorizeView Policy="@ApplicationPolicies.ViewInvoices">
+            <NavLink class="nav-link app-nav-link" href="/invoices">
+                <span class="nav-icon">🧾</span>
+                <span>@L["InvoiceList"]</span>
+            </NavLink>
+        </AuthorizeView>
 
-        <NavLink class="nav-link app-nav-link" href="/invoices/validation">
-            <span class="nav-icon">✅</span>
-            <span>@L["DataValidation"]</span>
-        </NavLink>
+        <AuthorizeView Policy="@ApplicationPolicies.ViewValidationIssues">
+            <NavLink class="nav-link app-nav-link" href="/invoices/validation">
+                <span class="nav-icon">✅</span>
+                <span>@L["DataValidation"]</span>
+            </NavLink>
+        </AuthorizeView>
     </div>
 
     <div>
         <div class="nav-section-title">@L["System"]</div>
 
-        <NavLink class="nav-link app-nav-link" href="/audit-logs">
-            <span class="nav-icon">🕘</span>
-            <span>@L["AuditLogs"]</span>
-        </NavLink>
+        <AuthorizeView Policy="@ApplicationPolicies.ViewAuditLogs">
+            <NavLink class="nav-link app-nav-link" href="/audit-logs">
+                <span class="nav-icon">🕘</span>
+                <span>@L["AuditLogs"]</span>
+            </NavLink>
+        </AuthorizeView>
 
-        <NavLink class="nav-link app-nav-link" href="/settings">
-            <span class="nav-icon">⚙️</span>
-            <span>@L["Settings"]</span>
-        </NavLink>
+        <AuthorizeView Policy="@ApplicationPolicies.ViewSettings">
+            <NavLink class="nav-link app-nav-link" href="/settings">
+                <span class="nav-icon">⚙️</span>
+                <span>@L["Settings"]</span>
+            </NavLink>
+        </AuthorizeView>
     </div>
 </nav>

@@ -57,12 +57,15 @@ builder.Services
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/login";
-    options.AccessDeniedPath = "/login";
+    options.AccessDeniedPath = "/access-denied";
     options.LogoutPath = "/auth/logout";
     options.ReturnUrlParameter = "returnUrl";
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddOaiPolicies();
+});
 builder.Services.AddScoped<IdentityDataSeeder>();
 
 builder.Services.AddScoped<UserTimeZoneService>();

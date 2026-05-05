@@ -138,6 +138,15 @@
   <data name="BackToDashboard" xml:space="preserve">
         <value>Back to Dashboard</value>
     </data>
+  <data name="AccessDeniedPageTitle" xml:space="preserve">
+        <value>Access denied - OAI</value>
+    </data>
+  <data name="AccessDeniedTitle" xml:space="preserve">
+        <value>Access denied</value>
+    </data>
+  <data name="AccessDeniedDescription" xml:space="preserve">
+        <value>You do not have permission to access this page.</value>
+    </data>
   <data name="SystemErrorTitle" xml:space="preserve">
         <value>System error - OAI</value>
     </data>

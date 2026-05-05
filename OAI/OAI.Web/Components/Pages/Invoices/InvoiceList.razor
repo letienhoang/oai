@@ -1,6 +1,6 @@
 @page "/invoices"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.ViewInvoices)]
 
 <PageTitle>@L["InvoiceListPageTitle"]</PageTitle>
 
@@ -13,11 +13,13 @@
             </p>
         </div>
 
-        <div class="d-flex align-items-start">
-            <button class="btn btn-primary" @onclick="GoToUpload">
-                @L["UploadInvoice"]
-            </button>
-        </div>
+        <AuthorizeView Policy="@ApplicationPolicies.UploadInvoices">
+            <div class="d-flex align-items-start">
+                <button class="btn btn-primary" @onclick="GoToUpload">
+                    @L["UploadInvoice"]
+                </button>
+            </div>
+        </AuthorizeView>
     </div>
 </section>
 
@@ -59,9 +61,11 @@
                    EmptyMessage="@L["NoInvoicesMatchSearch"]"
                    InCard="false">
             <EmptyActions>
-                <button class="btn btn-primary" @onclick="GoToUpload">
-                    @L["UploadFirstInvoice"]
-                </button>
+                <AuthorizeView Policy="@ApplicationPolicies.UploadInvoices">
+                    <button class="btn btn-primary" @onclick="GoToUpload">
+                        @L["UploadFirstInvoice"]
+                    </button>
+                </AuthorizeView>
             </EmptyActions>
             <ChildContent>
             <div class="table-responsive">

@@ -1,6 +1,6 @@
 ﻿@page "/"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.ViewDashboard)]
 
 <PageTitle>@L["DashboardPageTitle"]</PageTitle>
 
@@ -18,9 +18,11 @@
                 @L["Reload"]
             </button>
 
-            <button class="btn btn-primary" @onclick="GoToUpload">
-                @L["UploadInvoice"]
-            </button>
+            <AuthorizeView Policy="@ApplicationPolicies.UploadInvoices">
+                <button class="btn btn-primary" @onclick="GoToUpload">
+                    @L["UploadInvoice"]
+                </button>
+            </AuthorizeView>
         </div>
     </div>
 </section>
@@ -150,9 +152,11 @@
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h2 class="h5 fw-bold mb-0">@L["RecentInvoices"]</h2>
-                        <button class="btn btn-sm btn-outline-primary" @onclick="GoToInvoiceList">
-                            @L["ViewAll"]
-                        </button>
+                        <AuthorizeView Policy="@ApplicationPolicies.ViewInvoices">
+                            <button class="btn btn-sm btn-outline-primary" @onclick="GoToInvoiceList">
+                                @L["ViewAll"]
+                            </button>
+                        </AuthorizeView>
                     </div>
 
                     @if (Summary.RecentInvoices.Count == 0)
@@ -236,9 +240,11 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-outline-primary w-100 mt-3" @onclick="GoToValidationIssues">
-                        @L["ViewValidationIssues"]
-                    </button>
+                    <AuthorizeView Policy="@ApplicationPolicies.ViewValidationIssues">
+                        <button class="btn btn-outline-primary w-100 mt-3" @onclick="GoToValidationIssues">
+                            @L["ViewValidationIssues"]
+                        </button>
+                    </AuthorizeView>
                 </div>
             </div>
         </div>

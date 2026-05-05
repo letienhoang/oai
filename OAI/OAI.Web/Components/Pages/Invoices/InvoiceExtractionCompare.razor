@@ -1,6 +1,6 @@
 @page "/invoices/{InvoiceId:guid}/compare"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.ViewInvoices)]
 
 <PageTitle>@L["ExtractionComparePageTitle"]</PageTitle>
 

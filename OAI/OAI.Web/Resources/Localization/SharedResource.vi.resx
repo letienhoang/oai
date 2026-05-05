@@ -138,6 +138,15 @@
   <data name="BackToDashboard" xml:space="preserve">
         <value>Quay về Tổng quan</value>
     </data>
+  <data name="AccessDeniedPageTitle" xml:space="preserve">
+        <value>Không có quyền truy cập - OAI</value>
+    </data>
+  <data name="AccessDeniedTitle" xml:space="preserve">
+        <value>Không có quyền truy cập</value>
+    </data>
+  <data name="AccessDeniedDescription" xml:space="preserve">
+        <value>Bạn không có quyền truy cập trang này.</value>
+    </data>
   <data name="SystemErrorTitle" xml:space="preserve">
         <value>Lỗi hệ thống - OAI</value>
     </data>

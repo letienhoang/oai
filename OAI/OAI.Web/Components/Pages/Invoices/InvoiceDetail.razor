@@ -1,6 +1,6 @@
 @page "/invoices/{InvoiceId:guid}"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.ViewInvoices)]
 
 <PageTitle>@L["InvoiceDetailPageTitle"]</PageTitle>
 
@@ -24,63 +24,71 @@
                     @L["CompareOcrAi"]
                 </button>
 
-                @if (CanShowEditButton)
-                {
-                    <button class="btn btn-outline-secondary" @onclick="GoToEdit">
-                        @L["Edit"]
-                    </button>
-                }
+                <AuthorizeView Policy="@ApplicationPolicies.EditInvoices">
+                    @if (CanShowEditButton)
+                    {
+                        <button class="btn btn-outline-secondary" @onclick="GoToEdit">
+                            @L["Edit"]
+                        </button>
+                    }
+                </AuthorizeView>
 
-                @if (CanShowApproveButton)
-                {
-                    <button class="btn btn-success"
-                            disabled="@IsApproving"
-                            @onclick="ApproveAsync">
-                        @if (IsApproving)
-                        {
-                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            <span>@L["Approving"]</span>
-                        }
-                        else
-                        {
-                            <span>@L["ApproveInvoice"]</span>
-                        }
-                    </button>
-                }
+                <AuthorizeView Policy="@ApplicationPolicies.ApproveInvoices">
+                    @if (CanShowApproveButton)
+                    {
+                        <button class="btn btn-success"
+                                disabled="@IsApproving"
+                                @onclick="ApproveAsync">
+                            @if (IsApproving)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <span>@L["Approving"]</span>
+                            }
+                            else
+                            {
+                                <span>@L["ApproveInvoice"]</span>
+                            }
+                        </button>
+                    }
+                </AuthorizeView>
 
-                @if (CanShowMoveToPendingReviewButton)
-                {
-                    <button class="btn btn-outline-warning"
-                            disabled="@IsMovingToPendingReview"
-                            @onclick="MoveToPendingReviewAsync">
-                        @if (IsMovingToPendingReview)
-                        {
-                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            <span>@L["Moving"]</span>
-                        }
-                        else
-                        {
-                            <span>@L["MoveToPendingReview"]</span>
-                        }
-                    </button>
-                }
+                <AuthorizeView Policy="@ApplicationPolicies.MoveInvoicesToPendingReview">
+                    @if (CanShowMoveToPendingReviewButton)
+                    {
+                        <button class="btn btn-outline-warning"
+                                disabled="@IsMovingToPendingReview"
+                                @onclick="MoveToPendingReviewAsync">
+                            @if (IsMovingToPendingReview)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <span>@L["Moving"]</span>
+                            }
+                            else
+                            {
+                                <span>@L["MoveToPendingReview"]</span>
+                            }
+                        </button>
+                    }
+                </AuthorizeView>
 
-                @if (CanShowRejectButton)
-                {
-                    <button class="btn btn-outline-danger"
-                            disabled="@IsRejecting"
-                            @onclick="RejectAsync">
-                        @if (IsRejecting)
-                        {
-                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            <span>@L["Rejecting"]</span>
-                        }
-                        else
-                        {
-                            <span>@L["Reject"]</span>
-                        }
-                    </button>
-                }
+                <AuthorizeView Policy="@ApplicationPolicies.RejectInvoices">
+                    @if (CanShowRejectButton)
+                    {
+                        <button class="btn btn-outline-danger"
+                                disabled="@IsRejecting"
+                                @onclick="RejectAsync">
+                            @if (IsRejecting)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <span>@L["Rejecting"]</span>
+                            }
+                            else
+                            {
+                                <span>@L["Reject"]</span>
+                            }
+                        </button>
+                    }
+                </AuthorizeView>
             }
         </div>
     </div>

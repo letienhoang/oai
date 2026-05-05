@@ -1,6 +1,6 @@
 @page "/settings"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.ViewSettings)]
 
 <PageTitle>@L["SettingsPageTitle"]</PageTitle>
 

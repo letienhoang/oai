@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -27,6 +28,33 @@ public sealed class IdentityDataSeeder
             {
                 var roleResult = await _roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
                 ThrowIfFailed(roleResult, $"Unable to create role '{roleName}'.");
+            }
+
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if (role is null)
+            {
+                throw new InvalidOperationException($"Unable to load role '{roleName}'.");
+            }
+
+            var expectedPermissions = ApplicationRolePermissions.GetPermissions(roleName);
+            var existingClaims = await _roleManager.GetClaimsAsync(role);
+            var existingPermissions = existingClaims
+                .Where(claim => claim.Type == ApplicationClaimTypes.Permission)
+                .Select(claim => claim.Value)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var permission in expectedPermissions)
+            {
+                if (existingPermissions.Contains(permission))
+                {
+                    continue;
+                }
+
+                var claimResult = await _roleManager.AddClaimAsync(
+                    role,
+                    new Claim(ApplicationClaimTypes.Permission, permission));
+
+                ThrowIfFailed(claimResult, $"Unable to add permission '{permission}' to role '{roleName}'.");
             }
         }
 

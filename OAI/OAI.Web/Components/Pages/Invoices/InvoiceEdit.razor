@@ -1,6 +1,6 @@
 @page "/invoices/{InvoiceId:guid}/edit"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.EditInvoices)]
 
 <PageTitle>@L["EditInvoicePageTitle"]</PageTitle>
 

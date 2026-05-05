@@ -1,6 +1,6 @@
 @page "/audit-logs"
 @rendermode InteractiveServer
-@attribute [Authorize]
+@attribute [Authorize(Policy = ApplicationPolicies.ViewAuditLogs)]
 
 <PageTitle>@L["AuditLogsPageTitle"]</PageTitle>
 
