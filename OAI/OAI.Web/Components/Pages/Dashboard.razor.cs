@@ -29,6 +29,8 @@ public partial class Dashboard
 
     private DashboardSummaryDto? Summary { get; set; }
 
+    private DashboardFilterDto Filter { get; set; } = new();
+
     private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
 
     private bool IsLoading { get; set; }
@@ -83,7 +85,11 @@ public partial class Dashboard
         {
             Logger.LogInformation("Loading dashboard summary.");
 
-            Summary = await GetDashboardSummaryUseCase.ExecuteAsync();
+            Summary = await GetDashboardSummaryUseCase.ExecuteAsync(
+                new GetDashboardSummaryRequestDto
+                {
+                    Filter = Filter
+                });
 
             Logger.LogInformation(
                 "Dashboard summary loaded. TotalInvoices: {TotalInvoices}, TotalValidationIssues: {TotalValidationIssues}",

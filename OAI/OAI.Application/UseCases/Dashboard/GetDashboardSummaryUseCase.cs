@@ -9,6 +9,9 @@ namespace OAI.Application.UseCases.Dashboard;
 
 public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
 {
+    private const int DefaultRecentItemCount = 5;
+    private const int MaxRecentItemCount = 20;
+
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IValidationIssueRepository _validationIssueRepository;
     private readonly ILogger<GetDashboardSummaryUseCase> _logger;
@@ -25,32 +28,53 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
 
     public async Task<DashboardSummaryDto> ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Getting dashboard summary.");
+        return await ExecuteAsync(new GetDashboardSummaryRequestDto(), cancellationToken);
+    }
 
-        var totalInvoices = await _invoiceRepository.CountAsync(
-            cancellationToken: cancellationToken);
+    public async Task<DashboardSummaryDto> ExecuteAsync(
+        GetDashboardSummaryRequestDto request,
+        CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Getting dashboard summary.");
+        ArgumentNullException.ThrowIfNull(request);
+
+        var filter = request.Filter;
+        var recentInvoiceCount = ClampRecentCount(filter.RecentInvoiceCount);
+        var recentValidationIssueCount = ClampRecentCount(filter.RecentValidationIssueCount);
 
         var draftInvoices = await _invoiceRepository.CountByStatusAsync(
             InvoiceStatus.Draft,
+            filter,
             cancellationToken);
 
         var pendingReviewInvoices = await _invoiceRepository.CountByStatusAsync(
             InvoiceStatus.PendingReview,
+            filter,
             cancellationToken);
 
         var approvedInvoices = await _invoiceRepository.CountByStatusAsync(
             InvoiceStatus.Approved,
+            filter,
             cancellationToken);
 
         var rejectedInvoices = await _invoiceRepository.CountByStatusAsync(
             InvoiceStatus.Rejected,
+            filter,
             cancellationToken);
 
         var exportedInvoices = await _invoiceRepository.CountByStatusAsync(
             InvoiceStatus.Exported,
+            filter,
             cancellationToken);
 
+        var totalInvoices = draftInvoices
+            + pendingReviewInvoices
+            + approvedInvoices
+            + rejectedInvoices
+            + exportedInvoices;
+
         var invoicesWithIssues = await _invoiceRepository.CountWithValidationIssuesAsync(
+            filter,
             cancellationToken);
 
         var openIssues = await _validationIssueRepository.CountOpenAsync(
@@ -60,11 +84,12 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
             cancellationToken);
 
         var recentInvoicesRaw = await _invoiceRepository.GetRecentAsync(
-            5,
+            recentInvoiceCount,
+            filter,
             cancellationToken);
 
         var recentIssuesRaw = await _validationIssueRepository.GetRecentAsync(
-            5,
+            recentValidationIssueCount,
             cancellationToken);
 
         var recentInvoices = recentInvoicesRaw
@@ -112,5 +137,13 @@ public sealed class GetDashboardSummaryUseCase : IGetDashboardSummaryUseCase
             RecentInvoices = recentInvoices,
             RecentValidationIssues = recentIssues
         };
+    }
+
+    private static int ClampRecentCount(int count)
+    {
+        if (count <= 0)
+            return DefaultRecentItemCount;
+
+        return Math.Min(count, MaxRecentItemCount);
     }
 }

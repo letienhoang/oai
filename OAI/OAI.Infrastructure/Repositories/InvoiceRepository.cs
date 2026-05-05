@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OAI.Application.Abstractions.Persistence;
+using OAI.Application.Dashboard.Dtos;
+using OAI.Application.Invoices.Dtos;
 using OAI.Domain.Entities;
 using OAI.Domain.Enums;
 using OAI.Infrastructure.Persistence;
@@ -43,78 +45,103 @@ public sealed class InvoiceRepository : IInvoiceRepository
     public async Task<IReadOnlyList<Invoice>> GetPagedAsync(
         int pageNumber,
         int pageSize,
-        string? keyword = null,
+        InvoiceListFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<Invoice> query = _context.Invoices;
-
-        if (!string.IsNullOrWhiteSpace(keyword))
-        {
-            var normalized = keyword.Trim();
-
-            query = query.Where(x =>
-                x.InvoiceNumber.Contains(normalized) ||
-                (x.Vendor != null && x.Vendor.Name.Contains(normalized)));
-        }
-
-        query = query
+        IQueryable<Invoice> query = ApplyListFilter(_context.Invoices, filter)
             .AsNoTracking()
             .Include(x => x.Vendor)
             .Include(x => x.LineItems);
 
+        query = ApplyListSorting(query, filter);
+
         return await query
-            .OrderByDescending(x => x.IssueDate)
-            .ThenByDescending(x => x.CreatedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<int> CountAsync(string? keyword = null, CancellationToken cancellationToken = default)
+    public Task<IReadOnlyList<Invoice>> GetPagedAsync(
+        int pageNumber,
+        int pageSize,
+        string? keyword = null,
+        CancellationToken cancellationToken = default)
     {
-        var query = _context.Invoices.AsQueryable();
+        return GetPagedAsync(
+            pageNumber,
+            pageSize,
+            new InvoiceListFilterDto { Keyword = keyword },
+            cancellationToken);
+    }
 
-        if (!string.IsNullOrWhiteSpace(keyword))
-        {
-            var normalized = keyword.Trim();
-
-            query = query.Where(x =>
-                x.InvoiceNumber.Contains(normalized) ||
-                (x.Vendor != null && x.Vendor.Name.Contains(normalized)));
-        }
+    public async Task<int> CountAsync(InvoiceListFilterDto filter, CancellationToken cancellationToken = default)
+    {
+        var query = ApplyListFilter(_context.Invoices.AsNoTracking(), filter);
 
         return await query.CountAsync(cancellationToken);
     }
-    
+
+    public Task<int> CountAsync(string? keyword = null, CancellationToken cancellationToken = default)
+    {
+        return CountAsync(
+            new InvoiceListFilterDto { Keyword = keyword },
+            cancellationToken);
+    }
+
     public async Task<int> CountByStatusAsync(
+        InvoiceStatus status,
+        DashboardFilterDto filter,
+        CancellationToken cancellationToken = default)
+    {
+        var query = ApplyDashboardFilter(_context.Invoices.AsNoTracking(), filter);
+
+        return await query.CountAsync(x => x.Status == status, cancellationToken);
+    }
+
+    public Task<int> CountByStatusAsync(
         InvoiceStatus status,
         CancellationToken cancellationToken = default)
     {
-        return await _context.Invoices
-            .AsNoTracking()
-            .CountAsync(x => x.Status == status, cancellationToken);
+        return CountByStatusAsync(status, new DashboardFilterDto(), cancellationToken);
     }
 
     public async Task<int> CountWithValidationIssuesAsync(
+        DashboardFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        return await _context.Invoices
-            .AsNoTracking()
-            .CountAsync(
-                x => x.ValidationIssues.Any(v => !v.IsResolved),
-                cancellationToken);
+        var query = ApplyDashboardFilter(_context.Invoices.AsNoTracking(), filter);
+
+        return await query.CountAsync(
+            x => x.ValidationIssues.Any(v => !v.IsResolved),
+            cancellationToken);
+    }
+
+    public Task<int> CountWithValidationIssuesAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return CountWithValidationIssuesAsync(new DashboardFilterDto(), cancellationToken);
     }
 
     public async Task<IReadOnlyList<Invoice>> GetRecentAsync(
         int take,
+        DashboardFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        return await _context.Invoices
+        var query = ApplyDashboardFilter(_context.Invoices, filter)
             .AsNoTracking()
-            .Include(x => x.Vendor)
+            .Include(x => x.Vendor);
+
+        return await query
             .OrderByDescending(x => x.CreatedAt)
             .Take(take)
             .ToListAsync(cancellationToken);
+    }
+
+    public Task<IReadOnlyList<Invoice>> GetRecentAsync(
+        int take,
+        CancellationToken cancellationToken = default)
+    {
+        return GetRecentAsync(take, new DashboardFilterDto(), cancellationToken);
     }
 
     public async Task AddAsync(Invoice invoice, CancellationToken cancellationToken = default)
@@ -145,5 +172,85 @@ public sealed class InvoiceRepository : IInvoiceRepository
 
         return await _context.Invoices
             .AnyAsync(x => x.InvoiceNumber == normalized, cancellationToken);
+    }
+
+    private static IQueryable<Invoice> ApplyListFilter(IQueryable<Invoice> query, InvoiceListFilterDto filter)
+    {
+        ArgumentNullException.ThrowIfNull(filter);
+
+        if (!string.IsNullOrWhiteSpace(filter.Keyword))
+        {
+            var normalized = filter.Keyword.Trim();
+
+            query = query.Where(x =>
+                x.InvoiceNumber.Contains(normalized) ||
+                (x.Vendor != null && x.Vendor.Name.Contains(normalized)));
+        }
+
+        if (filter.Status.HasValue)
+            query = query.Where(x => x.Status == filter.Status.Value);
+
+        if (filter.VendorId.HasValue)
+            query = query.Where(x => x.VendorId == filter.VendorId.Value);
+
+        if (filter.IssueDateFrom.HasValue)
+            query = query.Where(x => x.IssueDate >= filter.IssueDateFrom.Value);
+
+        if (filter.IssueDateTo.HasValue)
+            query = query.Where(x => x.IssueDate <= filter.IssueDateTo.Value);
+
+        if (filter.TotalAmountFrom.HasValue)
+            query = query.Where(x => x.DeclaredTotalAmount.Amount >= filter.TotalAmountFrom.Value);
+
+        if (filter.TotalAmountTo.HasValue)
+            query = query.Where(x => x.DeclaredTotalAmount.Amount <= filter.TotalAmountTo.Value);
+
+        if (filter.HasOpenValidationIssues.HasValue)
+        {
+            query = filter.HasOpenValidationIssues.Value
+                ? query.Where(x => x.ValidationIssues.Any(v => !v.IsResolved))
+                : query.Where(x => !x.ValidationIssues.Any(v => !v.IsResolved));
+        }
+
+        return query;
+    }
+
+    private static IQueryable<Invoice> ApplyDashboardFilter(IQueryable<Invoice> query, DashboardFilterDto filter)
+    {
+        ArgumentNullException.ThrowIfNull(filter);
+
+        if (filter.VendorId.HasValue)
+            query = query.Where(x => x.VendorId == filter.VendorId.Value);
+
+        if (filter.IssueDateFrom.HasValue)
+            query = query.Where(x => x.IssueDate >= filter.IssueDateFrom.Value);
+
+        if (filter.IssueDateTo.HasValue)
+            query = query.Where(x => x.IssueDate <= filter.IssueDateTo.Value);
+
+        return query;
+    }
+
+    private static IOrderedQueryable<Invoice> ApplyListSorting(
+        IQueryable<Invoice> query,
+        InvoiceListFilterDto filter)
+    {
+        var sortBy = filter.SortBy?.Trim();
+
+        return sortBy switch
+        {
+            "CreatedAt" => filter.SortDescending
+                ? query.OrderByDescending(x => x.CreatedAt)
+                : query.OrderBy(x => x.CreatedAt),
+            "InvoiceNumber" => filter.SortDescending
+                ? query.OrderByDescending(x => x.InvoiceNumber)
+                : query.OrderBy(x => x.InvoiceNumber),
+            "TotalAmount" => filter.SortDescending
+                ? query.OrderByDescending(x => x.DeclaredTotalAmount.Amount)
+                : query.OrderBy(x => x.DeclaredTotalAmount.Amount),
+            _ => filter.SortDescending
+                ? query.OrderByDescending(x => x.IssueDate).ThenByDescending(x => x.CreatedAt)
+                : query.OrderBy(x => x.IssueDate).ThenByDescending(x => x.CreatedAt)
+        };
     }
 }

@@ -27,6 +27,8 @@ public partial class InvoiceList
 
     private string? Keyword { get; set; }
 
+    private InvoiceListFilterDto Filter { get; set; } = new();
+
     private int PageNumber { get; set; } = 1;
 
     private int PageSize { get; set; } = DefaultPageSize;
@@ -128,12 +130,14 @@ public partial class InvoiceList
                 PageSize,
                 Keyword);
 
+            var effectiveFilter = Filter with { Keyword = Keyword };
+
             var result = await GetInvoiceListUseCase.ExecuteAsync(
                 new GetInvoiceListRequestDto
                 {
                     PageNumber = PageNumber,
                     PageSize = PageSize,
-                    Keyword = Keyword
+                    Filter = effectiveFilter
                 });
 
             Invoices = result.Items.ToList();

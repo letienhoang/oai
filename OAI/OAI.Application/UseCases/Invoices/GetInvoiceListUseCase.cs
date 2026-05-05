@@ -10,6 +10,8 @@ namespace OAI.Application.UseCases.Invoices;
 
 public sealed class GetInvoiceListUseCase : IGetInvoiceListUseCase
 {
+    private const int MaxPageSize = 100;
+
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly ILogger<GetInvoiceListUseCase> _logger;
 
@@ -31,12 +33,30 @@ public sealed class GetInvoiceListUseCase : IGetInvoiceListUseCase
         if (request.PageSize <= 0)
             throw new DomainException("PageSize must be greater than zero.");
 
-        var totalItems = await _invoiceRepository.CountAsync(request.Keyword, cancellationToken);
+        var filter = request.Filter;
+
+        if (filter.IssueDateFrom.HasValue &&
+            filter.IssueDateTo.HasValue &&
+            filter.IssueDateFrom.Value > filter.IssueDateTo.Value)
+        {
+            throw new DomainException("IssueDateFrom must be earlier than or equal to IssueDateTo.");
+        }
+
+        if (filter.TotalAmountFrom.HasValue &&
+            filter.TotalAmountTo.HasValue &&
+            filter.TotalAmountFrom.Value > filter.TotalAmountTo.Value)
+        {
+            throw new DomainException("TotalAmountFrom must be less than or equal to TotalAmountTo.");
+        }
+
+        var pageSize = Math.Min(request.PageSize, MaxPageSize);
+
+        var totalItems = await _invoiceRepository.CountAsync(filter, cancellationToken);
 
         var invoices = await _invoiceRepository.GetPagedAsync(
             request.PageNumber,
-            request.PageSize,
-            request.Keyword,
+            pageSize,
+            filter,
             cancellationToken);
 
         var items = invoices
@@ -46,14 +66,14 @@ public sealed class GetInvoiceListUseCase : IGetInvoiceListUseCase
         _logger.LogInformation(
             "Getting invoice list. PageNumber: {PageNumber}, PageSize: {PageSize}, Keyword: {Keyword}",
             request.PageNumber,
-            request.PageSize,
-            request.Keyword);
+            pageSize,
+            filter.Keyword);
 
         return new PagedResultDto<InvoiceListItemDto>
         {
             Items = items,
             PageNumber = request.PageNumber,
-            PageSize = request.PageSize,
+            PageSize = pageSize,
             TotalItems = totalItems
         };
     }
