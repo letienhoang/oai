@@ -129,7 +129,7 @@
            ErrorTitle="@L["GenericErrorTitle"]"
            ErrorMessage="@ErrorMessage"
            IsEmpty="@(Invoice is null)"
-           EmptyIcon="🧾"
+           EmptyIcon="ðŸ§¾"
            EmptyTitle="@L["InvoiceNotFound"]"
            EmptyMessage="@L["InvoiceNotFoundDescription"]"
            InCard="true">
@@ -146,250 +146,312 @@
     <ChildContent>
         @if (Invoice is not null)
         {
-    <section class="row g-4">
-        <div class="col-12 col-xl-8">
-            <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <section class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
-                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4">
+                    <div class="d-flex flex-column flex-xl-row justify-content-between gap-3 mb-4">
                         <div>
-                            <div class="text-secondary small fw-semibold">@L["InvoiceNumber"]</div>
-                            <h2 class="h4 fw-bold mb-0">@Invoice.InvoiceNumber</h2>
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                                <h2 class="h4 fw-bold mb-0">@Invoice.InvoiceNumber</h2>
+                                <span class="badge @GetStatusBadgeClass(Invoice.Status)">
+                                    @Invoice.Status
+                                </span>
+                            </div>
+
+                            <div class="text-secondary">
+                                @DisplayOrFallback(Invoice.VendorName)
+                            </div>
                         </div>
 
-                        <div class="text-md-end">
-                            <div class="text-secondary small fw-semibold">@L["Status"]</div>
-                            <span class="badge @GetStatusBadgeClass(Invoice.Status)">
-                                @Invoice.Status
+                        <div class="d-flex flex-wrap gap-2 align-items-start">
+                            <span class="badge text-bg-light border">
+                                @Invoice.LineItems.Count @L["LineItems"]
                             </span>
+                            <span class="badge text-bg-light border">
+                                @OpenValidationIssueCount @L["ValidationIssues"]
+                            </span>
+                            @if (ErrorValidationIssueCount > 0)
+                            {
+                                <span class="badge text-bg-danger">
+                                    @ErrorValidationIssueCount @L["Errors"]
+                                </span>
+                            }
                         </div>
                     </div>
 
-                    <div class="row g-3">
-                        <div class="col-12 col-md-6">
-                            <div class="border rounded-4 p-3 bg-light h-100">
-                                <div class="text-secondary small">@L["Vendor"]</div>
-                                <div class="fw-semibold">@DisplayOrFallback(Invoice.VendorName)</div>
-                            </div>
-                        </div>
+                    <ul class="nav nav-pills invoice-detail-tabs gap-2 mb-4">
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="@GetTabButtonClass(InvoiceDetailTab.Overview)"
+                                    @onclick="() => SetActiveTab(InvoiceDetailTab.Overview)">
+                                @L["Overview"]
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="@GetTabButtonClass(InvoiceDetailTab.LineItems)"
+                                    @onclick="() => SetActiveTab(InvoiceDetailTab.LineItems)">
+                                @L["LineItems"]
+                                <span class="badge text-bg-light ms-1">@Invoice.LineItems.Count</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="@GetTabButtonClass(InvoiceDetailTab.Validation)"
+                                    @onclick="() => SetActiveTab(InvoiceDetailTab.Validation)">
+                                @L["ValidationIssues"]
+                                <span class="badge text-bg-light ms-1">@OpenValidationIssueCount</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
+                                    class="@GetTabButtonClass(InvoiceDetailTab.ExtractionHistory)"
+                                    @onclick="() => SetActiveTab(InvoiceDetailTab.ExtractionHistory)">
+                                @L["ExtractionHistory"]
+                                <span class="badge text-bg-light ms-1">@Invoice.ExtractionResults.Count</span>
+                            </button>
+                        </li>
+                    </ul>
 
-                        <div class="col-12 col-md-6">
-                            <div class="border rounded-4 p-3 bg-light h-100">
-                                <div class="text-secondary small">@L["IssueDate"]</div>
-                                <div class="fw-semibold">@Invoice.IssueDate.ToString("dd/MM/yyyy")</div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6">
-                            <div class="border rounded-4 p-3 bg-light h-100">
-                                <div class="text-secondary small">@L["DueDate"]</div>
-                                <div class="fw-semibold">
-                                    @(Invoice.DueDate?.ToString("dd/MM/yyyy") ?? L["NotAvailable"].Value)
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6">
-                            <div class="border rounded-4 p-3 bg-light h-100">
-                                <div class="text-secondary small">@L["SourceFile"]</div>
-                                <div class="fw-semibold text-break">
-                                    @DisplayOrFallback(Invoice.SourceFileName)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card border-0 shadow-sm rounded-4 mb-4">
-                <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">@L["AmountSummary"]</h2>
-
-                    <div class="row g-3">
-                        <div class="col-12 col-md-4">
-                            <div class="border rounded-4 p-3">
-                                <div class="text-secondary small">@L["Subtotal"]</div>
-                                <div class="h5 fw-bold mb-0">
-                                    @FormatMoney(Invoice.DeclaredSubtotal, Invoice.Currency)
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-4">
-                            <div class="border rounded-4 p-3">
-                                <div class="text-secondary small">@L["Tax"]</div>
-                                <div class="h5 fw-bold mb-0">
-                                    @FormatMoney(Invoice.DeclaredTaxAmount, Invoice.Currency)
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-4">
-                            <div class="border rounded-4 p-3 bg-primary-subtle">
-                                <div class="text-secondary small">@L["Total"]</div>
-                                <div class="h5 fw-bold mb-0 text-primary">
-                                    @FormatMoney(Invoice.DeclaredTotalAmount, Invoice.Currency)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h2 class="h5 fw-bold mb-0">@L["LineItems"]</h2>
-                        <span class="badge text-bg-light border">
-                            @Invoice.LineItems.Count @L["Rows"]
-                        </span>
-                    </div>
-
-                    @if (Invoice.LineItems.Count == 0)
+                    @switch (ActiveTab)
                     {
-                        <div class="alert alert-warning mb-0">
-                            @L["NoLineItemsExtracted"]
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">#</th>
-                                    <th>@L["Description"]</th>
-                                    <th class="text-end">@L["Quantity"]</th>
-                                    <th class="text-end">@L["UnitPrice"]</th>
-                                    <th class="text-end">@L["Net"]</th>
-                                    <th class="text-end">@L["Tax"]</th>
-                                    <th class="text-end">@L["TaxRate"]</th>
-                                    <th class="text-end">@L["Gross"]</th>
-                                </tr>
-                                </thead>
+                        case InvoiceDetailTab.Overview:
+                            <div class="row g-4">
+                                <div class="col-12 col-xl-7">
+                                    <div class="border rounded-4 p-4 h-100">
+                                        <h3 class="h5 fw-bold mb-3">@L["GeneralInformation"]</h3>
 
-                                <tbody>
-                                @foreach (var item in Invoice.LineItems)
+                                        <div class="row g-3">
+                                            <div class="col-12 col-md-6">
+                                                <div class="text-secondary small">@L["Vendor"]</div>
+                                                <div class="fw-semibold">@DisplayOrFallback(Invoice.VendorName)</div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6">
+                                                <div class="text-secondary small">@L["IssueDate"]</div>
+                                                <div class="fw-semibold">@Invoice.IssueDate.ToString("dd/MM/yyyy")</div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6">
+                                                <div class="text-secondary small">@L["DueDate"]</div>
+                                                <div class="fw-semibold">
+                                                    @(Invoice.DueDate?.ToString("dd/MM/yyyy") ?? L["NotAvailable"].Value)
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6">
+                                                <div class="text-secondary small">@L["SourceFile"]</div>
+                                                <div class="fw-semibold text-break">
+                                                    @DisplayOrFallback(Invoice.SourceFileName)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-xl-5">
+                                    <div class="border rounded-4 p-4 h-100">
+                                        <h3 class="h5 fw-bold mb-3">@L["AmountSummary"]</h3>
+
+                                        <div class="d-grid gap-3">
+                                            <div class="d-flex justify-content-between gap-3">
+                                                <span class="text-secondary">@L["Subtotal"]</span>
+                                                <span class="fw-semibold">@FormatMoney(Invoice.DeclaredSubtotal, Invoice.Currency)</span>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between gap-3">
+                                                <span class="text-secondary">@L["Tax"]</span>
+                                                <span class="fw-semibold">@FormatMoney(Invoice.DeclaredTaxAmount, Invoice.Currency)</span>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between gap-3 border-top pt-3">
+                                                <span class="fw-semibold">@L["Total"]</span>
+                                                <span class="h5 fw-bold mb-0 text-primary">
+                                                    @FormatMoney(Invoice.DeclaredTotalAmount, Invoice.Currency)
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (!CanApprove && string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    <tr>
-                                        <td class="text-center">@item.LineNo</td>
-                                        <td>@item.Description</td>
-                                        <td class="text-end">@item.Quantity:N2</td>
-                                        <td class="text-end">@FormatMoney(item.UnitPrice, Invoice.Currency)</td>
-                                        <td class="text-end">@FormatMoney(item.NetAmount, Invoice.Currency)</td>
-                                        <td class="text-end">@FormatMoney(item.TaxAmount, Invoice.Currency)</td>
-                                        <td class="text-end">@item.TaxRate:N2</td>
-                                        <td class="text-end fw-semibold">
-                                            @FormatMoney(item.GrossAmount, Invoice.Currency)
-                                        </td>
-                                    </tr>
+                                    <div class="col-12">
+                                        <div class="alert alert-warning mb-0">
+                                            @L["CannotApproveDueToValidationErrors"]
+                                        </div>
+                                    </div>
                                 }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
+                            </div>
+                            break;
 
-        @if (!CanApprove && string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase))
-        {
-            <div class="alert alert-warning">
-                @L["CannotApproveDueToValidationErrors"]
-            </div>
-        }
+                        case InvoiceDetailTab.LineItems:
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                                    <h3 class="h5 fw-bold mb-0">@L["LineItems"]</h3>
+                                    <span class="badge text-bg-light border">
+                                        @Invoice.LineItems.Count @L["Rows"]
+                                    </span>
+                                </div>
 
-        <div class="col-12 col-xl-4">
-            <div class="card border-0 shadow-sm rounded-4 mb-4">
-                <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">@L["ValidationIssues"]</h2>
+                                @if (Invoice.LineItems.Count == 0)
+                                {
+                                    <EmptyState Icon=""
+                                                Title="@L["NoLineItemsExtracted"]"
+                                                InCard="false" />
+                                }
+                                else
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th>@L["Description"]</th>
+                                                <th class="text-end">@L["Quantity"]</th>
+                                                <th class="text-end">@L["UnitPrice"]</th>
+                                                <th class="text-end">@L["Net"]</th>
+                                                <th class="text-end">@L["Tax"]</th>
+                                                <th class="text-end">@L["TaxRate"]</th>
+                                                <th class="text-end">@L["Gross"]</th>
+                                            </tr>
+                                            </thead>
 
-                    @if (Invoice.ValidationIssues.Count == 0)
-                    {
-                        <div class="alert alert-success mb-0">
-                            @L["NoConsistencyValidationIssues"]
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="list-group list-group-flush">
-                            @foreach (var issue in Invoice.ValidationIssues)
-                            {
-                                <div class="list-group-item px-0">
-                                    <div class="d-flex justify-content-between gap-2 mb-1">
-                                        <span class="badge @GetSeverityBadgeClass(issue.Severity)">
-                                            @issue.Severity
+                                            <tbody>
+                                            @foreach (var item in Invoice.LineItems)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">@item.LineNo</td>
+                                                    <td>@item.Description</td>
+                                                    <td class="text-end">@item.Quantity.ToString("N2")</td>
+                                                    <td class="text-end">@FormatMoney(item.UnitPrice, Invoice.Currency)</td>
+                                                    <td class="text-end">@FormatMoney(item.NetAmount, Invoice.Currency)</td>
+                                                    <td class="text-end">@FormatMoney(item.TaxAmount, Invoice.Currency)</td>
+                                                    <td class="text-end">@item.TaxRate.ToString("N2")</td>
+                                                    <td class="text-end fw-semibold">
+                                                        @FormatMoney(item.GrossAmount, Invoice.Currency)
+                                                    </td>
+                                                </tr>
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                            break;
+
+                        case InvoiceDetailTab.Validation:
+                            <div>
+                                <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
+                                    <div>
+                                        <h3 class="h5 fw-bold mb-1">@L["ValidationIssues"]</h3>
+                                        <p class="text-secondary mb-0">
+                                            @L["ValidationIssuesTabDescription"]
+                                        </p>
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2 align-items-start">
+                                        <span class="badge text-bg-light border">
+                                            @Invoice.ValidationIssues.Count @L["Total"]
                                         </span>
-
-                                        @if (issue.IsResolved)
-                                        {
-                                            <span class="badge text-bg-success">@L["Resolved"]</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge text-bg-warning">@L["Open"]</span>
-                                        }
-                                    </div>
-
-                                    <div class="fw-semibold">@issue.RuleCode - @issue.FieldName</div>
-                                    <div class="text-secondary small">@LocalizeMessage(issue.MessageCode, issue.MessageParameters, issue.Message)</div>
-                                    <div class="text-secondary small mt-1">
-                                        @FormatDateTime(issue.DetectedAt)
+                                        <span class="badge text-bg-warning">
+                                            @OpenValidationIssueCount @L["Open"]
+                                        </span>
                                     </div>
                                 </div>
-                            }
-                        </div>
-                    }
-                </div>
-            </div>
 
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-4">
-                    <h2 class="h5 fw-bold mb-3">@L["ExtractionHistory"]</h2>
-
-                    @if (Invoice.ExtractionResults.Count == 0)
-                    {
-                        <div class="alert alert-secondary mb-0">
-                            @L["NoExtractionHistory"]
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="list-group list-group-flush">
-                            @foreach (var result in Invoice.ExtractionResults)
-                            {
-                                <div class="list-group-item px-0">
-                                    <div class="d-flex justify-content-between gap-2 mb-1">
-                                        <span class="fw-semibold">@result.EngineName</span>
-
-                                        @if (result.IsSuccessful)
+                                @if (Invoice.ValidationIssues.Count == 0)
+                                {
+                                    <EmptyState Icon=""
+                                                Title="@L["NoConsistencyValidationIssues"]"
+                                                InCard="false" />
+                                }
+                                else
+                                {
+                                    <div class="list-group list-group-flush">
+                                        @foreach (var issue in Invoice.ValidationIssues)
                                         {
-                                            <span class="badge text-bg-success">@L["Success"]</span>
+                                            <div class="list-group-item px-0">
+                                                <div class="d-flex justify-content-between gap-2 mb-1">
+                                                    <span class="badge @GetSeverityBadgeClass(issue.Severity)">
+                                                        @issue.Severity
+                                                    </span>
+
+                                                    @if (issue.IsResolved)
+                                                    {
+                                                        <span class="badge text-bg-success">@L["Resolved"]</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge text-bg-warning">@L["Open"]</span>
+                                                    }
+                                                </div>
+
+                                                <div class="fw-semibold">@issue.RuleCode - @issue.FieldName</div>
+                                                <div class="text-secondary small">@LocalizeMessage(issue.MessageCode, issue.MessageParameters, issue.Message)</div>
+                                                <div class="text-secondary small mt-1">
+                                                    @FormatDateTime(issue.DetectedAt)
+                                                </div>
+                                            </div>
                                         }
-                                        else
-                                        {
-                                            <span class="badge text-bg-danger">@L["Failed"]</span>
-                                        }
                                     </div>
+                                }
+                            </div>
+                            break;
 
-                                    <div class="text-secondary small">
-                                        @L["Attempt"]: @result.AttemptNo
-                                    </div>
-
-                                    <div class="text-secondary small">
-                                        @L["Confidence"]: @result.ConfidenceScore.ToString("P0")
-                                    </div>
-
-                                    <div class="text-secondary small">
-                                        @FormatDateTime(result.ExtractedAt)
-                                    </div>
+                        case InvoiceDetailTab.ExtractionHistory:
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                                    <h3 class="h5 fw-bold mb-0">@L["ExtractionHistory"]</h3>
+                                    <span class="badge text-bg-light border">
+                                        @Invoice.ExtractionResults.Count
+                                    </span>
                                 </div>
-                            }
-                        </div>
+
+                                @if (Invoice.ExtractionResults.Count == 0)
+                                {
+                                    <EmptyState Icon=""
+                                                Title="@L["NoExtractionHistory"]"
+                                                InCard="false" />
+                                }
+                                else
+                                {
+                                    <div class="list-group list-group-flush">
+                                        @foreach (var result in Invoice.ExtractionResults)
+                                        {
+                                            <div class="list-group-item px-0">
+                                                <div class="d-flex justify-content-between gap-2 mb-1">
+                                                    <span class="fw-semibold">@result.EngineName</span>
+
+                                                    @if (result.IsSuccessful)
+                                                    {
+                                                        <span class="badge text-bg-success">@L["Success"]</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge text-bg-danger">@L["Failed"]</span>
+                                                    }
+                                                </div>
+
+                                                <div class="text-secondary small">
+                                                    @L["Attempt"]: @result.AttemptNo
+                                                </div>
+
+                                                <div class="text-secondary small">
+                                                    @L["Confidence"]: @result.ConfidenceScore.ToString("P0")
+                                                </div>
+
+                                                <div class="text-secondary small">
+                                                    @FormatDateTime(result.ExtractedAt)
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            break;
                     }
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
         }
     </ChildContent>
 </PageState>

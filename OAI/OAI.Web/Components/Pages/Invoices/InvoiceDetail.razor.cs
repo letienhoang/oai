@@ -60,6 +60,24 @@ public partial class InvoiceDetail
 
     private ConfirmDialog? ConfirmDialog { get; set; }
 
+    private InvoiceDetailTab ActiveTab { get; set; } = InvoiceDetailTab.Overview;
+
+    private enum InvoiceDetailTab
+    {
+        Overview,
+        LineItems,
+        Validation,
+        ExtractionHistory
+    }
+
+    private int OpenValidationIssueCount =>
+        Invoice?.ValidationIssues.Count(x => !x.IsResolved) ?? 0;
+
+    private int ErrorValidationIssueCount =>
+        Invoice?.ValidationIssues.Count(x =>
+            string.Equals(x.Severity, "Error", StringComparison.OrdinalIgnoreCase) &&
+            !x.IsResolved) ?? 0;
+
     private bool CanApprove =>
         Invoice is not null &&
         string.Equals(Invoice.Status, "PendingReview", StringComparison.OrdinalIgnoreCase) &&
@@ -116,6 +134,18 @@ public partial class InvoiceDetail
         string? fallbackMessage)
     {
         return LocalizedMessageResolver.Resolve(messageCode, parameters, fallbackMessage);
+    }
+
+    private void SetActiveTab(InvoiceDetailTab tab)
+    {
+        ActiveTab = tab;
+    }
+
+    private string GetTabButtonClass(InvoiceDetailTab tab)
+    {
+        return ActiveTab == tab
+            ? "nav-link active"
+            : "nav-link";
     }
 
     private string FormatDateTime(DateTimeOffset value)

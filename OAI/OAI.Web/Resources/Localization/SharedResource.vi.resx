@@ -1191,4 +1191,10 @@
   <data name="ConfirmUpdateVendorMessage" xml:space="preserve">
         <value>Thông tin nhà cung cấp sẽ được cập nhật.</value>
     </data>
+  <data name="Errors" xml:space="preserve">
+        <value>lỗi</value>
+    </data>
+  <data name="ValidationIssuesTabDescription" xml:space="preserve">
+        <value>Rà soát các lỗi kiểm tra tính nhất quán dữ liệu của hóa đơn này.</value>
+    </data>
 </root>

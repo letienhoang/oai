@@ -1191,4 +1191,10 @@
   <data name="ConfirmUpdateVendorMessage" xml:space="preserve">
         <value>The vendor information will be updated.</value>
     </data>
+  <data name="Errors" xml:space="preserve">
+        <value>errors</value>
+    </data>
+  <data name="ValidationIssuesTabDescription" xml:space="preserve">
+        <value>Review data consistency issues detected for this invoice.</value>
+    </data>
 </root>
