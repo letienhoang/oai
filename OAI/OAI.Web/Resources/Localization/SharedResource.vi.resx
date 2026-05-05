@@ -180,6 +180,18 @@
   <data name="DashboardSubtitle" xml:space="preserve">
         <value>Tổng quan hệ thống trích xuất thông tin hóa đơn.</value>
     </data>
+  <data name="DashboardFilters" xml:space="preserve">
+        <value>Bộ lọc tổng quan</value>
+    </data>
+  <data name="DashboardDateRangeFilterDescription" xml:space="preserve">
+        <value>Lọc số liệu tổng quan theo khoảng ngày phát hành hóa đơn.</value>
+    </data>
+  <data name="ApplyFilter" xml:space="preserve">
+        <value>Áp dụng bộ lọc</value>
+    </data>
+  <data name="InvalidDateRange" xml:space="preserve">
+        <value>Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.</value>
+    </data>
   <data name="Reload" xml:space="preserve">
         <value>Tải lại</value>
     </data>

@@ -31,11 +31,17 @@ public partial class Dashboard
 
     private DashboardFilterDto Filter { get; set; } = new();
 
+    private DateOnly? IssueDateFrom { get; set; }
+
+    private DateOnly? IssueDateTo { get; set; }
+
     private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
 
     private bool IsLoading { get; set; }
 
     private string? ErrorMessage { get; set; }
+
+    private string? FilterErrorMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,6 +59,40 @@ public partial class Dashboard
 
     private async Task ReloadAsync()
     {
+        await LoadDashboardAsync();
+    }
+
+    private DashboardFilterDto BuildFilter()
+    {
+        return Filter with
+        {
+            IssueDateFrom = IssueDateFrom,
+            IssueDateTo = IssueDateTo
+        };
+    }
+
+    private async Task ApplyFilterAsync()
+    {
+        FilterErrorMessage = null;
+
+        if (IssueDateFrom.HasValue &&
+            IssueDateTo.HasValue &&
+            IssueDateFrom.Value > IssueDateTo.Value)
+        {
+            FilterErrorMessage = L["InvalidDateRange"];
+            return;
+        }
+
+        await LoadDashboardAsync();
+    }
+
+    private async Task ClearFilterAsync()
+    {
+        FilterErrorMessage = null;
+        IssueDateFrom = null;
+        IssueDateTo = null;
+        Filter = new DashboardFilterDto();
+
         await LoadDashboardAsync();
     }
 
@@ -88,7 +128,7 @@ public partial class Dashboard
             Summary = await GetDashboardSummaryUseCase.ExecuteAsync(
                 new GetDashboardSummaryRequestDto
                 {
-                    Filter = Filter
+                    Filter = BuildFilter()
                 });
 
             Logger.LogInformation(

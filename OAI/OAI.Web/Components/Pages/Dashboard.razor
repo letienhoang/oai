@@ -27,6 +27,54 @@
     </div>
 </section>
 
+<section class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-xl-4">
+                <h2 class="h5 fw-bold mb-1">@L["DashboardFilters"]</h2>
+                <p class="text-secondary mb-0">
+                    @L["DashboardDateRangeFilterDescription"]
+                </p>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" for="issueDateFrom">@L["IssueDateFrom"]</label>
+                <InputDate id="issueDateFrom"
+                           class="form-control"
+                           @bind-Value="IssueDateFrom"
+                           disabled="@IsLoading" />
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" for="issueDateTo">@L["IssueDateTo"]</label>
+                <InputDate id="issueDateTo"
+                           class="form-control"
+                           @bind-Value="IssueDateTo"
+                           disabled="@IsLoading" />
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <button class="btn btn-primary w-100" @onclick="ApplyFilterAsync" disabled="@IsLoading">
+                    @L["ApplyFilter"]
+                </button>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <button class="btn btn-outline-secondary w-100" @onclick="ClearFilterAsync" disabled="@IsLoading">
+                    @L["ClearFilter"]
+                </button>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(FilterErrorMessage))
+        {
+            <div class="alert alert-warning mt-3 mb-0" role="alert">
+                @FilterErrorMessage
+            </div>
+        }
+    </div>
+</section>
+
 <PageState IsLoading="@IsLoading"
            LoadingMessage="@L["LoadingDashboard"]"
            ErrorTitle="@L["GenericErrorTitle"]"

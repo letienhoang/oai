@@ -180,6 +180,18 @@
   <data name="DashboardSubtitle" xml:space="preserve">
         <value>Overview of the invoice information extraction system.</value>
     </data>
+  <data name="DashboardFilters" xml:space="preserve">
+        <value>Dashboard filters</value>
+    </data>
+  <data name="DashboardDateRangeFilterDescription" xml:space="preserve">
+        <value>Filter dashboard metrics by invoice issue date range.</value>
+    </data>
+  <data name="ApplyFilter" xml:space="preserve">
+        <value>Apply filter</value>
+    </data>
+  <data name="InvalidDateRange" xml:space="preserve">
+        <value>The start date must be earlier than or equal to the end date.</value>
+    </data>
   <data name="Reload" xml:space="preserve">
         <value>Reload</value>
     </data>
