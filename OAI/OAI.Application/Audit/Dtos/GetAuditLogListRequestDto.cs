@@ -6,9 +6,23 @@ public sealed record GetAuditLogListRequestDto
 
     public int PageSize { get; init; } = 10;
 
-    public string? Keyword { get; init; }
+    public AuditLogFilterDto Filter { get; init; } = new();
 
-    public string? EntityName { get; init; }
+    public string? Keyword
+    {
+        get => Filter.Keyword;
+        init => Filter = Filter with { Keyword = value };
+    }
 
-    public string? ActionType { get; init; }
+    public string? EntityName
+    {
+        get => Filter.EntityName;
+        init => Filter = Filter with { EntityName = value };
+    }
+
+    public string? ActionType
+    {
+        get => Filter.ActionType;
+        init => Filter = Filter with { ActionType = value };
+    }
 }

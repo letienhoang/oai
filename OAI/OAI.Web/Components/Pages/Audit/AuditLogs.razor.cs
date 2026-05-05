@@ -17,6 +17,9 @@ public partial class AuditLogs
     private IGetAuditLogListUseCase GetAuditLogListUseCase { get; set; } = default!;
 
     [Inject]
+    private IGetAuditLogFilterOptionsUseCase GetAuditLogFilterOptionsUseCase { get; set; } = default!;
+
+    [Inject]
     private UserTimeZoneService UserTimeZoneService { get; set; } = default!;
 
     [Inject]
@@ -31,9 +34,25 @@ public partial class AuditLogs
 
     private string? Keyword { get; set; }
 
-    private string? EntityName { get; set; }
+    private string? SelectedEntityName { get; set; }
 
-    private string? ActionType { get; set; }
+    private string? SelectedActionType { get; set; }
+
+    private string? SelectedSource { get; set; }
+
+    private string? UserName { get; set; }
+
+    private DateOnly? OccurredAtFrom { get; set; }
+
+    private DateOnly? OccurredAtTo { get; set; }
+
+    private List<string> EntityNameOptions { get; set; } = new();
+
+    private List<string> ActionTypeOptions { get; set; } = new();
+
+    private List<string> SourceOptions { get; set; } = new();
+
+    private string? FilterErrorMessage { get; set; }
 
     private int PageNumber { get; set; } = 1;
 
@@ -55,6 +74,7 @@ public partial class AuditLogs
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadFilterOptionsAsync();
         await LoadLogsAsync();
     }
 
@@ -72,18 +92,33 @@ public partial class AuditLogs
         await LoadLogsAsync();
     }
 
-    private async Task SearchAsync()
+    private async Task ApplyFilterAsync()
     {
+        FilterErrorMessage = null;
+
+        if (OccurredAtFrom.HasValue
+            && OccurredAtTo.HasValue
+            && OccurredAtFrom.Value > OccurredAtTo.Value)
+        {
+            FilterErrorMessage = L["InvalidDateRange"];
+            return;
+        }
+
         PageNumber = 1;
         SelectedLog = null;
         await LoadLogsAsync();
     }
 
-    private async Task ClearSearchAsync()
+    private async Task ClearFilterAsync()
     {
         Keyword = null;
-        EntityName = null;
-        ActionType = null;
+        SelectedEntityName = null;
+        SelectedActionType = null;
+        SelectedSource = null;
+        UserName = null;
+        OccurredAtFrom = null;
+        OccurredAtTo = null;
+        FilterErrorMessage = null;
         PageNumber = 1;
         SelectedLog = null;
         await LoadLogsAsync();
@@ -113,8 +148,38 @@ public partial class AuditLogs
     {
         if (e.Key == "Enter")
         {
-            await SearchAsync();
+            await ApplyFilterAsync();
         }
+    }
+
+    private async Task LoadFilterOptionsAsync()
+    {
+        try
+        {
+            var options = await GetAuditLogFilterOptionsUseCase.ExecuteAsync();
+
+            EntityNameOptions = options.EntityNames.ToList();
+            ActionTypeOptions = options.ActionTypes.ToList();
+            SourceOptions = options.Sources.ToList();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Failed to load audit log filter options.");
+        }
+    }
+
+    private AuditLogFilterDto BuildFilter()
+    {
+        return new AuditLogFilterDto
+        {
+            Keyword = Keyword,
+            EntityName = SelectedEntityName,
+            ActionType = SelectedActionType,
+            UserName = UserName,
+            Source = SelectedSource,
+            OccurredAtFrom = OccurredAtFrom,
+            OccurredAtTo = OccurredAtTo
+        };
     }
 
     private void SelectLog(AuditLogListItemDto log)
@@ -135,21 +200,23 @@ public partial class AuditLogs
         try
         {
             Logger.LogInformation(
-                "Loading audit logs. PageNumber: {PageNumber}, PageSize: {PageSize}, Keyword: {Keyword}, EntityName: {EntityName}, ActionType: {ActionType}",
+                "Loading audit logs. PageNumber: {PageNumber}, PageSize: {PageSize}, Keyword: {Keyword}, EntityName: {EntityName}, ActionType: {ActionType}, UserName: {UserName}, Source: {Source}, OccurredAtFrom: {OccurredAtFrom}, OccurredAtTo: {OccurredAtTo}",
                 PageNumber,
                 PageSize,
                 Keyword,
-                EntityName,
-                ActionType);
+                SelectedEntityName,
+                SelectedActionType,
+                UserName,
+                SelectedSource,
+                OccurredAtFrom,
+                OccurredAtTo);
 
             var result = await GetAuditLogListUseCase.ExecuteAsync(
                 new GetAuditLogListRequestDto
                 {
                     PageNumber = PageNumber,
                     PageSize = PageSize,
-                    Keyword = Keyword,
-                    EntityName = EntityName,
-                    ActionType = ActionType
+                    Filter = BuildFilter()
                 });
 
             Logs = result.Items.ToList();

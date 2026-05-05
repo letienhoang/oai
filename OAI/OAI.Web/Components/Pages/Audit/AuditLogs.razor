@@ -23,55 +23,97 @@
 
 <section class="card border-0 shadow-sm rounded-4">
     <div class="card-body p-4">
-        <div class="row g-2 mb-4">
-            <div class="col-12 col-lg">
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-lg-4">
+                <label class="form-label" for="audit-keyword">@L["Keyword"]</label>
                 <input class="form-control"
-                       placeholder="@L["AuditSearchPlaceholder"]"
+                       id="audit-keyword"
+                       placeholder="@L["AuditLogSearchPlaceholder"]"
                        @bind="Keyword"
                        @bind:event="oninput"
                        @onkeydown="HandleSearchKeyDown" />
             </div>
 
-            <div class="col-12 col-md-3 col-lg-2">
-                <select class="form-select" @bind="EntityName">
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-entity">@L["Entity"]</label>
+                <select class="form-select" id="audit-entity" @bind="SelectedEntityName">
                     <option value="">@L["AllEntities"]</option>
-                    <option value="Invoice">Invoice</option>
-                    <option value="InvoiceLineItem">InvoiceLineItem</option>
-                    <option value="ValidationIssue">ValidationIssue</option>
-                    <option value="InvoiceExtractionResult">InvoiceExtractionResult</option>
-                    <option value="Vendor">Vendor</option>
+                    @foreach (var entityName in EntityNameOptions)
+                    {
+                        <option value="@entityName">@entityName</option>
+                    }
                 </select>
             </div>
 
-            <div class="col-12 col-md-3 col-lg-2">
-                <select class="form-select" @bind="ActionType">
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-action">@L["ActionType"]</label>
+                <select class="form-select" id="audit-action" @bind="SelectedActionType">
                     <option value="">@L["AllActions"]</option>
-                    <option value="Created">Created</option>
-                    <option value="Updated">Updated</option>
-                    <option value="Deleted">Deleted</option>
-                    <option value="Uploaded">Uploaded</option>
-                    <option value="Processed">Processed</option>
-                    <option value="Validated">Validated</option>
-                    <option value="Exported">Exported</option>
+                    @foreach (var actionType in ActionTypeOptions)
+                    {
+                        <option value="@actionType">@actionType</option>
+                    }
                 </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-source">@L["Source"]</label>
+                <select class="form-select" id="audit-source" @bind="SelectedSource">
+                    <option value="">@L["AllSources"]</option>
+                    @foreach (var source in SourceOptions)
+                    {
+                        <option value="@source">@source</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-user-name">@L["AuditUser"]</label>
+                <input class="form-control"
+                       id="audit-user-name"
+                       placeholder="@L["UserNamePlaceholder"]"
+                       @bind="UserName"
+                       @bind:event="oninput"
+                       @onkeydown="HandleSearchKeyDown" />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-occurred-from">@L["OccurredAtFrom"]</label>
+                <InputDate class="form-control"
+                           id="audit-occurred-from"
+                           @bind-Value="OccurredAtFrom" />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-occurred-to">@L["OccurredAtTo"]</label>
+                <InputDate class="form-control"
+                           id="audit-occurred-to"
+                           @bind-Value="OccurredAtTo" />
             </div>
 
             <div class="col-12 col-md-auto">
-                <button class="btn btn-primary w-100" @onclick="SearchAsync" disabled="@IsLoading">
-                    @L["Search"]
+                <button class="btn btn-primary w-100" @onclick="ApplyFilterAsync" disabled="@IsLoading">
+                    @L["ApplyFilter"]
                 </button>
             </div>
 
             <div class="col-12 col-md-auto">
-                <button class="btn btn-outline-secondary w-100" @onclick="ClearSearchAsync" disabled="@IsLoading">
+                <button class="btn btn-outline-secondary w-100" @onclick="ClearFilterAsync" disabled="@IsLoading">
                     @L["ClearFilter"]
                 </button>
             </div>
         </div>
 
+        @if (!string.IsNullOrWhiteSpace(FilterErrorMessage))
+        {
+            <div class="alert alert-warning mt-4">
+                @FilterErrorMessage
+            </div>
+        }
+
         @if (!string.IsNullOrWhiteSpace(ErrorMessage))
         {
-            <div class="alert alert-danger">
+            <div class="alert alert-danger mt-4">
                 @ErrorMessage
             </div>
         }

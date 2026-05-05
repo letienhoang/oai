@@ -6,6 +6,7 @@ using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Abstractions.UseCases.System;
 using OAI.Application.Abstractions.UseCases.Vendors;
 using OAI.Application.Services;
+using OAI.Application.UseCases.Audit;
 using OAI.Application.UseCases.Dashboard;
 using OAI.Application.UseCases.Invoices;
 using OAI.Application.UseCases.System;
@@ -20,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<IGetDashboardSummaryUseCase, GetDashboardSummaryUseCase>();
         
         services.AddScoped<IGetAuditLogListUseCase, GetAuditLogListUseCase>();
+        services.AddScoped<IGetAuditLogFilterOptionsUseCase, GetAuditLogFilterOptionsUseCase>();
         services.AddScoped<IGetSystemSettingsUseCase, GetSystemSettingsUseCase>();
         services.AddScoped<IGetVendorOptionsUseCase, GetVendorOptionsUseCase>();
         

@@ -1,4 +1,5 @@
-﻿using OAI.Domain.Audit;
+using OAI.Application.Audit.Dtos;
+using OAI.Domain.Audit;
 
 namespace OAI.Application.Abstractions.Persistence;
 
@@ -12,9 +13,28 @@ public interface IAuditLogRepository
         string? actionType = null,
         CancellationToken cancellationToken = default);
 
+    Task<IReadOnlyList<AuditLogEntry>> GetPagedAsync(
+        int pageNumber,
+        int pageSize,
+        AuditLogFilterDto filter,
+        CancellationToken cancellationToken = default);
+
     Task<int> CountAsync(
         string? keyword = null,
         string? entityName = null,
         string? actionType = null,
+        CancellationToken cancellationToken = default);
+
+    Task<int> CountAsync(
+        AuditLogFilterDto filter,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<string>> GetEntityNameOptionsAsync(
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<string>> GetActionTypeOptionsAsync(
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<string>> GetSourceOptionsAsync(
         CancellationToken cancellationToken = default);
 }

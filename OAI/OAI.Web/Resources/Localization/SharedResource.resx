@@ -708,11 +708,38 @@
   <data name="AuditSearchPlaceholder" xml:space="preserve">
         <value>Search by entity, entity id, user, source, or JSON...</value>
     </data>
+  <data name="Keyword" xml:space="preserve">
+        <value>Keyword</value>
+    </data>
+  <data name="AuditLogSearchPlaceholder" xml:space="preserve">
+        <value>Search entity, action, user, source...</value>
+    </data>
+  <data name="Entity" xml:space="preserve">
+        <value>Entity</value>
+    </data>
   <data name="AllEntities" xml:space="preserve">
         <value>All entities</value>
     </data>
+  <data name="ActionType" xml:space="preserve">
+        <value>Action type</value>
+    </data>
   <data name="AllActions" xml:space="preserve">
         <value>All actions</value>
+    </data>
+  <data name="Source" xml:space="preserve">
+        <value>Source</value>
+    </data>
+  <data name="AllSources" xml:space="preserve">
+        <value>All sources</value>
+    </data>
+  <data name="UserNamePlaceholder" xml:space="preserve">
+        <value>Filter by user name</value>
+    </data>
+  <data name="OccurredAtFrom" xml:space="preserve">
+        <value>Occurred from</value>
+    </data>
+  <data name="OccurredAtTo" xml:space="preserve">
+        <value>Occurred to</value>
     </data>
   <data name="LoadingAuditLogs" xml:space="preserve">
         <value>Loading audit logs...</value>
