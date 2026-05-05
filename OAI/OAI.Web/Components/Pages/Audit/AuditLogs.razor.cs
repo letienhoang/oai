@@ -1,9 +1,9 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
 using OAI.Application.Abstractions.UseCases.Audit;
 using OAI.Application.Audit.Dtos;
+using OAI.Web.Components.Audit;
 using OAI.Web.Localization;
 using OAI.Web.Services;
 
@@ -30,7 +30,7 @@ public partial class AuditLogs
 
     private List<AuditLogListItemDto> Logs { get; set; } = new();
 
-    private AuditLogListItemDto? SelectedLog { get; set; }
+    private AuditLogDetailDialog? AuditLogDetailDialog { get; set; }
 
     private string? Keyword { get; set; }
 
@@ -105,7 +105,7 @@ public partial class AuditLogs
         }
 
         PageNumber = 1;
-        SelectedLog = null;
+        AuditLogDetailDialog?.Close();
         await LoadLogsAsync();
     }
 
@@ -120,7 +120,7 @@ public partial class AuditLogs
         OccurredAtTo = null;
         FilterErrorMessage = null;
         PageNumber = 1;
-        SelectedLog = null;
+        AuditLogDetailDialog?.Close();
         await LoadLogsAsync();
     }
 
@@ -130,7 +130,7 @@ public partial class AuditLogs
             return;
 
         PageNumber--;
-        SelectedLog = null;
+        AuditLogDetailDialog?.Close();
         await LoadLogsAsync();
     }
 
@@ -140,7 +140,7 @@ public partial class AuditLogs
             return;
 
         PageNumber++;
-        SelectedLog = null;
+        AuditLogDetailDialog?.Close();
         await LoadLogsAsync();
     }
 
@@ -182,14 +182,9 @@ public partial class AuditLogs
         };
     }
 
-    private void SelectLog(AuditLogListItemDto log)
+    private void OpenAuditLogDetail(AuditLogListItemDto auditLog)
     {
-        SelectedLog = log;
-    }
-
-    private void CloseSelectedLog()
-    {
-        SelectedLog = null;
+        AuditLogDetailDialog?.Open(auditLog);
     }
 
     private async Task LoadLogsAsync()
@@ -228,7 +223,7 @@ public partial class AuditLogs
             Logs.Clear();
             TotalItems = 0;
             TotalPages = 0;
-            SelectedLog = null;
+            AuditLogDetailDialog?.Close();
             ErrorMessage = L["AuditLogsLoadFailed"];
 
             Logger.LogError(ex, "Failed to load audit logs.");
@@ -272,25 +267,4 @@ public partial class AuditLogs
         };
     }
 
-    private string FormatJson(string? json)
-    {
-        if (string.IsNullOrWhiteSpace(json))
-            return L["NotAvailable"];
-
-        try
-        {
-            using var document = JsonDocument.Parse(json);
-
-            return JsonSerializer.Serialize(
-                document.RootElement,
-                new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-        }
-        catch
-        {
-            return json;
-        }
-    }
 }

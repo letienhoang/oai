@@ -762,8 +762,14 @@
   <data name="OccurredAt" xml:space="preserve">
         <value>Occurred at</value>
     </data>
+  <data name="EntityId" xml:space="preserve">
+        <value>Entity ID</value>
+    </data>
   <data name="AuditLogsLower" xml:space="preserve">
         <value>audit logs</value>
+    </data>
+  <data name="AuditLogDetailTitle" xml:space="preserve">
+        <value>Audit log detail</value>
     </data>
   <data name="AuditLogDetail" xml:space="preserve">
         <value>Audit log detail</value>

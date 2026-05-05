@@ -1,0 +1,152 @@
+@using System.Text.Json
+@using OAI.Application.Audit.Dtos
+@inject IStringLocalizer<SharedResource> L
+@inject UserTimeZoneService UserTimeZoneService
+
+@if (IsOpen && AuditLog is not null)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="audit-log-detail-title">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h2 class="modal-title h5 fw-bold" id="audit-log-detail-title">@L["AuditLogDetailTitle"]</h2>
+                        <p class="text-secondary mb-0">
+                            @AuditLog.EntityName - @AuditLog.ActionType
+                        </p>
+                    </div>
+
+                    <button type="button" class="btn-close" aria-label="@L["Close"]" @onclick="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["Entity"]</div>
+                                <div class="fw-semibold text-break">@AuditLog.EntityName</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["EntityId"]</div>
+                                <div class="fw-semibold text-break">@DisplayOrFallback(AuditLog.EntityId)</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["ActionType"]</div>
+                                <div class="fw-semibold">@AuditLog.ActionType</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["User"]</div>
+                                <div class="fw-semibold text-break">@DisplayOrFallback(AuditLog.UserName)</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["Source"]</div>
+                                <div class="fw-semibold text-break">@DisplayOrFallback(AuditLog.Source)</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="border rounded-4 p-3 bg-light h-100">
+                                <div class="text-secondary small">@L["OccurredAt"]</div>
+                                <div class="fw-semibold">@FormatDateTime(AuditLog.OccurredAt)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-12 col-xl-6">
+                            <h3 class="h6 fw-bold">@L["OldValues"]</h3>
+                            <pre class="bg-light border rounded-4 p-3 small audit-json-block">@FormatJson(AuditLog.OldValuesJson)</pre>
+                        </div>
+
+                        <div class="col-12 col-xl-6">
+                            <h3 class="h6 fw-bold">@L["NewValues"]</h3>
+                            <pre class="bg-light border rounded-4 p-3 small audit-json-block">@FormatJson(AuditLog.NewValuesJson)</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" @onclick="Close">
+                        @L["Close"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        WriteIndented = true
+    };
+
+    private AuditLogListItemDto? AuditLog { get; set; }
+
+    private bool IsOpen { get; set; }
+
+    private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        UserTimeZone = await UserTimeZoneService.GetUserTimeZoneAsync();
+        StateHasChanged();
+    }
+
+    public void Open(AuditLogListItemDto auditLog)
+    {
+        AuditLog = auditLog;
+        IsOpen = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        IsOpen = false;
+        AuditLog = null;
+        StateHasChanged();
+    }
+
+    private string FormatDateTime(DateTimeOffset value)
+    {
+        var localTime = TimeZoneInfo.ConvertTime(value, UserTimeZone);
+        return localTime.ToString("dd/MM/yyyy HH:mm:ss");
+    }
+
+    private string DisplayOrFallback(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? L["NotAvailable"] : value;
+    }
+
+    private string FormatJson(string? json)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+            return L["NoData"];
+
+        try
+        {
+            using var document = JsonDocument.Parse(json);
+            return JsonSerializer.Serialize(document.RootElement, JsonSerializerOptions);
+        }
+        catch
+        {
+            return json;
+        }
+    }
+}
