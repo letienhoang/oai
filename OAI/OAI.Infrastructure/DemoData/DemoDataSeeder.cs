@@ -44,9 +44,7 @@ public sealed class DemoDataSeeder
             };
         }
 
-        var prefix = string.IsNullOrWhiteSpace(_options.InvoiceNumberPrefix)
-            ? "DEMO"
-            : _options.InvoiceNumberPrefix.Trim();
+        var prefix = GetInvoiceNumberPrefix();
 
         var hasDemoInvoices = await _dbContext.Invoices
             .AnyAsync(x => x.InvoiceNumber.StartsWith(prefix), cancellationToken);
@@ -93,11 +91,42 @@ public sealed class DemoDataSeeder
         };
     }
 
-    private async Task ResetDemoDataAsync(string prefix, CancellationToken cancellationToken)
+    public async Task<DemoDataResetResult> ResetAsync(CancellationToken cancellationToken = default)
+    {
+        if (!_options.Enabled)
+        {
+            return new DemoDataResetResult
+            {
+                Skipped = true,
+                Message = "Demo data reset is disabled."
+            };
+        }
+
+        var prefix = GetInvoiceNumberPrefix();
+
+        return await ResetDemoDataAsync(prefix, cancellationToken);
+    }
+
+    private string GetInvoiceNumberPrefix()
+    {
+        return string.IsNullOrWhiteSpace(_options.InvoiceNumberPrefix)
+            ? "DEMO"
+            : _options.InvoiceNumberPrefix.Trim();
+    }
+
+    private async Task<DemoDataResetResult> ResetDemoDataAsync(string prefix, CancellationToken cancellationToken)
     {
         var demoInvoices = await _dbContext.Invoices
             .Where(x => x.InvoiceNumber.StartsWith(prefix))
+            .Include(x => x.LineItems)
+            .Include(x => x.ValidationIssues)
+            .Include(x => x.ExtractionResults)
             .ToListAsync(cancellationToken);
+
+        var invoicesDeleted = demoInvoices.Count;
+        var lineItemsDeleted = demoInvoices.Sum(x => x.LineItems.Count);
+        var validationIssuesDeleted = demoInvoices.Sum(x => x.ValidationIssues.Count);
+        var extractionResultsDeleted = demoInvoices.Sum(x => x.ExtractionResults.Count);
 
         if (demoInvoices.Count > 0)
         {
@@ -108,12 +137,54 @@ public sealed class DemoDataSeeder
             .Where(x => DemoVendorNames.Contains(x.Name))
             .ToListAsync(cancellationToken);
 
+        var vendorsDeleted = 0;
+        var keptDemoVendors = false;
+
         if (demoVendors.Count > 0)
         {
-            _dbContext.Vendors.RemoveRange(demoVendors);
+            var demoVendorIds = demoVendors.Select(x => x.Id).ToList();
+            var hasNonDemoInvoicesForDemoVendors = await _dbContext.Invoices
+                .AnyAsync(
+                    x => demoVendorIds.Contains(x.VendorId)
+                        && !x.InvoiceNumber.StartsWith(prefix),
+                    cancellationToken);
+
+            if (hasNonDemoInvoicesForDemoVendors)
+            {
+                keptDemoVendors = true;
+                _logger.LogWarning(
+                    "Demo vendors were not deleted because at least one non-demo invoice references a demo vendor.");
+            }
+            else
+            {
+                vendorsDeleted = demoVendors.Count;
+                _dbContext.Vendors.RemoveRange(demoVendors);
+            }
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        var message = keptDemoVendors
+            ? "Demo data reset completed. Demo vendors were kept because non-demo invoices reference them."
+            : "Demo data reset completed successfully.";
+
+        _logger.LogInformation(
+            "Reset demo data: {VendorCount} vendors, {InvoiceCount} invoices, {LineItemCount} line items, {IssueCount} validation issues, {ExtractionCount} extraction results.",
+            vendorsDeleted,
+            invoicesDeleted,
+            lineItemsDeleted,
+            validationIssuesDeleted,
+            extractionResultsDeleted);
+
+        return new DemoDataResetResult
+        {
+            VendorsDeleted = vendorsDeleted,
+            InvoicesDeleted = invoicesDeleted,
+            LineItemsDeleted = lineItemsDeleted,
+            ValidationIssuesDeleted = validationIssuesDeleted,
+            ExtractionResultsDeleted = extractionResultsDeleted,
+            Message = message
+        };
     }
 
     private static List<Vendor> CreateDemoVendors()

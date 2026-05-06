@@ -20,6 +20,19 @@ public static class DemoDataEndpointExtensions
             policy.RequireRole(ApplicationRoles.Administrator);
         });
 
+        endpoints.MapPost("/dev/demo-data/reset", async (
+            DemoDataSeeder demoDataSeeder,
+            CancellationToken cancellationToken) =>
+        {
+            var result = await demoDataSeeder.ResetAsync(cancellationToken);
+
+            return Results.Ok(result);
+        })
+        .RequireAuthorization(policy =>
+        {
+            policy.RequireRole(ApplicationRoles.Administrator);
+        });
+
         return endpoints;
     }
 }

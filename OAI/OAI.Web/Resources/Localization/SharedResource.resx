@@ -1245,8 +1245,17 @@
   <data name="SeedingDemoData" xml:space="preserve">
         <value>Seeding demo data...</value>
     </data>
+  <data name="ResetDemoData" xml:space="preserve">
+        <value>Reset demo data</value>
+    </data>
+  <data name="ResettingDemoData" xml:space="preserve">
+        <value>Resetting demo data...</value>
+    </data>
   <data name="DemoDataSeedResult" xml:space="preserve">
         <value>Demo data seed result</value>
+    </data>
+  <data name="DemoDataResetResult" xml:space="preserve">
+        <value>Demo data reset result</value>
     </data>
   <data name="Skipped" xml:space="preserve">
         <value>Skipped</value>
@@ -1265,5 +1274,29 @@
     </data>
   <data name="DemoDataSeedFailed" xml:space="preserve">
         <value>Unable to seed demo data. Please check the system logs.</value>
+    </data>
+  <data name="DemoDataResetFailed" xml:space="preserve">
+        <value>Unable to reset demo data. Please check the system logs.</value>
+    </data>
+  <data name="ConfirmResetDemoDataTitle" xml:space="preserve">
+        <value>Reset demo data?</value>
+    </data>
+  <data name="ConfirmResetDemoDataMessage" xml:space="preserve">
+        <value>This will delete demo invoices, line items, validation issues, extraction results, and demo vendors. Identity users and roles will not be deleted.</value>
+    </data>
+  <data name="VendorsDeleted" xml:space="preserve">
+        <value>Vendors deleted</value>
+    </data>
+  <data name="InvoicesDeleted" xml:space="preserve">
+        <value>Invoices deleted</value>
+    </data>
+  <data name="LineItemsDeleted" xml:space="preserve">
+        <value>Line items deleted</value>
+    </data>
+  <data name="ValidationIssuesDeleted" xml:space="preserve">
+        <value>Validation issues deleted</value>
+    </data>
+  <data name="ExtractionResultsDeleted" xml:space="preserve">
+        <value>Extraction results deleted</value>
     </data>
 </root>

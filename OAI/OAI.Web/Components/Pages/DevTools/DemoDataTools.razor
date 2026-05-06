@@ -33,20 +33,37 @@ else
                     </p>
                 </div>
 
-                <button class="btn btn-primary"
-                        type="button"
-                        @onclick="SeedDemoDataAsync"
-                        disabled="@IsSeeding">
-                    @if (IsSeeding)
-                    {
-                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                        <span>@L["SeedingDemoData"]</span>
-                    }
-                    else
-                    {
-                        <span>@L["SeedDemoData"]</span>
-                    }
-                </button>
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <button class="btn btn-primary"
+                            type="button"
+                            @onclick="SeedDemoDataAsync"
+                            disabled="@(IsSeeding || IsResetting)">
+                        @if (IsSeeding)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            <span>@L["SeedingDemoData"]</span>
+                        }
+                        else
+                        {
+                            <span>@L["SeedDemoData"]</span>
+                        }
+                    </button>
+
+                    <button class="btn btn-outline-danger"
+                            type="button"
+                            @onclick="ConfirmResetDemoData"
+                            disabled="@(IsSeeding || IsResetting)">
+                        @if (IsResetting)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            <span>@L["ResettingDemoData"]</span>
+                        }
+                        else
+                        {
+                            <span>@L["ResetDemoData"]</span>
+                        }
+                    </button>
+                </div>
             </div>
 
             @if (!string.IsNullOrWhiteSpace(ErrorMessage))
@@ -57,6 +74,8 @@ else
             }
         </div>
     </section>
+
+    <ConfirmDialog @ref="ConfirmDialog" />
 }
 
 @if (SeedResult is not null)
@@ -83,6 +102,38 @@ else
 
                 <dt class="col-12 col-md-4">@L["ExtractionResultsCreated"]</dt>
                 <dd class="col-12 col-md-8">@SeedResult.ExtractionResultsCreated</dd>
+            </dl>
+        </div>
+    </section>
+}
+
+@if (ResetResult is not null)
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">@L["DemoDataResetResult"]</h2>
+
+            <dl class="row mb-0">
+                <dt class="col-12 col-md-4">@L["Skipped"]</dt>
+                <dd class="col-12 col-md-8">@ResetResult.Skipped</dd>
+
+                <dt class="col-12 col-md-4">@L["Message"]</dt>
+                <dd class="col-12 col-md-8">@ResetResult.Message</dd>
+
+                <dt class="col-12 col-md-4">@L["VendorsDeleted"]</dt>
+                <dd class="col-12 col-md-8">@ResetResult.VendorsDeleted</dd>
+
+                <dt class="col-12 col-md-4">@L["InvoicesDeleted"]</dt>
+                <dd class="col-12 col-md-8">@ResetResult.InvoicesDeleted</dd>
+
+                <dt class="col-12 col-md-4">@L["LineItemsDeleted"]</dt>
+                <dd class="col-12 col-md-8">@ResetResult.LineItemsDeleted</dd>
+
+                <dt class="col-12 col-md-4">@L["ValidationIssuesDeleted"]</dt>
+                <dd class="col-12 col-md-8">@ResetResult.ValidationIssuesDeleted</dd>
+
+                <dt class="col-12 col-md-4">@L["ExtractionResultsDeleted"]</dt>
+                <dd class="col-12 col-md-8">@ResetResult.ExtractionResultsDeleted</dd>
             </dl>
         </div>
     </section>
