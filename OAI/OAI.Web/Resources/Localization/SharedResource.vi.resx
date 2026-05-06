@@ -1227,4 +1227,43 @@
   <data name="ValidationIssuesTabDescription" xml:space="preserve">
         <value>Rà soát các lỗi kiểm tra tính nhất quán dữ liệu của hóa đơn này.</value>
     </data>
+  <data name="DemoDataToolsPageTitle" xml:space="preserve">
+        <value>Công cụ dữ liệu demo - OAI</value>
+    </data>
+  <data name="DemoDataToolsTitle" xml:space="preserve">
+        <value>Công cụ dữ liệu demo</value>
+    </data>
+  <data name="DemoDataToolsSubtitle" xml:space="preserve">
+        <value>Tạo dữ liệu mẫu gồm nhà cung cấp, hóa đơn, lỗi kiểm tra và lịch sử trích xuất cho phần trình bày khóa luận.</value>
+    </data>
+  <data name="DevelopmentOnlyWarning" xml:space="preserve">
+        <value>Công cụ này chỉ khả dụng trong môi trường Development.</value>
+    </data>
+  <data name="SeedDemoData" xml:space="preserve">
+        <value>Tạo dữ liệu demo</value>
+    </data>
+  <data name="SeedingDemoData" xml:space="preserve">
+        <value>Đang tạo dữ liệu demo...</value>
+    </data>
+  <data name="DemoDataSeedResult" xml:space="preserve">
+        <value>Kết quả tạo dữ liệu demo</value>
+    </data>
+  <data name="Skipped" xml:space="preserve">
+        <value>Đã bỏ qua</value>
+    </data>
+  <data name="VendorsCreated" xml:space="preserve">
+        <value>Nhà cung cấp đã tạo</value>
+    </data>
+  <data name="InvoicesCreated" xml:space="preserve">
+        <value>Hóa đơn đã tạo</value>
+    </data>
+  <data name="ValidationIssuesCreated" xml:space="preserve">
+        <value>Lỗi kiểm tra đã tạo</value>
+    </data>
+  <data name="ExtractionResultsCreated" xml:space="preserve">
+        <value>Kết quả trích xuất đã tạo</value>
+    </data>
+  <data name="DemoDataSeedFailed" xml:space="preserve">
+        <value>Không thể tạo dữ liệu demo. Vui lòng kiểm tra log hệ thống.</value>
+    </data>
 </root>

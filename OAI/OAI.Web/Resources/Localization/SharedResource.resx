@@ -1227,4 +1227,43 @@
   <data name="ValidationIssuesTabDescription" xml:space="preserve">
         <value>Review data consistency issues detected for this invoice.</value>
     </data>
+  <data name="DemoDataToolsPageTitle" xml:space="preserve">
+        <value>Demo Data Tools - OAI</value>
+    </data>
+  <data name="DemoDataToolsTitle" xml:space="preserve">
+        <value>Demo data tools</value>
+    </data>
+  <data name="DemoDataToolsSubtitle" xml:space="preserve">
+        <value>Seed sample vendors, invoices, validation issues, and extraction history for thesis demonstration.</value>
+    </data>
+  <data name="DevelopmentOnlyWarning" xml:space="preserve">
+        <value>This tool is only available in the Development environment.</value>
+    </data>
+  <data name="SeedDemoData" xml:space="preserve">
+        <value>Seed demo data</value>
+    </data>
+  <data name="SeedingDemoData" xml:space="preserve">
+        <value>Seeding demo data...</value>
+    </data>
+  <data name="DemoDataSeedResult" xml:space="preserve">
+        <value>Demo data seed result</value>
+    </data>
+  <data name="Skipped" xml:space="preserve">
+        <value>Skipped</value>
+    </data>
+  <data name="VendorsCreated" xml:space="preserve">
+        <value>Vendors created</value>
+    </data>
+  <data name="InvoicesCreated" xml:space="preserve">
+        <value>Invoices created</value>
+    </data>
+  <data name="ValidationIssuesCreated" xml:space="preserve">
+        <value>Validation issues created</value>
+    </data>
+  <data name="ExtractionResultsCreated" xml:space="preserve">
+        <value>Extraction results created</value>
+    </data>
+  <data name="DemoDataSeedFailed" xml:space="preserve">
+        <value>Unable to seed demo data. Please check the system logs.</value>
+    </data>
 </root>

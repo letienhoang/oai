@@ -1,4 +1,5 @@
 ﻿@inject IStringLocalizer<SharedResource> L
+@inject IWebHostEnvironment HostEnvironment
 <nav class="nav-menu p-3">
     <div class="d-flex align-items-center gap-3 mb-4 p-2">
         <div class="brand-logo rounded-3 bg-primary text-white d-grid place-items-center fw-bold">
@@ -70,5 +71,15 @@
                 <span>@L["Settings"]</span>
             </NavLink>
         </AuthorizeView>
+
+        @if (HostEnvironment.IsDevelopment())
+        {
+            <AuthorizeView Roles="@ApplicationRoles.Administrator">
+                <NavLink class="nav-link app-nav-link" href="/dev-tools/demo-data">
+                    <span class="nav-icon">🧪</span>
+                    <span>@L["DemoDataToolsTitle"]</span>
+                </NavLink>
+            </AuthorizeView>
+        }
     </div>
 </nav>
