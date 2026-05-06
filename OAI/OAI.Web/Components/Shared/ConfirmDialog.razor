@@ -1,0 +1,47 @@
+@if (IsOpen)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="confirm-dialog-title">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="confirm-dialog-title">@Title</h2>
+                    <button type="button" class="btn-close" aria-label="@CancelText" @onclick="Close" disabled="@IsRunning"></button>
+                </div>
+
+                <div class="modal-body">
+                    @if (!string.IsNullOrWhiteSpace(Message))
+                    {
+                        <p class="mb-0">@Message</p>
+                    }
+
+                    @ChildContent
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="Close"
+                            disabled="@IsRunning">
+                        @CancelText
+                    </button>
+
+                    <button type="button"
+                            class="@ConfirmButtonClass"
+                            @onclick="ConfirmAsync"
+                            disabled="@IsRunning">
+                        @if (IsRunning)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        }
+                        <span>@ConfirmText</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    
+}

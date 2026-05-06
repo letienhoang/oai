@@ -1,0 +1,186 @@
+@if (IsOpen)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="quick-create-vendor-title">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h2 class="modal-title h5 fw-bold" id="quick-create-vendor-title">@L["QuickCreateVendorTitle"]</h2>
+                        <p class="text-secondary small mb-0">@L["QuickCreateVendorDescription"]</p>
+                    </div>
+                    <button type="button"
+                            class="btn-close"
+                            aria-label="@L["Close"]"
+                            @onclick="CloseAsync"
+                            disabled="@IsSaving"></button>
+                </div>
+
+                <EditForm Model="@FormModel" OnSubmit="SaveAsync">
+                    <div class="modal-body">
+                        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @ErrorMessage
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label" for="quick-vendor-name">@L["VendorName"]</label>
+                            <InputText id="quick-vendor-name"
+                                       class="form-control"
+                                       @bind-Value="FormModel.Name"
+                                       disabled="@IsSaving" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="quick-vendor-tax-number">@L["TaxCode"]</label>
+                            <InputText id="quick-vendor-tax-number"
+                                       class="form-control"
+                                       @bind-Value="FormModel.TaxNumber"
+                                       disabled="@IsSaving" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="quick-vendor-email">@L["Email"]</label>
+                            <InputText id="quick-vendor-email"
+                                       class="form-control"
+                                       @bind-Value="FormModel.Email"
+                                       disabled="@IsSaving" />
+                        </div>
+
+                        <div class="mb-0">
+                            <label class="form-label" for="quick-vendor-address">@L["Address"]</label>
+                            <InputTextArea id="quick-vendor-address"
+                                           class="form-control"
+                                           rows="3"
+                                           @bind-Value="FormModel.Address"
+                                           disabled="@IsSaving" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                @onclick="CloseAsync"
+                                disabled="@IsSaving">
+                            @L["Close"]
+                        </button>
+
+                        <button type="submit" class="btn btn-primary" disabled="@IsSaving">
+                            @if (IsSaving)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <span>@L["Saving"]</span>
+                            }
+                            else
+                            {
+                                <span>@L["Save"]</span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Inject]
+    private IUpsertVendorUseCase UpsertVendorUseCase { get; set; } = default!;
+
+    [Inject]
+    private CurrentUserAuthorizationService AuthorizationService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
+
+    [Inject]
+    private ILogger<QuickCreateVendorDialog> Logger { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<VendorListItemDto> VendorCreated { get; set; }
+
+    [Parameter]
+    public EventCallback Closed { get; set; }
+
+    private VendorFormModel FormModel { get; set; } = new();
+
+    private bool IsOpen { get; set; }
+
+    private bool IsSaving { get; set; }
+
+    private string? ErrorMessage { get; set; }
+
+    public void Open(string? suggestedName = null)
+    {
+        FormModel = new VendorFormModel
+        {
+            Name = suggestedName?.Trim() ?? string.Empty
+        };
+        ErrorMessage = null;
+        IsOpen = true;
+        StateHasChanged();
+    }
+
+    private async Task SaveAsync()
+    {
+        ErrorMessage = null;
+
+        if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.ManageVendors))
+        {
+            ErrorMessage = L["ManageVendorsNotAllowed"];
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(FormModel.Name))
+        {
+            ErrorMessage = L["VendorNameRequired"];
+            return;
+        }
+
+        IsSaving = true;
+
+        try
+        {
+            var savedVendor = await UpsertVendorUseCase.ExecuteAsync(
+                new VendorUpsertRequestDto
+                {
+                    Name = FormModel.Name,
+                    TaxNumber = FormModel.TaxNumber,
+                    Email = FormModel.Email,
+                    Address = FormModel.Address
+                });
+
+            IsOpen = false;
+            await VendorCreated.InvokeAsync(savedVendor);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = L["VendorSaveFailed"];
+            Logger.LogError(ex, "Failed to quick-create vendor. Name: {VendorName}", FormModel.Name);
+        }
+        finally
+        {
+            IsSaving = false;
+        }
+    }
+
+    private async Task CloseAsync()
+    {
+        if (IsSaving)
+            return;
+
+        IsOpen = false;
+        ErrorMessage = null;
+        await Closed.InvokeAsync();
+    }
+
+    private sealed class VendorFormModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? TaxNumber { get; set; }
+        public string? Email { get; set; }
+        public string? Address { get; set; }
+    }
+}

@@ -1,0 +1,234 @@
+@page "/audit-logs"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.ViewAuditLogs)]
+
+<PageTitle>@L["AuditLogsPageTitle"]</PageTitle>
+
+<section class="mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">@L["AuditLogsTitle"]</h1>
+            <p class="text-secondary mb-0">
+                @L["AuditLogsSubtitle"]
+            </p>
+        </div>
+
+        <div class="d-flex align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="ReloadAsync" disabled="@IsLoading">
+                @L["Reload"]
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-4">
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-lg-4">
+                <label class="form-label" for="audit-keyword">@L["Keyword"]</label>
+                <input class="form-control"
+                       id="audit-keyword"
+                       placeholder="@L["AuditLogSearchPlaceholder"]"
+                       @bind="Keyword"
+                       @bind:event="oninput"
+                       @onkeydown="HandleSearchKeyDown" />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-entity">@L["Entity"]</label>
+                <select class="form-select" id="audit-entity" @bind="SelectedEntityName">
+                    <option value="">@L["AllEntities"]</option>
+                    @foreach (var entityName in EntityNameOptions)
+                    {
+                        <option value="@entityName">@entityName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-action">@L["ActionType"]</label>
+                <select class="form-select" id="audit-action" @bind="SelectedActionType">
+                    <option value="">@L["AllActions"]</option>
+                    @foreach (var actionType in ActionTypeOptions)
+                    {
+                        <option value="@actionType">@actionType</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-source">@L["Source"]</label>
+                <select class="form-select" id="audit-source" @bind="SelectedSource">
+                    <option value="">@L["AllSources"]</option>
+                    @foreach (var source in SourceOptions)
+                    {
+                        <option value="@source">@source</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-user-name">@L["AuditUser"]</label>
+                <input class="form-control"
+                       id="audit-user-name"
+                       placeholder="@L["UserNamePlaceholder"]"
+                       @bind="UserName"
+                       @bind:event="oninput"
+                       @onkeydown="HandleSearchKeyDown" />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-occurred-from">@L["OccurredAtFrom"]</label>
+                <InputDate class="form-control"
+                           id="audit-occurred-from"
+                           @bind-Value="OccurredAtFrom" />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label" for="audit-occurred-to">@L["OccurredAtTo"]</label>
+                <InputDate class="form-control"
+                           id="audit-occurred-to"
+                           @bind-Value="OccurredAtTo" />
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-primary w-100" @onclick="ApplyFilterAsync" disabled="@IsLoading">
+                    @L["ApplyFilter"]
+                </button>
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-outline-secondary w-100" @onclick="ClearFilterAsync" disabled="@IsLoading">
+                    @L["ClearFilter"]
+                </button>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(FilterErrorMessage))
+        {
+            <div class="alert alert-warning mt-4">
+                @FilterErrorMessage
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <div class="alert alert-danger mt-4">
+                @ErrorMessage
+            </div>
+        }
+
+        @if (IsLoading)
+        {
+            <div class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <span class="ms-3 text-secondary">@L["LoadingAuditLogs"]</span>
+            </div>
+        }
+        else if (Logs.Count == 0)
+        {
+            <div class="bg-light rounded-4 p-5 text-center">
+                <div class="fs-1 mb-3">&#x1F558;</div>
+                <h2 class="h5 fw-bold">@L["NoAuditLogs"]</h2>
+                <p class="text-secondary mb-0">
+                    @L["NoAuditLogsMatchFilter"]
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>@L["OccurredAt"]</th>
+                        <th>@L["AuditEntity"]</th>
+                        <th>@L["AuditAction"]</th>
+                        <th>@L["AuditEntityId"]</th>
+                        <th>@L["AuditUser"]</th>
+                        <th>@L["AuditSource"]</th>
+                        <th class="text-end">@L["Actions"]</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach (var log in Logs)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">
+                                    @FormatDateTime(log.OccurredAt)
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge text-bg-light border">
+                                    @log.EntityName
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge @GetActionBadgeClass(log.ActionType)">
+                                    @log.ActionType
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(log.EntityId))
+                                {
+                                    <code class="small">@log.EntityId</code>
+                                }
+                                else
+                                {
+                                    <span class="text-secondary">@L["NotAvailable"]</span>
+                                }
+                            </td>
+
+                            <td>
+                                <span>@DisplayAuditUserName(log)</span>
+                            </td>
+
+                            <td>
+                                <span class="small text-secondary">
+                                    @DisplayOrFallback(log.Source)
+                                </span>
+                            </td>
+
+                            <td class="text-end">
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        @onclick="() => OpenAuditLogDetail(log)">
+                                    @L["Detail"]
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4">
+                <div class="text-secondary small">
+                    @L["ShowingPage"] <strong>@PageNumber</strong>/<strong>@TotalPages</strong>,
+                    @L["Total"] <strong>@TotalItems</strong> @L["AuditLogsLower"].
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoPrevious || IsLoading)"
+                            @onclick="PreviousPageAsync">
+                        @L["Previous"]
+                    </button>
+
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoNext || IsLoading)"
+                            @onclick="NextPageAsync">
+                        @L["Next"]
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<AuditLogDetailDialog @ref="AuditLogDetailDialog" />

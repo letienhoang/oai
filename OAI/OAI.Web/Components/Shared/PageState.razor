@@ -1,0 +1,27 @@
+@if (IsLoading)
+{
+    <LoadingState Message="@LoadingMessage" InCard="@InCard" />
+}
+else if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <ErrorState Title="@ErrorTitle"
+                Message="@ErrorMessage"
+                Actions="@ErrorActions"
+                InCard="@InCard" />
+}
+else if (IsEmpty)
+{
+    <EmptyState Icon="@EmptyIcon"
+                Title="@EmptyTitle"
+                Message="@EmptyMessage"
+                Actions="@EmptyActions"
+                InCard="@InCard" />
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    
+}

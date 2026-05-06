@@ -1,0 +1,364 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.ViewDashboard)]
+
+<PageTitle>@L["DashboardPageTitle"]</PageTitle>
+
+<section class="mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">@L["DashboardTitle"]</h1>
+            <p class="text-secondary mb-0">
+                @L["DashboardSubtitle"]
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="ReloadAsync" disabled="@IsLoading">
+                @L["Reload"]
+            </button>
+
+            <AuthorizeView Policy="@ApplicationPolicies.UploadInvoices">
+                <button class="btn btn-primary" @onclick="GoToUpload">
+                    @L["UploadInvoice"]
+                </button>
+            </AuthorizeView>
+        </div>
+    </div>
+</section>
+
+<section class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-xl-4">
+                <h2 class="h5 fw-bold mb-1">@L["DashboardFilters"]</h2>
+                <p class="text-secondary mb-0">
+                    @L["DashboardDateRangeFilterDescription"]
+                </p>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" for="issueDateFrom">@L["IssueDateFrom"]</label>
+                <InputDate id="issueDateFrom"
+                           class="form-control"
+                           @bind-Value="IssueDateFrom"
+                           disabled="@IsLoading" />
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <label class="form-label" for="issueDateTo">@L["IssueDateTo"]</label>
+                <InputDate id="issueDateTo"
+                           class="form-control"
+                           @bind-Value="IssueDateTo"
+                           disabled="@IsLoading" />
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <button class="btn btn-primary w-100" @onclick="ApplyFilterAsync" disabled="@IsLoading">
+                    @L["ApplyFilter"]
+                </button>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-2">
+                <button class="btn btn-outline-secondary w-100" @onclick="ClearFilterAsync" disabled="@IsLoading">
+                    @L["ClearFilter"]
+                </button>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(FilterErrorMessage))
+        {
+            <div class="alert alert-warning mt-3 mb-0" role="alert">
+                @FilterErrorMessage
+            </div>
+        }
+    </div>
+</section>
+
+<PageState IsLoading="@IsLoading"
+           LoadingMessage="@L["LoadingDashboard"]"
+           ErrorTitle="@L["GenericErrorTitle"]"
+           ErrorMessage="@ErrorMessage"
+           IsEmpty="@(Summary is null)"
+           EmptyIcon="📊"
+           EmptyTitle="@L["NoData"]"
+           EmptyMessage="@L["DashboardEmptyDescription"]"
+           InCard="true">
+    <ErrorActions>
+        <button class="btn btn-outline-danger" @onclick="ReloadAsync">
+            @L["Retry"]
+        </button>
+    </ErrorActions>
+    <ChildContent>
+        @if (Summary is not null)
+        {
+    <section class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="text-secondary fw-semibold small">@L["TotalInvoices"]</div>
+                    <div class="display-6 fw-bold mt-2">@Summary.TotalInvoices</div>
+                    <div class="text-secondary small">@L["UploadedToSystem"]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="text-secondary fw-semibold small">@L["PendingReview"]</div>
+                    <div class="display-6 fw-bold mt-2">@Summary.PendingReviewInvoices</div>
+                    <div class="text-secondary small">@L["PendingReview"]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="text-secondary fw-semibold small">@L["ApprovedInvoices"]</div>
+                    <div class="display-6 fw-bold mt-2">@Summary.ApprovedInvoices</div>
+                    <div class="text-secondary small">@L["ApprovedInvoices"]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="text-secondary fw-semibold small">@L["OpenValidationIssues"]</div>
+                    <div class="display-6 fw-bold mt-2">@Summary.OpenValidationIssues</div>
+                    <div class="text-secondary small">@L["OpenValidationIssues"]</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-12 col-xl-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">@L["InvoiceStatus"]</h2>
+
+                    <div class="d-grid gap-3">
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>@L["Draft"]</span>
+                                <strong>@Summary.DraftInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-secondary" style="width: @GetPercent(Summary.DraftInvoices)%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>@L["PendingReview"]</span>
+                                <strong>@Summary.PendingReviewInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-warning" style="width: @GetPercent(Summary.PendingReviewInvoices)%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>@L["Approved"]</span>
+                                <strong>@Summary.ApprovedInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-success" style="width: @GetPercent(Summary.ApprovedInvoices)%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>@L["Rejected"]</span>
+                                <strong>@Summary.RejectedInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-danger" style="width: @GetPercent(Summary.RejectedInvoices)%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>@L["Exported"]</span>
+                                <strong>@Summary.ExportedInvoices</strong>
+                            </div>
+                            <div class="progress" role="progressbar">
+                                <div class="progress-bar bg-info" style="width: @GetPercent(Summary.ExportedInvoices)%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 fw-bold mb-0">@L["RecentInvoices"]</h2>
+                        <AuthorizeView Policy="@ApplicationPolicies.ViewInvoices">
+                            <button class="btn btn-sm btn-outline-primary" @onclick="GoToInvoiceList">
+                                @L["ViewAll"]
+                            </button>
+                        </AuthorizeView>
+                    </div>
+
+                    @if (Summary.RecentInvoices.Count == 0)
+                    {
+                        <div class="bg-light rounded-4 p-4 text-center text-secondary">
+                            @L["NoInvoices"]
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                <tr>
+                                    <th>@L["InvoiceNumber"]</th>
+                                    <th>@L["Vendor"]</th>
+                                    <th class="text-end">@L["TotalAmount"]</th>
+                                    <th>@L["Status"]</th>
+                                    <th class="text-end">@L["Detail"]</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach (var invoice in Summary.RecentInvoices)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold">@invoice.InvoiceNumber</div>
+                                            <div class="small text-secondary">@invoice.IssueDate.ToString("dd/MM/yyyy")</div>
+                                        </td>
+                                        <td>@DisplayOrFallback(invoice.VendorName)</td>
+                                        <td class="text-end">@FormatMoney(invoice.TotalAmount, invoice.Currency)</td>
+                                        <td>
+                                            <span class="badge @GetStatusBadgeClass(invoice.Status)">
+                                                @invoice.Status
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <button class="btn btn-sm btn-outline-primary"
+                                                    @onclick="() => GoToInvoiceDetail(invoice.InvoiceId)">
+                                                @L["View"]
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-4">
+        <div class="col-12 col-xl-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">@L["ValidationOverview"]</h2>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="border rounded-4 p-3 bg-light">
+                                <div class="text-secondary small">@L["TotalValidationIssues"]</div>
+                                <div class="h4 fw-bold mb-0">@Summary.TotalValidationIssues</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="border rounded-4 p-3 bg-light">
+                                <div class="text-secondary small">@L["InvoicesWithValidationIssues"]</div>
+                                <div class="h4 fw-bold mb-0">@Summary.InvoicesWithValidationIssues</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="border rounded-4 p-3 bg-light">
+                                <div class="text-secondary small">@L["ResolvedValidationIssues"]</div>
+                                <div class="h4 fw-bold mb-0">@Summary.ResolvedValidationIssues</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <AuthorizeView Policy="@ApplicationPolicies.ViewValidationIssues">
+                        <button class="btn btn-outline-primary w-100 mt-3" @onclick="GoToValidationIssues">
+                            @L["ViewValidationIssues"]
+                        </button>
+                    </AuthorizeView>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">@L["RecentValidationIssues"]</h2>
+
+                    @if (Summary.RecentValidationIssues.Count == 0)
+                    {
+                        <div class="bg-light rounded-4 p-4 text-center text-secondary">
+                            @L["NoValidationIssues"]
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var issue in Summary.RecentValidationIssues)
+                            {
+                                <div class="list-group-item px-0">
+                                    <div class="d-flex justify-content-between gap-2 mb-1">
+                                        <div>
+                                            <span class="badge @GetSeverityBadgeClass(issue.Severity)">
+                                                @issue.Severity
+                                            </span>
+                                            <span class="fw-semibold ms-2">@issue.RuleCode</span>
+                                        </div>
+
+                                        @if (issue.IsResolved)
+                                        {
+                                            <span class="badge text-bg-success">@L["Resolved"]</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge text-bg-warning">@L["Open"]</span>
+                                        }
+                                    </div>
+
+                                    <div class="small">
+                                        <strong>@DisplayOrFallback(issue.InvoiceNumber)</strong>
+                                        - @issue.FieldName
+                                    </div>
+
+                                    <div class="small text-secondary text-truncate">
+                                        @LocalizeMessage(issue.MessageCode, issue.MessageParameters, issue.Message)
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <span class="small text-secondary">
+                                            @FormatDateTime(issue.DetectedAt)
+                                        </span>
+
+                                        <button class="btn btn-sm btn-outline-primary"
+                                                @onclick="() => GoToInvoiceDetail(issue.InvoiceId)">
+                                            @L["ViewInvoice"]
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+        }
+    </ChildContent>
+</PageState>

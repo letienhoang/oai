@@ -1,0 +1,160 @@
+@page "/invoices/upload"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.UploadInvoices)]
+
+<PageTitle>@L["UploadInvoicePageTitle"]</PageTitle>
+
+<ConfirmDialog @ref="ConfirmDialog" />
+
+<section class="mb-4">
+    <h1 class="fw-bold mb-1">@L["UploadInvoiceTitle"]</h1>
+    <p class="text-secondary mb-0">
+        @L["UploadInvoiceSubtitle"]
+    </p>
+</section>
+
+<section class="row g-4">
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold mb-3">@L["SelectInvoiceFile"]</h2>
+
+                <div class="border border-2 border-dashed rounded-4 p-5 text-center bg-light">
+                    <div class="fs-1 mb-3">&#x2B06;&#xFE0F;</div>
+
+                    <h3 class="h6 fw-bold">@L["UploadInvoiceImage"]</h3>
+
+                    <p class="text-secondary small mb-4">
+                        @L["SupportedImageFormats"]
+                    </p>
+
+                    <InputFile OnChange="@HandleFileSelectedAsync"
+                               accept=".jpg,.jpeg,.png,.tif,.tiff"
+                               class="form-control" />
+                </div>
+
+                @if (SelectedFileName is not null)
+                {
+                    <div class="alert alert-info mt-4 mb-0">
+                        <div><strong>@L["SelectedFile"]:</strong> @SelectedFileName</div>
+                        <div><strong>@L["FileSize"]:</strong> @SelectedFileSizeText</div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+                {
+                    <div class="alert alert-danger mt-4 mb-0">
+                        @ErrorMessage
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(SuccessMessage))
+                {
+                    <div class="alert alert-success mt-4 mb-0">
+                        @SuccessMessage
+                    </div>
+                }
+
+                <div class="d-flex gap-2 mt-4">
+                    <button class="btn btn-primary"
+                            disabled="@(!CanUpload || IsUploading)"
+                            @onclick="ConfirmUpload">
+                        @if (IsUploading)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            <span>@L["Processing"]</span>
+                        }
+                        else
+                        {
+                            <span>@L["UploadAndProcess"]</span>
+                        }
+                    </button>
+
+                    <button class="btn btn-outline-secondary"
+                            disabled="@IsUploading"
+                            @onclick="ResetForm">
+                        @L["Reset"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+        <AuthorizeView Policy="@ApplicationPolicies.ManageVendors">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-1">@L["QuickCreateVendorTitle"]</h2>
+                    <p class="text-secondary small mb-3">@L["QuickCreateVendorDescription"]</p>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            @onclick="OpenQuickCreateVendorDialog"
+                            disabled="@IsUploading">
+                        @L["QuickCreateVendor"]
+                    </button>
+                </div>
+            </div>
+        </AuthorizeView>
+
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold mb-3">@L["ProcessingFlow"]</h2>
+
+                <ol class="small text-secondary mb-0 lh-lg">
+                    <li>@L["SaveInvoiceFileToStorage"]</li>
+                    <li>@L["RunTesseractOcr"]</li>
+                    <li>@L["ParseOcrTextToInvoiceData"]</li>
+                    <li>@L["CreateInvoiceInDatabase"]</li>
+                    <li>@L["RunConsistencyValidation"]</li>
+                </ol>
+            </div>
+        </div>
+
+        @if (UploadResult is not null)
+        {
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">@L["ProcessingResult"]</h2>
+
+                    <dl class="row small mb-0">
+                        <dt class="col-5">@L["Status"]</dt>
+                        <dd class="col-7">
+                            <span class="badge @GetStatusBadgeClass(UploadResult.Status)">
+                                @UploadResult.Status
+                            </span>
+                        </dd>
+
+                        <dt class="col-5">@L["File"]</dt>
+                        <dd class="col-7 text-break">@UploadResult.FileName</dd>
+
+                        <dt class="col-5">@L["InvoiceId"]</dt>
+                        <dd class="col-7 text-break">
+                            @if (UploadResult.InvoiceId != Guid.Empty)
+                            {
+                                <code>@UploadResult.InvoiceId</code>
+                            }
+                            else
+                            {
+                                <span class="text-secondary">N/A</span>
+                            }
+                        </dd>
+
+                        <dt class="col-5">@L["Message"]</dt>
+                                <dd class="col-7">@LocalizeMessage(UploadResult.MessageCode, UploadResult.MessageParameters, UploadResult.Message)</dd>
+                    </dl>
+
+                    @if (UploadResult.InvoiceId != Guid.Empty)
+                    {
+                        <button class="btn btn-sm btn-outline-primary mt-3"
+                                @onclick="GoToInvoiceDetail">
+                            @L["ViewInvoiceDetail"]
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<QuickCreateVendorDialog @ref="QuickCreateVendorDialog"
+                         VendorCreated="HandleUploadVendorCreatedAsync" />

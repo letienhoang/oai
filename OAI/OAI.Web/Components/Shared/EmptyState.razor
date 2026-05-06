@@ -1,0 +1,14 @@
+@if (InCard)
+{
+    <section class="@($"card border-0 shadow-sm rounded-4 {CssClass}")">
+        <div class="card-body p-5 text-center">
+            @StateContent
+        </div>
+    </section>
+}
+else
+{
+    <div class="@($"bg-light rounded-4 p-5 text-center {CssClass}")">
+        @StateContent
+    </div>
+}

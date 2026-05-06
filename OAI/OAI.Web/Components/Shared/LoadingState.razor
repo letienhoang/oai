@@ -1,0 +1,22 @@
+@if (InCard)
+{
+    <section class="@($"card border-0 shadow-sm rounded-4 {CssClass}")">
+        <div class="card-body p-5 text-center">
+            <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+            @if (!string.IsNullOrWhiteSpace(Message))
+            {
+                <div class="text-secondary mt-3">@Message</div>
+            }
+        </div>
+    </section>
+}
+else
+{
+    <div class="@($"d-flex justify-content-center align-items-center py-5 {CssClass}")">
+        <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <span class="ms-3 text-secondary">@Message</span>
+        }
+    </div>
+}

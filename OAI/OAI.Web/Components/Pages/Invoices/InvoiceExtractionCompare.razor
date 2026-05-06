@@ -1,0 +1,212 @@
+@page "/invoices/{InvoiceId:guid}/compare"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.ViewInvoices)]
+
+<PageTitle>@L["ExtractionComparePageTitle"]</PageTitle>
+
+<section class="mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">@L["ExtractionCompareTitle"]</h1>
+            <p class="text-secondary mb-0">
+                @L["ExtractionCompareSubtitle"]
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="GoBack">
+                @L["BackToDetail"]
+            </button>
+
+            <button class="btn btn-outline-primary" @onclick="ReloadAsync" disabled="@IsLoading">
+                @L["RunComparisonAgain"]
+            </button>
+        </div>
+    </div>
+</section>
+
+@if (IsLoading)
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <div class="spinner-border text-primary" role="status"></div>
+            <div class="text-secondary mt-3">@L["LoadingExtractionComparison"]</div>
+        </div>
+    </section>
+}
+else if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5">
+            <div class="alert alert-danger mb-0">
+                @ErrorMessage
+            </div>
+        </div>
+    </section>
+}
+else if (Comparison is not null)
+{
+    <section class="row g-4 mb-4">
+        <div class="col-12 col-xl-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">@L["BasicOcr"]</h2>
+                            <div class="text-secondary small">@Comparison.RuleBasedResult.EngineName</div>
+                        </div>
+
+                        @if (Comparison.RuleBasedResult.IsAvailable)
+                        {
+                            <span class="badge text-bg-success">@L["Available"]</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-danger">@L["Failed"]</span>
+                        }
+                    </div>
+
+                    @if (!Comparison.RuleBasedResult.IsAvailable)
+                    {
+                        <div class="alert alert-warning mb-0">
+                            @Comparison.RuleBasedResult.ErrorMessage
+                        </div>
+                    }
+                    else
+                    {
+                        <dl class="row small mb-0">
+                            <dt class="col-5">@L["Vendor"]</dt>
+                            <dd class="col-7">@DisplayOrFallback(Comparison.RuleBasedResult.VendorName)</dd>
+
+                            <dt class="col-5">@L["InvoiceNumber"]</dt>
+                            <dd class="col-7">@DisplayOrFallback(Comparison.RuleBasedResult.InvoiceNumber)</dd>
+
+                            <dt class="col-5">@L["IssueDate"]</dt>
+                            <dd class="col-7">@FormatDate(Comparison.RuleBasedResult.IssueDate)</dd>
+
+                            <dt class="col-5">@L["DueDate"]</dt>
+                            <dd class="col-7">@FormatDate(Comparison.RuleBasedResult.DueDate)</dd>
+
+                            <dt class="col-5">@L["Subtotal"]</dt>
+                            <dd class="col-7">@FormatMoney(Comparison.RuleBasedResult.DeclaredSubtotal, Comparison.RuleBasedResult.Currency)</dd>
+
+                            <dt class="col-5">@L["Tax"]</dt>
+                            <dd class="col-7">@FormatMoney(Comparison.RuleBasedResult.DeclaredTaxAmount, Comparison.RuleBasedResult.Currency)</dd>
+
+                            <dt class="col-5">@L["Total"]</dt>
+                            <dd class="col-7">@FormatMoney(Comparison.RuleBasedResult.DeclaredTotalAmount, Comparison.RuleBasedResult.Currency)</dd>
+
+                            <dt class="col-5">@L["LineItems"]</dt>
+                            <dd class="col-7">@Comparison.RuleBasedResult.LineItemCount</dd>
+                        </dl>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">OCR + AI</h2>
+                            <div class="text-secondary small">@Comparison.AiResult.EngineName</div>
+                        </div>
+
+                        @if (Comparison.AiResult.IsAvailable)
+                        {
+                            <span class="badge text-bg-success">@L["Available"]</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-danger">@L["Failed"]</span>
+                        }
+                    </div>
+
+                    @if (!Comparison.AiResult.IsAvailable)
+                    {
+                        <div class="alert alert-warning mb-0">
+                            @Comparison.AiResult.ErrorMessage
+                        </div>
+                    }
+                    else
+                    {
+                        <dl class="row small mb-0">
+                            <dt class="col-5">@L["Vendor"]</dt>
+                            <dd class="col-7">@DisplayOrFallback(Comparison.AiResult.VendorName)</dd>
+
+                            <dt class="col-5">@L["InvoiceNumber"]</dt>
+                            <dd class="col-7">@DisplayOrFallback(Comparison.AiResult.InvoiceNumber)</dd>
+
+                            <dt class="col-5">@L["IssueDate"]</dt>
+                            <dd class="col-7">@FormatDate(Comparison.AiResult.IssueDate)</dd>
+
+                            <dt class="col-5">@L["DueDate"]</dt>
+                            <dd class="col-7">@FormatDate(Comparison.AiResult.DueDate)</dd>
+
+                            <dt class="col-5">@L["Subtotal"]</dt>
+                            <dd class="col-7">@FormatMoney(Comparison.AiResult.DeclaredSubtotal, Comparison.AiResult.Currency)</dd>
+
+                            <dt class="col-5">@L["Tax"]</dt>
+                            <dd class="col-7">@FormatMoney(Comparison.AiResult.DeclaredTaxAmount, Comparison.AiResult.Currency)</dd>
+
+                            <dt class="col-5">@L["Total"]</dt>
+                            <dd class="col-7">@FormatMoney(Comparison.AiResult.DeclaredTotalAmount, Comparison.AiResult.Currency)</dd>
+
+                            <dt class="col-5">@L["LineItems"]</dt>
+                            <dd class="col-7">@Comparison.AiResult.LineItemCount</dd>
+                        </dl>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">@L["FieldComparison"]</h2>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>@L["Field"]</th>
+                        <th>@L["BasicOcr"]</th>
+                        <th>OCR + AI</th>
+                        <th class="text-center">@L["Result"]</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach (var item in Comparison.FieldComparisons)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@item.FieldName</td>
+                            <td>@DisplayOrFallback(item.RuleBasedValue)</td>
+                            <td>@DisplayOrFallback(item.AiValue)</td>
+                            <td class="text-center">
+                                @if (item.IsSame)
+                                {
+                                    <span class="badge text-bg-success">@L["Same"]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-warning">@L["Different"]</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Raw OCR Text</h2>
+
+            <pre class="bg-light border rounded-4 p-3 small mb-0 raw-text">@Comparison.RawText</pre>
+        </div>
+    </section>
+}

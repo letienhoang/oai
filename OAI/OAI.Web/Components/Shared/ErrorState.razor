@@ -1,0 +1,16 @@
+@if (InCard)
+{
+    <section class="@($"card border-0 shadow-sm rounded-4 {CssClass}")">
+        <div class="card-body p-5">
+            <div class="alert alert-danger mb-0">
+                @AlertBody
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <div class="@($"alert alert-danger mb-0 {CssClass}")">
+        @AlertBody
+    </div>
+}

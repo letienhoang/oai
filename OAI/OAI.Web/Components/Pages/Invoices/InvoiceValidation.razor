@@ -1,0 +1,172 @@
+@page "/invoices/validation"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.ViewValidationIssues)]
+
+<PageTitle>@L["ValidationPageTitle"]</PageTitle>
+
+<section class="mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">@L["ConsistencyValidationTitle"]</h1>
+            <p class="text-secondary mb-0">
+                @L["ValidationPageSubtitle"]
+            </p>
+        </div>
+
+        <div class="d-flex align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="ReloadAsync" disabled="@IsLoading">
+                @L["Reload"]
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-4">
+        <div class="row g-2 mb-4">
+            <div class="col-12 col-lg">
+                <input class="form-control"
+                       placeholder="@L["SearchValidationIssuesPlaceholder"]"
+                       @bind="Keyword"
+                       @bind:event="oninput"
+                       @onkeydown="HandleSearchKeyDown" />
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-2">
+                <select class="form-select" @bind="Severity">
+                    <option value="">@L["AllSeverities"]</option>
+                    <option value="Info">Info</option>
+                    <option value="Warning">Warning</option>
+                    <option value="Error">Error</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-2">
+                <select class="form-select" @bind="ResolvedFilter">
+                    <option value="">@L["AllStatuses"]</option>
+                    <option value="open">@L["OpenStatus"]</option>
+                    <option value="resolved">@L["ResolvedStatus"]</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-primary w-100" @onclick="SearchAsync" disabled="@IsLoading">
+                    @L["Search"]
+                </button>
+            </div>
+
+            <div class="col-12 col-md-auto">
+                <button class="btn btn-outline-secondary w-100" @onclick="ClearSearchAsync" disabled="@IsLoading">
+                    @L["ClearFilter"]
+                </button>
+            </div>
+        </div>
+
+        <PageState IsLoading="@IsLoading"
+                   LoadingMessage="@L["LoadingValidationIssues"]"
+                   ErrorTitle="@L["GenericErrorTitle"]"
+                   ErrorMessage="@ErrorMessage"
+                   IsEmpty="@(Issues.Count == 0)"
+                   EmptyIcon="✅"
+                   EmptyTitle="@L["NoValidationIssuesTitle"]"
+                   EmptyMessage="@L["NoValidationIssuesDescription"]"
+                   InCard="false">
+            <ChildContent>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>@L["Invoice"]</th>
+                        <th>@L["Vendor"]</th>
+                        <th>@L["Rule"]</th>
+                        <th>@L["ErrorContent"]</th>
+                        <th>@L["Severity"]</th>
+                        <th>@L["Status"]</th>
+                        <th>@L["DetectedAt"]</th>
+                        <th class="text-end">@L["Actions"]</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach (var issue in Issues)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">
+                                    @DisplayOrFallback(issue.InvoiceNumber)
+                                </div>
+                                <div class="small text-secondary">
+                                    <code>@issue.InvoiceId</code>
+                                </div>
+                            </td>
+
+                            <td>@DisplayOrFallback(issue.VendorName)</td>
+
+                            <td>
+                                <div class="fw-semibold">@issue.RuleCode</div>
+                                <div class="small text-secondary">@issue.FieldName</div>
+                            </td>
+
+                            <td>
+                                <div class="text-break">@LocalizeMessage(issue.MessageCode, issue.MessageParameters, issue.Message)</div>
+                            </td>
+
+                            <td>
+                                <span class="badge @GetSeverityBadgeClass(issue.Severity)">
+                                    @issue.Severity
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (issue.IsResolved)
+                                {
+                                    <span class="badge text-bg-success">@L["ResolvedStatus"]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-warning">@L["OpenStatus"]</span>
+                                }
+                            </td>
+
+                            <td>
+                                <span class="small">
+                                    @FormatDateTime(issue.DetectedAt)
+                                </span>
+                            </td>
+
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary"
+                                        @onclick="() => GoToInvoiceDetail(issue.InvoiceId)">
+                                    @L["ViewInvoice"]
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-4">
+                <div class="text-secondary small">
+                    @L["ShowingPage"] <strong>@PageNumber</strong>/<strong>@TotalPages</strong>,
+                    @L["TotalErrors"] <strong>@TotalItems</strong>.
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoPrevious || IsLoading)"
+                            @onclick="PreviousPageAsync">
+                        @L["Previous"]
+                    </button>
+
+                    <button class="btn btn-outline-secondary"
+                            disabled="@(!CanGoNext || IsLoading)"
+                            @onclick="NextPageAsync">
+                        @L["Next"]
+                    </button>
+                </div>
+            </div>
+            </ChildContent>
+        </PageState>
+    </div>
+</section>

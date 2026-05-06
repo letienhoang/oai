@@ -1,0 +1,257 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Localization;
+using OAI.Application.Abstractions.Services;
+using OAI.Application.Invoices.Dtos;
+using OAI.Application.Vendors.Dtos;
+using OAI.Infrastructure.Identity;
+using OAI.Web.Components.Vendors;
+using OAI.Web.Components.Shared;
+using OAI.Web.Localization;
+using OAI.Web.Services;
+
+namespace OAI.Web.Components.Pages.Invoices;
+
+public partial class InvoiceUpload
+{
+    private const long MaxFileSize = 20 * 1024 * 1024; // 20 MB
+
+    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".tif",
+        ".tiff"
+    };
+
+    [Inject]
+    private IInvoiceProcessingService InvoiceProcessingService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    private ILogger<InvoiceUpload> Logger { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
+
+    [Inject]
+    private LocalizedMessageResolver LocalizedMessageResolver { get; set; } = default!;
+
+    [Inject]
+    private CurrentUserAuthorizationService AuthorizationService { get; set; } = default!;
+
+    private IBrowserFile? SelectedFile { get; set; }
+
+    private string? SelectedFileName { get; set; }
+
+    private string SelectedFileSizeText { get; set; } = string.Empty;
+
+    private bool IsUploading { get; set; }
+
+    private bool CanUpload => SelectedFile is not null && string.IsNullOrWhiteSpace(ErrorMessage);
+
+    private string? ErrorMessage { get; set; }
+
+    private string? SuccessMessage { get; set; }
+
+    private InvoiceUploadResultDto? UploadResult { get; set; }
+
+    private QuickCreateVendorDialog? QuickCreateVendorDialog { get; set; }
+
+    private ConfirmDialog? ConfirmDialog { get; set; }
+
+    private Task HandleFileSelectedAsync(InputFileChangeEventArgs e)
+    {
+        ResetMessages();
+
+        SelectedFile = e.File;
+        UploadResult = null;
+
+        if (SelectedFile is null)
+        {
+            ErrorMessage = L["PleaseSelectInvoiceFile"];
+            return Task.CompletedTask;
+        }
+
+        SelectedFileName = SelectedFile.Name;
+        SelectedFileSizeText = FormatFileSize(SelectedFile.Size);
+
+        var extension = Path.GetExtension(SelectedFile.Name);
+
+        if (!AllowedExtensions.Contains(extension))
+        {
+            ErrorMessage = L["UnsupportedInvoiceFileFormat"];
+            SelectedFile = null;
+            return Task.CompletedTask;
+        }
+
+        if (SelectedFile.Size > MaxFileSize)
+        {
+            ErrorMessage = string.Format(
+                CultureInfo.CurrentCulture,
+                L["FileSizeExceeded"],
+                FormatFileSize(MaxFileSize));
+            SelectedFile = null;
+            return Task.CompletedTask;
+        }
+
+        Logger.LogInformation(
+            "Invoice file selected. FileName: {FileName}, Size: {FileSize}",
+            SelectedFile.Name,
+            SelectedFile.Size);
+
+        return Task.CompletedTask;
+    }
+
+    private async Task UploadAsync()
+    {
+        if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.UploadInvoices))
+        {
+            ErrorMessage = L["UploadNotAllowed"];
+            return;
+        }
+
+        if (SelectedFile is null)
+        {
+            ErrorMessage = L["PleaseSelectFileBeforeUpload"];
+            return;
+        }
+
+        ResetMessages();
+        IsUploading = true;
+
+        try
+        {
+            Logger.LogInformation("Start uploading invoice from Blazor UI. FileName: {FileName}", SelectedFile.Name);
+
+            await using var stream = SelectedFile.OpenReadStream(MaxFileSize);
+
+            UploadResult = await InvoiceProcessingService.UploadInvoiceAsync(
+                SelectedFile.Name,
+                stream,
+                CancellationToken.None);
+
+            if (UploadResult.Status.Equals("Processed", StringComparison.OrdinalIgnoreCase))
+            {
+                SuccessMessage = LocalizedMessageResolver.Resolve(
+                    UploadResult.MessageCode,
+                    UploadResult.MessageParameters,
+                    UploadResult.Message);
+            }
+            else
+            {
+                ErrorMessage = LocalizedMessageResolver.Resolve(
+                    UploadResult.MessageCode,
+                    UploadResult.MessageParameters,
+                    UploadResult.Message);
+            }
+
+            Logger.LogInformation(
+                "Invoice upload completed from Blazor UI. FileName: {FileName}, Status: {Status}, InvoiceId: {InvoiceId}",
+                SelectedFile.Name,
+                UploadResult.Status,
+                UploadResult.InvoiceId);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = L["InvoiceUploadFailed"];
+
+            Logger.LogError(
+                ex,
+                "Invoice upload failed from Blazor UI. FileName: {FileName}",
+                SelectedFile.Name);
+        }
+        finally
+        {
+            IsUploading = false;
+        }
+    }
+
+    private void ConfirmUpload()
+    {
+        if (SelectedFile is null)
+        {
+            ErrorMessage = L["PleaseSelectFileBeforeUpload"];
+            return;
+        }
+
+        ConfirmDialog?.Open(
+            title: L["ConfirmUploadInvoiceTitle"],
+            message: L["ConfirmUploadInvoiceMessage"],
+            confirmText: L["UploadAndProcess"],
+            cancelText: L["Cancel"],
+            onConfirm: UploadAsync,
+            confirmButtonClass: "btn btn-primary");
+    }
+
+    private void ResetForm()
+    {
+        SelectedFile = null;
+        SelectedFileName = null;
+        SelectedFileSizeText = string.Empty;
+        UploadResult = null;
+        ResetMessages();
+    }
+
+    private void GoToInvoiceDetail()
+    {
+        if (UploadResult is null || UploadResult.InvoiceId == Guid.Empty)
+            return;
+
+        NavigationManager.NavigateTo($"/invoices/{UploadResult.InvoiceId}");
+    }
+
+    private void OpenQuickCreateVendorDialog()
+    {
+        QuickCreateVendorDialog?.Open();
+    }
+
+    private Task HandleUploadVendorCreatedAsync(VendorListItemDto vendor)
+    {
+        SuccessMessage = string.Format(
+            CultureInfo.CurrentCulture,
+            L["VendorCreatedSuccessfullyWithName"].Value,
+            vendor.Name);
+
+        return Task.CompletedTask;
+    }
+
+    private static string GetStatusBadgeClass(string status)
+    {
+        return status.ToLowerInvariant() switch
+        {
+            "processed" => "text-bg-success",
+            "failed" => "text-bg-danger",
+            _ => "text-bg-secondary"
+        };
+    }
+
+    private void ResetMessages()
+    {
+        ErrorMessage = null;
+        SuccessMessage = null;
+    }
+
+    private string LocalizeMessage(
+        string? messageCode,
+        IReadOnlyDictionary<string, string>? parameters,
+        string? fallbackMessage)
+    {
+        return LocalizedMessageResolver.Resolve(messageCode, parameters, fallbackMessage);
+    }
+
+    private static string FormatFileSize(long bytes)
+    {
+        if (bytes < 1024)
+            return $"{bytes} B";
+
+        if (bytes < 1024 * 1024)
+            return $"{bytes / 1024d:N1} KB";
+
+        return $"{bytes / 1024d / 1024d:N1} MB";
+    }
+}

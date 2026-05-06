@@ -1,23 +1,69 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
+@inject IStringLocalizer<SharedResource> L
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div class="@AppShellClass" style="@SidebarStyle">
+    @if (!IsSidebarCollapsed)
+    {
+        <aside class="app-sidebar text-bg-dark">
+            <NavMenu />
+        </aside>
+    }
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+    <section class="app-main flex-grow-1 d-flex flex-column min-vh-100">
+        <header class="topbar navbar bg-white border-bottom shadow-sm px-4">
+            <div class="container-fluid px-0">
+                <div class="d-flex align-items-center gap-3">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            @onclick="ToggleSidebar">
+                        @(IsSidebarCollapsed ? "☰" : "←")
+                    </button>
 
-        <article class="content px-4">
+                    <div>
+                        <div class="fw-bold fs-5 text-dark">@L["AppName"]</div>
+                        <div class="text-secondary small">
+                            @L["AppSubtitle"]
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    @if (!IsSidebarCollapsed)
+                    {
+                        <div class="btn-group btn-group-sm">
+                            <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    disabled="@(CurrentSidebarSize == SidebarSize.Small)"
+                                    @onclick="() => ChangeSidebarSize(SidebarSize.Small)">
+                                @L["SidebarSmall"]
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    disabled="@(CurrentSidebarSize == SidebarSize.Normal)"
+                                    @onclick="() => ChangeSidebarSize(SidebarSize.Normal)">
+                                @L["SidebarNormal"]
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    disabled="@(CurrentSidebarSize == SidebarSize.Large)"
+                                    @onclick="() => ChangeSidebarSize(SidebarSize.Large)">
+                                @L["SidebarLarge"]
+                            </button>
+                        </div>
+                    }
+
+                    <LanguageSelector/>
+                    <AuthMenu />
+
+                    <span class="badge rounded-pill text-bg-primary">@L["EnvironmentDevelopment"]</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-content flex-grow-1 p-4">
             @Body
-        </article>
-    </main>
-</div>
-
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+        </main>
+    </section>
 </div>

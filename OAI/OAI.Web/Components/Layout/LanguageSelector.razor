@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<SharedResource> L
+
+<div class="dropdown language-selector">
+    <button class="btn btn-outline-secondary btn-sm dropdown-toggle d-inline-flex align-items-center gap-1"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            title="@L["Language"]">
+        <span aria-hidden="true">🌐</span>
+        <span class="d-none d-md-inline">@L["Language"]</span>
+        <span class="fw-semibold">@CurrentCultureLabel</span>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+        <li>
+            <button type="button"
+                    class="dropdown-item d-flex justify-content-between align-items-center"
+                    disabled="@IsCurrentCulture(EnglishCulture)"
+                    @onclick="() => ChangeCulture(EnglishCulture)">
+                <span>@L["English"]</span>
+
+                @if (IsCurrentCulture(EnglishCulture))
+                {
+                    <span class="badge text-bg-primary">EN</span>
+                }
+            </button>
+        </li>
+
+        <li>
+            <button type="button"
+                    class="dropdown-item d-flex justify-content-between align-items-center"
+                    disabled="@IsCurrentCulture(VietnameseCulture)"
+                    @onclick="() => ChangeCulture(VietnameseCulture)">
+                <span>@L["Vietnamese"]</span>
+
+                @if (IsCurrentCulture(VietnameseCulture))
+                {
+                    <span class="badge text-bg-primary">VI</span>
+                }
+            </button>
+        </li>
+    </ul>
+</div>

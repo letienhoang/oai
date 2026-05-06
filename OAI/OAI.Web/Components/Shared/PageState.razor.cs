@@ -1,0 +1,42 @@
+using Microsoft.AspNetCore.Components;
+
+namespace OAI.Web.Components.Shared;
+
+public partial class PageState
+{
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    [Parameter]
+    public string? LoadingMessage { get; set; }
+
+    [Parameter]
+    public string? ErrorTitle { get; set; }
+
+    [Parameter]
+    public string? ErrorMessage { get; set; }
+
+    [Parameter]
+    public RenderFragment? ErrorActions { get; set; }
+
+    [Parameter]
+    public bool IsEmpty { get; set; }
+
+    [Parameter]
+    public string EmptyIcon { get; set; } = "ℹ️";
+
+    [Parameter]
+    public string? EmptyTitle { get; set; }
+
+    [Parameter]
+    public string? EmptyMessage { get; set; }
+
+    [Parameter]
+    public RenderFragment? EmptyActions { get; set; }
+
+    [Parameter]
+    public bool InCard { get; set; } = true;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}
