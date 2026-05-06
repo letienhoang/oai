@@ -10,6 +10,7 @@ using OAI.Infrastructure.Persistence;
 using OAI.Infrastructure.Repositories;
 using OAI.Infrastructure.Services;
 using OAI.Infrastructure.Services.Llm;
+using OAI.Infrastructure.SystemHealth;
 
 namespace OAI.Infrastructure;
 
@@ -57,6 +58,7 @@ public static class DependencyInjection
         
         services.AddScoped<ISystemSettingsService, SystemSettingsService>();
         services.AddScoped<DemoDataSeeder>();
+        services.AddScoped<SystemHealthService>();
         
         return services;
     }

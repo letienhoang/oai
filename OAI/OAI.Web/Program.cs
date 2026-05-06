@@ -114,6 +114,7 @@ app.MapAuthEndpoints();
 if (app.Environment.IsDevelopment())
 {
     app.MapDemoDataEndpoints();
+    app.MapSystemHealthEndpoints();
 }
 
 app.MapRazorComponents<App>()

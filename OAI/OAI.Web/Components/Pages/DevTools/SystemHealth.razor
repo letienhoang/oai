@@ -1,0 +1,168 @@
+@page "/dev-tools/system-health"
+@rendermode InteractiveServer
+@attribute [Authorize(Roles = ApplicationRoles.Administrator)]
+
+<PageTitle>@L["SystemHealthPageTitle"]</PageTitle>
+
+<section class="mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">@L["SystemHealthTitle"]</h1>
+            <p class="text-secondary mb-0">
+                @L["SystemHealthSubtitle"]
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 align-items-start">
+            <button class="btn btn-outline-secondary" @onclick="RefreshAsync" disabled="@IsLoading">
+                @L["Reload"]
+            </button>
+        </div>
+    </div>
+</section>
+
+@if (!IsDevelopment)
+{
+    <div class="alert alert-warning" role="alert">
+        @L["DevelopmentOnlyWarning"]
+    </div>
+}
+else
+{
+    <PageState IsLoading="@IsLoading"
+               LoadingMessage="@L["CheckingSystemHealth"]"
+               ErrorTitle="@L["GenericErrorTitle"]"
+               ErrorMessage="@ErrorMessage"
+               IsEmpty="@(Health is null)"
+               EmptyIcon="ℹ️"
+               EmptyTitle="@L["NoData"]"
+               EmptyMessage="@L["SystemHealthEmptyMessage"]"
+               InCard="true">
+        <ErrorActions>
+            <button class="btn btn-outline-danger" @onclick="RefreshAsync">
+                @L["Retry"]
+            </button>
+        </ErrorActions>
+        <ChildContent>
+            @if (Health is not null)
+            {
+                <section class="row g-3 mb-4">
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body">
+                                <div class="text-secondary fw-semibold small">@L["OverallStatus"]</div>
+                                <div class="d-flex align-items-center gap-2 mt-2">
+                                    @HealthBadge(Health.IsHealthy)
+                                </div>
+                                <dl class="row mt-3 mb-0 small">
+                                    <dt class="col-5 text-secondary">@L["CheckedAt"]</dt>
+                                    <dd class="col-7 mb-0">@FormatDateTime(Health.CheckedAt)</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body">
+                                <h2 class="h6 fw-bold mb-3">@L["Runtime"]</h2>
+                                <dl class="row mb-0">
+                                    <dt class="col-12 col-md-4 text-secondary">@L["Environment"]</dt>
+                                    <dd class="col-12 col-md-8">@Health.EnvironmentName</dd>
+                                    <dt class="col-12 col-md-4 text-secondary">@L["MachineName"]</dt>
+                                    <dd class="col-12 col-md-8">@Health.MachineName</dd>
+                                    <dt class="col-12 col-md-4 text-secondary">@L["Framework"]</dt>
+                                    <dd class="col-12 col-md-8 mb-0">@Health.FrameworkDescription</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="row g-3 mb-4">
+                    <div class="col-12 col-xl-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body">
+                                <h2 class="h6 fw-bold mb-3">@L["Database"]</h2>
+                                <dl class="row mb-0">
+                                    <dt class="col-12 col-md-5 text-secondary">@L["DatabaseConnection"]</dt>
+                                    <dd class="col-12 col-md-7">@StatusBadge(Health.CanConnectToDatabase)</dd>
+                                    <dt class="col-12 col-md-5 text-secondary">@L["PendingMigrations"]</dt>
+                                    <dd class="col-12 col-md-7 mb-0">@Health.PendingMigrationCount</dd>
+                                </dl>
+
+                                @if (Health.PendingMigrations.Count > 0)
+                                {
+                                    <ul class="list-group list-group-flush mt-3">
+                                        @foreach (var migration in Health.PendingMigrations)
+                                        {
+                                            <li class="list-group-item px-0">@migration</li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body">
+                                <h2 class="h6 fw-bold mb-3">@L["DataSummary"]</h2>
+                                <div class="row g-3">
+                                    @Metric(L["Vendors"], Health.VendorCount)
+                                    @Metric(L["Invoices"], Health.InvoiceCount)
+                                    @Metric(L["DemoInvoices"], Health.DemoInvoiceCount)
+                                    @Metric(L["AuditLogs"], Health.AuditLogCount)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="row g-3">
+                    <div class="col-12 col-xl-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body">
+                                <h2 class="h6 fw-bold mb-3">@L["Identity"]</h2>
+                                <div class="row g-3">
+                                    @Metric(L["Users"], Health.IdentityUserCount)
+                                    @Metric(L["Roles"], Health.IdentityRoleCount)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-8">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body">
+                                <h2 class="h6 fw-bold mb-3">@L["Configuration"]</h2>
+                                <dl class="row mb-0">
+                                    <dt class="col-12 col-md-4 text-secondary">@L["FileStorage"]</dt>
+                                    <dd class="col-12 col-md-8">
+                                        @StatusBadge(Health.FileStorageConfigured)
+                                        <span class="ms-2">@Health.FileStorageRootPath</span>
+                                    </dd>
+                                    <dt class="col-12 col-md-4 text-secondary">@L["Ocr"]</dt>
+                                    <dd class="col-12 col-md-8">
+                                        @StatusBadge(Health.OcrConfigured)
+                                        <span class="ms-2">@Health.OcrLanguages</span>
+                                    </dd>
+                                    <dt class="col-12 col-md-4 text-secondary">@L["Llm"]</dt>
+                                    <dd class="col-12 col-md-8">
+                                        @StatusBadge(Health.LlmEnabled)
+                                        <span class="ms-2">@Health.LlmProvider @Health.LlmModel</span>
+                                    </dd>
+                                    <dt class="col-12 col-md-4 text-secondary">@L["SeedDemoData"]</dt>
+                                    <dd class="col-12 col-md-8 mb-0">
+                                        @StatusBadge(Health.DemoDataSeedEnabled)
+                                        <span class="ms-2">@Health.DemoInvoiceNumberPrefix</span>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        </ChildContent>
+    </PageState>
+}

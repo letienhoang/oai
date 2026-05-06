@@ -1299,4 +1299,88 @@
   <data name="ExtractionResultsDeleted" xml:space="preserve">
         <value>Kết quả trích xuất đã xóa</value>
     </data>
+  <data name="SystemHealth" xml:space="preserve">
+        <value>Trạng thái hệ thống</value>
+    </data>
+  <data name="SystemHealthPageTitle" xml:space="preserve">
+        <value>Trạng thái hệ thống - OAI</value>
+    </data>
+  <data name="SystemHealthTitle" xml:space="preserve">
+        <value>Trạng thái hệ thống</value>
+    </data>
+  <data name="SystemHealthSubtitle" xml:space="preserve">
+        <value>Kiểm tra cơ sở dữ liệu, cấu hình, dữ liệu demo và trạng thái runtime.</value>
+    </data>
+  <data name="CheckingSystemHealth" xml:space="preserve">
+        <value>Đang kiểm tra trạng thái hệ thống...</value>
+    </data>
+  <data name="SystemHealthEmptyMessage" xml:space="preserve">
+        <value>Chưa có kết quả kiểm tra trạng thái hệ thống.</value>
+    </data>
+  <data name="SystemHealthCheckFailed" xml:space="preserve">
+        <value>Không thể kiểm tra trạng thái hệ thống. Vui lòng kiểm tra log hệ thống.</value>
+    </data>
+  <data name="OverallStatus" xml:space="preserve">
+        <value>Trạng thái tổng thể</value>
+    </data>
+  <data name="CheckedAt" xml:space="preserve">
+        <value>Thời điểm kiểm tra</value>
+    </data>
+  <data name="Healthy" xml:space="preserve">
+        <value>Ổn định</value>
+    </data>
+  <data name="NeedsAttention" xml:space="preserve">
+        <value>Cần kiểm tra</value>
+    </data>
+  <data name="Runtime" xml:space="preserve">
+        <value>Môi trường chạy</value>
+    </data>
+  <data name="Environment" xml:space="preserve">
+        <value>Môi trường</value>
+    </data>
+  <data name="MachineName" xml:space="preserve">
+        <value>Tên máy</value>
+    </data>
+  <data name="Framework" xml:space="preserve">
+        <value>Framework</value>
+    </data>
+  <data name="Database" xml:space="preserve">
+        <value>Cơ sở dữ liệu</value>
+    </data>
+  <data name="DatabaseConnection" xml:space="preserve">
+        <value>Kết nối CSDL</value>
+    </data>
+  <data name="PendingMigrations" xml:space="preserve">
+        <value>Migration chưa áp dụng</value>
+    </data>
+  <data name="DataSummary" xml:space="preserve">
+        <value>Tổng quan dữ liệu</value>
+    </data>
+  <data name="DemoInvoices" xml:space="preserve">
+        <value>Hóa đơn demo</value>
+    </data>
+  <data name="Identity" xml:space="preserve">
+        <value>Tài khoản và vai trò</value>
+    </data>
+  <data name="Users" xml:space="preserve">
+        <value>Người dùng</value>
+    </data>
+  <data name="Roles" xml:space="preserve">
+        <value>Vai trò</value>
+    </data>
+  <data name="Configuration" xml:space="preserve">
+        <value>Cấu hình</value>
+    </data>
+  <data name="FileStorage" xml:space="preserve">
+        <value>Lưu trữ file</value>
+    </data>
+  <data name="Ocr" xml:space="preserve">
+        <value>OCR</value>
+    </data>
+  <data name="Llm" xml:space="preserve">
+        <value>LLM</value>
+    </data>
+  <data name="Ok" xml:space="preserve">
+        <value>OK</value>
+    </data>
 </root>

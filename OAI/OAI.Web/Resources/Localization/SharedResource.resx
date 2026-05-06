@@ -1299,4 +1299,88 @@
   <data name="ExtractionResultsDeleted" xml:space="preserve">
         <value>Extraction results deleted</value>
     </data>
+  <data name="SystemHealth" xml:space="preserve">
+        <value>System health</value>
+    </data>
+  <data name="SystemHealthPageTitle" xml:space="preserve">
+        <value>System Health - OAI</value>
+    </data>
+  <data name="SystemHealthTitle" xml:space="preserve">
+        <value>System health</value>
+    </data>
+  <data name="SystemHealthSubtitle" xml:space="preserve">
+        <value>Check database, configuration, demo data, and runtime status.</value>
+    </data>
+  <data name="CheckingSystemHealth" xml:space="preserve">
+        <value>Checking system health...</value>
+    </data>
+  <data name="SystemHealthEmptyMessage" xml:space="preserve">
+        <value>No system health result is available yet.</value>
+    </data>
+  <data name="SystemHealthCheckFailed" xml:space="preserve">
+        <value>Unable to check system health. Please check the system logs.</value>
+    </data>
+  <data name="OverallStatus" xml:space="preserve">
+        <value>Overall status</value>
+    </data>
+  <data name="CheckedAt" xml:space="preserve">
+        <value>Checked at</value>
+    </data>
+  <data name="Healthy" xml:space="preserve">
+        <value>Healthy</value>
+    </data>
+  <data name="NeedsAttention" xml:space="preserve">
+        <value>Needs attention</value>
+    </data>
+  <data name="Runtime" xml:space="preserve">
+        <value>Runtime</value>
+    </data>
+  <data name="Environment" xml:space="preserve">
+        <value>Environment</value>
+    </data>
+  <data name="MachineName" xml:space="preserve">
+        <value>Machine name</value>
+    </data>
+  <data name="Framework" xml:space="preserve">
+        <value>Framework</value>
+    </data>
+  <data name="Database" xml:space="preserve">
+        <value>Database</value>
+    </data>
+  <data name="DatabaseConnection" xml:space="preserve">
+        <value>Database connection</value>
+    </data>
+  <data name="PendingMigrations" xml:space="preserve">
+        <value>Pending migrations</value>
+    </data>
+  <data name="DataSummary" xml:space="preserve">
+        <value>Data summary</value>
+    </data>
+  <data name="DemoInvoices" xml:space="preserve">
+        <value>Demo invoices</value>
+    </data>
+  <data name="Identity" xml:space="preserve">
+        <value>Identity</value>
+    </data>
+  <data name="Users" xml:space="preserve">
+        <value>Users</value>
+    </data>
+  <data name="Roles" xml:space="preserve">
+        <value>Roles</value>
+    </data>
+  <data name="Configuration" xml:space="preserve">
+        <value>Configuration</value>
+    </data>
+  <data name="FileStorage" xml:space="preserve">
+        <value>File storage</value>
+    </data>
+  <data name="Ocr" xml:space="preserve">
+        <value>OCR</value>
+    </data>
+  <data name="Llm" xml:space="preserve">
+        <value>LLM</value>
+    </data>
+  <data name="Ok" xml:space="preserve">
+        <value>OK</value>
+    </data>
 </root>
