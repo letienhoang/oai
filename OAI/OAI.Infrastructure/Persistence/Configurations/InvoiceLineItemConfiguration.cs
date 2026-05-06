@@ -29,7 +29,9 @@ public sealed class InvoiceLineItemConfiguration : IEntityTypeConfiguration<Invo
 
         builder.OwnsOne(x => x.UnitPrice, money =>
         {
-            money.Property(x => x.Amount).HasColumnName("UnitPriceAmount");
+            money.Property(x => x.Amount)
+                .HasColumnName("UnitPriceAmount")
+                .HasPrecision(18, 2);
             money.Property(x => x.Currency).HasColumnName("UnitPriceCurrency").HasMaxLength(10);
         });
 

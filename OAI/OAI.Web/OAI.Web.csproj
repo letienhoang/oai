@@ -26,4 +26,10 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Components\Shared\ConfirmDialog.razor.cs">
+        <DependentUpon>ConfirmDialog.razor</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
