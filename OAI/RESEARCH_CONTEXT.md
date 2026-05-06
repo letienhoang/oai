@@ -2,92 +2,118 @@
 
 ## 1. Thesis Topic
 
-The current graduation thesis focuses on building an invoice processing system that combines OCR and AI to extract, validate, and manage invoice data.
+The graduation thesis focuses on building an invoice processing system that combines OCR and AI-assisted information extraction with validation, human review, approval workflow, and auditability.
 
-The system is named **OAI**.
+System name: **OAI**.
 
-The main idea is:
+Core idea:
 
-> Build a web-based invoice processing system that allows users to upload invoice images, extract text using OCR, parse invoice information into structured data, validate consistency, allow human correction, and compare rule-based extraction with AI-assisted extraction.
+```txt
+Invoice image
+→ OCR text extraction
+→ Rule-based and/or AI-assisted structured extraction
+→ Consistency validation
+→ Human review and correction
+→ Approval/rejection workflow
+→ Audit logging and reporting support
+```
+
+Suggested Vietnamese thesis title:
+
+```txt
+Xây dựng hệ thống xử lý hóa đơn ứng dụng OCR và AI hỗ trợ trích xuất, kiểm tra và quản lý dữ liệu hóa đơn
+```
+
+Alternative titles:
+
+```txt
+1. Xây dựng hệ thống trích xuất và kiểm tra dữ liệu hóa đơn bằng OCR kết hợp AI
+2. Nghiên cứu và xây dựng hệ thống xử lý hóa đơn thông minh sử dụng OCR và mô hình ngôn ngữ lớn
+3. Xây dựng hệ thống quản lý và xác thực dữ liệu hóa đơn từ ảnh chụp sử dụng OCR và AI
+4. Ứng dụng OCR và AI trong tự động hóa quy trình nhập liệu và kiểm tra hóa đơn
+5. Xây dựng hệ thống xử lý hóa đơn bán tự động với cơ chế human-in-the-loop
+```
 
 ## 2. Motivation
 
-Invoice processing is a common business task in many companies. Manual data entry from invoices is repetitive, time-consuming, and error-prone. OCR can help convert invoice images into text, but OCR output is often noisy and difficult to convert directly into structured invoice data.
+Invoice processing is a common business workflow. Manual invoice data entry is repetitive, time-consuming, and error-prone.
 
-Traditional rule-based extraction can work with simple invoice layouts, but it is fragile when:
-- the invoice layout changes;
-- labels and values are split across different lines;
-- OCR introduces noise;
-- invoice formats vary across vendors;
-- Vietnamese and English labels appear together.
+OCR helps convert invoice images into text, but OCR output is often noisy and not directly suitable for database storage. Common problems include:
 
-AI/LLM-based extraction can improve flexibility by understanding context from OCR text and producing structured JSON output. However, AI output should still be validated and reviewed by users before being trusted.
+- invoice layout variation;
+- text recognition errors;
+- table flattening;
+- labels and values split across lines;
+- noisy logos or headers being interpreted as text;
+- mixed Vietnamese and English labels;
+- inconsistent date and amount formats.
 
-Therefore, the thesis system is designed with a **human-in-the-loop workflow**:
+Rule-based extraction can work with simple layouts but is fragile when invoice formats vary. AI/LLM-based extraction is more flexible because it can infer structure from noisy OCR text, but AI results still require validation and human review.
+
+Therefore, the thesis system uses a **human-in-the-loop invoice processing workflow** rather than fully automatic posting.
+
+## 3. Research Direction
+
+The project began as an OCR-based invoice extraction system inspired by research on document information extraction and invoice processing.
+
+Initial direction:
 
 ```txt
-Upload invoice
-→ OCR
-→ Rule-based / AI extraction
+Invoice image
+→ OCR text
+→ Rule-based extraction
+→ Structured invoice fields
+```
+
+Expanded direction:
+
+```txt
+Invoice image
+→ OCR text
+→ AI-assisted parser
+→ Structured JSON
 → Validation
-→ User review and correction
-→ Approval or rejection
-→ Audit tracking
+→ Human review
 ```
 
-## 3. Original Research Direction
-
-The initial thesis idea was inspired by research papers related to OCR-based invoice or document information extraction.
-
-The first implementation direction was to build a basic OCR-based invoice extraction system similar to traditional document processing approaches:
-
-```txt
-Invoice image
-→ OCR text
-→ rule-based extraction
-→ structured invoice fields
-```
-
-After discussion, the system was expanded to include AI-assisted extraction:
-
-```txt
-Invoice image
-→ OCR text
-→ LLM parser
-→ structured JSON
-→ validation and human review
-```
-
-This allows the thesis to compare:
+The final system supports comparison between:
 
 ```txt
 OCR + Rule-based parser
 vs
-OCR + AI parser
+OCR + AI-assisted parser
 ```
 
-## 4. Related Research Area
+This makes the thesis not only a software implementation but also a small practical evaluation of extraction approaches for semi-structured invoices.
+
+## 4. Related Research Areas
 
 ### 4.1 Optical Character Recognition
 
 OCR is used to convert invoice images into raw text.
 
-In this project:
-- Tesseract OCR is used as the OCR engine.
-- The OCR wrapper supports image files first.
-- PDF invoice support is planned for a later stage.
-- Languages tested include English and Vietnamese through `eng+vie`.
+Current implementation:
 
-OCR limitations observed during testing:
-- vendor name can be misread because of logo or layout noise;
-- invoice number may be split from its label;
-- total amount may appear on a different line from the `Total:` label;
-- table layout may be flattened into plain text;
-- OCR may introduce unexpected characters such as `Ạ`.
+- Tesseract OCR engine.
+- Language setting: `eng+vie`.
+- Image invoice support is prioritized.
+- PDF invoice support is a possible future extension.
 
-### 4.2 Information Extraction from Semi-Structured Documents
+Observed OCR limitations:
 
-Invoices are semi-structured documents. They contain common fields such as:
+- vendor name can be misread due to logos/noise;
+- invoice number can be separated from its label;
+- dates may be detected but associated with the wrong fields;
+- table layout is often flattened into plain lines;
+- total amount can be confused with subtotal;
+- OCR may emit unexpected characters such as `Ạ`.
+
+### 4.2 Semi-Structured Document Information Extraction
+
+Invoices are semi-structured documents. They share common concepts but differ in layout.
+
+Important extracted fields:
+
 - vendor name;
 - invoice number;
 - issue date;
@@ -95,29 +121,57 @@ Invoices are semi-structured documents. They contain common fields such as:
 - subtotal;
 - tax amount;
 - total amount;
+- currency;
 - line items.
 
-However, the layout varies across invoices. Therefore, extracting information requires more than simple OCR.
-
-The system currently supports two extraction strategies:
+Supported extraction approaches:
 
 ```txt
 Rule-based extraction:
-- Regex
+- regex
 - label matching
-- fallback heuristics
+- date/amount fallback heuristics
+- line-item pattern detection
 
-AI-based extraction:
+AI-assisted extraction:
 - OCR raw text
-- prompt + JSON schema
+- prompt instructions
 - structured JSON output
+- mapping into application DTOs
 ```
 
-### 4.3 Human-in-the-Loop Document Processing
+### 4.3 Large Language Models for Information Extraction
 
-The system does not automatically trust OCR or AI results. Instead, extracted data is stored as processed data and then reviewed by the user.
+The AI parser uses an LLM to transform OCR text into structured invoice data.
 
-The invoice lifecycle is:
+Benefits:
+
+- more flexible with varied layouts;
+- can infer semantic relationships between labels and values;
+- can produce JSON-like structured output;
+- can improve extraction when OCR text order is imperfect.
+
+Risks and limitations:
+
+- API quota/cost;
+- invalid JSON output;
+- hallucinated fields;
+- inconsistent line item extraction;
+- need for fallback when AI fails;
+- need for validation before user approval.
+
+Therefore, the project uses a hybrid design:
+
+```txt
+Try AI parser if enabled and available
+→ fallback to rule-based parser if AI fails or is disabled
+```
+
+### 4.4 Human-in-the-Loop Document Processing
+
+The system does not fully trust OCR or AI output. Extracted data must be reviewed before approval.
+
+Workflow:
 
 ```txt
 Upload/OCR/AI
@@ -135,64 +189,47 @@ PendingReview / Approved
 → PendingReview
 ```
 
-This design is important because OCR and AI can still make mistakes.
+This is important because invoice data is financially sensitive and OCR/AI mistakes can affect accounting records.
 
-## 5. Scientific Paper Usage
+### 4.5 Auditability and Traceability
 
-The thesis direction was influenced by scientific papers about invoice information extraction and OCR-based document processing.
+Auditability is a major practical requirement for business systems. The project records data changes through an EF Core audit interceptor.
 
-The paper-based idea was adapted into a practical system:
+Audit log information includes:
 
-```txt
-From paper:
-OCR-based invoice information extraction
+- entity name;
+- entity id;
+- action type;
+- old values;
+- new values;
+- user id/user name;
+- timestamp;
+- source.
 
-Adapted thesis topic:
-Building an invoice processing system using OCR and AI for structured extraction, validation, and human review
-```
+This supports traceability of invoice edits, approval decisions, vendor changes, and demo operations.
 
-The implementation does not simply reproduce one paper. Instead, it uses the paper as a foundation and expands the system into a complete software application with:
-- layered architecture;
-- OCR integration;
-- AI parser;
+## 5. Final System Scope
+
+The project is now broader than OCR-only extraction. It is a complete invoice processing workflow system with:
+
+- upload and file storage;
+- OCR extraction;
+- AI-assisted parsing;
+- rule-based fallback parsing;
+- structured invoice persistence;
 - validation rules;
-- editable extracted data;
-- approval workflow;
+- human correction;
+- approval/rejection workflow;
+- vendor management;
+- dashboard and filtering;
 - audit logs;
-- dashboard;
-- settings screen.
+- authentication and authorization;
+- localization;
+- demo and system health tools.
 
-## 6. Final Thesis Direction
+## 6. Current Implementation Architecture
 
-The final thesis direction is not just “OCR invoice reading”. It is broader:
-
-> Design and implement an invoice processing system using OCR and AI-assisted information extraction, with validation, human review, approval workflow, and auditability.
-
-A suitable Vietnamese thesis title could be:
-
-```txt
-Xây dựng hệ thống xử lý hóa đơn ứng dụng OCR và AI hỗ trợ trích xuất, kiểm tra và quản lý dữ liệu hóa đơn
-```
-
-Alternative titles:
-
-```txt
-1. Xây dựng hệ thống trích xuất và kiểm tra dữ liệu hóa đơn bằng OCR kết hợp AI
-
-2. Nghiên cứu và xây dựng hệ thống xử lý hóa đơn thông minh sử dụng OCR và mô hình ngôn ngữ lớn
-
-3. Xây dựng hệ thống quản lý và xác thực dữ liệu hóa đơn từ ảnh chụp sử dụng OCR và AI
-
-4. Ứng dụng OCR và AI trong tự động hóa quy trình nhập liệu và kiểm tra hóa đơn
-
-5. Xây dựng hệ thống xử lý hóa đơn bán tự động với cơ chế human-in-the-loop
-```
-
-## 7. Current System Architecture
-
-The implementation uses a layered monolith architecture.
-
-Projects:
+The implementation uses a layered monolith architecture:
 
 ```txt
 OAI.Domain
@@ -203,132 +240,208 @@ OAI.Web
 
 ### OAI.Domain
 
-Contains core business entities, value objects, enums, and domain rules.
+Contains core entities, value objects, and domain rules.
 
 Important entities:
-- Vendor
-- Invoice
-- InvoiceLineItem
-- ValidationIssue
-- InvoiceExtractionResult
-- AuditLogEntry
+
+- `Vendor`
+- `Invoice`
+- `InvoiceLineItem`
+- `ValidationIssue`
+- `InvoiceExtractionResult`
+- `AuditLogEntry`
 
 Important value object:
-- Money
+
+- `Money`
 
 Important enums:
-- InvoiceStatus
-- ValidationSeverity
-- AuditActionType
 
-Invoice statuses:
-
-```txt
-Draft
-PendingReview
-Approved
-Rejected
-Exported
-```
+- `InvoiceStatus`
+- validation severity/action-related enums where applicable.
 
 ### OAI.Application
 
-Contains DTOs, use cases, service abstractions, and application-level workflows.
+Contains use cases, DTOs, filters, abstractions, and application orchestration.
 
-Important use cases:
-- CreateInvoiceUseCase
-- UpdateInvoiceUseCase
-- ValidateInvoiceUseCase
-- GetInvoiceListUseCase
-- GetInvoiceDetailUseCase
-- GetValidationIssueListUseCase
-- ApproveInvoiceUseCase
-- RejectInvoiceUseCase
-- MoveInvoiceToPendingReviewUseCase
-- CompareInvoiceExtractionUseCase
-- GetDashboardSummaryUseCase
-- GetAuditLogListUseCase
-- GetSystemSettingsUseCase
+Important areas:
+
+- invoice creation/update/detail/list;
+- invoice approval/rejection/state transitions;
+- validation issue queries;
+- extraction comparison;
+- dashboard summary;
+- audit log list/detail support;
+- vendor list/upsert/options;
+- filter DTOs for invoice list, dashboard, audit logs, vendors;
+- current user abstraction for audit context.
 
 ### OAI.Infrastructure
 
-Contains EF Core persistence, repositories, OCR implementation, file storage, AI parser, audit interceptor, and system settings implementation.
+Contains technical implementations:
 
-Important infrastructure services:
-- FileStorageService
-- TesseractOcrService
-- InvoiceExtractionService
-- RuleBasedInvoiceTextParser
-- OpenAiInvoiceTextParser
-- HybridInvoiceTextParser
-- InvoiceExtractionComparisonService
-- SystemSettingsService
-- AuditTrailInterceptor
+- EF Core persistence;
+- SQL Server repositories;
+- Identity stores;
+- file storage;
+- Tesseract OCR service;
+- rule-based parser;
+- OpenAI/LLM parser;
+- hybrid parser;
+- audit interceptor;
+- demo data seed/reset;
+- system health service.
 
 ### OAI.Web
 
-Blazor Web App UI.
+Blazor Web App UI:
 
-Important screens:
-- Dashboard
-- Upload invoice
-- Invoice list
-- Invoice detail
-- Edit invoice
-- Validation issues
-- OCR vs OCR+AI comparison
-- Audit logs
-- Settings
+- localized EN/VI interface;
+- authentication UI;
+- authorization-based pages/actions;
+- dashboard;
+- invoice upload/list/detail/edit/compare;
+- validation issues;
+- vendor management;
+- audit logs;
+- settings;
+- development demo tools;
+- system health panel.
 
-## 8. OCR and AI Design
+## 7. OCR and AI Extraction Pipeline
 
-The current extraction pipeline is:
+Current extraction pipeline:
 
 ```txt
 Uploaded image
 → FileStorageService
 → TesseractOcrService
-→ OCR RawText
+→ OCR raw text
 → HybridInvoiceTextParser
-   ├── OpenAiInvoiceTextParser if enabled and available
+   ├── OpenAiInvoiceTextParser if enabled and successful
    └── RuleBasedInvoiceTextParser fallback
-→ ExtractedInvoiceDto
+→ ExtractedInvoiceDto / parsed result
 → CreateInvoiceUseCase
+→ Validation
 → Database
 ```
 
-### Rule-Based Parser
+### Rule-Based Parser Responsibilities
 
 The rule-based parser handles:
+
 - normalized OCR lines;
-- invoice number pattern matching;
+- invoice number detection;
 - vendor name detection;
-- date extraction by label and fallback by index;
-- amount extraction by label;
-- VAT/tax extraction;
-- line item extraction through regex;
-- tax rate inference.
+- date extraction;
+- amount extraction;
+- VAT/tax detection;
+- line item parsing;
+- fallback heuristics.
 
-### AI Parser
+### AI Parser Responsibilities
 
-The AI parser uses:
-- OCR raw text;
-- OpenAI API;
-- prompt instructions;
-- JSON schema / structured output;
-- mapped `ParsedInvoiceLlmResult`;
-- fallback to rule-based parser when AI fails.
+The AI parser handles:
 
-Common AI failure currently handled:
-- missing API key;
-- disabled LLM;
-- insufficient quota;
-- invalid JSON;
-- failed extraction.
+- prompt-based extraction from OCR text;
+- structured JSON output;
+- mapping model output into typed DTOs;
+- fallback when disabled, quota-limited, or failed.
 
-## 9. Important Observed Test Case
+### Extraction History
 
-Sample invoice content:
+Each invoice can store extraction history with:
+
+- engine name;
+- confidence score;
+- extracted timestamp;
+- success flag;
+- attempt number;
+- raw OCR text;
+- structured JSON.
+
+The Invoice Detail page now includes an extraction history tab and detail dialog.
+
+## 8. Validation and Human Review
+
+The system validates invoice data after extraction and after manual edit.
+
+Examples of validation concerns:
+
+- subtotal/tax/total consistency;
+- required fields;
+- date consistency;
+- line item total consistency;
+- unresolved validation errors blocking approval.
+
+Users can edit extracted invoice data and rerun validation before approval.
+
+Important UX decisions:
+
+- important actions use confirmation dialogs;
+- action buttons are shown/hidden by permission;
+- action handlers also check authorization;
+- validation and action messages are localized.
+
+## 9. Authentication, Authorization, and Roles
+
+The system uses ASP.NET Core Identity.
+
+Roles:
+
+```txt
+Administrator
+Accountant
+Auditor
+Viewer
+```
+
+Authorization design:
+
+- roles are mapped to permission claims;
+- pages use authorization policies;
+- important actions check authorization before running use cases;
+- unauthorized users see access denied or do not see unavailable actions.
+
+Default development users exist for testing each role.
+
+## 10. Localization
+
+The system uses `.resx` resources.
+
+Default language:
+
+```txt
+English
+```
+
+Supported additional language:
+
+```txt
+Vietnamese
+```
+
+UI pattern:
+
+```razor
+@L["Key"]
+```
+
+Language can be changed from the TopBar.
+
+Localization covers:
+
+- page titles;
+- menu labels;
+- buttons;
+- validation messages;
+- action/system messages;
+- role-protected pages;
+- development tools.
+
+## 11. Important Observed OCR Test Case
+
+Sample intended invoice:
 
 ```txt
 ACME SOFTWARE COMPANY
@@ -345,7 +458,7 @@ VAT: 150000
 Total: 1650000
 ```
 
-Actual OCR result showed layout issues:
+Observed OCR output contained layout/noise problems:
 
 ```txt
 Ạ
@@ -377,43 +490,48 @@ Total:
 1,650,000
 ```
 
-This test case revealed several important parser issues:
-- vendor name was initially detected as OCR noise `Ạ`;
-- invoice number was initially parsed incorrectly;
-- due date was initially confused with issue date;
-- total amount was initially confused with subtotal;
-- VAT label with parentheses required better parsing.
+This revealed important extraction issues:
 
-The parser was improved to correctly extract:
-- VendorName: `ACME SOFTWARE COMPANY`
-- InvoiceNumber: `INV-2026-001`
-- IssueDate: `2026-04-27`
-- DueDate: `2026-04-30`
-- Subtotal: `1500000`
-- TaxAmount: `150000`
-- TotalAmount: `1650000`
-- LineItems:
-  - Consulting service
-  - OCR setup
+- vendor name initially detected as OCR noise;
+- invoice number separated from label;
+- issue date and due date could be confused;
+- total amount split from label;
+- VAT label with parentheses required improved parsing;
+- table line items needed regex/fallback handling.
 
-## 10. Evaluation Plan
+The parser was improved to extract:
 
-The evaluation phase should compare:
+- `VendorName = ACME SOFTWARE COMPANY`
+- `InvoiceNumber = INV-2026-001`
+- `IssueDate = 2026-04-27`
+- `DueDate = 2026-04-30`
+- `Subtotal = 1500000`
+- `TaxAmount = 150000`
+- `TotalAmount = 1650000`
+- line items: Consulting service, OCR setup.
+
+## 12. Evaluation Plan
+
+The thesis evaluation should compare:
 
 ```txt
 OCR + Rule-based parser
 vs
-OCR + AI parser
+OCR + AI-assisted parser
 ```
 
-Possible evaluation metrics:
+Recommended metrics:
+
 - field-level accuracy;
 - invoice-level accuracy;
 - extraction success rate;
 - number of fields requiring manual correction;
-- comparison of structured JSON output.
+- line item extraction accuracy;
+- comparison of structured JSON quality;
+- qualitative analysis of failure cases.
 
 Suggested fields for evaluation:
+
 - VendorName
 - InvoiceNumber
 - IssueDate
@@ -421,43 +539,99 @@ Suggested fields for evaluation:
 - Subtotal
 - TaxAmount
 - TotalAmount
+- Currency
 - LineItems
 
 Suggested dataset:
-- 10–20 invoice images;
+
+- 10-20 invoice images;
 - multiple layouts;
-- English and Vietnamese samples;
+- English and Vietnamese invoices;
 - clean and noisy images;
 - expected ground truth for each invoice.
 
-## 11. Thesis Contribution
+Suggested experiment table:
+
+```txt
+Invoice sample
+Field
+Ground truth
+Rule-based result
+AI-assisted result
+Correct/incorrect
+Notes
+```
+
+## 13. Thesis Contributions
 
 The system contributes:
 
-1. A practical invoice processing workflow using OCR and AI.
-2. A layered .NET implementation suitable for a real business application.
-3. A hybrid extraction mechanism combining rule-based and AI-based parsing.
-4. A validation mechanism to detect inconsistent invoice totals.
-5. A human-in-the-loop workflow for correcting and approving extracted data.
-6. An audit trail for traceability.
-7. A comparison feature to evaluate OCR-only versus OCR+AI extraction.
+1. A practical OCR + AI invoice processing workflow.
+2. A layered .NET implementation suitable for business application development.
+3. A hybrid extraction mechanism combining rule-based and AI-assisted parsing.
+4. A validation mechanism to detect inconsistent invoice data.
+5. A human-in-the-loop workflow for review, correction, and approval.
+6. Role-based access control for business actors.
+7. Audit logging for traceability.
+8. A comparison feature for OCR-only/rule-based versus OCR+AI extraction.
+9. A localized UI suitable for Vietnamese/English demonstration.
+10. Demo data and system health tools to support thesis presentation.
 
-## 12. Next Phase
+## 14. Current System State
 
-The next phase is Phase 6B:
+The project has completed major implementation phases up to the current Phase 7 polish/dev-tooling stage.
+
+Completed areas include:
 
 ```txt
-Testing, experiment, and thesis report
+- Domain and application workflow
+- OCR and AI parser integration
+- Invoice upload/list/detail/edit/approval workflow
+- Validation and comparison features
+- Dashboard and filtering
+- Localization
+- Authentication and authorization
+- Vendor management
+- Audit logs and detail dialog
+- Invoice detail tabs and extraction history detail
+- Demo data seed/reset tools
+- System health/status panel
+- EF money precision configuration
 ```
 
-Planned tasks:
+The old `NEXT_TASKS.md` and `TASK_HISTORY.md` files were removed. The current state should now be inferred from:
 
 ```txt
-T36. Write tests for Domain rules
-T37. Write tests for Application use cases
-T38. Test upload → OCR → parse → validate flow
-T39. Prepare evaluation dataset
-T40. Summarize experiment results
-T41. Write thesis report
-T42. Prepare demo checklist
+AI_PROJECT_CONTEXT.md
+RESEARCH_CONTEXT.md
+Git commit history
+Current source code on develop
+```
+
+## 15. Recommended Remaining Work
+
+### Thesis and evaluation work
+
+```txt
+1. Prepare evaluation dataset.
+2. Run OCR + rule-based extraction tests.
+3. Run OCR + AI extraction tests.
+4. Compare field-level accuracy.
+5. Document observed OCR/AI limitations.
+6. Write implementation chapter.
+7. Write evaluation chapter.
+8. Prepare screenshots and demo script.
+```
+
+### Technical polish work
+
+```txt
+1. Verify clean database migration from scratch.
+2. Run build/test regularly.
+3. Review localization completeness.
+4. Add field-level audit change view.
+5. Improve OCR/AI comparison screen layout.
+6. Persist list/dashboard/audit filters in query string.
+7. Add PDF invoice support.
+8. Add Docker and CI/CD if time allows.
 ```
