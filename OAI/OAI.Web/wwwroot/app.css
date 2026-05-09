@@ -18,6 +18,20 @@ h1:focus {
     background: #f5f7fb;
 }
 
+.public-layout {
+    background: #f5f7fb;
+}
+
+.public-header,
+.public-footer {
+    flex-shrink: 0;
+}
+
+.public-content {
+    display: flex;
+    align-items: center;
+}
+
 /* Bootstrap utility extension */
 .border-dashed {
     border-style: dashed !important;
