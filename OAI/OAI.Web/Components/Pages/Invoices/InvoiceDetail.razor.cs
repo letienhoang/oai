@@ -230,10 +230,10 @@ public partial class InvoiceDetail
             cancelText: L["Cancel"],
             confirmButtonClass: "btn btn-success");
 
-        if (confirmed)
-        {
-            await ApproveAsync();
-        }
+        if (!confirmed)
+            return;
+
+        await ApproveAsync();
     }
 
     private async Task ConfirmReject()
@@ -248,10 +248,10 @@ public partial class InvoiceDetail
             cancelText: L["Cancel"],
             confirmButtonClass: "btn btn-danger");
 
-        if (confirmed)
-        {
-            await RejectAsync();
-        }
+        if (!confirmed)
+            return;
+
+        await RejectAsync();
     }
 
     private async Task ConfirmMoveToPendingReview()
@@ -266,10 +266,10 @@ public partial class InvoiceDetail
             cancelText: L["Cancel"],
             confirmButtonClass: "btn btn-warning");
 
-        if (confirmed)
-        {
-            await MoveToPendingReviewAsync();
-        }
+        if (!confirmed)
+            return;
+
+        await MoveToPendingReviewAsync();
     }
 
     private async Task LoadInvoiceDetailAsync()

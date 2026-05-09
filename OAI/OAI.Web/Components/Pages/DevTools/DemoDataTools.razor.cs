@@ -46,10 +46,10 @@ public partial class DemoDataTools
             cancelText: L["Cancel"],
             confirmButtonClass: "btn btn-danger");
 
-        if (confirmed)
-        {
-            await ResetDemoDataAsync();
-        }
+        if (!confirmed)
+            return;
+
+        await ResetDemoDataAsync();
     }
 
     private async Task SeedDemoDataAsync()

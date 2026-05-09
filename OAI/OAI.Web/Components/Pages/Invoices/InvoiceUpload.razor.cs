@@ -192,10 +192,10 @@ public partial class InvoiceUpload
             cancelText: L["Cancel"],
             confirmButtonClass: "btn btn-primary");
 
-        if (confirmed)
-        {
-            await UploadAsync();
-        }
+        if (!confirmed)
+            return;
+
+        await UploadAsync();
     }
 
     private void ResetForm()

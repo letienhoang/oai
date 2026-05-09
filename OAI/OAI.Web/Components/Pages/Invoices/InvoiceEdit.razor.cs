@@ -160,10 +160,10 @@ public partial class InvoiceEdit
             cancelText: L["Cancel"],
             confirmButtonClass: "btn btn-primary");
 
-        if (confirmed)
-        {
-            await SaveAsync();
-        }
+        if (!confirmed)
+            return;
+
+        await SaveAsync();
     }
 
     private void AddLineItem()

@@ -150,10 +150,10 @@ public partial class VendorManagement
             cancelText: L["Cancel"],
             confirmButtonClass: "btn btn-primary");
 
-        if (confirmed)
-        {
-            await SaveVendorAsync();
-        }
+        if (!confirmed)
+            return;
+
+        await SaveVendorAsync();
     }
 
     private async Task SaveVendorAsync()
