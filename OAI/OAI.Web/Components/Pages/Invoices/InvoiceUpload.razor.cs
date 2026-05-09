@@ -124,6 +124,9 @@ public partial class InvoiceUpload
         ResetMessages();
         IsUploading = true;
 
+        await InvokeAsync(StateHasChanged);
+        await Task.Yield();
+
         try
         {
             Logger.LogInformation("Start uploading invoice from Blazor UI. FileName: {FileName}", SelectedFile.Name);
