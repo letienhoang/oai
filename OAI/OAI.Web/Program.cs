@@ -9,6 +9,7 @@ using OAI.Infrastructure.Persistence;
 using OAI.Web.Components;
 using OAI.Web.Endpoints;
 using OAI.Web.Localization;
+using OAI.Web.Options;
 using OAI.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,9 @@ builder.Services.AddLocalization(options =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddOptions<ApplicationInfoOptions>()
+    .Bind(builder.Configuration.GetRequiredSection("ApplicationInfo"));
 
 builder.Services.Configure<IdentitySeedOptions>(
     builder.Configuration.GetSection("IdentitySeed"));
