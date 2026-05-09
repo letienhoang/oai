@@ -34,15 +34,22 @@ public partial class DemoDataTools
 
     private string? ErrorMessage { get; set; }
 
-    private void ConfirmResetDemoData()
+    private async Task ConfirmResetDemoData()
     {
-        ConfirmDialog?.Open(
+        if (ConfirmDialog is null)
+            return;
+
+        var confirmed = await ConfirmDialog.ShowAsync(
             title: L["ConfirmResetDemoDataTitle"],
             message: L["ConfirmResetDemoDataMessage"],
             confirmText: L["ResetDemoData"],
             cancelText: L["Cancel"],
-            onConfirm: ResetDemoDataAsync,
             confirmButtonClass: "btn btn-danger");
+
+        if (confirmed)
+        {
+            await ResetDemoDataAsync();
+        }
     }
 
     private async Task SeedDemoDataAsync()

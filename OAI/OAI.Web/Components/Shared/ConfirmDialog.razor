@@ -5,7 +5,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title h5 fw-bold" id="confirm-dialog-title">@Title</h2>
-                    <button type="button" class="btn-close" aria-label="@CancelText" @onclick="Close" disabled="@IsRunning"></button>
+                    <button type="button" class="btn-close" aria-label="@CancelText" @onclick="CancelAsync"></button>
                 </div>
 
                 <div class="modal-body">
@@ -20,19 +20,13 @@
                 <div class="modal-footer">
                     <button type="button"
                             class="btn btn-outline-secondary"
-                            @onclick="Close"
-                            disabled="@IsRunning">
+                            @onclick="CancelAsync">
                         @CancelText
                     </button>
 
                     <button type="button"
                             class="@ConfirmButtonClass"
-                            @onclick="ConfirmAsync"
-                            disabled="@IsRunning">
-                        @if (IsRunning)
-                        {
-                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                        }
+                            @onclick="ConfirmAsync">
                         <span>@ConfirmText</span>
                     </button>
                 </div>

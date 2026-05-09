@@ -171,7 +171,7 @@ public partial class InvoiceUpload
         }
     }
 
-    private void ConfirmUpload()
+    private async Task ConfirmUpload()
     {
         if (SelectedFile is null)
         {
@@ -179,13 +179,20 @@ public partial class InvoiceUpload
             return;
         }
 
-        ConfirmDialog?.Open(
+        if (ConfirmDialog is null)
+            return;
+
+        var confirmed = await ConfirmDialog.ShowAsync(
             title: L["ConfirmUploadInvoiceTitle"],
             message: L["ConfirmUploadInvoiceMessage"],
             confirmText: L["UploadAndProcess"],
             cancelText: L["Cancel"],
-            onConfirm: UploadAsync,
             confirmButtonClass: "btn btn-primary");
+
+        if (confirmed)
+        {
+            await UploadAsync();
+        }
     }
 
     private void ResetForm()

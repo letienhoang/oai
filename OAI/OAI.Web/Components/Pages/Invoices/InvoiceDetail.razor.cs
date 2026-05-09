@@ -218,37 +218,58 @@ public partial class InvoiceDetail
         await ExtractionResultDetailDialog.OpenAsync(extractionResult);
     }
 
-    private void ConfirmApprove()
+    private async Task ConfirmApprove()
     {
-        ConfirmDialog?.Open(
+        if (ConfirmDialog is null)
+            return;
+
+        var confirmed = await ConfirmDialog.ShowAsync(
             title: L["ConfirmApproveInvoiceTitle"],
             message: L["ConfirmApproveInvoiceMessage"],
             confirmText: L["Confirm"],
             cancelText: L["Cancel"],
-            onConfirm: ApproveAsync,
             confirmButtonClass: "btn btn-success");
+
+        if (confirmed)
+        {
+            await ApproveAsync();
+        }
     }
 
-    private void ConfirmReject()
+    private async Task ConfirmReject()
     {
-        ConfirmDialog?.Open(
+        if (ConfirmDialog is null)
+            return;
+
+        var confirmed = await ConfirmDialog.ShowAsync(
             title: L["ConfirmRejectInvoiceTitle"],
             message: L["ConfirmRejectInvoiceMessage"],
             confirmText: L["Confirm"],
             cancelText: L["Cancel"],
-            onConfirm: RejectAsync,
             confirmButtonClass: "btn btn-danger");
+
+        if (confirmed)
+        {
+            await RejectAsync();
+        }
     }
 
-    private void ConfirmMoveToPendingReview()
+    private async Task ConfirmMoveToPendingReview()
     {
-        ConfirmDialog?.Open(
+        if (ConfirmDialog is null)
+            return;
+
+        var confirmed = await ConfirmDialog.ShowAsync(
             title: L["ConfirmMoveToPendingReviewTitle"],
             message: L["ConfirmMoveToPendingReviewMessage"],
             confirmText: L["Confirm"],
             cancelText: L["Cancel"],
-            onConfirm: MoveToPendingReviewAsync,
             confirmButtonClass: "btn btn-warning");
+
+        if (confirmed)
+        {
+            await MoveToPendingReviewAsync();
+        }
     }
 
     private async Task LoadInvoiceDetailAsync()
