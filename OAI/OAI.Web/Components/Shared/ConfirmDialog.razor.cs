@@ -9,8 +9,6 @@ public partial class ConfirmDialog
 
     private bool IsOpen { get; set; }
 
-    private bool IsRunning { get; set; }
-
     private string Title { get; set; } = string.Empty;
 
     private string? Message { get; set; }
@@ -21,53 +19,50 @@ public partial class ConfirmDialog
 
     private string ConfirmButtonClass { get; set; } = "btn btn-primary";
 
-    private Func<Task>? OnConfirm { get; set; }
+    private TaskCompletionSource<bool>? CompletionSource { get; set; }
 
-    public void Open(
+    public Task<bool> ShowAsync(
         string title,
         string? message,
         string confirmText,
         string cancelText,
-        Func<Task> onConfirm,
         string confirmButtonClass = "btn btn-primary")
     {
+        CompletionSource?.TrySetResult(false);
+
         Title = title;
         Message = message;
         ConfirmText = confirmText;
         CancelText = cancelText;
-        OnConfirm = onConfirm;
         ConfirmButtonClass = confirmButtonClass;
-        IsRunning = false;
         IsOpen = true;
+        CompletionSource = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+
         StateHasChanged();
+
+        return CompletionSource.Task;
     }
 
-    public void Close()
+    private Task CancelAsync()
     {
-        if (IsRunning)
-            return;
+        Complete(false);
 
+        return Task.CompletedTask;
+    }
+
+    private Task ConfirmAsync()
+    {
+        Complete(true);
+
+        return Task.CompletedTask;
+    }
+
+    private void Complete(bool confirmed)
+    {
+        var completionSource = CompletionSource;
+        CompletionSource = null;
         IsOpen = false;
-        OnConfirm = null;
         StateHasChanged();
-    }
-
-    private async Task ConfirmAsync()
-    {
-        if (OnConfirm is null || IsRunning)
-            return;
-
-        IsRunning = true;
-
-        try
-        {
-            await OnConfirm();
-            IsOpen = false;
-            OnConfirm = null;
-        }
-        finally
-        {
-            IsRunning = false;
-        }
+        completionSource?.TrySetResult(confirmed);
     }
 }

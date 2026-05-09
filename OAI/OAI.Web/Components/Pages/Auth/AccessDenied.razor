@@ -1,15 +1,23 @@
 @page "/access-denied"
-@attribute [Authorize]
+@layout PublicLayout
+@attribute [AllowAnonymous]
 @inject IStringLocalizer<SharedResource> L
 
 <PageTitle>@L["AccessDeniedPageTitle"]</PageTitle>
 
-<EmptyState Icon="⛔"
-            Title="@L["AccessDeniedTitle"]"
-            Message="@L["AccessDeniedDescription"]">
-    <Actions>
-        <a class="btn btn-primary" href="/">
-            @L["BackToDashboard"]
-        </a>
-    </Actions>
-</EmptyState>
+<section class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-lg-5 text-center">
+                <h1 class="h3 fw-bold text-danger mb-3">@L["AccessDeniedTitle"]</h1>
+                <p class="text-secondary mb-4">
+                    @L["AccessDeniedDescription"]
+                </p>
+
+                <a class="btn btn-primary" href="/">
+                    @L["BackToDashboard"]
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

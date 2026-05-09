@@ -148,15 +148,22 @@ public partial class InvoiceEdit
         }
     }
 
-    private void ConfirmSave()
+    private async Task ConfirmSave()
     {
-        ConfirmDialog?.Open(
+        if (ConfirmDialog is null)
+            return;
+
+        var confirmed = await ConfirmDialog.ShowAsync(
             title: L["ConfirmSaveInvoiceTitle"],
             message: L["ConfirmSaveInvoiceMessage"],
             confirmText: L["SaveAndRevalidate"],
             cancelText: L["Cancel"],
-            onConfirm: SaveAsync,
             confirmButtonClass: "btn btn-primary");
+
+        if (!confirmed)
+            return;
+
+        await SaveAsync();
     }
 
     private void AddLineItem()

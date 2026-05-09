@@ -136,17 +136,24 @@ public partial class VendorManagement
         SuccessMessage = null;
     }
 
-    private void ConfirmSaveVendor()
+    private async Task ConfirmSaveVendor()
     {
         var isEdit = FormModel.VendorId.HasValue;
 
-        ConfirmDialog?.Open(
+        if (ConfirmDialog is null)
+            return;
+
+        var confirmed = await ConfirmDialog.ShowAsync(
             title: isEdit ? L["ConfirmUpdateVendorTitle"] : L["ConfirmCreateVendorTitle"],
             message: isEdit ? L["ConfirmUpdateVendorMessage"] : L["ConfirmCreateVendorMessage"],
             confirmText: L["Save"],
             cancelText: L["Cancel"],
-            onConfirm: SaveVendorAsync,
             confirmButtonClass: "btn btn-primary");
+
+        if (!confirmed)
+            return;
+
+        await SaveVendorAsync();
     }
 
     private async Task SaveVendorAsync()
