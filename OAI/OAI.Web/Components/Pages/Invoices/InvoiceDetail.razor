@@ -97,20 +97,6 @@
     </div>
 </section>
 
-@if (!string.IsNullOrWhiteSpace(SuccessMessage))
-{
-    <div class="alert alert-success">
-        @SuccessMessage
-    </div>
-}
-
-@if (!string.IsNullOrWhiteSpace(ActionErrorMessage))
-{
-    <div class="alert alert-danger">
-        @ActionErrorMessage
-    </div>
-}
-
 @if (Invoice is not null && string.Equals(Invoice.Status, "Rejected", StringComparison.OrdinalIgnoreCase))
 {
     <div class="alert alert-warning">

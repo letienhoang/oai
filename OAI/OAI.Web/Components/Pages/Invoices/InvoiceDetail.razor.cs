@@ -45,6 +45,9 @@ public partial class InvoiceDetail
     [Inject]
     private CurrentUserAuthorizationService AuthorizationService { get; set; } = default!;
 
+    [Inject]
+    private IToastService ToastService { get; set; } = default!;
+
     private InvoiceDetailDto? Invoice { get; set; }
 
     private TimeZoneInfo UserTimeZone { get; set; } = TimeZoneInfo.Utc;
@@ -54,10 +57,6 @@ public partial class InvoiceDetail
     private string? ErrorMessage { get; set; }
 
     private bool IsApproving { get; set; }
-
-    private string? SuccessMessage { get; set; }
-
-    private string? ActionErrorMessage { get; set; }
 
     private ConfirmDialog? ConfirmDialog { get; set; }
 
@@ -191,12 +190,9 @@ public partial class InvoiceDetail
 
     private async Task GoToEditAsync()
     {
-        SuccessMessage = null;
-        ActionErrorMessage = null;
-
         if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.EditInvoices))
         {
-            ActionErrorMessage = L["EditInvoiceNotAllowed"];
+            ToastService.Error(L["EditInvoiceNotAllowed"]);
             return;
         }
 
@@ -310,12 +306,9 @@ public partial class InvoiceDetail
         if (Invoice is null)
             return;
 
-        SuccessMessage = null;
-        ActionErrorMessage = null;
-
         if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.ApproveInvoices))
         {
-            ActionErrorMessage = L["ApproveInvoiceNotAllowed"];
+            ToastService.Error(L["ApproveInvoiceNotAllowed"]);
             return;
         }
 
@@ -333,7 +326,7 @@ public partial class InvoiceDetail
                     InvoiceId = Invoice.InvoiceId
                 });
 
-            SuccessMessage = L["InvoiceApprovedSuccessfully"];
+            ToastService.Success(L["InvoiceApprovedSuccessfully"]);
 
             Logger.LogInformation(
                 "Invoice approved from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
@@ -344,7 +337,7 @@ public partial class InvoiceDetail
         }
         catch (Exception ex)
         {
-            ActionErrorMessage = L["InvoiceApproveFailed"];
+            ToastService.Error(L["InvoiceApproveFailed"]);
 
             Logger.LogError(
                 ex,
@@ -362,12 +355,9 @@ public partial class InvoiceDetail
         if (Invoice is null)
             return;
 
-        SuccessMessage = null;
-        ActionErrorMessage = null;
-
         if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.RejectInvoices))
         {
-            ActionErrorMessage = L["RejectInvoiceNotAllowed"];
+            ToastService.Error(L["RejectInvoiceNotAllowed"]);
             return;
         }
 
@@ -385,7 +375,7 @@ public partial class InvoiceDetail
                     InvoiceId = Invoice.InvoiceId
                 });
 
-            SuccessMessage = L["InvoiceRejectedSuccessfully"];
+            ToastService.Success(L["InvoiceRejectedSuccessfully"]);
 
             Logger.LogInformation(
                 "Invoice rejected from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
@@ -396,7 +386,7 @@ public partial class InvoiceDetail
         }
         catch (Exception ex)
         {
-            ActionErrorMessage = L["InvoiceRejectFailed"];
+            ToastService.Error(L["InvoiceRejectFailed"]);
 
             Logger.LogError(
                 ex,
@@ -414,12 +404,9 @@ public partial class InvoiceDetail
         if (Invoice is null)
             return;
 
-        SuccessMessage = null;
-        ActionErrorMessage = null;
-
         if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.MoveInvoicesToPendingReview))
         {
-            ActionErrorMessage = L["MoveInvoiceToPendingReviewNotAllowed"];
+            ToastService.Error(L["MoveInvoiceToPendingReviewNotAllowed"]);
             return;
         }
 
@@ -437,7 +424,7 @@ public partial class InvoiceDetail
                     InvoiceId = Invoice.InvoiceId
                 });
 
-            SuccessMessage = L["InvoiceMovedToPendingReviewSuccessfully"];
+            ToastService.Success(L["InvoiceMovedToPendingReviewSuccessfully"]);
 
             Logger.LogInformation(
                 "Invoice moved to pending review from detail page. InvoiceId: {InvoiceId}, Status: {Status}",
@@ -448,7 +435,7 @@ public partial class InvoiceDetail
         }
         catch (Exception ex)
         {
-            ActionErrorMessage = L["InvoiceMoveToPendingReviewFailed"];
+            ToastService.Error(L["InvoiceMoveToPendingReviewFailed"]);
 
             Logger.LogError(
                 ex,

@@ -44,6 +44,9 @@ public partial class InvoiceUpload
     [Inject]
     private CurrentUserAuthorizationService AuthorizationService { get; set; } = default!;
 
+    [Inject]
+    private IToastService ToastService { get; set; } = default!;
+
     private IBrowserFile? SelectedFile { get; set; }
 
     private string? SelectedFileName { get; set; }
@@ -55,8 +58,6 @@ public partial class InvoiceUpload
     private bool CanUpload => SelectedFile is not null && string.IsNullOrWhiteSpace(ErrorMessage);
 
     private string? ErrorMessage { get; set; }
-
-    private string? SuccessMessage { get; set; }
 
     private InvoiceUploadResultDto? UploadResult { get; set; }
 
@@ -111,7 +112,7 @@ public partial class InvoiceUpload
     {
         if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.UploadInvoices))
         {
-            ErrorMessage = L["UploadNotAllowed"];
+            ToastService.Error(L["UploadNotAllowed"]);
             return;
         }
 
@@ -140,17 +141,17 @@ public partial class InvoiceUpload
 
             if (UploadResult.Status.Equals("Processed", StringComparison.OrdinalIgnoreCase))
             {
-                SuccessMessage = LocalizedMessageResolver.Resolve(
+                ToastService.Success(LocalizedMessageResolver.Resolve(
                     UploadResult.MessageCode,
                     UploadResult.MessageParameters,
-                    UploadResult.Message);
+                    UploadResult.Message));
             }
             else
             {
-                ErrorMessage = LocalizedMessageResolver.Resolve(
+                ToastService.Error(LocalizedMessageResolver.Resolve(
                     UploadResult.MessageCode,
                     UploadResult.MessageParameters,
-                    UploadResult.Message);
+                    UploadResult.Message));
             }
 
             Logger.LogInformation(
@@ -161,7 +162,7 @@ public partial class InvoiceUpload
         }
         catch (Exception ex)
         {
-            ErrorMessage = L["InvoiceUploadFailed"];
+            ToastService.Error(L["InvoiceUploadFailed"]);
 
             Logger.LogError(
                 ex,
@@ -222,10 +223,10 @@ public partial class InvoiceUpload
 
     private Task HandleUploadVendorCreatedAsync(VendorListItemDto vendor)
     {
-        SuccessMessage = string.Format(
+        ToastService.Success(string.Format(
             CultureInfo.CurrentCulture,
             L["VendorCreatedSuccessfullyWithName"].Value,
-            vendor.Name);
+            vendor.Name));
 
         return Task.CompletedTask;
     }
@@ -243,7 +244,6 @@ public partial class InvoiceUpload
     private void ResetMessages()
     {
         ErrorMessage = null;
-        SuccessMessage = null;
     }
 
     private string LocalizeMessage(

@@ -29,6 +29,9 @@ public partial class VendorManagement
     [Inject]
     private ILogger<VendorManagement> Logger { get; set; } = default!;
 
+    [Inject]
+    private IToastService ToastService { get; set; } = default!;
+
     private List<VendorListItemDto> Vendors { get; set; } = new();
 
     private VendorFormModel FormModel { get; set; } = new();
@@ -52,8 +55,6 @@ public partial class VendorManagement
     private string? ErrorMessage { get; set; }
 
     private string? FormErrorMessage { get; set; }
-
-    private string? SuccessMessage { get; set; }
 
     private ConfirmDialog? ConfirmDialog { get; set; }
 
@@ -115,7 +116,6 @@ public partial class VendorManagement
     {
         FormModel = new VendorFormModel();
         FormErrorMessage = null;
-        SuccessMessage = null;
     }
 
     private void StartEdit(VendorListItemDto vendor)
@@ -133,7 +133,6 @@ public partial class VendorManagement
         };
 
         FormErrorMessage = null;
-        SuccessMessage = null;
     }
 
     private async Task ConfirmSaveVendor()
@@ -160,12 +159,11 @@ public partial class VendorManagement
     {
         if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.ManageVendors))
         {
-            FormErrorMessage = L["ManageVendorsNotAllowed"];
+            ToastService.Error(L["ManageVendorsNotAllowed"]);
             return;
         }
 
         FormErrorMessage = null;
-        SuccessMessage = null;
 
         if (string.IsNullOrWhiteSpace(FormModel.Name))
         {
@@ -188,9 +186,9 @@ public partial class VendorManagement
                     Address = FormModel.Address
                 });
 
-            SuccessMessage = isEdit
+            ToastService.Success(isEdit
                 ? L["VendorUpdatedSuccessfully"]
-                : L["VendorCreatedSuccessfully"];
+                : L["VendorCreatedSuccessfully"]);
 
             FormModel = new VendorFormModel
             {
@@ -205,7 +203,7 @@ public partial class VendorManagement
         }
         catch (Exception ex)
         {
-            FormErrorMessage = L["VendorSaveFailed"];
+            ToastService.Error(L["VendorSaveFailed"]);
             Logger.LogError(ex, "Failed to save vendor {VendorId}", FormModel.VendorId);
         }
         finally

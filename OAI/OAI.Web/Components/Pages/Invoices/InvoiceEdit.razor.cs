@@ -41,6 +41,9 @@ public partial class InvoiceEdit
     [Inject]
     private CurrentUserAuthorizationService AuthorizationService { get; set; } = default!;
 
+    [Inject]
+    private IToastService ToastService { get; set; } = default!;
+
     protected InvoiceEditFormModel EditModel { get; private set; } = new();
 
     private EditContext EditContext { get; set; } = default!;
@@ -54,8 +57,6 @@ public partial class InvoiceEdit
     private string? ErrorMessage { get; set; }
 
     private string? FormErrorMessage { get; set; }
-
-    private string? SuccessMessage { get; set; }
 
     private List<VendorOptionDto> VendorOptions { get; set; } = new();
 
@@ -74,11 +75,10 @@ public partial class InvoiceEdit
     protected async Task SaveAsync()
     {
         FormErrorMessage = null;
-        SuccessMessage = null;
 
         if (!await AuthorizationService.IsAuthorizedAsync(ApplicationPolicies.EditInvoices))
         {
-            FormErrorMessage = L["EditInvoiceNotAllowed"];
+            ToastService.Error(L["EditInvoiceNotAllowed"]);
             return;
         }
 
@@ -127,7 +127,7 @@ public partial class InvoiceEdit
 
             var updated = await UpdateInvoiceUseCase.ExecuteAsync(request);
 
-            SuccessMessage = L["InvoiceSavedAndRevalidatedSuccessfully"];
+            ToastService.Success(L["InvoiceSavedAndRevalidatedSuccessfully"]);
 
             Logger.LogInformation(
                 "Invoice edit form saved successfully. InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}",
@@ -138,7 +138,7 @@ public partial class InvoiceEdit
         }
         catch (Exception ex)
         {
-            FormErrorMessage = L["InvoiceSaveFailed"];
+            ToastService.Error(L["InvoiceSaveFailed"]);
 
             Logger.LogError(ex, "Failed to save invoice edit form. InvoiceId: {InvoiceId}", EditModel.InvoiceId);
         }
@@ -210,10 +210,10 @@ public partial class InvoiceEdit
 
         EditModel.VendorIdText = vendor.VendorId.ToString();
 
-        SuccessMessage = string.Format(
+        ToastService.Success(string.Format(
             CultureInfo.CurrentCulture,
             L["VendorCreatedAndSelected"].Value,
-            vendor.Name);
+            vendor.Name));
 
         ValidateEditModel();
         EditContext.NotifyValidationStateChanged();
@@ -223,7 +223,6 @@ public partial class InvoiceEdit
     {
         ErrorMessage = null;
         FormErrorMessage = null;
-        SuccessMessage = null;
         IsLoading = true;
 
         try

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Localization;
 using OAI.Infrastructure.DemoData;
 using OAI.Web.Components.Shared;
 using OAI.Web.Localization;
+using OAI.Web.Services;
 
 namespace OAI.Web.Components.Pages.DevTools;
 
@@ -20,6 +21,9 @@ public partial class DemoDataTools
     [Inject]
     private ILogger<DemoDataTools> Logger { get; set; } = default!;
 
+    [Inject]
+    private IToastService ToastService { get; set; } = default!;
+
     private bool IsDevelopment => Environment.IsDevelopment();
 
     private bool IsSeeding { get; set; }
@@ -31,8 +35,6 @@ public partial class DemoDataTools
     private DemoDataResetResult? ResetResult { get; set; }
 
     private ConfirmDialog? ConfirmDialog { get; set; }
-
-    private string? ErrorMessage { get; set; }
 
     private async Task ConfirmResetDemoData()
     {
@@ -58,17 +60,17 @@ public partial class DemoDataTools
             return;
 
         IsSeeding = true;
-        ErrorMessage = null;
 
         try
         {
             SeedResult = await DemoDataSeeder.SeedAsync();
             ResetResult = null;
+            ToastService.Success(L["DemoDataSeedResult"]);
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Unable to seed demo data from dev tools page.");
-            ErrorMessage = L["DemoDataSeedFailed"];
+            ToastService.Error(L["DemoDataSeedFailed"]);
         }
         finally
         {
@@ -82,17 +84,17 @@ public partial class DemoDataTools
             return;
 
         IsResetting = true;
-        ErrorMessage = null;
 
         try
         {
             ResetResult = await DemoDataSeeder.ResetAsync();
             SeedResult = null;
+            ToastService.Success(L["DemoDataResetResult"]);
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Unable to reset demo data from dev tools page.");
-            ErrorMessage = L["DemoDataResetFailed"];
+            ToastService.Error(L["DemoDataResetFailed"]);
         }
         finally
         {
