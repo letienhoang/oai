@@ -17,7 +17,9 @@
 
         <AuthorizeView Policy="@ApplicationPolicies.ViewDashboard">
             <NavLink class="nav-link app-nav-link" href="/" Match="NavLinkMatch.All">
-                <span class="nav-icon">📊</span>
+                <span class="nav-icon">
+                    <Icon Name="mdi:view-dashboard-outline" Size="20" />
+                </span>
                 <span>@L["Dashboard"]</span>
             </NavLink>
         </AuthorizeView>
@@ -28,28 +30,36 @@
 
         <AuthorizeView Policy="@ApplicationPolicies.UploadInvoices">
             <NavLink class="nav-link app-nav-link" href="/invoices/upload">
-                <span class="nav-icon">⬆️</span>
+                <span class="nav-icon">
+                    <Icon Name="mdi:upload-outline" Size="20" />
+                </span>
                 <span>@L["UploadInvoice"]</span>
             </NavLink>
         </AuthorizeView>
 
         <AuthorizeView Policy="@ApplicationPolicies.ViewInvoices">
             <NavLink class="nav-link app-nav-link" href="/invoices">
-                <span class="nav-icon">🧾</span>
+                <span class="nav-icon">
+                    <Icon Name="mdi:file-document-outline" Size="20" />
+                </span>
                 <span>@L["InvoiceList"]</span>
             </NavLink>
         </AuthorizeView>
 
         <AuthorizeView Policy="@ApplicationPolicies.ViewValidationIssues">
             <NavLink class="nav-link app-nav-link" href="/invoices/validation">
-                <span class="nav-icon">✅</span>
+                <span class="nav-icon">
+                    <Icon Name="mdi:check-circle-outline" Size="20" />
+                </span>
                 <span>@L["DataValidation"]</span>
             </NavLink>
         </AuthorizeView>
 
         <AuthorizeView Policy="@ApplicationPolicies.ViewVendors">
             <NavLink class="nav-link app-nav-link" href="/vendors">
-                <span class="nav-icon">🏢</span>
+                <span class="nav-icon">
+                    <Icon Name="mdi:office-building-outline" Size="20" />
+                </span>
                 <span>@L["Vendors"]</span>
             </NavLink>
         </AuthorizeView>
@@ -60,14 +70,18 @@
 
         <AuthorizeView Policy="@ApplicationPolicies.ViewAuditLogs">
             <NavLink class="nav-link app-nav-link" href="/audit-logs">
-                <span class="nav-icon">🕘</span>
+                <span class="nav-icon">
+                    <Icon Name="mdi:history" Size="20" />
+                </span>
                 <span>@L["AuditLogs"]</span>
             </NavLink>
         </AuthorizeView>
 
         <AuthorizeView Policy="@ApplicationPolicies.ViewSettings">
             <NavLink class="nav-link app-nav-link" href="/settings">
-                <span class="nav-icon">⚙️</span>
+                <span class="nav-icon">
+                    <Icon Name="mdi:cog-outline" Size="20" />
+                </span>
                 <span>@L["Settings"]</span>
             </NavLink>
         </AuthorizeView>
@@ -76,7 +90,9 @@
         {
             <AuthorizeView Roles="@ApplicationRoles.Administrator">
                 <NavLink class="nav-link app-nav-link" href="/dev-tools/demo-data">
-                    <span class="nav-icon">🧪</span>
+                    <span class="nav-icon">
+                        <Icon Name="mdi:test-tube" Size="20" />
+                    </span>
                     <span>@L["DemoDataToolsTitle"]</span>
                 </NavLink>
             </AuthorizeView>
