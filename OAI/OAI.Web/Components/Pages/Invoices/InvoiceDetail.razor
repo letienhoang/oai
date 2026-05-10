@@ -17,24 +17,36 @@
         </div>
 
         <div class="d-flex flex-wrap gap-2 align-items-start">
-            <button class="btn btn-outline-secondary oai-icon-button" @onclick="GoBack">
+            <button class="btn btn-outline-secondary oai-icon-only-button"
+                    title="@L["BackToList"]"
+                    aria-label="@L["BackToList"]"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    @onclick="GoBack">
                 <Icon Name="mdi:arrow-left" Size="18" />
-                <span>@L["BackToList"]</span>
             </button>
 
             @if (Invoice is not null)
             {
-                <button class="btn btn-outline-primary oai-icon-button" @onclick="GoToCompare">
+                <button class="btn btn-outline-primary oai-icon-only-button"
+                        title="@L["CompareOcrAi"]"
+                        aria-label="@L["CompareOcrAi"]"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        @onclick="GoToCompare">
                     <Icon Name="mdi:compare-horizontal" Size="18" />
-                    <span>@L["CompareOcrAi"]</span>
                 </button>
 
                 <AuthorizeView Policy="@ApplicationPolicies.EditInvoices">
                     @if (CanShowEditButton)
                     {
-                        <button class="btn btn-outline-secondary oai-icon-button" @onclick="GoToEditAsync">
+                        <button class="btn btn-outline-secondary oai-icon-only-button"
+                                title="@L["Edit"]"
+                                aria-label="@L["Edit"]"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                @onclick="GoToEditAsync">
                             <Icon Name="mdi:pencil-outline" Size="18" />
-                            <span>@L["Edit"]</span>
                         </button>
                     }
                 </AuthorizeView>
@@ -42,18 +54,21 @@
                 <AuthorizeView Policy="@ApplicationPolicies.ApproveInvoices">
                     @if (CanShowApproveButton)
                     {
-                        <button class="btn btn-success oai-icon-button"
+                        <button class="btn btn-success oai-icon-only-button"
+                                title="@L["ApproveInvoice"]"
+                                aria-label="@L["ApproveInvoice"]"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
                                 disabled="@IsApproving"
                                 @onclick="ConfirmApprove">
                             @if (IsApproving)
                             {
-                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                                <span>@L["Approving"]</span>
+                                <span class="spinner-border spinner-border-sm" role="status"></span>
+                                <span class="visually-hidden">@L["Approving"]</span>
                             }
                             else
                             {
                                 <Icon Name="mdi:check-circle-outline" Size="18" />
-                                <span>@L["ApproveInvoice"]</span>
                             }
                         </button>
                     }
@@ -62,18 +77,21 @@
                 <AuthorizeView Policy="@ApplicationPolicies.MoveInvoicesToPendingReview">
                     @if (CanShowMoveToPendingReviewButton)
                     {
-                        <button class="btn btn-outline-warning oai-icon-button"
+                        <button class="btn btn-outline-warning oai-icon-only-button"
+                                title="@L["MoveToPendingReview"]"
+                                aria-label="@L["MoveToPendingReview"]"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
                                 disabled="@IsMovingToPendingReview"
                                 @onclick="ConfirmMoveToPendingReview">
                             @if (IsMovingToPendingReview)
                             {
-                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                                <span>@L["Moving"]</span>
+                                <span class="spinner-border spinner-border-sm" role="status"></span>
+                                <span class="visually-hidden">@L["Moving"]</span>
                             }
                             else
                             {
                                 <Icon Name="mdi:restore" Size="18" />
-                                <span>@L["MoveToPendingReview"]</span>
                             }
                         </button>
                     }
@@ -82,18 +100,21 @@
                 <AuthorizeView Policy="@ApplicationPolicies.RejectInvoices">
                     @if (CanShowRejectButton)
                     {
-                        <button class="btn btn-outline-danger oai-icon-button"
+                        <button class="btn btn-outline-danger oai-icon-only-button"
+                                title="@L["Reject"]"
+                                aria-label="@L["Reject"]"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
                                 disabled="@IsRejecting"
                                 @onclick="ConfirmReject">
                             @if (IsRejecting)
                             {
-                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                                <span>@L["Rejecting"]</span>
+                                <span class="spinner-border spinner-border-sm" role="status"></span>
+                                <span class="visually-hidden">@L["Rejecting"]</span>
                             }
                             else
                             {
                                 <Icon Name="mdi:close-circle-outline" Size="18" />
-                                <span>@L["Reject"]</span>
                             }
                         </button>
                     }
