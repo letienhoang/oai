@@ -104,10 +104,14 @@
                                         @if (CanManageVendors)
                                         {
                                             <td class="text-end">
-                                                <button class="btn btn-sm btn-outline-primary"
+                                                <button class="btn btn-sm btn-outline-primary oai-icon-only-button"
+                                                        title="@L["Edit"]"
+                                                        aria-label="@L["Edit"]"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
                                                         @onclick="() => StartEdit(vendor)"
                                                         disabled="@IsSaving">
-                                                    @L["Edit"]
+                                                    <Icon Name="mdi:pencil-outline" Size="16" />
                                                 </button>
                                             </td>
                                         }

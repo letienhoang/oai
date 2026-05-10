@@ -171,9 +171,13 @@
                             </td>
 
                             <td class="text-end">
-                                <button class="btn btn-sm btn-outline-primary"
+                                <button class="btn btn-sm btn-outline-primary oai-icon-only-button"
+                                        title="@L["Detail"]"
+                                        aria-label="@L["Detail"]"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
                                         @onclick="() => GoToDetail(invoice.InvoiceId)">
-                                    @L["Detail"]
+                                    <Icon Name="mdi:eye-outline" Size="16" />
                                 </button>
                             </td>
                         </tr>

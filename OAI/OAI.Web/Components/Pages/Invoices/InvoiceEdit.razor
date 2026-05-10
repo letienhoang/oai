@@ -178,10 +178,14 @@
 
                                             <td class="text-end">
                                                 <button type="button"
-                                                        class="btn btn-sm btn-outline-danger"
+                                                        class="btn btn-sm btn-outline-danger oai-icon-only-button"
+                                                        title="@L["Delete"]"
+                                                        aria-label="@L["Delete"]"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
                                                         @onclick="() => RemoveLineItem(index)"
                                                         disabled="@(EditModel.LineItems.Count <= 1)">
-                                                    @L["Delete"]
+                                                    <Icon Name="mdi:trash-can-outline" Size="16" />
                                                 </button>
                                             </td>
                                         </tr>
