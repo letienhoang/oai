@@ -16,6 +16,8 @@
                 <div class="d-flex align-items-center gap-3">
                     <button type="button"
                             class="btn btn-sm btn-outline-secondary"
+                            aria-label="@(IsSidebarCollapsed ? L["ExpandSidebar"] : L["CollapseSidebar"])"
+                            title="@(IsSidebarCollapsed ? L["ExpandSidebar"] : L["CollapseSidebar"])"
                             @onclick="ToggleSidebar">
                         @(IsSidebarCollapsed ? "☰" : "←")
                     </button>
@@ -69,7 +71,7 @@
 
         <footer class="app-footer border-top bg-white">
             <div class="px-4 py-3 text-secondary small">
-                @ApplicationInfo.Name v@(ApplicationInfo.Version) &middot; Developed by @ApplicationInfo.AuthorName &middot; @ApplicationInfo.Description
+                @L["ApplicationFooter", ApplicationInfo.Name, ApplicationInfo.Version, ApplicationInfo.AuthorName, ApplicationInfo.Description]
             </div>
         </footer>
     </section>

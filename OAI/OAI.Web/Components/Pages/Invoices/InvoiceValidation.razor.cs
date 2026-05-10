@@ -145,6 +145,17 @@ public partial class InvoiceValidation
         };
     }
 
+    private string LocalizeSeverity(string severity)
+    {
+        return severity.ToLowerInvariant() switch
+        {
+            "info" => L["Info"],
+            "warning" => L["Warning"],
+            "error" => L["Error"],
+            _ => severity
+        };
+    }
+
     private async Task LoadIssuesAsync()
     {
         ErrorMessage = null;

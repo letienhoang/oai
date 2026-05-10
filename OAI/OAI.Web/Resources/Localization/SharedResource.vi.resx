@@ -132,6 +132,18 @@
   <data name="EnvironmentDevelopment" xml:space="preserve">
         <value>Phát triển</value>
     </data>
+  <data name="ApplicationFooter" xml:space="preserve">
+        <value>{0} v{1} · Phát triển bởi {2} · {3}</value>
+    </data>
+  <data name="CollapseSidebar" xml:space="preserve">
+        <value>Thu gọn thanh bên</value>
+    </data>
+  <data name="ExpandSidebar" xml:space="preserve">
+        <value>Mở rộng thanh bên</value>
+    </data>
+  <data name="CheckingAuthorization" xml:space="preserve">
+        <value>Đang kiểm tra quyền truy cập...</value>
+    </data>
   <data name="PageNotFoundTitle" xml:space="preserve">
         <value>Không tìm thấy trang - OAI</value>
     </data>
@@ -563,6 +575,18 @@
     </data>
   <data name="Success" xml:space="preserve">
         <value>Thành công</value>
+    </data>
+  <data name="Error" xml:space="preserve">
+        <value>Lỗi</value>
+    </data>
+  <data name="Warning" xml:space="preserve">
+        <value>Cảnh báo</value>
+    </data>
+  <data name="Info" xml:space="preserve">
+        <value>Thông tin</value>
+    </data>
+  <data name="Notification" xml:space="preserve">
+        <value>Thông báo</value>
     </data>
   <data name="Failed" xml:space="preserve">
         <value>Thất bại</value>

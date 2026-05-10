@@ -1,5 +1,6 @@
 @implements IDisposable
 @inject IToastService ToastService
+@inject IStringLocalizer<SharedResource> L
 
 @if (ToastService.Toasts.Count > 0)
 {
@@ -12,7 +13,7 @@
                     <strong class="me-auto">@GetTitle(toast)</strong>
                     <button type="button"
                             class="btn-close"
-                            aria-label="Close"
+                            aria-label="@L["Close"]"
                             @onclick="() => ToastService.Remove(toast.Id)">
                     </button>
                 </div>

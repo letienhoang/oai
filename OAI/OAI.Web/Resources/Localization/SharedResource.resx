@@ -132,6 +132,18 @@
   <data name="EnvironmentDevelopment" xml:space="preserve">
         <value>Development</value>
     </data>
+  <data name="ApplicationFooter" xml:space="preserve">
+        <value>{0} v{1} · Developed by {2} · {3}</value>
+    </data>
+  <data name="CollapseSidebar" xml:space="preserve">
+        <value>Collapse sidebar</value>
+    </data>
+  <data name="ExpandSidebar" xml:space="preserve">
+        <value>Expand sidebar</value>
+    </data>
+  <data name="CheckingAuthorization" xml:space="preserve">
+        <value>Checking authorization...</value>
+    </data>
   <data name="PageNotFoundTitle" xml:space="preserve">
         <value>Page not found - OAI</value>
     </data>
@@ -563,6 +575,18 @@
     </data>
   <data name="Success" xml:space="preserve">
         <value>Success</value>
+    </data>
+  <data name="Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+  <data name="Warning" xml:space="preserve">
+        <value>Warning</value>
+    </data>
+  <data name="Info" xml:space="preserve">
+        <value>Info</value>
+    </data>
+  <data name="Notification" xml:space="preserve">
+        <value>Notification</value>
     </data>
   <data name="Failed" xml:space="preserve">
         <value>Failed</value>

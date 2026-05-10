@@ -30,7 +30,7 @@ public partial class ToastContainer
         return $"oai-toast-indicator bg-{GetTypeClass(type)}";
     }
 
-    private static string GetTitle(ToastMessage toast)
+    private string GetTitle(ToastMessage toast)
     {
         if (!string.IsNullOrWhiteSpace(toast.Title))
         {
@@ -39,11 +39,11 @@ public partial class ToastContainer
 
         return toast.Type switch
         {
-            ToastType.Success => "Success",
-            ToastType.Error => "Error",
-            ToastType.Warning => "Warning",
-            ToastType.Info => "Info",
-            _ => "Notification"
+            ToastType.Success => L["Success"],
+            ToastType.Error => L["Error"],
+            ToastType.Warning => L["Warning"],
+            ToastType.Info => L["Info"],
+            _ => L["Notification"]
         };
     }
 
