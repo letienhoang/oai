@@ -93,11 +93,14 @@
                     <h2 class="h5 fw-bold mb-1">@L["QuickCreateVendorTitle"]</h2>
                     <p class="text-secondary small mb-3">@L["QuickCreateVendorDescription"]</p>
                     <button type="button"
-                            class="btn btn-sm btn-outline-primary oai-icon-button"
+                            class="btn btn-sm btn-outline-primary oai-icon-only-button"
+                            title="@L["QuickCreateVendor"]"
+                            aria-label="@L["QuickCreateVendor"]"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
                             @onclick="OpenQuickCreateVendorDialog"
                             disabled="@IsUploading">
-                        <Icon Name="mdi:plus" Size="16" />
-                        <span>@L["QuickCreateVendor"]</span>
+                        <Icon Name="mdi:plus" Size="18" />
                     </button>
                 </div>
             </div>

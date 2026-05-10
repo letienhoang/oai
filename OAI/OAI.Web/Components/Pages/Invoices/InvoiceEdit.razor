@@ -49,10 +49,14 @@
                                     <label class="form-label mb-0">@L["Vendor"]</label>
                                     <AuthorizeView Policy="@ApplicationPolicies.ManageVendors" Context="_">
                                         <button type="button"
-                                                class="btn btn-sm btn-outline-primary"
+                                                class="btn btn-sm btn-outline-primary oai-icon-only-button"
+                                                title="@L["QuickCreateVendor"]"
+                                                aria-label="@L["QuickCreateVendor"]"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
                                                 @onclick="OpenQuickCreateVendorDialog"
                                                 disabled="@IsSaving">
-                                            @L["QuickCreateVendor"]
+                                            <Icon Name="mdi:plus" Size="18" />
                                         </button>
                                     </AuthorizeView>
                                 </div>
