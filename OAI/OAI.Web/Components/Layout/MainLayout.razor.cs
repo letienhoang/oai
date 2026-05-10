@@ -2,6 +2,8 @@
 
 public partial class MainLayout
 {
+    private OAI.Web.Options.ApplicationInfoOptions ApplicationInfo => ApplicationInfoOptions.Value;
+
     private bool IsSidebarCollapsed { get; set; }
 
     private SidebarSize CurrentSidebarSize { get; set; } = SidebarSize.Normal;

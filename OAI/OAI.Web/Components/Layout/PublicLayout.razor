@@ -1,5 +1,6 @@
 @inherits LayoutComponentBase
 @inject IStringLocalizer<SharedResource> L
+@inject IOptions<ApplicationInfoOptions> ApplicationInfoOptions
 
 <div class="public-layout min-vh-100 d-flex flex-column">
     <header class="public-header border-bottom bg-white">
@@ -23,7 +24,7 @@
 
     <footer class="public-footer border-top bg-white">
         <div class="container py-3 text-secondary small">
-            &copy; @DateTime.Now.Year @L["AppName"]
+            @ApplicationInfoOptions.Value.Name v@(ApplicationInfoOptions.Value.Version) &middot; Developed by @ApplicationInfoOptions.Value.AuthorName &middot; @ApplicationInfoOptions.Value.Description
         </div>
     </footer>
 </div>

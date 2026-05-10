@@ -1,5 +1,6 @@
 @inherits LayoutComponentBase
 @inject IStringLocalizer<SharedResource> L
+@inject IOptions<ApplicationInfoOptions> ApplicationInfoOptions
 
 <div class="@AppShellClass" style="@SidebarStyle">
     @if (!IsSidebarCollapsed)
@@ -65,5 +66,11 @@
         <main class="app-content flex-grow-1 p-4">
             @Body
         </main>
+
+        <footer class="app-footer border-top bg-white">
+            <div class="px-4 py-3 text-secondary small">
+                @ApplicationInfo.Name v@(ApplicationInfo.Version) &middot; Developed by @ApplicationInfo.AuthorName &middot; @ApplicationInfo.Description
+            </div>
+        </footer>
     </section>
 </div>

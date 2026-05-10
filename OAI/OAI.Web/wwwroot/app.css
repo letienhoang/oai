@@ -22,6 +22,7 @@ h1:focus {
     background: #f5f7fb;
 }
 
+.app-footer,
 .public-header,
 .public-footer {
     flex-shrink: 0;
