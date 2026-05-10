@@ -139,6 +139,25 @@ h1:focus {
     white-space: nowrap;
 }
 
+.invoice-detail-heading {
+    max-width: 44rem;
+}
+
+.invoice-detail-summary {
+    min-width: min(100%, 28rem);
+}
+
+.invoice-detail-summary-item {
+    min-width: 8.75rem;
+    padding: 0.875rem 1rem;
+}
+
+@media (min-width: 1200px) {
+    .invoice-detail-summary {
+        justify-content: flex-end;
+    }
+}
+
 .oai-toast-container {
     z-index: 1080;
 }
