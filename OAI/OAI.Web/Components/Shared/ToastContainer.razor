@@ -1,0 +1,25 @@
+@implements IDisposable
+@inject IToastService ToastService
+
+@if (ToastService.Toasts.Count > 0)
+{
+    <div class="toast-container position-fixed top-0 end-0 p-3 oai-toast-container" aria-live="polite" aria-atomic="true">
+        @foreach (var toast in ToastService.Toasts)
+        {
+            <div @key="toast.Id" class="@GetToastClass(toast.Type)" role="@GetRole(toast.Type)">
+                <div class="toast-header">
+                    <span class="@GetIndicatorClass(toast.Type)" aria-hidden="true"></span>
+                    <strong class="me-auto">@GetTitle(toast)</strong>
+                    <button type="button"
+                            class="btn-close"
+                            aria-label="Close"
+                            @onclick="() => ToastService.Remove(toast.Id)">
+                    </button>
+                </div>
+                <div class="toast-body">
+                    @toast.Message
+                </div>
+            </div>
+        }
+    </div>
+}

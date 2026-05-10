@@ -73,6 +73,7 @@ builder.Services.AddScoped<UserTimeZoneService>();
 builder.Services.AddScoped<ICurrentUserContext, CurrentUserContext>();
 builder.Services.AddScoped<CurrentUserAuthorizationService>();
 builder.Services.AddScoped<LocalizedMessageResolver>();
+builder.Services.AddScoped<IToastService, ToastService>();
 
 var app = builder.Build();
 
