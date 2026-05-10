@@ -85,3 +85,7 @@ Notes:
 ## Follow-up Tasks
 
 None required for T86.
+
+## Documentation Follow-up
+
+- T87 updated `README.md` and added `RELEASE_NOTES_v1.1.0.md` to document the v1.1.0 UI/UX and workflow stabilization release.

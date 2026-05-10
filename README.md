@@ -4,6 +4,11 @@ OAI is a graduation thesis project that implements a web-based invoice processin
 
 The system allows users to upload invoice images, extract text using OCR, parse invoice information into structured data, validate invoice consistency, manually review or correct extracted data, approve or reject invoices, and track all important changes through audit logs.
 
+## Current version
+
+- Current version: 1.1.0
+- Focus: UI/UX polish, public layout separation, toast notifications, icon buttons, tooltip support, localization updates, regression testing.
+
 ## Thesis topic
 
 **English:** Design and implementation of an invoice processing system using OCR and AI-assisted information extraction.
@@ -29,6 +34,8 @@ The system allows users to upload invoice images, extract text using OCR, parse 
 - Tesseract OCR
 - OpenAI API for LLM-based invoice parsing
 - Bootstrap 5
+- Iconify
+- Blazor Server interactivity
 - xUnit for unit tests
 
 ## Solution structure
@@ -110,6 +117,8 @@ Contains the Blazor UI.
 Main screens:
 
 - Login / logout
+- Public login layout
+- Public not-found/access-denied pages
 - Dashboard
 - Upload invoice
 - Invoice list
@@ -122,6 +131,8 @@ Main screens:
 - Settings
 - Demo data tools in Development
 - System health tools in Development
+- Toast notifications
+- Icon-based navigation/actions
 
 ## Main features
 
@@ -207,7 +218,23 @@ The UI supports English and Vietnamese using `.resx` resource files.
 
 - Default language: English
 - Supported languages: English, Vietnamese
-- Language switcher is available in the top bar
+- Language switcher is available in both authenticated and public layouts.
+- English and Vietnamese resources are updated for v1.1.0.
+
+### v1.1.0 highlights
+
+- ConfirmDialog async callback issue fixed.
+- Login, NotFound, and AccessDenied separated from MainLayout using PublicLayout.
+- ApplicationInfo configuration added.
+- Footer shows application metadata/version.
+- Bootstrap Toast service/container added.
+- Common action alerts replaced with toast notifications.
+- Iconify rendering support added.
+- Sidebar, navigation, action, and table buttons converted to icons.
+- Bootstrap tooltip initialization added.
+- Invoice Detail header and Overview tab improved.
+- Localization resources updated.
+- Main workflows regression-tested.
 
 ### Filtering and paging
 
@@ -393,18 +420,21 @@ dotnet test OAI.Application.Tests/OAI.Application.Tests.csproj
 
 A recommended demo flow:
 
-1. Log in as Administrator or Accountant.
-2. Open Dashboard and show date range filters.
-3. Upload a sample invoice image.
-4. Open Invoice List and use filters.
-5. Open Invoice Detail.
-6. Show Overview, Line Items, Validation, and Extraction History tabs.
-7. Open extraction result detail to show raw OCR text and structured JSON.
-8. Edit invoice data and revalidate.
-9. Approve or reject the invoice.
-10. Open Audit Logs and view audit detail dialog.
-11. Switch language between English and Vietnamese.
-12. Open system settings or health tools in Development.
+1. Verify public Login page does not expose internal navigation.
+2. Log in as Administrator or Accountant.
+3. Open Dashboard and show date range filters.
+4. Upload a sample invoice image and confirm upload feedback appears immediately.
+5. Verify toast notifications.
+6. Open Invoice List and use filters.
+7. Open Invoice Detail.
+8. Show Overview, Line Items, Validation, and Extraction History tabs.
+9. Verify icon tooltips.
+10. Open extraction result detail to show raw OCR text and structured JSON.
+11. Edit invoice data and revalidate.
+12. Approve or reject the invoice.
+13. Open Audit Logs and view audit detail dialog.
+14. Verify English/Vietnamese switching on public and authenticated pages.
+15. Open system settings or health tools in Development.
 
 ## Current thesis contribution
 
