@@ -57,7 +57,7 @@
                 }
 
                 <div class="d-flex gap-2 mt-4">
-                    <button class="btn btn-primary"
+                    <button class="btn btn-primary oai-icon-button"
                             disabled="@(!CanUpload || IsUploading)"
                             @onclick="ConfirmUpload">
                         @if (IsUploading)
@@ -67,14 +67,17 @@
                         }
                         else
                         {
+                            <Icon Name="mdi:cloud-upload-outline" Size="18" />
                             <span>@L["UploadAndProcess"]</span>
                         }
                     </button>
 
-                    <button class="btn btn-outline-secondary"
+                    <button class="btn btn-outline-secondary oai-icon-only-button"
+                            title="@L["Reset"]"
+                            aria-label="@L["Reset"]"
                             disabled="@IsUploading"
                             @onclick="ResetForm">
-                        @L["Reset"]
+                        <Icon Name="mdi:refresh" Size="18" />
                     </button>
                 </div>
             </div>
@@ -88,10 +91,11 @@
                     <h2 class="h5 fw-bold mb-1">@L["QuickCreateVendorTitle"]</h2>
                     <p class="text-secondary small mb-3">@L["QuickCreateVendorDescription"]</p>
                     <button type="button"
-                            class="btn btn-sm btn-outline-primary"
+                            class="btn btn-sm btn-outline-primary oai-icon-button"
                             @onclick="OpenQuickCreateVendorDialog"
                             disabled="@IsUploading">
-                        @L["QuickCreateVendor"]
+                        <Icon Name="mdi:plus" Size="16" />
+                        <span>@L["QuickCreateVendor"]</span>
                     </button>
                 </div>
             </div>
@@ -146,9 +150,10 @@
 
                     @if (UploadResult.InvoiceId != Guid.Empty)
                     {
-                        <button class="btn btn-sm btn-outline-primary mt-3"
+                        <button class="btn btn-sm btn-outline-primary oai-icon-button mt-3"
                                 @onclick="GoToInvoiceDetail">
-                            @L["ViewInvoiceDetail"]
+                            <Icon Name="mdi:eye-outline" Size="16" />
+                            <span>@L["ViewInvoiceDetail"]</span>
                         </button>
                     }
                 </div>

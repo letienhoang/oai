@@ -51,6 +51,28 @@ h1:focus {
     margin-inline-end: 0.375rem;
 }
 
+.oai-icon-button,
+.oai-icon-only-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oai-icon-button {
+    gap: 0.375rem;
+}
+
+.oai-icon-only-button {
+    width: 2.375rem;
+    height: 2.375rem;
+    padding: 0;
+}
+
+.oai-icon-only-button.btn-sm {
+    width: 2rem;
+    height: 2rem;
+}
+
 /* Validation styles used by Blazor forms */
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;

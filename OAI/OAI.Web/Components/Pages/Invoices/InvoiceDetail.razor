@@ -17,21 +17,24 @@
         </div>
 
         <div class="d-flex flex-wrap gap-2 align-items-start">
-            <button class="btn btn-outline-secondary" @onclick="GoBack">
-                @L["BackToList"]
+            <button class="btn btn-outline-secondary oai-icon-button" @onclick="GoBack">
+                <Icon Name="mdi:arrow-left" Size="18" />
+                <span>@L["BackToList"]</span>
             </button>
 
             @if (Invoice is not null)
             {
-                <button class="btn btn-outline-primary" @onclick="GoToCompare">
-                    @L["CompareOcrAi"]
+                <button class="btn btn-outline-primary oai-icon-button" @onclick="GoToCompare">
+                    <Icon Name="mdi:compare-horizontal" Size="18" />
+                    <span>@L["CompareOcrAi"]</span>
                 </button>
 
                 <AuthorizeView Policy="@ApplicationPolicies.EditInvoices">
                     @if (CanShowEditButton)
                     {
-                        <button class="btn btn-outline-secondary" @onclick="GoToEditAsync">
-                            @L["Edit"]
+                        <button class="btn btn-outline-secondary oai-icon-button" @onclick="GoToEditAsync">
+                            <Icon Name="mdi:pencil-outline" Size="18" />
+                            <span>@L["Edit"]</span>
                         </button>
                     }
                 </AuthorizeView>
@@ -39,7 +42,7 @@
                 <AuthorizeView Policy="@ApplicationPolicies.ApproveInvoices">
                     @if (CanShowApproveButton)
                     {
-                        <button class="btn btn-success"
+                        <button class="btn btn-success oai-icon-button"
                                 disabled="@IsApproving"
                                 @onclick="ConfirmApprove">
                             @if (IsApproving)
@@ -49,6 +52,7 @@
                             }
                             else
                             {
+                                <Icon Name="mdi:check-circle-outline" Size="18" />
                                 <span>@L["ApproveInvoice"]</span>
                             }
                         </button>
@@ -58,7 +62,7 @@
                 <AuthorizeView Policy="@ApplicationPolicies.MoveInvoicesToPendingReview">
                     @if (CanShowMoveToPendingReviewButton)
                     {
-                        <button class="btn btn-outline-warning"
+                        <button class="btn btn-outline-warning oai-icon-button"
                                 disabled="@IsMovingToPendingReview"
                                 @onclick="ConfirmMoveToPendingReview">
                             @if (IsMovingToPendingReview)
@@ -68,6 +72,7 @@
                             }
                             else
                             {
+                                <Icon Name="mdi:restore" Size="18" />
                                 <span>@L["MoveToPendingReview"]</span>
                             }
                         </button>
@@ -77,7 +82,7 @@
                 <AuthorizeView Policy="@ApplicationPolicies.RejectInvoices">
                     @if (CanShowRejectButton)
                     {
-                        <button class="btn btn-outline-danger"
+                        <button class="btn btn-outline-danger oai-icon-button"
                                 disabled="@IsRejecting"
                                 @onclick="ConfirmReject">
                             @if (IsRejecting)
@@ -87,6 +92,7 @@
                             }
                             else
                             {
+                                <Icon Name="mdi:close-circle-outline" Size="18" />
                                 <span>@L["Reject"]</span>
                             }
                         </button>
@@ -121,13 +127,15 @@
            EmptyMessage="@L["InvoiceNotFoundDescription"]"
            InCard="true">
     <ErrorActions>
-        <button class="btn btn-outline-danger" @onclick="LoadInvoiceDetailAsync">
-            @L["Retry"]
+        <button class="btn btn-outline-danger oai-icon-button" @onclick="LoadInvoiceDetailAsync">
+            <Icon Name="mdi:refresh" Size="18" />
+            <span>@L["Retry"]</span>
         </button>
     </ErrorActions>
     <EmptyActions>
-        <button class="btn btn-primary" @onclick="GoBack">
-            @L["BackToList"]
+        <button class="btn btn-primary oai-icon-button" @onclick="GoBack">
+            <Icon Name="mdi:arrow-left" Size="18" />
+            <span>@L["BackToList"]</span>
         </button>
     </EmptyActions>
     <ChildContent>
@@ -468,9 +476,11 @@
                                                     <td>@FormatDateTime(result.ExtractedAt)</td>
                                                     <td class="text-end">
                                                         <button type="button"
-                                                                class="btn btn-sm btn-outline-primary"
+                                                                class="btn btn-sm btn-outline-primary oai-icon-only-button"
+                                                                title="@L["Detail"]"
+                                                                aria-label="@L["Detail"]"
                                                                 @onclick="() => OpenExtractionResultDetailAsync(result)">
-                                                            @L["Detail"]
+                                                            <Icon Name="mdi:eye-outline" Size="16" />
                                                         </button>
                                                     </td>
                                                 </tr>
