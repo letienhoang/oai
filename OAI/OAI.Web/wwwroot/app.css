@@ -38,6 +38,19 @@ h1:focus {
     border-style: dashed !important;
 }
 
+/* Icon helpers */
+.oai-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    color: inherit;
+    line-height: 1;
+    vertical-align: -0.125em;
+}
+
+.oai-icon-inline {
+    margin-inline-end: 0.375rem;
+}
+
 /* Validation styles used by Blazor forms */
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
