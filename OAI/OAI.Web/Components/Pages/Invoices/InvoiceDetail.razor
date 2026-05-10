@@ -238,58 +238,77 @@
                     {
                         case InvoiceDetailTab.Overview:
                             <div class="row g-4">
-                                <div class="col-12 col-xl-7">
-                                    <div class="border rounded-4 p-4 h-100">
-                                        <h3 class="h5 fw-bold mb-3">@L["GeneralInformation"]</h3>
+                                <div class="col-12 col-xl-5 order-xl-2">
+                                    <div class="border rounded-4 p-4 h-100 bg-light">
+                                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                                            <h3 class="h6 fw-bold text-secondary text-uppercase mb-0">@L["AmountSummary"]</h3>
+                                            <span class="badge bg-white text-secondary border">@Invoice.Currency</span>
+                                        </div>
+
+                                        <div class="border rounded-4 p-4 bg-white mb-3">
+                                            <div class="text-secondary small mb-1">@L["Total"]</div>
+                                            <div class="display-6 fw-bold text-primary lh-1 text-break">
+                                                @FormatMoney(Invoice.DeclaredTotalAmount, Invoice.Currency)
+                                            </div>
+                                        </div>
 
                                         <div class="row g-3">
-                                            <div class="col-12 col-md-6">
-                                                <div class="text-secondary small">@L["Vendor"]</div>
-                                                <div class="fw-semibold">@DisplayOrFallback(Invoice.VendorName)</div>
-                                            </div>
-
-                                            <div class="col-12 col-md-6">
-                                                <div class="text-secondary small">@L["IssueDate"]</div>
-                                                <div class="fw-semibold">@Invoice.IssueDate.ToString("dd/MM/yyyy")</div>
-                                            </div>
-
-                                            <div class="col-12 col-md-6">
-                                                <div class="text-secondary small">@L["DueDate"]</div>
-                                                <div class="fw-semibold">
-                                                    @(Invoice.DueDate?.ToString("dd/MM/yyyy") ?? L["NotAvailable"].Value)
+                                            <div class="col-12 col-sm-6">
+                                                <div class="border rounded-3 p-3 bg-white h-100">
+                                                    <div class="text-secondary small mb-1">@L["Subtotal"]</div>
+                                                    <div class="fw-semibold text-break">
+                                                        @FormatMoney(Invoice.DeclaredSubtotal, Invoice.Currency)
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-md-6">
-                                                <div class="text-secondary small">@L["SourceFile"]</div>
-                                                <div class="fw-semibold text-break">
-                                                    @DisplayOrFallback(Invoice.SourceFileName)
+                                            <div class="col-12 col-sm-6">
+                                                <div class="border rounded-3 p-3 bg-white h-100">
+                                                    <div class="text-secondary small mb-1">@L["Tax"]</div>
+                                                    <div class="fw-semibold text-break">
+                                                        @FormatMoney(Invoice.DeclaredTaxAmount, Invoice.Currency)
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-12 col-xl-5">
+                                <div class="col-12 col-xl-7 order-xl-1">
                                     <div class="border rounded-4 p-4 h-100">
-                                        <h3 class="h5 fw-bold mb-3">@L["AmountSummary"]</h3>
+                                        <h3 class="h5 fw-bold mb-3">@L["GeneralInformation"]</h3>
 
-                                        <div class="d-grid gap-3">
-                                            <div class="d-flex justify-content-between gap-3">
-                                                <span class="text-secondary">@L["Subtotal"]</span>
-                                                <span class="fw-semibold">@FormatMoney(Invoice.DeclaredSubtotal, Invoice.Currency)</span>
+                                        <div class="row g-3">
+                                            <div class="col-12 col-md-6">
+                                                <div class="border rounded-3 p-3 h-100">
+                                                    <div class="text-secondary small mb-1">@L["Vendor"]</div>
+                                                    <div class="fw-semibold text-break">@DisplayOrFallback(Invoice.VendorName)</div>
+                                                </div>
                                             </div>
 
-                                            <div class="d-flex justify-content-between gap-3">
-                                                <span class="text-secondary">@L["Tax"]</span>
-                                                <span class="fw-semibold">@FormatMoney(Invoice.DeclaredTaxAmount, Invoice.Currency)</span>
+                                            <div class="col-12 col-md-6">
+                                                <div class="border rounded-3 p-3 h-100">
+                                                    <div class="text-secondary small mb-1">@L["IssueDate"]</div>
+                                                    <div class="fw-semibold">@Invoice.IssueDate.ToString("dd/MM/yyyy")</div>
+                                                </div>
                                             </div>
 
-                                            <div class="d-flex justify-content-between gap-3 border-top pt-3">
-                                                <span class="fw-semibold">@L["Total"]</span>
-                                                <span class="h5 fw-bold mb-0 text-primary">
-                                                    @FormatMoney(Invoice.DeclaredTotalAmount, Invoice.Currency)
-                                                </span>
+                                            <div class="col-12 col-md-6">
+                                                <div class="border rounded-3 p-3 h-100">
+                                                    <div class="text-secondary small mb-1">@L["DueDate"]</div>
+                                                    <div class="fw-semibold">
+                                                        @(Invoice.DueDate?.ToString("dd/MM/yyyy") ?? L["NotAvailable"].Value)
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6">
+                                                <div class="border rounded-3 p-3 h-100">
+                                                    <div class="text-secondary small mb-1">@L["SourceFile"]</div>
+                                                    <div class="fw-semibold text-break">
+                                                        @DisplayOrFallback(Invoice.SourceFileName)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
