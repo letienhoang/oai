@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Infrastructure.Audit;
@@ -32,6 +33,7 @@ public static class DependencyInjection
         services.Configure<DemoDataSeedOptions>(
             configuration.GetSection("DemoDataSeed"));
         
+        services.TryAddScoped<ICurrentUserContext, SystemCurrentUserContext>();
         services.AddScoped<AuditTrailInterceptor>();
         
         services.AddDbContext<OaiDbContext>((sp, options) =>
