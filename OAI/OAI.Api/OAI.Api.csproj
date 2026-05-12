@@ -11,4 +11,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OAI.Application\OAI.Application.csproj" />
+    <ProjectReference Include="..\OAI.Infrastructure\OAI.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
