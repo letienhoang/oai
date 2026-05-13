@@ -1,11 +1,9 @@
-using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi;
 using OAI.Infrastructure.Hangfire;
 using OAI.Application;
 using OAI.Infrastructure;
-using OAI.Infrastructure.Hangfire;
 using OAI.Infrastructure.Identity;
 using OAI.Infrastructure.Persistence;
 
