@@ -40,6 +40,7 @@ public static class DependencyInjection
         services.AddScoped<ICompareInvoiceExtractionUseCase, CompareInvoiceExtractionUseCase>();
 
         services.AddScoped<IInvoiceProcessingService, InvoiceProcessingService>();
+        services.AddScoped<IUploadPackageService, UploadPackageService>();
 
         return services;
     }

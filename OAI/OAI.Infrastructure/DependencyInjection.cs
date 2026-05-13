@@ -49,6 +49,7 @@ public static class DependencyInjection
         services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped<IValidationIssueRepository, ValidationIssueRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        services.AddScoped<IUploadBatchRepository, UploadBatchRepository>();
         
         services.AddScoped<RuleBasedInvoiceTextParser>();
         services.AddScoped<OpenAiInvoiceTextParser>();
