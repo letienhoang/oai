@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using OAI.Application.Abstractions.BackgroundJobs;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Infrastructure.Audit;
+using OAI.Infrastructure.BackgroundJobs;
 using OAI.Infrastructure.DemoData;
 using OAI.Infrastructure.Options;
 using OAI.Infrastructure.Persistence;
@@ -61,6 +63,8 @@ public static class DependencyInjection
         services.AddScoped<ISystemSettingsService, SystemSettingsService>();
         services.AddScoped<DemoDataSeeder>();
         services.AddScoped<SystemHealthService>();
+        
+        services.AddScoped<IBackgroundJobClient, HangfireBackgroundJobClient>();
         
         return services;
     }
