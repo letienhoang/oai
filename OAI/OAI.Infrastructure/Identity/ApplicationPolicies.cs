@@ -16,4 +16,6 @@ public static class ApplicationPolicies
     public const string ViewSettings = "Policy.Settings.View";
     public const string ManageUsers = "Policy.Users.Manage";
     public const string ManageRoles = "Policy.Roles.Manage";
+    
+    public const string ManageBackgroundJobs = "Policy.BackgroundJobs.Manage";
 }
