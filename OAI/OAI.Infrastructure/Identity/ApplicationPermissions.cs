@@ -22,6 +22,8 @@ public static class ApplicationPermissions
 
     public const string ManageUsers = "users.manage";
     public const string ManageRoles = "roles.manage";
+    
+    public const string ManageBackgroundJobs = "background_jobs.manage";
 
     public static readonly string[] All =
     [
@@ -38,6 +40,7 @@ public static class ApplicationPermissions
         ViewAuditLogs,
         ViewSettings,
         ManageUsers,
-        ManageRoles
+        ManageRoles,
+        ManageBackgroundJobs
     ];
 }

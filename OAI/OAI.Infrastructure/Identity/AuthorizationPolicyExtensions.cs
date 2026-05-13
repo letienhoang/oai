@@ -34,6 +34,8 @@ public static class AuthorizationPolicyExtensions
             policy.RequirePermission(ApplicationPermissions.ManageUsers));
         options.AddPolicy(ApplicationPolicies.ManageRoles, policy =>
             policy.RequirePermission(ApplicationPermissions.ManageRoles));
+        options.AddPolicy(ApplicationPolicies.ManageBackgroundJobs, policy =>
+            policy.RequirePermission(ApplicationPermissions.ManageBackgroundJobs));
 
         return options;
     }

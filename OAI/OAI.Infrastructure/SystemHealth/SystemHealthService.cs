@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using OAI.Infrastructure.DemoData;
@@ -19,8 +20,7 @@ public sealed class SystemHealthService
     private readonly FileStorageOptions _fileStorageOptions;
     private readonly OcrOptions _ocrOptions;
     private readonly IConfiguration _configuration;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+    private readonly IServiceProvider _serviceProvider;
 
     public SystemHealthService(
         OaiDbContext dbContext,
@@ -29,8 +29,7 @@ public sealed class SystemHealthService
         IOptions<FileStorageOptions> fileStorageOptions,
         IOptions<OcrOptions> ocrOptions,
         IConfiguration configuration,
-        UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole<Guid>> roleManager)
+        IServiceProvider serviceProvider)
     {
         _dbContext = dbContext;
         _hostEnvironment = hostEnvironment;
@@ -38,8 +37,7 @@ public sealed class SystemHealthService
         _fileStorageOptions = fileStorageOptions.Value;
         _ocrOptions = ocrOptions.Value;
         _configuration = configuration;
-        _userManager = userManager;
-        _roleManager = roleManager;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task<SystemHealthCheckResult> CheckAsync(
@@ -68,8 +66,19 @@ public sealed class SystemHealthService
                     invoice => invoice.InvoiceNumber.StartsWith(_demoDataSeedOptions.InvoiceNumberPrefix),
                     cancellationToken);
             auditLogCount = await _dbContext.AuditLogs.CountAsync(cancellationToken);
-            identityUserCount = await _userManager.Users.CountAsync(cancellationToken);
-            identityRoleCount = await _roleManager.Roles.CountAsync(cancellationToken);
+
+            var userManager = _serviceProvider.GetService<UserManager<ApplicationUser>>();
+            var roleManager = _serviceProvider.GetService<RoleManager<IdentityRole<Guid>>>();
+
+            if (userManager is not null)
+            {
+                identityUserCount = await userManager.Users.CountAsync(cancellationToken);
+            }
+
+            if (roleManager is not null)
+            {
+                identityRoleCount = await roleManager.Roles.CountAsync(cancellationToken);
+            }
         }
 
         var llmSection = _configuration.GetSection("Llm");

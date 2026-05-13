@@ -14,6 +14,9 @@
         {
             await JSRuntime.InvokeVoidAsync("oaiTooltips.dispose");
         }
+        catch (JSDisconnectedException)
+        {
+        }
         catch (JSException)
         {
         }
@@ -27,6 +30,9 @@
         try
         {
             await JSRuntime.InvokeVoidAsync("oaiTooltips.initialize");
+        }
+        catch (JSDisconnectedException)
+        {
         }
         catch (JSException)
         {
