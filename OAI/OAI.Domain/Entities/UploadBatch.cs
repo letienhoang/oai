@@ -5,6 +5,8 @@ namespace OAI.Domain.Entities;
 
 public sealed class UploadBatch : Entity
 {
+    private readonly List<UploadBatchFile> _files = new();
+    
     public string BatchCode { get; private set; }
 
     public Guid? UploadedByUserId { get; private set; }
@@ -20,6 +22,8 @@ public sealed class UploadBatch : Entity
 
     public DateTimeOffset? StartedAt { get; private set; }
     public DateTimeOffset? CompletedAt { get; private set; }
+    
+    public IReadOnlyCollection<UploadBatchFile> Files => _files.AsReadOnly();
 
     private UploadBatch()
     {
@@ -115,6 +119,19 @@ public sealed class UploadBatch : Entity
     {
         Status = UploadBatchStatus.Cancelled;
         CompletedAt = DateTimeOffset.UtcNow;
+        Touch();
+    }
+    
+    public void AddFile(UploadBatchFile file)
+    {
+        if (file is null)
+            throw new ArgumentNullException(nameof(file));
+
+        if (file.UploadBatchId != Id)
+            throw new ArgumentException("Upload batch file does not belong to this batch.", nameof(file));
+
+        _files.Add(file);
+        TotalFiles = _files.Count;
         Touch();
     }
 

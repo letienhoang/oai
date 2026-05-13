@@ -53,5 +53,10 @@ public sealed class UploadBatchConfiguration : IEntityTypeConfiguration<UploadBa
         builder.HasIndex(x => x.Status);
 
         builder.HasIndex(x => x.CreatedAt);
+        
+        builder.HasMany(x => x.Files)
+            .WithOne(x => x.UploadBatch)
+            .HasForeignKey(x => x.UploadBatchId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
