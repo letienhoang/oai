@@ -8,6 +8,7 @@ public sealed class InvoiceSourceFile : Entity
     public Invoice? Invoice { get; private set; }
 
     public Guid? UploadBatchFileId { get; private set; }
+    public UploadBatchFile? UploadBatchFile { get; private set; }
 
     public string OriginalFileName { get; private set; }
     public string StoredFilePath { get; private set; }

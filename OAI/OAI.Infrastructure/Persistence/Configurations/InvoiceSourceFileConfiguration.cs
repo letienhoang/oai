@@ -56,5 +56,10 @@ public sealed class InvoiceSourceFileConfiguration : IEntityTypeConfiguration<In
             .WithMany(x => x.SourceFiles)
             .HasForeignKey(x => x.InvoiceId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasOne(x => x.UploadBatchFile)
+            .WithMany()
+            .HasForeignKey(x => x.UploadBatchFileId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
