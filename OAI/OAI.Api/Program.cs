@@ -2,7 +2,7 @@ using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi;
-using OAI.Api.Hangfire;
+using OAI.Infrastructure.Hangfire;
 using OAI.Application;
 using OAI.Infrastructure;
 using OAI.Infrastructure.Hangfire;
@@ -75,15 +75,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseHangfireDashboard("/jobs", new DashboardOptions
-{
-    DashboardTitle = "OAI Background Jobs",
-    Authorization =
-    [
-        new HangfireDashboardAuthorizationFilter()
-    ]
-});
 
 app.MapControllers();
 

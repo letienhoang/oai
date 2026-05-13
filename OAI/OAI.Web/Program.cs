@@ -1,9 +1,11 @@
 using System.Globalization;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using OAI.Application;
 using OAI.Application.Abstractions.Services;
 using OAI.Infrastructure;
+using OAI.Infrastructure.Hangfire;
 using OAI.Infrastructure.Identity;
 using OAI.Infrastructure.Persistence;
 using OAI.Web.Components;
@@ -27,6 +29,7 @@ builder.Services.AddLocalization(options =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddOaiHangfireStorage(builder.Configuration);
 
 builder.Services.AddOptions<ApplicationInfoOptions>()
     .Bind(builder.Configuration.GetRequiredSection("ApplicationInfo"));
@@ -110,6 +113,15 @@ app.UseHttpsRedirection();
 app.UseAntiforgery();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHangfireDashboard("/jobs", new DashboardOptions
+{
+    DashboardTitle = "OAI Background Jobs",
+    Authorization =
+    [
+        new HangfireDashboardAuthorizationFilter()
+    ]
+});
 
 app.MapStaticAssets();
 

@@ -1,8 +1,9 @@
 ﻿using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using OAI.Infrastructure.Identity;
 
-namespace OAI.Api.Hangfire;
+namespace OAI.Infrastructure.Hangfire;
 
 public sealed class HangfireDashboardAuthorizationFilter : IDashboardAuthorizationFilter
 {
