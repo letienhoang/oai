@@ -6,4 +6,5 @@
   <Project Path="OAI.Domain/OAI.Domain.csproj" />
   <Project Path="OAI.Infrastructure/OAI.Infrastructure.csproj" />
   <Project Path="OAI.Web/OAI.Web.csproj" />
+  <Project Path="OAI.Worker/OAI.Worker.csproj" Id="6308eda8-d24d-48a9-9dda-1b9e69e131e5" />
 </Solution>
