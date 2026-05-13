@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.OpenApi;
 using OAI.Application;
 using OAI.Infrastructure;
 using OAI.Infrastructure.Identity;
@@ -15,7 +16,18 @@ builder.Services.AddControllers(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "OAI Invoice Processing API",
+        Version = "v1",
+        Description = "API backend for OAI invoice processing, mobile/PWA upload, and future worker-based processing."
+    });
+
+    // T91 currently configures ASP.NET Core Identity application cookies for OAI.Api.
+    // Do not advertise a JWT Bearer scheme here until JWT authentication is actually added.
+});
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -48,11 +60,12 @@ builder.Services.AddAuthorization(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "OAI Invoice Processing API v1");
+    options.RoutePrefix = "swagger";
+});
 
 app.UseHttpsRedirection();
 
