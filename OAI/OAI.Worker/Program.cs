@@ -1,3 +1,4 @@
+using Hangfire;
 using OAI.Application;
 using OAI.Infrastructure;
 using OAI.Infrastructure.Hangfire;
@@ -8,6 +9,13 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddOaiHangfireStorage(builder.Configuration);
+
+builder.Services.AddHangfireServer(options =>
+{
+    options.ServerName = $"OAI.Worker:{Environment.MachineName}";
+    options.WorkerCount = Math.Max(Environment.ProcessorCount, 2);
+    options.Queues = new[] { "default", "ocr", "uploads" };
+});
 
 builder.Services.AddHostedService<Worker>();
 

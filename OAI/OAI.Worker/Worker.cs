@@ -11,8 +11,15 @@ public sealed class Worker : BackgroundService
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("OAI.Worker is running.");
+        _logger.LogInformation("OAI.Worker host started. Hangfire Server is configured.");
 
-        await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken);
+        try
+        {
+            await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken);
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation("OAI.Worker host is stopping.");
+        }
     }
 }
