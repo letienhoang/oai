@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi;
 using OAI.Application;
 using OAI.Infrastructure;
+using OAI.Infrastructure.Hangfire;
 using OAI.Infrastructure.Identity;
 using OAI.Infrastructure.Persistence;
 
@@ -31,6 +32,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddOaiHangfireStorage(builder.Configuration);
 
 builder.Services
     .AddIdentityCore<ApplicationUser>(options =>
