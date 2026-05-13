@@ -5,7 +5,7 @@ namespace OAI.Api.Controllers;
 
 [AllowAnonymous]
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/health")]
 public sealed class HealthController : Controller
 {
     [HttpGet]

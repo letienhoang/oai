@@ -10,7 +10,7 @@ namespace OAI.Api.Controllers;
 
 [Authorize(Policy = ApplicationPolicies.ViewInvoices)]
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/invoices")]
 [Produces("application/json")]
 public sealed class InvoicesController : ControllerBase
 {
