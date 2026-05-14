@@ -194,7 +194,8 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         }
         catch (Exception ex)
         {
-            uploadBatchFile.MarkFailed("Unexpected error occurred while processing upload batch file.");
+            uploadBatchFile.MarkRetryPending(
+                "Unexpected error occurred while processing upload batch file. The job will be retried by Hangfire.");
             uploadBatchFile.UploadBatch?.RefreshFileCounters();
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -8,5 +8,6 @@ public enum UploadBatchFileStatus
     Processed = 3,
     Failed = 4,
     Skipped = 5,
-    Unsupported = 6
+    Unsupported = 6,
+    RetryPending = 7
 }

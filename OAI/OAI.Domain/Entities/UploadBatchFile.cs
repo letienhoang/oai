@@ -114,4 +114,15 @@ public sealed class UploadBatchFile : Entity
         ProcessingCompletedAt = DateTimeOffset.UtcNow;
         Touch();
     }
+    
+    public void MarkRetryPending(string errorMessage)
+    {
+        if (string.IsNullOrWhiteSpace(errorMessage))
+            throw new ArgumentException("Error message is required.", nameof(errorMessage));
+
+        Status = UploadBatchFileStatus.RetryPending;
+        ErrorMessage = errorMessage.Trim();
+        ProcessingCompletedAt = null;
+        Touch();
+    }
 }
