@@ -19,6 +19,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
     private readonly IFileTypeDetectionService _fileTypeDetectionService;
     private readonly IPdfTextExtractionService _pdfTextExtractionService;
     private readonly IPdfPageRenderingService _pdfPageRenderingService;
+    private readonly IPdfPagePreviewStorageService _pdfPagePreviewStorageService;
     private readonly IInvoiceExtractionService _invoiceExtractionService;
     private readonly ICreateInvoiceUseCase _createInvoiceUseCase;
     private readonly IVendorRepository _vendorRepository;
@@ -30,6 +31,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         IFileTypeDetectionService fileTypeDetectionService,
         IPdfTextExtractionService pdfTextExtractionService,
         IPdfPageRenderingService pdfPageRenderingService,
+        IPdfPagePreviewStorageService pdfPagePreviewStorageService,
         IInvoiceExtractionService invoiceExtractionService,
         ICreateInvoiceUseCase createInvoiceUseCase,
         IVendorRepository vendorRepository,
@@ -40,6 +42,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         _fileTypeDetectionService = fileTypeDetectionService;
         _pdfTextExtractionService = pdfTextExtractionService;
         _pdfPageRenderingService = pdfPageRenderingService;
+        _pdfPagePreviewStorageService = pdfPagePreviewStorageService;
         _invoiceExtractionService = invoiceExtractionService;
         _createInvoiceUseCase = createInvoiceUseCase;
         _vendorRepository = vendorRepository;
@@ -262,18 +265,40 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
                 return;
             }
 
+            var previewStorage = await _pdfPagePreviewStorageService.StoreAsync(
+                uploadBatchFile.Id,
+                rendering.Pages,
+                cancellationToken);
+
+            if (!previewStorage.Succeeded)
+            {
+                uploadBatchFile.MarkFailed(
+                    previewStorage.ErrorMessage ?? "PDF page preview storage failed.");
+                uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                _logger.LogWarning(
+                    "Upload batch file failed because scanned PDF page preview storage failed. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, ErrorMessage: {ErrorMessage}",
+                    uploadBatchFile.Id,
+                    uploadBatchFile.OriginalFileName,
+                    previewStorage.ErrorMessage);
+
+                return;
+            }
+
             uploadBatchFile.MarkFailed(
-                $"Scanned PDF pages were rendered successfully: {rendering.Pages.Count} page(s). OCR for rendered PDF pages is not implemented yet.");
+                $"Scanned PDF page previews were stored successfully: {previewStorage.Previews.Count} page(s). OCR for rendered PDF pages is not implemented yet.");
             uploadBatchFile.UploadBatch?.RefreshFileCounters();
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation(
-                "Upload batch file rendered scanned PDF pages and stopped because rendered-page OCR is not implemented yet. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}, RenderedPageCount: {RenderedPageCount}, WarningMessage: {WarningMessage}",
+                "Upload batch file stored scanned PDF page previews and stopped because rendered-page OCR is not implemented yet. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}, StoredPreviewCount: {StoredPreviewCount}, WarningMessage: {WarningMessage}",
                 uploadBatchFile.Id,
                 uploadBatchFile.OriginalFileName,
                 rendering.PageCount,
-                rendering.Pages.Count,
+                previewStorage.Previews.Count,
                 rendering.WarningMessage ?? extraction.WarningMessage);
 
             return;

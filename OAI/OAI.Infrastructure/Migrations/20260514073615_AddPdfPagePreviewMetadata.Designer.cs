@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OAI.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using OAI.Infrastructure.Persistence;
 namespace OAI.Infrastructure.Migrations
 {
     [DbContext(typeof(OaiDbContext))]
-    partial class OaiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260514073615_AddPdfPagePreviewMetadata")]
+    partial class AddPdfPagePreviewMetadata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

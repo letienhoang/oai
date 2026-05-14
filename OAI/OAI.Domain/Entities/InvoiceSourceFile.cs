@@ -4,7 +4,7 @@ namespace OAI.Domain.Entities;
 
 public sealed class InvoiceSourceFile : Entity
 {
-    public Guid InvoiceId { get; private set; }
+    public Guid? InvoiceId { get; private set; }
     public Invoice? Invoice { get; private set; }
 
     public Guid? UploadBatchFileId { get; private set; }
@@ -25,7 +25,7 @@ public sealed class InvoiceSourceFile : Entity
     }
 
     public InvoiceSourceFile(
-        Guid invoiceId,
+        Guid? invoiceId,
         string originalFileName,
         string storedFilePath,
         string contentType,
@@ -36,6 +36,12 @@ public sealed class InvoiceSourceFile : Entity
     {
         if (invoiceId == Guid.Empty)
             throw new ArgumentException("InvoiceId cannot be empty.", nameof(invoiceId));
+
+        if (invoiceId is null && uploadBatchFileId is null)
+            throw new ArgumentException("Either InvoiceId or UploadBatchFileId is required.", nameof(uploadBatchFileId));
+
+        if (uploadBatchFileId == Guid.Empty)
+            throw new ArgumentException("UploadBatchFileId cannot be empty.", nameof(uploadBatchFileId));
 
         if (string.IsNullOrWhiteSpace(originalFileName))
             throw new ArgumentException("Original file name is required.", nameof(originalFileName));
@@ -77,6 +83,31 @@ public sealed class InvoiceSourceFile : Entity
             throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than zero.");
 
         PreviewFilePath = string.IsNullOrWhiteSpace(previewFilePath) ? null : previewFilePath.Trim();
+        PageNumber = pageNumber;
+        Touch();
+    }
+
+    public void UpdatePreviewMetadata(
+        string previewFilePath,
+        string contentType,
+        long fileSizeBytes,
+        int pageNumber)
+    {
+        if (string.IsNullOrWhiteSpace(previewFilePath))
+            throw new ArgumentException("Preview file path is required.", nameof(previewFilePath));
+
+        if (string.IsNullOrWhiteSpace(contentType))
+            throw new ArgumentException("Content type is required.", nameof(contentType));
+
+        if (fileSizeBytes < 0)
+            throw new ArgumentOutOfRangeException(nameof(fileSizeBytes), "File size cannot be negative.");
+
+        if (pageNumber <= 0)
+            throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than zero.");
+
+        PreviewFilePath = previewFilePath.Trim();
+        ContentType = contentType.Trim();
+        FileSizeBytes = fileSizeBytes;
         PageNumber = pageNumber;
         Touch();
     }

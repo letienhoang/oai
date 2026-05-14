@@ -12,8 +12,7 @@ public sealed class InvoiceSourceFileConfiguration : IEntityTypeConfiguration<In
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.InvoiceId)
-            .IsRequired();
+        builder.Property(x => x.InvoiceId);
 
         builder.Property(x => x.UploadBatchFileId);
 
