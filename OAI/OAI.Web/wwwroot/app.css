@@ -152,6 +152,33 @@ h1:focus {
     padding: 0.875rem 1rem;
 }
 
+.source-file-viewer {
+    min-height: 500px;
+}
+
+.source-file-frame {
+    width: 100%;
+    min-height: 650px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem;
+    background: var(--bs-body-bg);
+}
+
+.source-file-image-wrapper {
+    max-height: 750px;
+    overflow: auto;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem;
+    background: var(--bs-body-bg);
+}
+
+.source-file-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
 @media (min-width: 1200px) {
     .invoice-detail-summary {
         justify-content: flex-end;

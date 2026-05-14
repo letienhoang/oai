@@ -9,10 +9,14 @@ namespace OAI.Infrastructure.Repositories;
 public sealed class AuditLogRepository : IAuditLogRepository
 {
     private readonly OaiDbContext _context;
+    private readonly IDbContextFactory<OaiDbContext> _dbContextFactory;
 
-    public AuditLogRepository(OaiDbContext context)
+    public AuditLogRepository(
+        OaiDbContext context,
+        IDbContextFactory<OaiDbContext> dbContextFactory)
     {
         _context = context;
+        _dbContextFactory = dbContextFactory;
     }
 
     public Task<IReadOnlyList<AuditLogEntry>> GetPagedAsync(
@@ -41,7 +45,9 @@ public sealed class AuditLogRepository : IAuditLogRepository
         AuditLogFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = _context.AuditLogs.AsNoTracking();
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var query = context.AuditLogs.AsNoTracking();
 
         query = ApplyFilter(query, filter);
         query = ApplySorting(query, filter);
@@ -72,7 +78,9 @@ public sealed class AuditLogRepository : IAuditLogRepository
         AuditLogFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = _context.AuditLogs.AsNoTracking();
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var query = context.AuditLogs.AsNoTracking();
 
         query = ApplyFilter(query, filter);
 
@@ -82,7 +90,9 @@ public sealed class AuditLogRepository : IAuditLogRepository
     public async Task<IReadOnlyList<string>> GetEntityNameOptionsAsync(
         CancellationToken cancellationToken = default)
     {
-        return await _context.AuditLogs
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        return await context.AuditLogs
             .AsNoTracking()
             .Select(x => x.EntityName.Trim())
             .Where(x => x != string.Empty)
@@ -94,7 +104,9 @@ public sealed class AuditLogRepository : IAuditLogRepository
     public async Task<IReadOnlyList<string>> GetActionTypeOptionsAsync(
         CancellationToken cancellationToken = default)
     {
-        var actionTypes = await _context.AuditLogs
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var actionTypes = await context.AuditLogs
             .AsNoTracking()
             .Select(x => x.ActionType)
             .Distinct()
@@ -111,7 +123,9 @@ public sealed class AuditLogRepository : IAuditLogRepository
     public async Task<IReadOnlyList<string>> GetSourceOptionsAsync(
         CancellationToken cancellationToken = default)
     {
-        return await _context.AuditLogs
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        return await context.AuditLogs
             .AsNoTracking()
             .Where(x => x.Source != null)
             .Select(x => x.Source!.Trim())

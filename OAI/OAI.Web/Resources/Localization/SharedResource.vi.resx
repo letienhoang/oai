@@ -495,6 +495,39 @@
   <data name="SourceFile" xml:space="preserve">
         <value>File gốc</value>
     </data>
+  <data name="SourceFiles" xml:space="preserve">
+        <value>Các tệp nguồn</value>
+    </data>
+  <data name="SourceFileViewer" xml:space="preserve">
+        <value>Trình xem tệp nguồn</value>
+    </data>
+  <data name="SourceFileViewerDescription" xml:space="preserve">
+        <value>Xem tệp hóa đơn gốc hoặc các bản xem trước trang đã lưu.</value>
+    </data>
+  <data name="NoSourceFileAvailable" xml:space="preserve">
+        <value>Không có tệp nguồn nào cho hóa đơn này.</value>
+    </data>
+  <data name="PreviewNotAvailable" xml:space="preserve">
+        <value>Không hỗ trợ xem trước loại tệp này.</value>
+    </data>
+  <data name="DownloadSourceFile" xml:space="preserve">
+        <value>Tải tệp nguồn</value>
+    </data>
+  <data name="SelectSourcePage" xml:space="preserve">
+        <value>Chọn trang nguồn</value>
+    </data>
+  <data name="PageNumberLabel" xml:space="preserve">
+        <value>Trang {0}</value>
+    </data>
+  <data name="OriginalFile" xml:space="preserve">
+        <value>Tệp gốc</value>
+    </data>
+  <data name="ContentType" xml:space="preserve">
+        <value>Loại nội dung</value>
+    </data>
+  <data name="InvoiceSourceFilePreviewAlt" xml:space="preserve">
+        <value>Bản xem trước tệp nguồn hóa đơn</value>
+    </data>
   <data name="AmountSummary" xml:space="preserve">
         <value>Tổng hợp số tiền</value>
     </data>

@@ -495,6 +495,39 @@
   <data name="SourceFile" xml:space="preserve">
         <value>Source file</value>
     </data>
+  <data name="SourceFiles" xml:space="preserve">
+        <value>Source files</value>
+    </data>
+  <data name="SourceFileViewer" xml:space="preserve">
+        <value>Source file viewer</value>
+    </data>
+  <data name="SourceFileViewerDescription" xml:space="preserve">
+        <value>View the original invoice file or stored page previews.</value>
+    </data>
+  <data name="NoSourceFileAvailable" xml:space="preserve">
+        <value>No source file is available for this invoice.</value>
+    </data>
+  <data name="PreviewNotAvailable" xml:space="preserve">
+        <value>Preview is not available for this file type.</value>
+    </data>
+  <data name="DownloadSourceFile" xml:space="preserve">
+        <value>Download source file</value>
+    </data>
+  <data name="SelectSourcePage" xml:space="preserve">
+        <value>Select source page</value>
+    </data>
+  <data name="PageNumberLabel" xml:space="preserve">
+        <value>Page {0}</value>
+    </data>
+  <data name="OriginalFile" xml:space="preserve">
+        <value>Original file</value>
+    </data>
+  <data name="ContentType" xml:space="preserve">
+        <value>Content type</value>
+    </data>
+  <data name="InvoiceSourceFilePreviewAlt" xml:space="preserve">
+        <value>Invoice source file preview</value>
+    </data>
   <data name="AmountSummary" xml:space="preserve">
         <value>Amount summary</value>
     </data>

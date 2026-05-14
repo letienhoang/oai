@@ -21,4 +21,13 @@ public sealed record InvoiceDetailDto
     public List<InvoiceLineItemDto> LineItems { get; init; } = new();
     public List<ValidationIssueDto> ValidationIssues { get; init; } = new();
     public List<InvoiceExtractionResultDto> ExtractionResults { get; init; } = new();
+    public List<InvoiceSourceFileDto> SourceFiles { get; init; } = new();
 }
+
+public sealed record InvoiceSourceFileDto(
+    Guid Id,
+    string? OriginalFileName,
+    string? ContentType,
+    long FileSizeBytes,
+    int? PageNumber,
+    DateTimeOffset CreatedAt);

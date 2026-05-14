@@ -210,6 +210,17 @@
                         </li>
                         <li class="nav-item">
                             <button type="button"
+                                    class="@GetTabButtonClass(InvoiceDetailTab.SourceFile)"
+                                    @onclick="() => SetActiveTab(InvoiceDetailTab.SourceFile)">
+                                @L["SourceFile"]
+                                @if (Invoice.SourceFiles.Count > 0)
+                                {
+                                    <span class="badge text-bg-light ms-1">@Invoice.SourceFiles.Count</span>
+                                }
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
                                     class="@GetTabButtonClass(InvoiceDetailTab.LineItems)"
                                     @onclick="() => SetActiveTab(InvoiceDetailTab.LineItems)">
                                 @L["LineItems"]
@@ -321,6 +332,108 @@
                                             @L["CannotApproveDueToValidationErrors"]
                                         </div>
                                     </div>
+                                }
+                            </div>
+                            break;
+
+                        case InvoiceDetailTab.SourceFile:
+                            <div class="source-file-viewer">
+                                <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3">
+                                    <div>
+                                        <h3 class="h5 fw-bold mb-1">@L["SourceFileViewer"]</h3>
+                                        <p class="text-secondary mb-0">
+                                            @L["SourceFileViewerDescription"]
+                                        </p>
+                                    </div>
+
+                                    @if (SelectedSourceFile is not null)
+                                    {
+                                        <a class="btn btn-outline-primary oai-icon-button align-self-start"
+                                           href="@GetDownloadUrl(SelectedSourceFile.Id)"
+                                           target="_blank"
+                                           rel="noopener">
+                                            <Icon Name="mdi:download-outline" Size="18" />
+                                            <span>@L["DownloadSourceFile"]</span>
+                                        </a>
+                                    }
+                                </div>
+
+                                @if (OrderedSourceFiles.Count == 0)
+                                {
+                                    <div class="border rounded-4 bg-light p-4 text-center text-secondary">
+                                        @L["NoSourceFileAvailable"]
+                                    </div>
+                                }
+                                else if (SelectedSourceFile is not null)
+                                {
+                                    @if (OrderedSourceFiles.Count > 1)
+                                    {
+                                        <div class="row g-3 align-items-end mb-3">
+                                            <div class="col-12 col-md-5 col-xl-4">
+                                                <label class="form-label fw-semibold" for="sourceFileSelector">
+                                                    @L["SelectSourcePage"]
+                                                </label>
+                                                <select id="sourceFileSelector"
+                                                        class="form-select"
+                                                        value="@SelectedSourceFile.Id"
+                                                        @onchange="OnSelectedSourceFileChanged">
+                                                    @foreach (var sourceFile in OrderedSourceFiles)
+                                                    {
+                                                        <option value="@sourceFile.Id">@GetSourceFileLabel(sourceFile)</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-12 col-md-4">
+                                            <div class="border rounded-3 p-3 h-100">
+                                                <div class="text-secondary small mb-1">@L["OriginalFile"]</div>
+                                                <div class="fw-semibold text-break">@DisplayOrFallback(SelectedSourceFile.OriginalFileName)</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="border rounded-3 p-3 h-100">
+                                                <div class="text-secondary small mb-1">@L["ContentType"]</div>
+                                                <div class="fw-semibold text-break">@DisplayOrFallback(SelectedSourceFile.ContentType)</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="border rounded-3 p-3 h-100">
+                                                <div class="text-secondary small mb-1">@L["FileSize"]</div>
+                                                <div class="fw-semibold">@FormatFileSize(SelectedSourceFile.FileSizeBytes)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if (IsPdfContentType(SelectedSourceFile.ContentType))
+                                    {
+                                        <iframe src="@GetPreviewUrl(SelectedSourceFile.Id)"
+                                                class="source-file-frame"
+                                                title="@L["SourceFileViewer"]"></iframe>
+                                    }
+                                    else if (IsImageContentType(SelectedSourceFile.ContentType))
+                                    {
+                                        <div class="source-file-image-wrapper">
+                                            <img src="@GetPreviewUrl(SelectedSourceFile.Id)"
+                                                 class="source-file-image"
+                                                 alt="@L["InvoiceSourceFilePreviewAlt"]" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="border rounded-4 bg-light p-4 text-center">
+                                            <p class="text-secondary mb-3">@L["PreviewNotAvailable"]</p>
+                                            <a class="btn btn-outline-primary oai-icon-button"
+                                               href="@GetDownloadUrl(SelectedSourceFile.Id)"
+                                               target="_blank"
+                                               rel="noopener">
+                                                <Icon Name="mdi:download-outline" Size="18" />
+                                                <span>@L["DownloadSourceFile"]</span>
+                                            </a>
+                                        </div>
+                                    }
                                 }
                             </div>
                             break;

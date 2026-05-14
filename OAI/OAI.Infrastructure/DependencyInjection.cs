@@ -50,6 +50,12 @@ public static class DependencyInjection
             options.AddInterceptors(sp.GetRequiredService<AuditTrailInterceptor>());
         });
 
+        services.AddDbContextFactory<OaiDbContext>((sp, options) =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.AddInterceptors(sp.GetRequiredService<AuditTrailInterceptor>());
+        }, ServiceLifetime.Scoped);
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IVendorRepository, VendorRepository>();

@@ -9,10 +9,14 @@ namespace OAI.Infrastructure.Repositories;
 public sealed class VendorRepository : IVendorRepository
 {
     private readonly OaiDbContext _context;
+    private readonly IDbContextFactory<OaiDbContext> _dbContextFactory;
 
-    public VendorRepository(OaiDbContext context)
+    public VendorRepository(
+        OaiDbContext context,
+        IDbContextFactory<OaiDbContext> dbContextFactory)
     {
         _context = context;
+        _dbContextFactory = dbContextFactory;
     }
 
     public async Task<Vendor?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -34,7 +38,9 @@ public sealed class VendorRepository : IVendorRepository
 
     public async Task<IReadOnlyList<Vendor>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Vendors
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        return await context.Vendors
             .AsNoTracking()
             .OrderBy(x => x.Name)
             .ToListAsync(cancellationToken);
@@ -46,7 +52,9 @@ public sealed class VendorRepository : IVendorRepository
         VendorFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = ApplyFilter(_context.Vendors.AsNoTracking(), filter);
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var query = ApplyFilter(context.Vendors.AsNoTracking(), filter);
         query = ApplySorting(query, filter);
 
         return await query
@@ -59,7 +67,9 @@ public sealed class VendorRepository : IVendorRepository
         VendorFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = ApplyFilter(_context.Vendors.AsNoTracking(), filter);
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var query = ApplyFilter(context.Vendors.AsNoTracking(), filter);
 
         return await query.CountAsync(cancellationToken);
     }

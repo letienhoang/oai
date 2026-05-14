@@ -33,6 +33,12 @@ public static class InvoiceMappingExtensions
             ExtractionResults = invoice.ExtractionResults
                 .OrderByDescending(x => x.ExtractedAt)
                 .Select(x => x.ToDto())
+                .ToList(),
+            SourceFiles = invoice.SourceFiles
+                .OrderBy(x => x.PageNumber ?? int.MaxValue)
+                .ThenBy(x => x.CreatedAt)
+                .ThenBy(x => x.OriginalFileName)
+                .Select(x => x.ToDto())
                 .ToList()
         };
     }
@@ -98,5 +104,16 @@ public static class InvoiceMappingExtensions
             RawText = result.RawText,
             StructuredJson = result.StructuredJson
         };
+    }
+
+    private static InvoiceSourceFileDto ToDto(this InvoiceSourceFile sourceFile)
+    {
+        return new InvoiceSourceFileDto(
+            sourceFile.Id,
+            sourceFile.OriginalFileName,
+            sourceFile.ContentType,
+            sourceFile.FileSizeBytes,
+            sourceFile.PageNumber,
+            sourceFile.CreatedAt);
     }
 }
