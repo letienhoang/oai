@@ -134,6 +134,19 @@ public sealed class UploadBatch : Entity
         TotalFiles = _files.Count;
         Touch();
     }
+    
+    public void RefreshFileCounters()
+    {
+        ProcessedFiles = _files.Count(x => x.Status == UploadBatchFileStatus.Processed);
+
+        FailedFiles = _files.Count(x =>
+            x.Status == UploadBatchFileStatus.Failed ||
+            x.Status == UploadBatchFileStatus.Unsupported ||
+            x.Status == UploadBatchFileStatus.Skipped);
+
+        RefreshCompletionStatus();
+        Touch();
+    }
 
     private void RefreshCompletionStatus()
     {

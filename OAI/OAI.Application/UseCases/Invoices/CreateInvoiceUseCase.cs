@@ -101,6 +101,22 @@ public sealed class CreateInvoiceUseCase : ICreateInvoiceUseCase
 
             invoice.AddExtractionResult(extractionResult);
         }
+        
+        if (!string.IsNullOrWhiteSpace(request.SourceFileName) &&
+            !string.IsNullOrWhiteSpace(request.SourceFilePath) &&
+            !string.IsNullOrWhiteSpace(request.SourceFileContentType) &&
+            request.SourceFileSizeBytes is >= 0)
+        {
+            var sourceFile = new InvoiceSourceFile(
+                invoice.Id,
+                request.SourceFileName,
+                request.SourceFilePath,
+                request.SourceFileContentType,
+                request.SourceFileSizeBytes.Value,
+                request.UploadBatchFileId);
+
+            invoice.AddSourceFile(sourceFile);
+        }
 
         var issues = invoice.ValidateConsistency().ToList();
         foreach (var issue in issues)
