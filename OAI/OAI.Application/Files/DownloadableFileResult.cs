@@ -14,5 +14,6 @@ public enum DownloadableFileErrorCode
     NotFound = 1,
     PhysicalFileMissing = 2,
     UnsafePath = 3,
-    Unsupported = 4
+    Unsupported = 4,
+    UnsupportedContentType = 5
 }

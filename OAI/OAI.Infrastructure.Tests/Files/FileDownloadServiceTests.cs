@@ -225,6 +225,212 @@ public sealed class FileDownloadServiceTests
         }
     }
 
+    [Theory]
+    [InlineData("storage/invoices/file.png", "image/png")]
+    [InlineData("storage/invoices/file.jpg", "image/jpeg")]
+    [InlineData("storage/invoices/file.pdf", "application/pdf")]
+    [InlineData("storage/invoices/file.tiff", "image/tiff")]
+    public async Task GetPreviewableFileAsync_ReturnsPreviewableFileForSupportedExtensions(
+        string relativePath,
+        string expectedContentType)
+    {
+        var root = CreateTempDirectory();
+
+        try
+        {
+            await using var dbContext = CreateDbContext();
+            var storedPath = CreateStoredFile(root, relativePath, [0x01, 0x02, 0x03]);
+            var sourceFile = await AddSourceFileAsync(dbContext, storedPath, Path.GetFileName(relativePath), "application/placeholder", 3);
+            ClearContentType(dbContext, sourceFile);
+            var service = CreateService(dbContext, root);
+
+            var result = await service.GetPreviewableFileAsync(sourceFile.Id);
+
+            Assert.True(result.Succeeded);
+            Assert.Equal(expectedContentType, result.ContentType);
+            Assert.Equal(3, result.FileSizeBytes);
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
+    [Fact]
+    public async Task GetPreviewableFileAsync_UsesPreviewFilePathWhenAvailable()
+    {
+        var root = CreateTempDirectory();
+
+        try
+        {
+            await using var dbContext = CreateDbContext();
+            var previewPath = CreateStoredFile(root, "storage/invoices/previews/page-001.png", [0x01, 0x02]);
+            var sourceFile = await AddSourceFileAsync(
+                dbContext,
+                "storage/invoices/original.pdf",
+                "invoice.pdf",
+                "image/png",
+                100);
+            SetPreview(dbContext, sourceFile, previewPath, 1);
+            var service = CreateService(dbContext, root);
+
+            var result = await service.GetPreviewableFileAsync(sourceFile.Id);
+
+            Assert.True(result.Succeeded);
+            Assert.Equal(Path.GetFullPath(Path.Combine(root, previewPath)), result.PhysicalPath);
+            Assert.Equal("page-001.png", result.FileName);
+            Assert.Equal("image/png", result.ContentType);
+            Assert.Equal(2, result.FileSizeBytes);
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
+    [Fact]
+    public async Task GetPreviewableFileAsync_UsesStoredContentTypeWhenPreviewable()
+    {
+        var root = CreateTempDirectory();
+
+        try
+        {
+            await using var dbContext = CreateDbContext();
+            var storedPath = CreateStoredFile(root, "storage/invoices/document.bin", [0x01]);
+            var sourceFile = await AddSourceFileAsync(dbContext, storedPath, "document.bin", "application/pdf", 1);
+            var service = CreateService(dbContext, root);
+
+            var result = await service.GetPreviewableFileAsync(sourceFile.Id);
+
+            Assert.True(result.Succeeded);
+            Assert.Equal("application/pdf", result.ContentType);
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
+    [Fact]
+    public async Task GetPreviewableFileAsync_NormalizesJpgContentTypeToJpeg()
+    {
+        var root = CreateTempDirectory();
+
+        try
+        {
+            await using var dbContext = CreateDbContext();
+            var storedPath = CreateStoredFile(root, "storage/invoices/photo.bin", [0x01]);
+            var sourceFile = await AddSourceFileAsync(dbContext, storedPath, "photo.jpg", "image/jpg", 1);
+            var service = CreateService(dbContext, root);
+
+            var result = await service.GetPreviewableFileAsync(sourceFile.Id);
+
+            Assert.True(result.Succeeded);
+            Assert.Equal("image/jpeg", result.ContentType);
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
+    [Theory]
+    [InlineData("storage/invoices/archive.zip", "application/zip")]
+    [InlineData("storage/invoices/file.bin", "application/placeholder")]
+    public async Task GetPreviewableFileAsync_RejectsUnsupportedContentTypes(
+        string relativePath,
+        string storedContentType)
+    {
+        var root = CreateTempDirectory();
+
+        try
+        {
+            await using var dbContext = CreateDbContext();
+            var storedPath = CreateStoredFile(root, relativePath, [0x01]);
+            var sourceFile = await AddSourceFileAsync(dbContext, storedPath, Path.GetFileName(relativePath), storedContentType, 1);
+            var service = CreateService(dbContext, root);
+
+            var result = await service.GetPreviewableFileAsync(sourceFile.Id);
+
+            Assert.False(result.Succeeded);
+            Assert.Equal(DownloadableFileErrorCode.UnsupportedContentType, result.ErrorCode);
+            Assert.Null(result.PhysicalPath);
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
+    [Fact]
+    public async Task GetPreviewableFileAsync_ReturnsNotFoundWhenMetadataDoesNotExist()
+    {
+        await using var dbContext = CreateDbContext();
+        var service = CreateService(dbContext, CreateTempDirectory());
+
+        var result = await service.GetPreviewableFileAsync(Guid.NewGuid());
+
+        Assert.False(result.Succeeded);
+        Assert.Equal(DownloadableFileErrorCode.NotFound, result.ErrorCode);
+        Assert.Null(result.PhysicalPath);
+    }
+
+    [Fact]
+    public async Task GetPreviewableFileAsync_ReturnsPhysicalFileMissingWhenFileDoesNotExist()
+    {
+        var root = CreateTempDirectory();
+
+        try
+        {
+            await using var dbContext = CreateDbContext();
+            var sourceFile = await AddSourceFileAsync(
+                dbContext,
+                "storage/invoices/missing.png",
+                "missing.png",
+                "image/png",
+                123);
+            var service = CreateService(dbContext, root);
+
+            var result = await service.GetPreviewableFileAsync(sourceFile.Id);
+
+            Assert.False(result.Succeeded);
+            Assert.Equal(DownloadableFileErrorCode.PhysicalFileMissing, result.ErrorCode);
+            Assert.Null(result.PhysicalPath);
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
+    [Fact]
+    public async Task GetPreviewableFileAsync_RejectsUnsafePathTraversal()
+    {
+        var root = CreateTempDirectory();
+
+        try
+        {
+            await using var dbContext = CreateDbContext();
+            var sourceFile = await AddSourceFileAsync(
+                dbContext,
+                "../outside.png",
+                "outside.png",
+                "image/png",
+                123);
+            var service = CreateService(dbContext, root);
+
+            var result = await service.GetPreviewableFileAsync(sourceFile.Id);
+
+            Assert.False(result.Succeeded);
+            Assert.Equal(DownloadableFileErrorCode.UnsafePath, result.ErrorCode);
+            Assert.Null(result.PhysicalPath);
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
     private static FileDownloadService CreateService(
         OaiDbContext dbContext,
         string basePath,
@@ -291,6 +497,16 @@ public sealed class FileDownloadServiceTests
         InvoiceSourceFile sourceFile)
     {
         dbContext.Entry(sourceFile).Property(x => x.OriginalFileName).CurrentValue = string.Empty;
+        dbContext.SaveChanges();
+    }
+
+    private static void SetPreview(
+        OaiDbContext dbContext,
+        InvoiceSourceFile sourceFile,
+        string previewPath,
+        int pageNumber)
+    {
+        sourceFile.UpdatePreview(previewPath, pageNumber);
         dbContext.SaveChanges();
     }
 
