@@ -1,0 +1,271 @@
+﻿@page "/uploads/{BatchId:guid}"
+@page "/invoices/uploads/{BatchId:guid}"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.UploadInvoices)]
+
+<PageTitle>Upload Batch Detail</PageTitle>
+
+<section class="mb-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+            <h1 class="fw-bold mb-1">Upload Batch Detail</h1>
+            <p class="text-secondary mb-0">
+                Track uploaded files, processing status, errors, and created invoices.
+            </p>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 align-items-start">
+            <button class="btn btn-outline-secondary oai-icon-button"
+                    @onclick="GoBack">
+                <Icon Name="mdi:arrow-left" Size="18" />
+                <span>Back</span>
+            </button>
+
+            <button class="btn btn-outline-primary oai-icon-button"
+                    disabled="@IsLoading"
+                    @onclick="LoadBatchAsync">
+                @if (IsLoading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                }
+                else
+                {
+                    <Icon Name="mdi:refresh" Size="18" />
+                }
+                <span>Refresh</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<PageState IsLoading="@IsLoading"
+           LoadingMessage="Loading upload batch..."
+           ErrorTitle="Unable to load upload batch"
+           ErrorMessage="@ErrorMessage"
+           IsEmpty="@(Batch is null)"
+           EmptyIcon="📦"
+           EmptyTitle="Upload batch not found"
+           EmptyMessage="The upload batch may have been deleted or does not exist."
+           InCard="true">
+    <ErrorActions>
+        <button class="btn btn-outline-danger oai-icon-button" @onclick="LoadBatchAsync">
+            <Icon Name="mdi:refresh" Size="18" />
+            <span>Retry</span>
+        </button>
+    </ErrorActions>
+
+    <EmptyActions>
+        <button class="btn btn-primary oai-icon-button" @onclick="GoBack">
+            <Icon Name="mdi:arrow-left" Size="18" />
+            <span>Back</span>
+        </button>
+    </EmptyActions>
+
+    <ChildContent>
+        @if (Batch is not null)
+        {
+            <section class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-column flex-xl-row justify-content-between gap-4 pb-4 mb-4 border-bottom">
+                        <div>
+                            <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 gap-sm-3 mb-3">
+                                <h2 class="h3 fw-bold mb-0 text-break">@Batch.BatchCode</h2>
+                                <span class="badge @GetBatchStatusBadgeClass(Batch.Status)">
+                                    @Batch.Status
+                                </span>
+                            </div>
+
+                            <div class="text-secondary small">
+                                Batch ID: <span class="font-monospace">@Batch.Id</span>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(Batch.UploadedByUserName))
+                            {
+                                <div class="text-secondary small">
+                                    Uploaded by: @Batch.UploadedByUserName
+                                </div>
+                            }
+                        </div>
+
+                        <div class="row g-2 flex-fill upload-batch-summary">
+                            <div class="col-6 col-md-4 col-xl-2">
+                                <div class="border rounded-3 bg-light p-3 h-100">
+                                    <div class="text-secondary small">Total</div>
+                                    <div class="h4 fw-bold mb-0">@Batch.TotalFiles</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4 col-xl-2">
+                                <div class="border rounded-3 bg-success-subtle p-3 h-100">
+                                    <div class="text-success-emphasis small">Processed</div>
+                                    <div class="h4 fw-bold mb-0">@Batch.ProcessedFiles</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4 col-xl-2">
+                                <div class="border rounded-3 bg-danger-subtle p-3 h-100">
+                                    <div class="text-danger-emphasis small">Failed</div>
+                                    <div class="h4 fw-bold mb-0">@Batch.FailedFiles</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4 col-xl-2">
+                                <div class="border rounded-3 bg-warning-subtle p-3 h-100">
+                                    <div class="text-warning-emphasis small">Pending</div>
+                                    <div class="h4 fw-bold mb-0">@PendingFiles</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4 col-xl-2">
+                                <div class="border rounded-3 bg-info-subtle p-3 h-100">
+                                    <div class="text-info-emphasis small">Processing</div>
+                                    <div class="h4 fw-bold mb-0">@ProcessingFiles</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4 col-xl-2">
+                                <div class="border rounded-3 bg-secondary-subtle p-3 h-100">
+                                    <div class="text-secondary small">Retry</div>
+                                    <div class="h4 fw-bold mb-0">@RetryPendingFiles</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4">
+                            <div class="border rounded-3 p-3 h-100">
+                                <div class="text-secondary small mb-1">Created at</div>
+                                <div class="fw-semibold">@FormatDateTime(Batch.CreatedAt)</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="border rounded-3 p-3 h-100">
+                                <div class="text-secondary small mb-1">Started at</div>
+                                <div class="fw-semibold">@FormatDateTimeOrFallback(Batch.StartedAt)</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="border rounded-3 p-3 h-100">
+                                <div class="text-secondary small mb-1">Completed at</div>
+                                <div class="fw-semibold">@FormatDateTimeOrFallback(Batch.CompletedAt)</div>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Batch.OriginalZipFilePath))
+                        {
+                            <div class="col-12">
+                                <div class="border rounded-3 p-3">
+                                    <div class="text-secondary small mb-1">Original ZIP path</div>
+                                    <div class="fw-semibold text-break font-monospace">@Batch.OriginalZipFilePath</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <section class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
+                        <div>
+                            <h3 class="h5 fw-bold mb-1">Files</h3>
+                            <p class="text-secondary mb-0">
+                                Each row represents one file extracted from the upload package.
+                            </p>
+                        </div>
+
+                        <span class="badge text-bg-light border align-self-start">
+                            @Batch.Files.Count file(s)
+                        </span>
+                    </div>
+
+                    @if (Batch.Files.Count == 0)
+                    {
+                        <EmptyState Icon="📄"
+                                    Title="No files in this batch"
+                                    InCard="false" />
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                <tr>
+                                    <th>File</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Size</th>
+                                    <th>Started</th>
+                                    <th>Completed</th>
+                                    <th>Error</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach (var file in Batch.Files.OrderBy(x => x.CreatedAt))
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold text-break">@file.OriginalFileName</div>
+                                            <div class="text-secondary small text-break">@file.ContentType</div>
+                                            <div class="text-secondary small font-monospace text-break">@file.StoredFilePath</div>
+                                        </td>
+
+                                        <td>
+                                            <span class="badge @GetFileStatusBadgeClass(file.Status)">
+                                                @file.Status
+                                            </span>
+                                        </td>
+
+                                        <td class="text-end">
+                                            @FormatFileSize(file.FileSizeBytes)
+                                        </td>
+
+                                        <td>
+                                            @FormatDateTimeOrFallback(file.ProcessingStartedAt)
+                                        </td>
+
+                                        <td>
+                                            @FormatDateTimeOrFallback(file.ProcessingCompletedAt)
+                                        </td>
+
+                                        <td class="text-break">
+                                            @if (string.IsNullOrWhiteSpace(file.ErrorMessage))
+                                            {
+                                                <span class="text-secondary">-</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">@file.ErrorMessage</span>
+                                            }
+                                        </td>
+
+                                        <td class="text-end">
+                                            @if (file.InvoiceId is not null)
+                                            {
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-primary oai-icon-button"
+                                                        @onclick="() => GoToInvoice(file.InvoiceId.Value)">
+                                                    <Icon Name="mdi:file-document-outline" Size="16" />
+                                                    <span>Invoice</span>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-secondary small">-</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    </ChildContent>
+</PageState>
