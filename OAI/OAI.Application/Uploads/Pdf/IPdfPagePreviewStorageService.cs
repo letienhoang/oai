@@ -6,4 +6,9 @@ public interface IPdfPagePreviewStorageService
         Guid uploadBatchFileId,
         IReadOnlyList<PdfRenderedPageResult> renderedPages,
         CancellationToken cancellationToken = default);
+
+    Task LinkPreviewsToInvoiceAsync(
+        Guid uploadBatchFileId,
+        Guid invoiceId,
+        CancellationToken cancellationToken = default);
 }

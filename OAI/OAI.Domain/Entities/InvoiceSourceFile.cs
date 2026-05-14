@@ -77,6 +77,15 @@ public sealed class InvoiceSourceFile : Entity
         Touch();
     }
 
+    public void LinkInvoice(Guid invoiceId)
+    {
+        if (invoiceId == Guid.Empty)
+            throw new ArgumentException("InvoiceId cannot be empty.", nameof(invoiceId));
+
+        InvoiceId = invoiceId;
+        Touch();
+    }
+
     public void UpdatePreview(string? previewFilePath, int? pageNumber = null)
     {
         if (pageNumber is <= 0)

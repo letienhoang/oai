@@ -181,6 +181,37 @@ public sealed class PdfPagePreviewStorageService : IPdfPagePreviewStorageService
             ErrorMessage: null);
     }
 
+    public async Task LinkPreviewsToInvoiceAsync(
+        Guid uploadBatchFileId,
+        Guid invoiceId,
+        CancellationToken cancellationToken = default)
+    {
+        if (uploadBatchFileId == Guid.Empty)
+        {
+            throw new ArgumentException("UploadBatchFileId cannot be empty.", nameof(uploadBatchFileId));
+        }
+
+        if (invoiceId == Guid.Empty)
+        {
+            throw new ArgumentException("InvoiceId cannot be empty.", nameof(invoiceId));
+        }
+
+        var previews = await _dbContext.InvoiceSourceFiles
+            .Where(x => x.UploadBatchFileId == uploadBatchFileId &&
+                        x.InvoiceId == null &&
+                        x.PageNumber != null &&
+                        x.PreviewFilePath != null)
+            .OrderBy(x => x.PageNumber)
+            .ToListAsync(cancellationToken);
+
+        foreach (var preview in previews)
+        {
+            preview.LinkInvoice(invoiceId);
+        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
     private static string? ValidateRenderedPage(PdfRenderedPageResult renderedPage)
     {
         if (renderedPage.PageNumber <= 0)

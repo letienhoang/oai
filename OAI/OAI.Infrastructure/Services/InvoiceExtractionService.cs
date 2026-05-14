@@ -79,13 +79,16 @@ public sealed class InvoiceExtractionService : IInvoiceExtractionService
 
     public Task<ExtractedInvoiceDto?> ExtractFromTextAsync(
         string rawText,
+        string sourceName = "raw-text",
+        decimal confidenceScore = 1.0m,
+        string engineName = "RawText",
         CancellationToken cancellationToken = default)
     {
         return _invoiceTextParser.ParseAsync(
             rawText,
-            "raw-text",
-            1.0m,
-            "RawText",
+            string.IsNullOrWhiteSpace(sourceName) ? "raw-text" : sourceName,
+            confidenceScore,
+            string.IsNullOrWhiteSpace(engineName) ? "RawText" : engineName,
             cancellationToken);
     }
 }

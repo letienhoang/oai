@@ -20,6 +20,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
     private readonly IPdfTextExtractionService _pdfTextExtractionService;
     private readonly IPdfPageRenderingService _pdfPageRenderingService;
     private readonly IPdfPagePreviewStorageService _pdfPagePreviewStorageService;
+    private readonly IPdfPageOcrService _pdfPageOcrService;
     private readonly IInvoiceExtractionService _invoiceExtractionService;
     private readonly ICreateInvoiceUseCase _createInvoiceUseCase;
     private readonly IVendorRepository _vendorRepository;
@@ -32,6 +33,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         IPdfTextExtractionService pdfTextExtractionService,
         IPdfPageRenderingService pdfPageRenderingService,
         IPdfPagePreviewStorageService pdfPagePreviewStorageService,
+        IPdfPageOcrService pdfPageOcrService,
         IInvoiceExtractionService invoiceExtractionService,
         ICreateInvoiceUseCase createInvoiceUseCase,
         IVendorRepository vendorRepository,
@@ -43,6 +45,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         _pdfTextExtractionService = pdfTextExtractionService;
         _pdfPageRenderingService = pdfPageRenderingService;
         _pdfPagePreviewStorageService = pdfPagePreviewStorageService;
+        _pdfPageOcrService = pdfPageOcrService;
         _invoiceExtractionService = invoiceExtractionService;
         _createInvoiceUseCase = createInvoiceUseCase;
         _vendorRepository = vendorRepository;
@@ -287,25 +290,77 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
                 return;
             }
 
-            uploadBatchFile.MarkFailed(
-                $"Scanned PDF page previews were stored successfully: {previewStorage.Previews.Count} page(s). OCR for rendered PDF pages is not implemented yet.");
-            uploadBatchFile.UploadBatch?.RefreshFileCounters();
+            var pageOcr = await _pdfPageOcrService.OcrAsync(
+                previewStorage.Previews,
+                cancellationToken);
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            if (!pageOcr.Succeeded)
+            {
+                uploadBatchFile.MarkFailed(pageOcr.ErrorMessage ?? "PDF page OCR failed.");
+                uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                _logger.LogWarning(
+                    "Upload batch file failed because scanned PDF page OCR failed. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, ErrorMessage: {ErrorMessage}, WarningMessage: {WarningMessage}",
+                    uploadBatchFile.Id,
+                    uploadBatchFile.OriginalFileName,
+                    pageOcr.ErrorMessage,
+                    pageOcr.WarningMessage);
+
+                return;
+            }
+
+            var extractedFromOcr = await _invoiceExtractionService.ExtractFromTextAsync(
+                pageOcr.MergedRawText,
+                uploadBatchFile.OriginalFileName,
+                pageOcr.AverageConfidence ?? 0m,
+                "TesseractPdfPages",
+                cancellationToken);
+
+            if (extractedFromOcr is null)
+            {
+                uploadBatchFile.MarkFailed("Invoice extraction failed from scanned PDF page OCR text.");
+                uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                _logger.LogWarning(
+                    "Cannot parse invoice data from scanned PDF page OCR text. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}",
+                    uploadBatchFile.Id,
+                    uploadBatchFile.OriginalFileName,
+                    pageOcr.Pages.Count);
+
+                return;
+            }
+
+            var scannedPdfInvoice = await CreateInvoiceFromExtractedAsync(
+                uploadBatchFile,
+                extractedFromOcr,
+                cancellationToken);
+
+            await _pdfPagePreviewStorageService.LinkPreviewsToInvoiceAsync(
+                uploadBatchFile.Id,
+                scannedPdfInvoice.InvoiceId,
+                cancellationToken);
 
             _logger.LogInformation(
-                "Upload batch file stored scanned PDF page previews and stopped because rendered-page OCR is not implemented yet. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}, StoredPreviewCount: {StoredPreviewCount}, WarningMessage: {WarningMessage}",
+                "Scanned PDF upload batch file processed successfully from rendered page OCR. UploadBatchFileId: {UploadBatchFileId}, InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}, PageCount: {PageCount}, StoredPreviewCount: {StoredPreviewCount}, WarningMessage: {WarningMessage}",
                 uploadBatchFile.Id,
-                uploadBatchFile.OriginalFileName,
-                rendering.PageCount,
+                scannedPdfInvoice.InvoiceId,
+                scannedPdfInvoice.InvoiceNumber,
+                pageOcr.Pages.Count,
                 previewStorage.Previews.Count,
-                rendering.WarningMessage ?? extraction.WarningMessage);
+                pageOcr.WarningMessage ?? rendering.WarningMessage ?? extraction.WarningMessage);
 
             return;
         }
 
         var extracted = await _invoiceExtractionService.ExtractFromTextAsync(
             extraction.FullText,
+            uploadBatchFile.OriginalFileName,
+            1.0m,
+            "PdfEmbeddedText",
             cancellationToken);
 
         if (extracted is null)

@@ -65,6 +65,7 @@ public static class DependencyInjection
         services.AddScoped<IPdfTextExtractionService, PdfTextExtractionService>();
         services.AddScoped<IPdfPageRenderingService, PdfPageRenderingService>();
         services.AddScoped<IPdfPagePreviewStorageService, PdfPagePreviewStorageService>();
+        services.AddScoped<IPdfPageOcrService, PdfPageOcrService>();
         services.AddScoped<IOcrService, TesseractOcrService>();
         
         services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();
