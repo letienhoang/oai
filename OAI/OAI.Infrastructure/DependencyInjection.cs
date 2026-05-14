@@ -5,11 +5,13 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using OAI.Application.Abstractions.BackgroundJobs;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
+using OAI.Application.Files;
 using OAI.Application.Uploads.FileDetection;
 using OAI.Application.Uploads.Pdf;
 using OAI.Infrastructure.Audit;
 using OAI.Infrastructure.BackgroundJobs;
 using OAI.Infrastructure.DemoData;
+using OAI.Infrastructure.Files;
 using OAI.Infrastructure.Options;
 using OAI.Infrastructure.Persistence;
 using OAI.Infrastructure.Repositories;
@@ -61,6 +63,7 @@ public static class DependencyInjection
         services.AddScoped<IInvoiceTextParser, HybridInvoiceTextParser>();
         
         services.AddScoped<IFileStorageService, FileStorageService>();
+        services.AddScoped<IFileDownloadService, FileDownloadService>();
         services.AddScoped<IFileTypeDetectionService, FileTypeDetectionService>();
         services.AddScoped<IPdfTextExtractionService, PdfTextExtractionService>();
         services.AddScoped<IPdfPageRenderingService, PdfPageRenderingService>();
