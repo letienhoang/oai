@@ -6,6 +6,7 @@ using OAI.Application.Abstractions.BackgroundJobs;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Uploads.FileDetection;
+using OAI.Application.Uploads.Pdf;
 using OAI.Infrastructure.Audit;
 using OAI.Infrastructure.BackgroundJobs;
 using OAI.Infrastructure.DemoData;
@@ -16,6 +17,7 @@ using OAI.Infrastructure.Services;
 using OAI.Infrastructure.Services.Llm;
 using OAI.Infrastructure.SystemHealth;
 using OAI.Infrastructure.Uploads.FileDetection;
+using OAI.Infrastructure.Uploads.Pdf;
 
 namespace OAI.Infrastructure;
 
@@ -60,6 +62,7 @@ public static class DependencyInjection
         
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddScoped<IFileTypeDetectionService, FileTypeDetectionService>();
+        services.AddScoped<IPdfTextExtractionService, PdfTextExtractionService>();
         services.AddScoped<IOcrService, TesseractOcrService>();
         
         services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();

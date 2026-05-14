@@ -6,6 +6,7 @@ using OAI.Application.Abstractions.Services;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
 using OAI.Application.Uploads.FileDetection;
+using OAI.Application.Uploads.Pdf;
 using OAI.Domain.Entities;
 using OAI.Domain.Enums;
 using OAI.Domain.Exceptions;
@@ -16,6 +17,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 {
     private readonly IUploadBatchFileRepository _uploadBatchFileRepository;
     private readonly IFileTypeDetectionService _fileTypeDetectionService;
+    private readonly IPdfTextExtractionService _pdfTextExtractionService;
     private readonly IInvoiceExtractionService _invoiceExtractionService;
     private readonly ICreateInvoiceUseCase _createInvoiceUseCase;
     private readonly IVendorRepository _vendorRepository;
@@ -25,6 +27,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
     public ProcessBatchFileJob(
         IUploadBatchFileRepository uploadBatchFileRepository,
         IFileTypeDetectionService fileTypeDetectionService,
+        IPdfTextExtractionService pdfTextExtractionService,
         IInvoiceExtractionService invoiceExtractionService,
         ICreateInvoiceUseCase createInvoiceUseCase,
         IVendorRepository vendorRepository,
@@ -33,6 +36,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
     {
         _uploadBatchFileRepository = uploadBatchFileRepository;
         _fileTypeDetectionService = fileTypeDetectionService;
+        _pdfTextExtractionService = pdfTextExtractionService;
         _invoiceExtractionService = invoiceExtractionService;
         _createInvoiceUseCase = createInvoiceUseCase;
         _vendorRepository = vendorRepository;
@@ -107,19 +111,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 
             if (detection.FileType == DetectedUploadFileType.Pdf)
             {
-                uploadBatchFile.MarkFailed(
-                    "PDF file was detected, but PDF processing is not implemented yet.");
-
-                uploadBatchFile.UploadBatch?.RefreshFileCounters();
-
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                _logger.LogInformation(
-                    "Upload batch file failed because PDF processing is not implemented yet. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, DetectionReason: {DetectionReason}",
-                    uploadBatchFile.Id,
-                    uploadBatchFile.OriginalFileName,
-                    detection.Reason);
-
+                await ProcessPdfAsync(uploadBatchFile, stream, cancellationToken);
                 return;
             }
 
@@ -166,46 +158,10 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
                 return;
             }
 
-            var vendor = await GetOrCreateVendorAsync(extracted, cancellationToken);
-
-            var structuredJson = JsonSerializer.Serialize(
+            var createdInvoice = await CreateInvoiceFromExtractedAsync(
+                uploadBatchFile,
                 extracted,
-                new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-
-            var createRequest = new InvoiceCreateRequestDto
-            {
-                VendorId = vendor.Id,
-                InvoiceNumber = extracted.InvoiceNumber,
-                IssueDate = extracted.IssueDate,
-                DueDate = extracted.DueDate,
-                Currency = extracted.Currency,
-                DeclaredSubtotal = extracted.DeclaredSubtotal,
-                DeclaredTaxAmount = extracted.DeclaredTaxAmount,
-                DeclaredTotalAmount = extracted.DeclaredTotalAmount,
-                SourceFileName = uploadBatchFile.OriginalFileName,
-                SourceFilePath = uploadBatchFile.StoredFilePath,
-                SourceFileContentType = uploadBatchFile.ContentType,
-                SourceFileSizeBytes = uploadBatchFile.FileSizeBytes,
-                UploadBatchFileId = uploadBatchFile.Id,
-                LineItems = extracted.LineItems,
-                ExtractionEngineName = extracted.EngineName,
-                ExtractionConfidenceScore = extracted.ConfidenceScore,
-                ExtractionRawText = extracted.RawText,
-                ExtractionStructuredJson = structuredJson
-            };
-
-            var createdInvoice = await _createInvoiceUseCase.ExecuteAsync(
-                createRequest,
                 cancellationToken);
-
-            uploadBatchFile.MarkProcessed(createdInvoice.InvoiceId);
-            uploadBatchFile.UploadBatch?.RefreshFileCounters();
-
-            await _uploadBatchFileRepository.UpdateAsync(uploadBatchFile, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation(
                 "Upload batch file processed successfully. UploadBatchFileId: {UploadBatchFileId}, InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}",
@@ -246,6 +202,138 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 
             throw;
         }
+    }
+
+    private async Task ProcessPdfAsync(
+        UploadBatchFile uploadBatchFile,
+        Stream pdfStream,
+        CancellationToken cancellationToken)
+    {
+        _logger.LogInformation(
+            "Starting embedded PDF text extraction for upload batch file. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, StoredFilePath: {StoredFilePath}",
+            uploadBatchFile.Id,
+            uploadBatchFile.OriginalFileName,
+            uploadBatchFile.StoredFilePath);
+
+        var extraction = await _pdfTextExtractionService.ExtractAsync(
+            pdfStream,
+            uploadBatchFile.OriginalFileName,
+            cancellationToken);
+
+        if (!extraction.Succeeded)
+        {
+            uploadBatchFile.MarkFailed(extraction.ErrorMessage ?? "PDF text extraction failed.");
+            uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            _logger.LogWarning(
+                "Upload batch file failed because embedded PDF text extraction failed. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, ErrorMessage: {ErrorMessage}",
+                uploadBatchFile.Id,
+                uploadBatchFile.OriginalFileName,
+                extraction.ErrorMessage);
+
+            return;
+        }
+
+        if (!extraction.HasUsableText)
+        {
+            uploadBatchFile.MarkFailed(
+                "The PDF does not contain enough embedded text. Scanned PDF OCR processing is not implemented yet.");
+            uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation(
+                "Upload batch file failed because scanned PDF OCR processing is not implemented yet. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}, WarningMessage: {WarningMessage}",
+                uploadBatchFile.Id,
+                uploadBatchFile.OriginalFileName,
+                extraction.PageCount,
+                extraction.WarningMessage);
+
+            return;
+        }
+
+        var extracted = await _invoiceExtractionService.ExtractFromTextAsync(
+            extraction.FullText,
+            cancellationToken);
+
+        if (extracted is null)
+        {
+            uploadBatchFile.MarkFailed("Invoice extraction failed from embedded PDF text.");
+            uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            _logger.LogWarning(
+                "Cannot parse invoice data from embedded PDF text. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}",
+                uploadBatchFile.Id,
+                uploadBatchFile.OriginalFileName,
+                extraction.PageCount);
+
+            return;
+        }
+
+        var createdInvoice = await CreateInvoiceFromExtractedAsync(
+            uploadBatchFile,
+            extracted,
+            cancellationToken);
+
+        _logger.LogInformation(
+            "PDF upload batch file processed successfully from embedded text. UploadBatchFileId: {UploadBatchFileId}, InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}, PageCount: {PageCount}",
+            uploadBatchFile.Id,
+            createdInvoice.InvoiceId,
+            createdInvoice.InvoiceNumber,
+            extraction.PageCount);
+    }
+
+    private async Task<InvoiceDetailDto> CreateInvoiceFromExtractedAsync(
+        UploadBatchFile uploadBatchFile,
+        ExtractedInvoiceDto extracted,
+        CancellationToken cancellationToken)
+    {
+        var vendor = await GetOrCreateVendorAsync(extracted, cancellationToken);
+
+        var structuredJson = JsonSerializer.Serialize(
+            extracted,
+            new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+        var createRequest = new InvoiceCreateRequestDto
+        {
+            VendorId = vendor.Id,
+            InvoiceNumber = extracted.InvoiceNumber,
+            IssueDate = extracted.IssueDate,
+            DueDate = extracted.DueDate,
+            Currency = extracted.Currency,
+            DeclaredSubtotal = extracted.DeclaredSubtotal,
+            DeclaredTaxAmount = extracted.DeclaredTaxAmount,
+            DeclaredTotalAmount = extracted.DeclaredTotalAmount,
+            SourceFileName = uploadBatchFile.OriginalFileName,
+            SourceFilePath = uploadBatchFile.StoredFilePath,
+            SourceFileContentType = uploadBatchFile.ContentType,
+            SourceFileSizeBytes = uploadBatchFile.FileSizeBytes,
+            UploadBatchFileId = uploadBatchFile.Id,
+            LineItems = extracted.LineItems,
+            ExtractionEngineName = extracted.EngineName,
+            ExtractionConfidenceScore = extracted.ConfidenceScore,
+            ExtractionRawText = extracted.RawText,
+            ExtractionStructuredJson = structuredJson
+        };
+
+        var createdInvoice = await _createInvoiceUseCase.ExecuteAsync(
+            createRequest,
+            cancellationToken);
+
+        uploadBatchFile.MarkProcessed(createdInvoice.InvoiceId);
+        uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+        await _uploadBatchFileRepository.UpdateAsync(uploadBatchFile, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return createdInvoice;
     }
 
     private async Task<Vendor> GetOrCreateVendorAsync(
