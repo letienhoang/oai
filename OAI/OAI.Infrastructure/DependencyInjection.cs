@@ -63,6 +63,7 @@ public static class DependencyInjection
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddScoped<IFileTypeDetectionService, FileTypeDetectionService>();
         services.AddScoped<IPdfTextExtractionService, PdfTextExtractionService>();
+        services.AddScoped<IPdfPageRenderingService, PdfPageRenderingService>();
         services.AddScoped<IOcrService, TesseractOcrService>();
         
         services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();

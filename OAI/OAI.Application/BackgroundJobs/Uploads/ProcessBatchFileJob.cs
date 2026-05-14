@@ -18,6 +18,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
     private readonly IUploadBatchFileRepository _uploadBatchFileRepository;
     private readonly IFileTypeDetectionService _fileTypeDetectionService;
     private readonly IPdfTextExtractionService _pdfTextExtractionService;
+    private readonly IPdfPageRenderingService _pdfPageRenderingService;
     private readonly IInvoiceExtractionService _invoiceExtractionService;
     private readonly ICreateInvoiceUseCase _createInvoiceUseCase;
     private readonly IVendorRepository _vendorRepository;
@@ -28,6 +29,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         IUploadBatchFileRepository uploadBatchFileRepository,
         IFileTypeDetectionService fileTypeDetectionService,
         IPdfTextExtractionService pdfTextExtractionService,
+        IPdfPageRenderingService pdfPageRenderingService,
         IInvoiceExtractionService invoiceExtractionService,
         ICreateInvoiceUseCase createInvoiceUseCase,
         IVendorRepository vendorRepository,
@@ -37,6 +39,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         _uploadBatchFileRepository = uploadBatchFileRepository;
         _fileTypeDetectionService = fileTypeDetectionService;
         _pdfTextExtractionService = pdfTextExtractionService;
+        _pdfPageRenderingService = pdfPageRenderingService;
         _invoiceExtractionService = invoiceExtractionService;
         _createInvoiceUseCase = createInvoiceUseCase;
         _vendorRepository = vendorRepository;
@@ -238,18 +241,40 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 
         if (!extraction.HasUsableText)
         {
+            var rendering = await RenderScannedPdfPagesAsync(
+                uploadBatchFile,
+                pdfStream,
+                cancellationToken);
+
+            if (!rendering.Succeeded)
+            {
+                uploadBatchFile.MarkFailed(rendering.ErrorMessage ?? "PDF page rendering failed.");
+                uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                _logger.LogWarning(
+                    "Upload batch file failed because scanned PDF page rendering failed. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, ErrorMessage: {ErrorMessage}",
+                    uploadBatchFile.Id,
+                    uploadBatchFile.OriginalFileName,
+                    rendering.ErrorMessage);
+
+                return;
+            }
+
             uploadBatchFile.MarkFailed(
-                "The PDF does not contain enough embedded text. Scanned PDF OCR processing is not implemented yet.");
+                $"Scanned PDF pages were rendered successfully: {rendering.Pages.Count} page(s). OCR for rendered PDF pages is not implemented yet.");
             uploadBatchFile.UploadBatch?.RefreshFileCounters();
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation(
-                "Upload batch file failed because scanned PDF OCR processing is not implemented yet. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}, WarningMessage: {WarningMessage}",
+                "Upload batch file rendered scanned PDF pages and stopped because rendered-page OCR is not implemented yet. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}, RenderedPageCount: {RenderedPageCount}, WarningMessage: {WarningMessage}",
                 uploadBatchFile.Id,
                 uploadBatchFile.OriginalFileName,
-                extraction.PageCount,
-                extraction.WarningMessage);
+                rendering.PageCount,
+                rendering.Pages.Count,
+                rendering.WarningMessage ?? extraction.WarningMessage);
 
             return;
         }
@@ -285,6 +310,37 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
             createdInvoice.InvoiceId,
             createdInvoice.InvoiceNumber,
             extraction.PageCount);
+    }
+
+    private Task<PdfPageRenderingResult> RenderScannedPdfPagesAsync(
+        UploadBatchFile uploadBatchFile,
+        Stream pdfStream,
+        CancellationToken cancellationToken)
+    {
+        var storedFileDirectory = Path.GetDirectoryName(uploadBatchFile.StoredFilePath);
+        if (string.IsNullOrWhiteSpace(storedFileDirectory))
+        {
+            storedFileDirectory = Directory.GetCurrentDirectory();
+        }
+
+        var outputDirectory = Path.Combine(
+            storedFileDirectory,
+            "rendered",
+            uploadBatchFile.Id.ToString("N"));
+
+        var options = new PdfPageRenderingOptions
+        {
+            OutputDirectory = outputDirectory,
+            FileNamePrefix = uploadBatchFile.Id.ToString("N"),
+            Dpi = 200,
+            MaxPages = 20,
+            OverwriteExistingFiles = true
+        };
+
+        return _pdfPageRenderingService.RenderAsync(
+            pdfStream,
+            options,
+            cancellationToken);
     }
 
     private async Task<InvoiceDetailDto> CreateInvoiceFromExtractedAsync(
