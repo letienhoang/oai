@@ -32,7 +32,7 @@ public sealed class ProcessUploadBatchJob : IProcessUploadBatchJob
         if (uploadBatchId == Guid.Empty)
             throw new ArgumentException("UploadBatchId cannot be empty.", nameof(uploadBatchId));
 
-        var uploadBatch = await _uploadBatchRepository.GetByIdAsync(
+        var uploadBatch = await _uploadBatchRepository.GetByIdWithFilesAsync(
             uploadBatchId,
             cancellationToken);
 

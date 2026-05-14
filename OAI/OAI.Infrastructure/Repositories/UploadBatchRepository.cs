@@ -22,6 +22,26 @@ public sealed class UploadBatchRepository : IUploadBatchRepository
             .Include(x => x.Files)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
+    
+    public Task<UploadBatch?> GetByIdWithFilesAsync(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.UploadBatches
+            .Include(x => x.Files)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<UploadBatchFile>> GetFilesAsync(
+        Guid uploadBatchId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.UploadBatchFiles
+            .AsNoTracking()
+            .Where(x => x.UploadBatchId == uploadBatchId)
+            .OrderBy(x => x.CreatedAt)
+            .ToListAsync(cancellationToken);
+    }
 
     public async Task AddAsync(
         UploadBatch uploadBatch,

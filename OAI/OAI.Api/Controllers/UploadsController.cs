@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using OAI.Api.Contracts.Uploads;
 using OAI.Application.Abstractions.BackgroundJobs;
 using OAI.Application.Abstractions.BackgroundJobs.Uploads;
+using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Invoices.Dtos;
 using OAI.Application.Uploads.Dtos;
+using OAI.Domain.Entities;
+using OAI.Domain.Enums;
 using OAI.Infrastructure.Identity;
 
 namespace OAI.Api.Controllers;
@@ -31,15 +34,18 @@ public sealed class UploadsController : ControllerBase
 
     private readonly IUploadPackageService _uploadPackageService;
     private readonly IBackgroundJobClient _backgroundJobClient;
+    private readonly IUploadBatchRepository _uploadBatchRepository;
     private readonly ILogger<UploadsController> _logger;
 
     public UploadsController(
         IUploadPackageService uploadPackageService,
         IBackgroundJobClient backgroundJobClient,
+        IUploadBatchRepository uploadBatchRepository,
         ILogger<UploadsController> logger)
     {
         _uploadPackageService = uploadPackageService;
         _backgroundJobClient = backgroundJobClient;
+        _uploadBatchRepository = uploadBatchRepository;
         _logger = logger;
     }
 
@@ -195,5 +201,130 @@ public sealed class UploadsController : ControllerBase
                     message = "Upload package creation failed."
                 });
         }
+    }
+    
+    [HttpGet("{batchId:guid}")]
+    [ProducesResponseType(typeof(UploadBatchStatusResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetBatchStatus(
+        Guid batchId,
+        CancellationToken cancellationToken)
+    {
+        if (batchId == Guid.Empty)
+        {
+            return BadRequest(new
+            {
+                message = "Batch id is required."
+            });
+        }
+
+        var uploadBatch = await _uploadBatchRepository.GetByIdWithFilesAsync(
+            batchId,
+            cancellationToken);
+
+        if (uploadBatch is null)
+        {
+            return NotFound(new
+            {
+                message = "Upload batch was not found."
+            });
+        }
+
+        return Ok(MapBatchStatus(uploadBatch));
+    }
+
+    [HttpGet("{batchId:guid}/files")]
+    [ProducesResponseType(typeof(IReadOnlyList<UploadBatchFileStatusResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetBatchFiles(
+        Guid batchId,
+        CancellationToken cancellationToken)
+    {
+        if (batchId == Guid.Empty)
+        {
+            return BadRequest(new
+            {
+                message = "Batch id is required."
+            });
+        }
+
+        var uploadBatch = await _uploadBatchRepository.GetByIdAsync(
+            batchId,
+            cancellationToken);
+
+        if (uploadBatch is null)
+        {
+            return NotFound(new
+            {
+                message = "Upload batch was not found."
+            });
+        }
+
+        var files = await _uploadBatchRepository.GetFilesAsync(
+            batchId,
+            cancellationToken);
+
+        return Ok(files
+            .Select(MapBatchFileStatus)
+            .ToArray());
+    }
+    
+    private static UploadBatchStatusResponse MapBatchStatus(UploadBatch uploadBatch)
+    {
+        var files = uploadBatch.Files
+            .OrderBy(x => x.CreatedAt)
+            .Select(MapBatchFileStatus)
+            .ToArray();
+
+        var pendingFiles = uploadBatch.Files.Count(x =>
+            x.Status is UploadBatchFileStatus.Created or UploadBatchFileStatus.Queued);
+
+        var processingFiles = uploadBatch.Files.Count(x =>
+            x.Status == UploadBatchFileStatus.Processing);
+
+        var retryPendingFiles = uploadBatch.Files.Count(x =>
+            x.Status == UploadBatchFileStatus.RetryPending);
+
+        var unsupportedFiles = uploadBatch.Files.Count(x =>
+            x.Status == UploadBatchFileStatus.Unsupported);
+
+        return new UploadBatchStatusResponse(
+            uploadBatch.Id,
+            uploadBatch.BatchCode,
+            uploadBatch.Status.ToString(),
+            uploadBatch.TotalFiles,
+            uploadBatch.ProcessedFiles,
+            uploadBatch.FailedFiles,
+            pendingFiles,
+            processingFiles,
+            retryPendingFiles,
+            unsupportedFiles,
+            uploadBatch.UploadedByUserName,
+            uploadBatch.OriginalZipFilePath,
+            uploadBatch.CreatedAt,
+            uploadBatch.StartedAt,
+            uploadBatch.CompletedAt,
+            files);
+    }
+
+    private static UploadBatchFileStatusResponse MapBatchFileStatus(UploadBatchFile file)
+    {
+        return new UploadBatchFileStatusResponse(
+            file.Id,
+            file.UploadBatchId,
+            file.OriginalFileName,
+            file.StoredFilePath,
+            file.ContentType,
+            file.FileSizeBytes,
+            file.Status.ToString(),
+            file.InvoiceId,
+            file.ErrorMessage,
+            file.CreatedAt,
+            file.ProcessingStartedAt,
+            file.ProcessingCompletedAt);
     }
 }

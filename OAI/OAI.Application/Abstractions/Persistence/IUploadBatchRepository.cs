@@ -7,6 +7,14 @@ public interface IUploadBatchRepository
     Task<UploadBatch?> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken = default);
+    
+    Task<UploadBatch?> GetByIdWithFilesAsync(
+        Guid id,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<UploadBatchFile>> GetFilesAsync(
+        Guid uploadBatchId,
+        CancellationToken cancellationToken = default);
 
     Task AddAsync(
         UploadBatch uploadBatch,
