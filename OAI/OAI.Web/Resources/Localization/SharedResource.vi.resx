@@ -361,16 +361,16 @@
         <value>Upload hóa đơn</value>
     </data>
   <data name="UploadInvoiceSubtitle" xml:space="preserve">
-        <value>Tải lên ảnh hóa đơn để hệ thống lưu trữ, OCR, trích xuất dữ liệu và tạo bản ghi hóa đơn.</value>
+        <value>Tải lên tệp hóa đơn để hệ thống lưu trữ, xử lý OCR hoặc văn bản PDF, trích xuất dữ liệu và tạo bản ghi hóa đơn.</value>
     </data>
   <data name="SelectInvoiceFile" xml:space="preserve">
         <value>Chọn file hóa đơn</value>
     </data>
   <data name="UploadInvoiceImage" xml:space="preserve">
-        <value>Upload ảnh hóa đơn</value>
+        <value>Upload tệp hóa đơn</value>
     </data>
   <data name="SupportedImageFormats" xml:space="preserve">
-        <value>Hỗ trợ hiện tại: JPG, JPEG, PNG, TIF, TIFF. PDF sẽ được hỗ trợ ở giai đoạn sau.</value>
+        <value>Hỗ trợ: JPG, JPEG, PNG, TIF, TIFF, PDF, ZIP.</value>
     </data>
   <data name="SelectedFile" xml:space="preserve">
         <value>File đã chọn</value>
@@ -424,7 +424,7 @@
         <value>Vui lòng chọn một file hóa đơn.</value>
     </data>
   <data name="UnsupportedInvoiceFileFormat" xml:space="preserve">
-        <value>Định dạng file chưa được hỗ trợ. Vui lòng chọn JPG, JPEG, PNG, TIF hoặc TIFF.</value>
+        <value>Định dạng file chưa được hỗ trợ. Vui lòng chọn JPG, JPEG, PNG, TIF, TIFF, PDF hoặc ZIP.</value>
     </data>
   <data name="FileSizeExceeded" xml:space="preserve">
         <value>File vượt quá dung lượng cho phép ({0}).</value>

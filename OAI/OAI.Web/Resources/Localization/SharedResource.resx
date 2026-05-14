@@ -361,16 +361,16 @@
         <value>Upload Invoice</value>
     </data>
   <data name="UploadInvoiceSubtitle" xml:space="preserve">
-        <value>Upload an invoice image so the system can store it, run OCR, extract data, and create an invoice record.</value>
+        <value>Upload invoice files so the system can store them, process OCR or PDF text, extract data, and create invoice records.</value>
     </data>
   <data name="SelectInvoiceFile" xml:space="preserve">
         <value>Select invoice file</value>
     </data>
   <data name="UploadInvoiceImage" xml:space="preserve">
-        <value>Upload invoice image</value>
+        <value>Upload invoice file</value>
     </data>
   <data name="SupportedImageFormats" xml:space="preserve">
-        <value>Currently supported: JPG, JPEG, PNG, TIF, TIFF. PDF will be supported in a later phase.</value>
+        <value>Supported files: JPG, JPEG, PNG, TIF, TIFF, PDF, ZIP.</value>
     </data>
   <data name="SelectedFile" xml:space="preserve">
         <value>Selected file</value>
@@ -424,7 +424,7 @@
         <value>Please select an invoice file.</value>
     </data>
   <data name="UnsupportedInvoiceFileFormat" xml:space="preserve">
-        <value>Unsupported file format. Please select JPG, JPEG, PNG, TIF, or TIFF.</value>
+        <value>Unsupported file format. Please select JPG, JPEG, PNG, TIF, TIFF, PDF, or ZIP.</value>
     </data>
   <data name="FileSizeExceeded" xml:space="preserve">
         <value>The file exceeds the allowed size ({0}).</value>

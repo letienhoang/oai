@@ -70,6 +70,7 @@ public static class DependencyInjection
         
         services.AddScoped<IFileStorageService, FileStorageService>();
         services.AddScoped<IFileDownloadService, FileDownloadService>();
+        services.AddScoped<IInvoiceSourceFileService, InvoiceSourceFileService>();
         services.AddScoped<IFileTypeDetectionService, FileTypeDetectionService>();
         services.AddScoped<IPdfTextExtractionService, PdfTextExtractionService>();
         services.AddScoped<IPdfPageRenderingService, PdfPageRenderingService>();

@@ -4,6 +4,7 @@ using OAI.Application.Abstractions.BackgroundJobs.Uploads;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Abstractions.UseCases.Invoices;
+using OAI.Application.Files;
 using OAI.Application.Invoices.Dtos;
 using OAI.Application.Uploads.FileDetection;
 using OAI.Application.Uploads.Pdf;
@@ -21,6 +22,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
     private readonly IPdfPageRenderingService _pdfPageRenderingService;
     private readonly IPdfPagePreviewStorageService _pdfPagePreviewStorageService;
     private readonly IPdfPageOcrService _pdfPageOcrService;
+    private readonly IInvoiceSourceFileService _invoiceSourceFileService;
     private readonly IInvoiceExtractionService _invoiceExtractionService;
     private readonly ICreateInvoiceUseCase _createInvoiceUseCase;
     private readonly IVendorRepository _vendorRepository;
@@ -34,6 +36,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         IPdfPageRenderingService pdfPageRenderingService,
         IPdfPagePreviewStorageService pdfPagePreviewStorageService,
         IPdfPageOcrService pdfPageOcrService,
+        IInvoiceSourceFileService invoiceSourceFileService,
         IInvoiceExtractionService invoiceExtractionService,
         ICreateInvoiceUseCase createInvoiceUseCase,
         IVendorRepository vendorRepository,
@@ -46,6 +49,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         _pdfPageRenderingService = pdfPageRenderingService;
         _pdfPagePreviewStorageService = pdfPagePreviewStorageService;
         _pdfPageOcrService = pdfPageOcrService;
+        _invoiceSourceFileService = invoiceSourceFileService;
         _invoiceExtractionService = invoiceExtractionService;
         _createInvoiceUseCase = createInvoiceUseCase;
         _vendorRepository = vendorRepository;
@@ -339,11 +343,6 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
                 extractedFromOcr,
                 cancellationToken);
 
-            await _pdfPagePreviewStorageService.LinkPreviewsToInvoiceAsync(
-                uploadBatchFile.Id,
-                scannedPdfInvoice.InvoiceId,
-                cancellationToken);
-
             _logger.LogInformation(
                 "Scanned PDF upload batch file processed successfully from rendered page OCR. UploadBatchFileId: {UploadBatchFileId}, InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}, PageCount: {PageCount}, StoredPreviewCount: {StoredPreviewCount}, WarningMessage: {WarningMessage}",
                 uploadBatchFile.Id,
@@ -461,6 +460,11 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 
         var createdInvoice = await _createInvoiceUseCase.ExecuteAsync(
             createRequest,
+            cancellationToken);
+
+        await _invoiceSourceFileService.LinkSourceFilesToInvoiceAsync(
+            createdInvoice.InvoiceId,
+            uploadBatchFile.Id,
             cancellationToken);
 
         uploadBatchFile.MarkProcessed(createdInvoice.InvoiceId);
