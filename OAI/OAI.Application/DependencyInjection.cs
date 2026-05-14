@@ -45,6 +45,7 @@ public static class DependencyInjection
         services.AddScoped<IUploadPackageService, UploadPackageService>();
         
         services.AddScoped<IProcessUploadBatchJob, ProcessUploadBatchJob>();
+        services.AddScoped<IProcessBatchFileJob, ProcessBatchFileJob>();
 
         return services;
     }
