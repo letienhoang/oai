@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OAI.Api.Contracts.Uploads;
+using OAI.Application.Abstractions.BackgroundJobs;
+using OAI.Application.Abstractions.BackgroundJobs.Uploads;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Invoices.Dtos;
 using OAI.Application.Uploads.Dtos;
@@ -28,13 +30,16 @@ public sealed class UploadsController : ControllerBase
     };
 
     private readonly IUploadPackageService _uploadPackageService;
+    private readonly IBackgroundJobClient _backgroundJobClient;
     private readonly ILogger<UploadsController> _logger;
 
     public UploadsController(
         IUploadPackageService uploadPackageService,
+        IBackgroundJobClient backgroundJobClient,
         ILogger<UploadsController> logger)
     {
         _uploadPackageService = uploadPackageService;
+        _backgroundJobClient = backgroundJobClient;
         _logger = logger;
     }
 
@@ -119,12 +124,23 @@ public sealed class UploadsController : ControllerBase
                     UploadedByUserId: null,
                     UploadedByUserName: User.Identity?.Name),
                 cancellationToken);
+            
+            var backgroundJobId = await _backgroundJobClient.EnqueueAsync<IProcessUploadBatchJob>(
+                job => job.ProcessAsync(result.UploadBatchId, CancellationToken.None),
+                BackgroundJobQueues.Uploads,
+                cancellationToken);
+            
+            _logger.LogInformation(
+                "Upload batch processing job enqueued. UploadBatchId: {UploadBatchId}, BackgroundJobId: {BackgroundJobId}",
+                result.UploadBatchId,
+                backgroundJobId);
 
             var response = new UploadPackageResponse(
                 result.UploadBatchId,
                 result.BatchCode,
                 result.TotalFiles,
                 result.Status.ToString(),
+                backgroundJobId,
                 result.Files
                     .Select(fileResult => new UploadPackageFileResponse(
                         fileResult.UploadBatchFileId,

@@ -5,4 +5,5 @@ public sealed record UploadPackageResponse(
     string BatchCode,
     int TotalFiles,
     string Status,
+    string? BackgroundJobId,
     IReadOnlyList<UploadPackageFileResponse> Files);

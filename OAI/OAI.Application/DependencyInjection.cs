@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OAI.Application.Abstractions.BackgroundJobs.Uploads;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Abstractions.UseCases.Audit;
 using OAI.Application.Abstractions.UseCases.Dashboard;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Abstractions.UseCases.System;
 using OAI.Application.Abstractions.UseCases.Vendors;
+using OAI.Application.BackgroundJobs.Uploads;
 using OAI.Application.Services;
 using OAI.Application.UseCases.Audit;
 using OAI.Application.UseCases.Dashboard;
@@ -41,6 +43,8 @@ public static class DependencyInjection
 
         services.AddScoped<IInvoiceProcessingService, InvoiceProcessingService>();
         services.AddScoped<IUploadPackageService, UploadPackageService>();
+        
+        services.AddScoped<IProcessUploadBatchJob, ProcessUploadBatchJob>();
 
         return services;
     }

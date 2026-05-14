@@ -1,5 +1,6 @@
 using Hangfire;
 using OAI.Application;
+using OAI.Application.Abstractions.BackgroundJobs;
 using OAI.Infrastructure;
 using OAI.Infrastructure.Hangfire;
 using OAI.Worker;
@@ -14,7 +15,7 @@ builder.Services.AddHangfireServer(options =>
 {
     options.ServerName = $"OAI.Worker:{Environment.MachineName}";
     options.WorkerCount = Math.Max(Environment.ProcessorCount, 2);
-    options.Queues = new[] { "default", "ocr", "uploads" };
+    options.Queues = [ BackgroundJobQueues.Default, BackgroundJobQueues.Uploads, BackgroundJobQueues.Ocr ];
 });
 
 builder.Services.AddHostedService<Worker>();
