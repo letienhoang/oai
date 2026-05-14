@@ -5,6 +5,7 @@ using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Abstractions.UseCases.Invoices;
 using OAI.Application.Invoices.Dtos;
+using OAI.Application.Uploads.FileDetection;
 using OAI.Domain.Entities;
 using OAI.Domain.Enums;
 using OAI.Domain.Exceptions;
@@ -13,16 +14,8 @@ namespace OAI.Application.BackgroundJobs.Uploads;
 
 public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 {
-    private static readonly HashSet<string> SupportedImageExtensions = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ".jpg",
-        ".jpeg",
-        ".png",
-        ".tif",
-        ".tiff"
-    };
-
     private readonly IUploadBatchFileRepository _uploadBatchFileRepository;
+    private readonly IFileTypeDetectionService _fileTypeDetectionService;
     private readonly IInvoiceExtractionService _invoiceExtractionService;
     private readonly ICreateInvoiceUseCase _createInvoiceUseCase;
     private readonly IVendorRepository _vendorRepository;
@@ -31,6 +24,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 
     public ProcessBatchFileJob(
         IUploadBatchFileRepository uploadBatchFileRepository,
+        IFileTypeDetectionService fileTypeDetectionService,
         IInvoiceExtractionService invoiceExtractionService,
         ICreateInvoiceUseCase createInvoiceUseCase,
         IVendorRepository vendorRepository,
@@ -38,6 +32,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         ILogger<ProcessBatchFileJob> logger)
     {
         _uploadBatchFileRepository = uploadBatchFileRepository;
+        _fileTypeDetectionService = fileTypeDetectionService;
         _invoiceExtractionService = invoiceExtractionService;
         _createInvoiceUseCase = createInvoiceUseCase;
         _vendorRepository = vendorRepository;
@@ -83,22 +78,65 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
             uploadBatchFile.MarkProcessing();
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var extension = Path.GetExtension(uploadBatchFile.OriginalFileName);
+            await using var stream = File.OpenRead(uploadBatchFile.StoredFilePath);
 
-            if (!SupportedImageExtensions.Contains(extension))
+            var detection = await _fileTypeDetectionService.DetectAsync(
+                stream,
+                uploadBatchFile.OriginalFileName,
+                uploadBatchFile.ContentType,
+                cancellationToken);
+
+            if (detection.FileType == DetectedUploadFileType.Unsupported)
             {
-                uploadBatchFile.MarkUnsupported(
-                    "Only image files are processed in T112. PDF processing will be implemented in Phase 10D.");
+                uploadBatchFile.MarkFailed(
+                    "Unsupported file type. Only JPG, PNG, TIFF, PDF and ZIP files are supported.");
 
                 uploadBatchFile.UploadBatch?.RefreshFileCounters();
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 _logger.LogInformation(
-                    "Upload batch file marked as unsupported. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, ContentType: {ContentType}",
+                    "Upload batch file failed because the file type is unsupported. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, ContentType: {ContentType}, DetectionReason: {DetectionReason}",
                     uploadBatchFile.Id,
                     uploadBatchFile.OriginalFileName,
-                    uploadBatchFile.ContentType);
+                    uploadBatchFile.ContentType,
+                    detection.Reason);
+
+                return;
+            }
+
+            if (detection.FileType == DetectedUploadFileType.Pdf)
+            {
+                uploadBatchFile.MarkFailed(
+                    "PDF file was detected, but PDF processing is not implemented yet.");
+
+                uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                _logger.LogInformation(
+                    "Upload batch file failed because PDF processing is not implemented yet. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, DetectionReason: {DetectionReason}",
+                    uploadBatchFile.Id,
+                    uploadBatchFile.OriginalFileName,
+                    detection.Reason);
+
+                return;
+            }
+
+            if (detection.FileType == DetectedUploadFileType.Zip)
+            {
+                uploadBatchFile.MarkFailed(
+                    "ZIP file should be processed by upload package extraction before batch file processing.");
+
+                uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                _logger.LogInformation(
+                    "Upload batch file failed because ZIP files are not processed directly. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, DetectionReason: {DetectionReason}",
+                    uploadBatchFile.Id,
+                    uploadBatchFile.OriginalFileName,
+                    detection.Reason);
 
                 return;
             }

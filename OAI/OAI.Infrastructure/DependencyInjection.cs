@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using OAI.Application.Abstractions.BackgroundJobs;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
+using OAI.Application.Uploads.FileDetection;
 using OAI.Infrastructure.Audit;
 using OAI.Infrastructure.BackgroundJobs;
 using OAI.Infrastructure.DemoData;
@@ -14,6 +15,7 @@ using OAI.Infrastructure.Repositories;
 using OAI.Infrastructure.Services;
 using OAI.Infrastructure.Services.Llm;
 using OAI.Infrastructure.SystemHealth;
+using OAI.Infrastructure.Uploads.FileDetection;
 
 namespace OAI.Infrastructure;
 
@@ -57,6 +59,7 @@ public static class DependencyInjection
         services.AddScoped<IInvoiceTextParser, HybridInvoiceTextParser>();
         
         services.AddScoped<IFileStorageService, FileStorageService>();
+        services.AddScoped<IFileTypeDetectionService, FileTypeDetectionService>();
         services.AddScoped<IOcrService, TesseractOcrService>();
         
         services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();
