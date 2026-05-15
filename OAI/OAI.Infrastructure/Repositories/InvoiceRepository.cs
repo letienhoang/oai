@@ -11,10 +11,14 @@ namespace OAI.Infrastructure.Repositories;
 public sealed class InvoiceRepository : IInvoiceRepository
 {
     private readonly OaiDbContext _context;
+    private readonly IDbContextFactory<OaiDbContext> _dbContextFactory;
 
-    public InvoiceRepository(OaiDbContext context)
+    public InvoiceRepository(
+        OaiDbContext context,
+        IDbContextFactory<OaiDbContext> dbContextFactory)
     {
         _context = context;
+        _dbContextFactory = dbContextFactory;
     }
 
     public async Task<Invoice?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -24,6 +28,7 @@ public sealed class InvoiceRepository : IInvoiceRepository
             .Include(x => x.LineItems)
             .Include(x => x.ValidationIssues)
             .Include(x => x.ExtractionResults)
+            .Include(x => x.SourceFiles)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
@@ -48,7 +53,9 @@ public sealed class InvoiceRepository : IInvoiceRepository
         InvoiceListFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<Invoice> query = ApplyListFilter(_context.Invoices, filter)
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        IQueryable<Invoice> query = ApplyListFilter(context.Invoices, filter)
             .AsNoTracking()
             .Include(x => x.Vendor)
             .Include(x => x.LineItems);
@@ -76,7 +83,9 @@ public sealed class InvoiceRepository : IInvoiceRepository
 
     public async Task<int> CountAsync(InvoiceListFilterDto filter, CancellationToken cancellationToken = default)
     {
-        var query = ApplyListFilter(_context.Invoices.AsNoTracking(), filter);
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var query = ApplyListFilter(context.Invoices.AsNoTracking(), filter);
 
         return await query.CountAsync(cancellationToken);
     }
@@ -93,7 +102,9 @@ public sealed class InvoiceRepository : IInvoiceRepository
         DashboardFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = ApplyDashboardFilter(_context.Invoices.AsNoTracking(), filter);
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var query = ApplyDashboardFilter(context.Invoices.AsNoTracking(), filter);
 
         return await query.CountAsync(x => x.Status == status, cancellationToken);
     }
@@ -109,7 +120,9 @@ public sealed class InvoiceRepository : IInvoiceRepository
         DashboardFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = ApplyDashboardFilter(_context.Invoices.AsNoTracking(), filter);
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var query = ApplyDashboardFilter(context.Invoices.AsNoTracking(), filter);
 
         return await query.CountAsync(
             x => x.ValidationIssues.Any(v => !v.IsResolved),
@@ -127,7 +140,9 @@ public sealed class InvoiceRepository : IInvoiceRepository
         DashboardFilterDto filter,
         CancellationToken cancellationToken = default)
     {
-        var query = ApplyDashboardFilter(_context.Invoices, filter)
+        await using var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
+
+        var query = ApplyDashboardFilter(context.Invoices, filter)
             .AsNoTracking()
             .Include(x => x.Vendor);
 

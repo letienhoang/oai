@@ -64,9 +64,12 @@ public partial class InvoiceDetail
 
     private InvoiceDetailTab ActiveTab { get; set; } = InvoiceDetailTab.Overview;
 
+    private Guid? SelectedSourceFileId { get; set; }
+
     private enum InvoiceDetailTab
     {
         Overview,
+        SourceFile,
         LineItems,
         Validation,
         ExtractionHistory
@@ -87,6 +90,31 @@ public partial class InvoiceDetail
         Invoice?.ExtractionResults
             .OrderByDescending(x => x.ExtractedAt)
             .FirstOrDefault();
+
+    private IReadOnlyList<InvoiceSourceFileDto> OrderedSourceFiles =>
+        Invoice?.SourceFiles
+            .OrderBy(x => x.PageNumber.HasValue ? 1 : 0)
+            .ThenBy(x => x.PageNumber ?? int.MaxValue)
+            .ThenBy(x => x.CreatedAt)
+            .ThenBy(x => x.OriginalFileName)
+            .ToList() ?? [];
+
+    private int OriginalSourceFileCount =>
+        OrderedSourceFiles.Count(x => x.PageNumber is null);
+
+    private int PreviewPageSourceFileCount =>
+        OrderedSourceFiles.Count(x => x.PageNumber is not null);
+
+    private InvoiceSourceFileDto? SelectedSourceFile
+    {
+        get
+        {
+            var sourceFiles = OrderedSourceFiles;
+
+            return sourceFiles.FirstOrDefault(x => x.Id == SelectedSourceFileId) ??
+                   sourceFiles.FirstOrDefault();
+        }
+    }
 
     private bool CanApprove =>
         Invoice is not null &&
@@ -283,6 +311,8 @@ public partial class InvoiceDetail
                     InvoiceId = InvoiceId
                 });
 
+            SelectDefaultSourceFile();
+
             Logger.LogInformation(
                 "Invoice detail loaded. InvoiceId: {InvoiceId}, InvoiceNumber: {InvoiceNumber}",
                 Invoice.InvoiceId,
@@ -468,4 +498,115 @@ public partial class InvoiceDetail
     private bool CanShowEditButton =>
         Invoice is not null &&
         !string.Equals(Invoice.Status, "Exported", StringComparison.OrdinalIgnoreCase);
+
+    private void SelectDefaultSourceFile()
+    {
+        var sourceFiles = OrderedSourceFiles;
+        var selected = sourceFiles.FirstOrDefault(x =>
+                           x.PageNumber == 1 &&
+                           IsPreviewableContentType(x.ContentType)) ??
+                       sourceFiles.FirstOrDefault(x => IsPreviewableContentType(x.ContentType)) ??
+                       sourceFiles.FirstOrDefault();
+
+        SelectedSourceFileId = selected?.Id;
+    }
+
+    private void SelectSourceFile(Guid sourceFileId)
+    {
+        SelectedSourceFileId = sourceFileId;
+    }
+
+    private static string GetPreviewUrl(Guid sourceFileId)
+    {
+        return $"/api/files/{sourceFileId}/preview";
+    }
+
+    private static string GetDownloadUrl(Guid sourceFileId)
+    {
+        return $"/api/files/{sourceFileId}/download";
+    }
+
+    private string GetSourceFileLabel(InvoiceSourceFileDto sourceFile)
+    {
+        if (sourceFile.PageNumber is not null)
+            return L["PageNumberLabel", sourceFile.PageNumber];
+
+        return string.IsNullOrWhiteSpace(sourceFile.OriginalFileName)
+            ? L["SourceFile"].Value
+            : sourceFile.OriginalFileName;
+    }
+
+    private string GetSourceFileRowClass(InvoiceSourceFileDto sourceFile)
+    {
+        return SelectedSourceFile?.Id == sourceFile.Id
+            ? "source-file-row-selected table-active"
+            : string.Empty;
+    }
+
+    private string GetSourceFileTypeLabel(InvoiceSourceFileDto sourceFile)
+    {
+        if (sourceFile.PageNumber is not null)
+            return IsImageContentType(sourceFile.ContentType)
+                ? L["PreviewImage"].Value
+                : L["PagePreview"].Value;
+
+        if (IsPdfContentType(sourceFile.ContentType))
+            return "PDF";
+
+        if (IsImageContentType(sourceFile.ContentType))
+            return L["SourceFileTypeImage"].Value;
+
+        return L["OriginalFile"].Value;
+    }
+
+    private string GetSourceFileTypeBadgeClass(InvoiceSourceFileDto sourceFile)
+    {
+        if (sourceFile.PageNumber is not null)
+            return "source-file-type-badge badge text-bg-info";
+
+        if (IsPdfContentType(sourceFile.ContentType))
+            return "source-file-type-badge badge text-bg-danger";
+
+        if (IsImageContentType(sourceFile.ContentType))
+            return "source-file-type-badge badge text-bg-success";
+
+        return "source-file-type-badge badge text-bg-secondary";
+    }
+
+    private static bool IsPdfContentType(string? contentType)
+    {
+        return string.Equals(contentType, "application/pdf", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsImageContentType(string? contentType)
+    {
+        return contentType?.Trim().ToLowerInvariant() switch
+        {
+            "image/png" => true,
+            "image/jpeg" => true,
+            "image/jpg" => true,
+            "image/tiff" => true,
+            "image/tif" => true,
+            _ => false
+        };
+    }
+
+    private static bool IsPreviewableContentType(string? contentType)
+    {
+        return IsPdfContentType(contentType) || IsImageContentType(contentType);
+    }
+
+    private static string FormatFileSize(long fileSizeBytes)
+    {
+        const decimal oneKb = 1024m;
+        const decimal oneMb = oneKb * 1024m;
+
+        if (fileSizeBytes >= oneMb)
+            return $"{fileSizeBytes / oneMb:N2} MB";
+
+        if (fileSizeBytes >= oneKb)
+            return $"{fileSizeBytes / oneKb:N1} KB";
+
+        return $"{fileSizeBytes:N0} B";
+    }
 }

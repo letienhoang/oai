@@ -210,6 +210,17 @@
                         </li>
                         <li class="nav-item">
                             <button type="button"
+                                    class="@GetTabButtonClass(InvoiceDetailTab.SourceFile)"
+                                    @onclick="() => SetActiveTab(InvoiceDetailTab.SourceFile)">
+                                @L["SourceFile"]
+                                @if (Invoice.SourceFiles.Count > 0)
+                                {
+                                    <span class="badge text-bg-light ms-1">@Invoice.SourceFiles.Count</span>
+                                }
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button"
                                     class="@GetTabButtonClass(InvoiceDetailTab.LineItems)"
                                     @onclick="() => SetActiveTab(InvoiceDetailTab.LineItems)">
                                 @L["LineItems"]
@@ -321,6 +332,145 @@
                                             @L["CannotApproveDueToValidationErrors"]
                                         </div>
                                     </div>
+                                }
+                            </div>
+                            break;
+
+                        case InvoiceDetailTab.SourceFile:
+                            <div class="source-file-viewer">
+                                <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3">
+                                    <div>
+                                        <h3 class="h5 fw-bold mb-1">@L["SourceFileViewer"]</h3>
+                                        <p class="text-secondary mb-0">
+                                            @L["SourceFileViewerDescription"]
+                                        </p>
+                                    </div>
+
+                                    @if (SelectedSourceFile is not null)
+                                    {
+                                        <a class="btn btn-outline-primary oai-icon-button align-self-start"
+                                           href="@GetDownloadUrl(SelectedSourceFile.Id)"
+                                           target="_blank"
+                                           rel="noopener"
+                                           aria-label="@($"{L["DownloadSourceFile"]}: {GetSourceFileLabel(SelectedSourceFile)}")">
+                                            <Icon Name="mdi:download-outline" Size="18" />
+                                            <span>@L["DownloadSourceFile"]</span>
+                                        </a>
+                                    }
+                                </div>
+
+                                @if (OrderedSourceFiles.Count == 0)
+                                {
+                                    <div class="border rounded-4 bg-light p-4 text-center text-secondary">
+                                        @L["NoSourceFileAvailable"]
+                                    </div>
+                                }
+                                else if (SelectedSourceFile is not null)
+                                {
+                                    <div class="source-file-list mb-3">
+                                        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3">
+                                            <div>
+                                                <h4 class="h6 fw-bold mb-1">@L["SourceFileList"]</h4>
+                                                <p class="text-secondary mb-0">@L["SourceFileListDescription"]</p>
+                                            </div>
+
+                                            <div class="d-flex flex-wrap gap-2" aria-label="@L["SourceFileSummary"]">
+                                                <span class="source-file-summary-card badge text-bg-light border">
+                                                    @OrderedSourceFiles.Count @L["SourceFiles"]
+                                                </span>
+                                                <span class="source-file-summary-card badge text-bg-light border">
+                                                    @OriginalSourceFileCount @L["OriginalFilesCount"]
+                                                </span>
+                                                <span class="source-file-summary-card badge text-bg-light border">
+                                                    @PreviewPageSourceFileCount @L["PreviewPagesCount"]
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="source-file-table table table-hover align-middle mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">@L["SourceFileType"]</th>
+                                                        <th scope="col">@L["SourceFileName"]</th>
+                                                        <th scope="col">@L["SourceFilePage"]</th>
+                                                        <th scope="col">@L["SourceFileContentType"]</th>
+                                                        <th scope="col">@L["SourceFileSize"]</th>
+                                                        <th scope="col">@L["SourceFileCreatedAt"]</th>
+                                                        <th scope="col" class="text-lg-end">@L["Actions"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var sourceFile in OrderedSourceFiles)
+                                                    {
+                                                        <tr class="@GetSourceFileRowClass(sourceFile)">
+                                                            <td>
+                                                                <span class="@GetSourceFileTypeBadgeClass(sourceFile)">
+                                                                    @GetSourceFileTypeLabel(sourceFile)
+                                                                </span>
+                                                            </td>
+                                                            <td class="fw-semibold text-break">@DisplayOrFallback(sourceFile.OriginalFileName)</td>
+                                                            <td>
+                                                                @(sourceFile.PageNumber is null
+                                                                    ? L["NoPageNumber"].Value
+                                                                    : L["PageNumberLabel", sourceFile.PageNumber].Value)
+                                                            </td>
+                                                            <td class="text-break">@DisplayOrFallback(sourceFile.ContentType)</td>
+                                                            <td>@FormatFileSize(sourceFile.FileSizeBytes)</td>
+                                                            <td>@FormatDateTime(sourceFile.CreatedAt)</td>
+                                                            <td>
+                                                                <div class="source-file-actions d-flex flex-wrap gap-2 justify-content-lg-end">
+                                                                    <button type="button"
+                                                                            class="btn btn-sm btn-outline-primary oai-icon-button"
+                                                                            aria-label="@($"{L["PreviewSourceFile"]}: {GetSourceFileLabel(sourceFile)}")"
+                                                                            @onclick="() => SelectSourceFile(sourceFile.Id)">
+                                                                        <Icon Name="mdi:eye-outline" Size="16" />
+                                                                        <span>@L["PreviewSourceFile"]</span>
+                                                                    </button>
+                                                                    <a class="btn btn-sm btn-outline-secondary oai-icon-button"
+                                                                       href="@GetDownloadUrl(sourceFile.Id)"
+                                                                       target="_blank"
+                                                                       rel="noopener"
+                                                                       aria-label="@($"{L["DownloadSourceFile"]}: {GetSourceFileLabel(sourceFile)}")">
+                                                                        <Icon Name="mdi:download-outline" Size="16" />
+                                                                        <span>@L["DownloadSourceFile"]</span>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    @if (IsPdfContentType(SelectedSourceFile.ContentType))
+                                    {
+                                        <iframe src="@GetPreviewUrl(SelectedSourceFile.Id)"
+                                                class="source-file-frame"
+                                                title="@L["SourceFileViewer"]"></iframe>
+                                    }
+                                    else if (IsImageContentType(SelectedSourceFile.ContentType))
+                                    {
+                                        <div class="source-file-image-wrapper">
+                                            <img src="@GetPreviewUrl(SelectedSourceFile.Id)"
+                                                 class="source-file-image"
+                                                 alt="@L["InvoiceSourceFilePreviewAlt"]" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="border rounded-4 bg-light p-4 text-center">
+                                            <p class="text-secondary mb-3">@L["PreviewNotAvailable"]</p>
+                                            <a class="btn btn-outline-primary oai-icon-button"
+                                               href="@GetDownloadUrl(SelectedSourceFile.Id)"
+                                               target="_blank"
+                                               rel="noopener">
+                                                <Icon Name="mdi:download-outline" Size="18" />
+                                                <span>@L["DownloadSourceFile"]</span>
+                                            </a>
+                                        </div>
+                                    }
                                 }
                             </div>
                             break;

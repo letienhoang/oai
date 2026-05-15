@@ -25,6 +25,12 @@ public static class HangfireServiceCollectionExtensions
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
+                .UseFilter(new AutomaticRetryAttribute
+                {
+                    Attempts = 3,
+                    DelaysInSeconds = [30, 120, 300],
+                    OnAttemptsExceeded = AttemptsExceededAction.Fail
+                })
                 .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                 {
                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),

@@ -82,5 +82,10 @@ public sealed class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
             .WithOne()
             .HasForeignKey(x => x.InvoiceId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(x => x.SourceFiles)
+            .WithOne(x => x.Invoice)
+            .HasForeignKey(x => x.InvoiceId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

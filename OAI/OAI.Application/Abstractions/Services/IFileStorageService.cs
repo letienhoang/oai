@@ -11,6 +11,10 @@ public interface IFileStorageService
         string path,
         CancellationToken cancellationToken = default);
 
+    string GetPhysicalPath(string path);
+
+    string GetStorageRootPhysicalPath();
+
     Task DeleteAsync(
         string path,
         CancellationToken cancellationToken = default);

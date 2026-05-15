@@ -13,6 +13,7 @@ public sealed class Invoice : Entity
     private readonly List<InvoiceLineItem> _lineItems = new();
     private readonly List<ValidationIssue> _validationIssues = new();
     private readonly List<InvoiceExtractionResult> _extractionResults = new();
+    private readonly List<InvoiceSourceFile> _sourceFiles = new();
 
     public Guid VendorId { get; private set; }
     public Vendor? Vendor { get; private set; }
@@ -33,6 +34,7 @@ public sealed class Invoice : Entity
     public IReadOnlyCollection<InvoiceLineItem> LineItems => _lineItems.AsReadOnly();
     public IReadOnlyCollection<ValidationIssue> ValidationIssues => _validationIssues.AsReadOnly();
     public IReadOnlyCollection<InvoiceExtractionResult> ExtractionResults => _extractionResults.AsReadOnly();
+    public IReadOnlyCollection<InvoiceSourceFile> SourceFiles => _sourceFiles.AsReadOnly();
 
     private Invoice()
     {
@@ -164,8 +166,20 @@ public sealed class Invoice : Entity
         _extractionResults.Add(result);
         Touch();
     }
+    
+    public void AddSourceFile(InvoiceSourceFile sourceFile)
+    {
+        if (sourceFile is null)
+            throw new ArgumentNullException(nameof(sourceFile));
 
-    public Money CalculateSubtotal()
+        if (sourceFile.InvoiceId != Id)
+            throw new DomainException("Source file does not belong to this invoice.");
+
+        _sourceFiles.Add(sourceFile);
+        Touch();
+    }
+
+    private Money CalculateSubtotal()
     {
         var total = Money.Zero(Currency);
 
@@ -175,7 +189,7 @@ public sealed class Invoice : Entity
         return total;
     }
 
-    public Money CalculateTaxAmount()
+    private Money CalculateTaxAmount()
     {
         var total = Money.Zero(Currency);
 
@@ -185,7 +199,7 @@ public sealed class Invoice : Entity
         return total;
     }
 
-    public Money CalculateGrandTotal()
+    private Money CalculateGrandTotal()
     {
         var subtotal = CalculateSubtotal();
         var tax = CalculateTaxAmount();

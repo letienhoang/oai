@@ -10,5 +10,8 @@ public interface IInvoiceExtractionService
 
     Task<ExtractedInvoiceDto?> ExtractFromTextAsync(
         string rawText,
+        string sourceName = "raw-text",
+        decimal confidenceScore = 1.0m,
+        string engineName = "RawText",
         CancellationToken cancellationToken = default);
 }

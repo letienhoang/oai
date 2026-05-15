@@ -2,8 +2,12 @@ using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
+using OAI.Application.Abstractions.BackgroundJobs;
+using OAI.Application.Abstractions.BackgroundJobs.Uploads;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Invoices.Dtos;
+using OAI.Application.Messaging;
+using OAI.Application.Uploads.Dtos;
 using OAI.Application.Vendors.Dtos;
 using OAI.Infrastructure.Identity;
 using OAI.Web.Components.Vendors;
@@ -23,11 +27,19 @@ public partial class InvoiceUpload
         ".jpeg",
         ".png",
         ".tif",
-        ".tiff"
+        ".tiff",
+        ".pdf",
+        ".zip"
     };
 
     [Inject]
-    private IInvoiceProcessingService InvoiceProcessingService { get; set; } = default!;
+    private IUploadPackageService UploadPackageService { get; set; } = default!;
+
+    [Inject]
+    private IBackgroundJobClient BackgroundJobClient { get; set; } = default!;
+
+    [Inject]
+    private ICurrentUserContext CurrentUserContext { get; set; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
@@ -134,31 +146,48 @@ public partial class InvoiceUpload
 
             await using var stream = SelectedFile.OpenReadStream(MaxFileSize);
 
-            UploadResult = await InvoiceProcessingService.UploadInvoiceAsync(
-                SelectedFile.Name,
-                stream,
+            var packageResult = await UploadPackageService.CreateAsync(
+                new CreateUploadPackageRequestDto(
+                    FileName: SelectedFile.Name,
+                    ContentType: string.IsNullOrWhiteSpace(SelectedFile.ContentType)
+                        ? "application/octet-stream"
+                        : SelectedFile.ContentType,
+                    FileSizeBytes: SelectedFile.Size,
+                    Content: stream,
+                    UploadedByUserId: TryParseCurrentUserId(),
+                    UploadedByUserName: CurrentUserContext.UserName),
                 CancellationToken.None);
 
-            if (UploadResult.Status.Equals("Processed", StringComparison.OrdinalIgnoreCase))
+            var backgroundJobId = await BackgroundJobClient.EnqueueAsync<IProcessUploadBatchJob>(
+                job => job.ProcessAsync(packageResult.UploadBatchId, CancellationToken.None),
+                BackgroundJobQueues.Uploads,
+                CancellationToken.None);
+
+            UploadResult = new InvoiceUploadResultDto
             {
-                ToastService.Success(LocalizedMessageResolver.Resolve(
-                    UploadResult.MessageCode,
-                    UploadResult.MessageParameters,
-                    UploadResult.Message));
-            }
-            else
-            {
-                ToastService.Error(LocalizedMessageResolver.Resolve(
-                    UploadResult.MessageCode,
-                    UploadResult.MessageParameters,
-                    UploadResult.Message));
-            }
+                InvoiceId = Guid.Empty,
+                FileName = SelectedFile.Name,
+                Status = "Queued",
+                Message = $"Upload package {packageResult.BatchCode} was queued for processing.",
+                MessageCode = ApplicationMessageCodes.InvoiceFileStored,
+                MessageParameters = new Dictionary<string, string>
+                {
+                    ["BatchCode"] = packageResult.BatchCode,
+                    ["TotalFiles"] = packageResult.TotalFiles.ToString(CultureInfo.InvariantCulture),
+                    ["BackgroundJobId"] = backgroundJobId
+                }
+            };
+
+            ToastService.Success(LocalizedMessageResolver.Resolve(
+                UploadResult.MessageCode,
+                UploadResult.MessageParameters,
+                UploadResult.Message));
 
             Logger.LogInformation(
-                "Invoice upload completed from Blazor UI. FileName: {FileName}, Status: {Status}, InvoiceId: {InvoiceId}",
+                "Invoice upload package queued from Blazor UI. FileName: {FileName}, UploadBatchId: {UploadBatchId}, BackgroundJobId: {BackgroundJobId}",
                 SelectedFile.Name,
-                UploadResult.Status,
-                UploadResult.InvoiceId);
+                packageResult.UploadBatchId,
+                backgroundJobId);
         }
         catch (Exception ex)
         {
@@ -236,6 +265,7 @@ public partial class InvoiceUpload
         return status.ToLowerInvariant() switch
         {
             "processed" => "text-bg-success",
+            "queued" => "text-bg-info",
             "failed" => "text-bg-danger",
             _ => "text-bg-secondary"
         };
@@ -263,5 +293,12 @@ public partial class InvoiceUpload
             return $"{bytes / 1024d:N1} KB";
 
         return $"{bytes / 1024d / 1024d:N1} MB";
+    }
+
+    private Guid? TryParseCurrentUserId()
+    {
+        return Guid.TryParse(CurrentUserContext.UserId, out var userId)
+            ? userId
+            : null;
     }
 }

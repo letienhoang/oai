@@ -15,6 +15,10 @@ public sealed record InvoiceCreateRequestDto
     public string? SourceFileName { get; init; }
     public string? SourceFilePath { get; init; }
     
+    public Guid? UploadBatchFileId { get; init; }
+    public string? SourceFileContentType { get; init; }
+    public long? SourceFileSizeBytes { get; init; }
+    
     public decimal? ExtractionConfidenceScore { get; init; }
     public string? ExtractionEngineName { get; init; }
     public string? ExtractionRawText { get; init; }

@@ -361,16 +361,16 @@
         <value>Upload Invoice</value>
     </data>
   <data name="UploadInvoiceSubtitle" xml:space="preserve">
-        <value>Upload an invoice image so the system can store it, run OCR, extract data, and create an invoice record.</value>
+        <value>Upload invoice files so the system can store them, process OCR or PDF text, extract data, and create invoice records.</value>
     </data>
   <data name="SelectInvoiceFile" xml:space="preserve">
         <value>Select invoice file</value>
     </data>
   <data name="UploadInvoiceImage" xml:space="preserve">
-        <value>Upload invoice image</value>
+        <value>Upload invoice file</value>
     </data>
   <data name="SupportedImageFormats" xml:space="preserve">
-        <value>Currently supported: JPG, JPEG, PNG, TIF, TIFF. PDF will be supported in a later phase.</value>
+        <value>Supported files: JPG, JPEG, PNG, TIF, TIFF, PDF, ZIP.</value>
     </data>
   <data name="SelectedFile" xml:space="preserve">
         <value>Selected file</value>
@@ -424,7 +424,7 @@
         <value>Please select an invoice file.</value>
     </data>
   <data name="UnsupportedInvoiceFileFormat" xml:space="preserve">
-        <value>Unsupported file format. Please select JPG, JPEG, PNG, TIF, or TIFF.</value>
+        <value>Unsupported file format. Please select JPG, JPEG, PNG, TIF, TIFF, PDF, or ZIP.</value>
     </data>
   <data name="FileSizeExceeded" xml:space="preserve">
         <value>The file exceeds the allowed size ({0}).</value>
@@ -494,6 +494,87 @@
     </data>
   <data name="SourceFile" xml:space="preserve">
         <value>Source file</value>
+    </data>
+  <data name="SourceFiles" xml:space="preserve">
+        <value>Source files</value>
+    </data>
+  <data name="SourceFileViewer" xml:space="preserve">
+        <value>Source file viewer</value>
+    </data>
+  <data name="SourceFileViewerDescription" xml:space="preserve">
+        <value>View the original invoice file or stored page previews.</value>
+    </data>
+  <data name="NoSourceFileAvailable" xml:space="preserve">
+        <value>No source file is available for this invoice.</value>
+    </data>
+  <data name="PreviewNotAvailable" xml:space="preserve">
+        <value>Preview is not available for this file type.</value>
+    </data>
+  <data name="DownloadSourceFile" xml:space="preserve">
+        <value>Download source file</value>
+    </data>
+  <data name="SelectSourcePage" xml:space="preserve">
+        <value>Select source page</value>
+    </data>
+  <data name="PageNumberLabel" xml:space="preserve">
+        <value>Page {0}</value>
+    </data>
+  <data name="OriginalFile" xml:space="preserve">
+        <value>Original file</value>
+    </data>
+  <data name="ContentType" xml:space="preserve">
+        <value>Content type</value>
+    </data>
+  <data name="InvoiceSourceFilePreviewAlt" xml:space="preserve">
+        <value>Invoice source file preview</value>
+    </data>
+  <data name="SourceFileList" xml:space="preserve">
+        <value>Source file list</value>
+    </data>
+  <data name="SourceFileListDescription" xml:space="preserve">
+        <value>Files linked to this invoice.</value>
+    </data>
+  <data name="SourceFileType" xml:space="preserve">
+        <value>Type</value>
+    </data>
+  <data name="SourceFileTypeImage" xml:space="preserve">
+        <value>Image</value>
+    </data>
+  <data name="SourceFileName" xml:space="preserve">
+        <value>Name</value>
+    </data>
+  <data name="SourceFilePage" xml:space="preserve">
+        <value>Page</value>
+    </data>
+  <data name="SourceFileContentType" xml:space="preserve">
+        <value>Content type</value>
+    </data>
+  <data name="SourceFileSize" xml:space="preserve">
+        <value>Size</value>
+    </data>
+  <data name="SourceFileCreatedAt" xml:space="preserve">
+        <value>Created at</value>
+    </data>
+  <data name="PreviewSourceFile" xml:space="preserve">
+        <value>Preview</value>
+    </data>
+  <data name="PagePreview" xml:space="preserve">
+        <value>Page preview</value>
+    </data>
+  <data name="PreviewImage" xml:space="preserve">
+        <value>Preview image</value>
+    </data>
+  <data name="SourceFileSummary" xml:space="preserve">
+        <value>Source file summary</value>
+    </data>
+  <data name="OriginalFilesCount" xml:space="preserve">
+        <value>original</value>
+    </data>
+  <data name="PreviewPagesCount" xml:space="preserve">
+        <value>previews</value>
+    </data>
+  <data name="NoPageNumber" xml:space="preserve">
+        <value>No page</value>
     </data>
   <data name="AmountSummary" xml:space="preserve">
         <value>Amount summary</value>

@@ -18,6 +18,9 @@ public sealed class OaiDbContext : IdentityDbContext<ApplicationUser, IdentityRo
     public DbSet<Invoice> Invoices => Set<Invoice>();
     public DbSet<InvoiceLineItem> InvoiceLineItems => Set<InvoiceLineItem>();
     public DbSet<InvoiceExtractionResult> InvoiceExtractionResults => Set<InvoiceExtractionResult>();
+    public DbSet<InvoiceSourceFile> InvoiceSourceFiles => Set<InvoiceSourceFile>();
+    public DbSet<UploadBatch> UploadBatches => Set<UploadBatch>();
+    public DbSet<UploadBatchFile> UploadBatchFiles => Set<UploadBatchFile>();
     public DbSet<ValidationIssue> ValidationIssues => Set<ValidationIssue>();
     public DbSet<AuditLogEntry> AuditLogs => Set<AuditLogEntry>();
 

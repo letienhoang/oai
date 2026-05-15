@@ -361,16 +361,16 @@
         <value>Upload hóa đơn</value>
     </data>
   <data name="UploadInvoiceSubtitle" xml:space="preserve">
-        <value>Tải lên ảnh hóa đơn để hệ thống lưu trữ, OCR, trích xuất dữ liệu và tạo bản ghi hóa đơn.</value>
+        <value>Tải lên tệp hóa đơn để hệ thống lưu trữ, xử lý OCR hoặc văn bản PDF, trích xuất dữ liệu và tạo bản ghi hóa đơn.</value>
     </data>
   <data name="SelectInvoiceFile" xml:space="preserve">
         <value>Chọn file hóa đơn</value>
     </data>
   <data name="UploadInvoiceImage" xml:space="preserve">
-        <value>Upload ảnh hóa đơn</value>
+        <value>Upload tệp hóa đơn</value>
     </data>
   <data name="SupportedImageFormats" xml:space="preserve">
-        <value>Hỗ trợ hiện tại: JPG, JPEG, PNG, TIF, TIFF. PDF sẽ được hỗ trợ ở giai đoạn sau.</value>
+        <value>Hỗ trợ: JPG, JPEG, PNG, TIF, TIFF, PDF, ZIP.</value>
     </data>
   <data name="SelectedFile" xml:space="preserve">
         <value>File đã chọn</value>
@@ -424,7 +424,7 @@
         <value>Vui lòng chọn một file hóa đơn.</value>
     </data>
   <data name="UnsupportedInvoiceFileFormat" xml:space="preserve">
-        <value>Định dạng file chưa được hỗ trợ. Vui lòng chọn JPG, JPEG, PNG, TIF hoặc TIFF.</value>
+        <value>Định dạng file chưa được hỗ trợ. Vui lòng chọn JPG, JPEG, PNG, TIF, TIFF, PDF hoặc ZIP.</value>
     </data>
   <data name="FileSizeExceeded" xml:space="preserve">
         <value>File vượt quá dung lượng cho phép ({0}).</value>
@@ -494,6 +494,87 @@
     </data>
   <data name="SourceFile" xml:space="preserve">
         <value>File gốc</value>
+    </data>
+  <data name="SourceFiles" xml:space="preserve">
+        <value>Các tệp nguồn</value>
+    </data>
+  <data name="SourceFileViewer" xml:space="preserve">
+        <value>Trình xem tệp nguồn</value>
+    </data>
+  <data name="SourceFileViewerDescription" xml:space="preserve">
+        <value>Xem tệp hóa đơn gốc hoặc các bản xem trước trang đã lưu.</value>
+    </data>
+  <data name="NoSourceFileAvailable" xml:space="preserve">
+        <value>Không có tệp nguồn nào cho hóa đơn này.</value>
+    </data>
+  <data name="PreviewNotAvailable" xml:space="preserve">
+        <value>Không hỗ trợ xem trước loại tệp này.</value>
+    </data>
+  <data name="DownloadSourceFile" xml:space="preserve">
+        <value>Tải tệp nguồn</value>
+    </data>
+  <data name="SelectSourcePage" xml:space="preserve">
+        <value>Chọn trang nguồn</value>
+    </data>
+  <data name="PageNumberLabel" xml:space="preserve">
+        <value>Trang {0}</value>
+    </data>
+  <data name="OriginalFile" xml:space="preserve">
+        <value>Tệp gốc</value>
+    </data>
+  <data name="ContentType" xml:space="preserve">
+        <value>Loại nội dung</value>
+    </data>
+  <data name="InvoiceSourceFilePreviewAlt" xml:space="preserve">
+        <value>Bản xem trước tệp nguồn hóa đơn</value>
+    </data>
+  <data name="SourceFileList" xml:space="preserve">
+        <value>Danh sách tệp nguồn</value>
+    </data>
+  <data name="SourceFileListDescription" xml:space="preserve">
+        <value>Các tệp đang được liên kết với hóa đơn này.</value>
+    </data>
+  <data name="SourceFileType" xml:space="preserve">
+        <value>Loại</value>
+    </data>
+  <data name="SourceFileTypeImage" xml:space="preserve">
+        <value>Ảnh</value>
+    </data>
+  <data name="SourceFileName" xml:space="preserve">
+        <value>Tên tệp</value>
+    </data>
+  <data name="SourceFilePage" xml:space="preserve">
+        <value>Trang</value>
+    </data>
+  <data name="SourceFileContentType" xml:space="preserve">
+        <value>Loại nội dung</value>
+    </data>
+  <data name="SourceFileSize" xml:space="preserve">
+        <value>Kích thước</value>
+    </data>
+  <data name="SourceFileCreatedAt" xml:space="preserve">
+        <value>Ngày tạo</value>
+    </data>
+  <data name="PreviewSourceFile" xml:space="preserve">
+        <value>Xem trước</value>
+    </data>
+  <data name="PagePreview" xml:space="preserve">
+        <value>Ảnh xem trước trang</value>
+    </data>
+  <data name="PreviewImage" xml:space="preserve">
+        <value>Ảnh xem trước</value>
+    </data>
+  <data name="SourceFileSummary" xml:space="preserve">
+        <value>Tóm tắt tệp nguồn</value>
+    </data>
+  <data name="OriginalFilesCount" xml:space="preserve">
+        <value>tệp gốc</value>
+    </data>
+  <data name="PreviewPagesCount" xml:space="preserve">
+        <value>trang xem trước</value>
+    </data>
+  <data name="NoPageNumber" xml:space="preserve">
+        <value>Không có trang</value>
     </data>
   <data name="AmountSummary" xml:space="preserve">
         <value>Tổng hợp số tiền</value>

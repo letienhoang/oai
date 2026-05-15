@@ -5,15 +5,21 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using OAI.Application.Abstractions.BackgroundJobs;
 using OAI.Application.Abstractions.Persistence;
 using OAI.Application.Abstractions.Services;
+using OAI.Application.Files;
+using OAI.Application.Uploads.FileDetection;
+using OAI.Application.Uploads.Pdf;
 using OAI.Infrastructure.Audit;
 using OAI.Infrastructure.BackgroundJobs;
 using OAI.Infrastructure.DemoData;
+using OAI.Infrastructure.Files;
 using OAI.Infrastructure.Options;
 using OAI.Infrastructure.Persistence;
 using OAI.Infrastructure.Repositories;
 using OAI.Infrastructure.Services;
 using OAI.Infrastructure.Services.Llm;
 using OAI.Infrastructure.SystemHealth;
+using OAI.Infrastructure.Uploads.FileDetection;
+using OAI.Infrastructure.Uploads.Pdf;
 
 namespace OAI.Infrastructure;
 
@@ -44,17 +50,32 @@ public static class DependencyInjection
             options.AddInterceptors(sp.GetRequiredService<AuditTrailInterceptor>());
         });
 
+        services.AddDbContextFactory<OaiDbContext>((sp, options) =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.AddInterceptors(sp.GetRequiredService<AuditTrailInterceptor>());
+        }, ServiceLifetime.Scoped);
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped<IValidationIssueRepository, ValidationIssueRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        services.AddScoped<IUploadBatchRepository, UploadBatchRepository>();
+        services.AddScoped<IUploadBatchFileRepository, UploadBatchFileRepository>();
         
         services.AddScoped<RuleBasedInvoiceTextParser>();
         services.AddScoped<OpenAiInvoiceTextParser>();
         services.AddScoped<IInvoiceTextParser, HybridInvoiceTextParser>();
         
         services.AddScoped<IFileStorageService, FileStorageService>();
+        services.AddScoped<IFileDownloadService, FileDownloadService>();
+        services.AddScoped<IInvoiceSourceFileService, InvoiceSourceFileService>();
+        services.AddScoped<IFileTypeDetectionService, FileTypeDetectionService>();
+        services.AddScoped<IPdfTextExtractionService, PdfTextExtractionService>();
+        services.AddScoped<IPdfPageRenderingService, PdfPageRenderingService>();
+        services.AddScoped<IPdfPagePreviewStorageService, PdfPagePreviewStorageService>();
+        services.AddScoped<IPdfPageOcrService, PdfPageOcrService>();
         services.AddScoped<IOcrService, TesseractOcrService>();
         
         services.AddScoped<IInvoiceExtractionService, InvoiceExtractionService>();
