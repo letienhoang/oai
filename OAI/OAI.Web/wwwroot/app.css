@@ -156,6 +156,34 @@ h1:focus {
     min-height: 500px;
 }
 
+.source-file-list {
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: var(--bs-body-bg);
+}
+
+.source-file-summary-card {
+    padding: 0.55rem 0.75rem;
+    font-weight: 600;
+}
+
+.source-file-table {
+    min-width: 860px;
+}
+
+.source-file-row-selected {
+    box-shadow: inset 0.25rem 0 0 var(--bs-primary);
+}
+
+.source-file-type-badge {
+    white-space: nowrap;
+}
+
+.source-file-actions {
+    min-width: 12rem;
+}
+
 .source-file-frame {
     width: 100%;
     min-height: 650px;

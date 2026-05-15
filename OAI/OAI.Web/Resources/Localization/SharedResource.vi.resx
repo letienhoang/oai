@@ -528,6 +528,54 @@
   <data name="InvoiceSourceFilePreviewAlt" xml:space="preserve">
         <value>Bản xem trước tệp nguồn hóa đơn</value>
     </data>
+  <data name="SourceFileList" xml:space="preserve">
+        <value>Danh sách tệp nguồn</value>
+    </data>
+  <data name="SourceFileListDescription" xml:space="preserve">
+        <value>Các tệp đang được liên kết với hóa đơn này.</value>
+    </data>
+  <data name="SourceFileType" xml:space="preserve">
+        <value>Loại</value>
+    </data>
+  <data name="SourceFileTypeImage" xml:space="preserve">
+        <value>Ảnh</value>
+    </data>
+  <data name="SourceFileName" xml:space="preserve">
+        <value>Tên tệp</value>
+    </data>
+  <data name="SourceFilePage" xml:space="preserve">
+        <value>Trang</value>
+    </data>
+  <data name="SourceFileContentType" xml:space="preserve">
+        <value>Loại nội dung</value>
+    </data>
+  <data name="SourceFileSize" xml:space="preserve">
+        <value>Kích thước</value>
+    </data>
+  <data name="SourceFileCreatedAt" xml:space="preserve">
+        <value>Ngày tạo</value>
+    </data>
+  <data name="PreviewSourceFile" xml:space="preserve">
+        <value>Xem trước</value>
+    </data>
+  <data name="PagePreview" xml:space="preserve">
+        <value>Ảnh xem trước trang</value>
+    </data>
+  <data name="PreviewImage" xml:space="preserve">
+        <value>Ảnh xem trước</value>
+    </data>
+  <data name="SourceFileSummary" xml:space="preserve">
+        <value>Tóm tắt tệp nguồn</value>
+    </data>
+  <data name="OriginalFilesCount" xml:space="preserve">
+        <value>tệp gốc</value>
+    </data>
+  <data name="PreviewPagesCount" xml:space="preserve">
+        <value>trang xem trước</value>
+    </data>
+  <data name="NoPageNumber" xml:space="preserve">
+        <value>Không có trang</value>
+    </data>
   <data name="AmountSummary" xml:space="preserve">
         <value>Tổng hợp số tiền</value>
     </data>

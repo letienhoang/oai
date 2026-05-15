@@ -528,6 +528,54 @@
   <data name="InvoiceSourceFilePreviewAlt" xml:space="preserve">
         <value>Invoice source file preview</value>
     </data>
+  <data name="SourceFileList" xml:space="preserve">
+        <value>Source file list</value>
+    </data>
+  <data name="SourceFileListDescription" xml:space="preserve">
+        <value>Files linked to this invoice.</value>
+    </data>
+  <data name="SourceFileType" xml:space="preserve">
+        <value>Type</value>
+    </data>
+  <data name="SourceFileTypeImage" xml:space="preserve">
+        <value>Image</value>
+    </data>
+  <data name="SourceFileName" xml:space="preserve">
+        <value>Name</value>
+    </data>
+  <data name="SourceFilePage" xml:space="preserve">
+        <value>Page</value>
+    </data>
+  <data name="SourceFileContentType" xml:space="preserve">
+        <value>Content type</value>
+    </data>
+  <data name="SourceFileSize" xml:space="preserve">
+        <value>Size</value>
+    </data>
+  <data name="SourceFileCreatedAt" xml:space="preserve">
+        <value>Created at</value>
+    </data>
+  <data name="PreviewSourceFile" xml:space="preserve">
+        <value>Preview</value>
+    </data>
+  <data name="PagePreview" xml:space="preserve">
+        <value>Page preview</value>
+    </data>
+  <data name="PreviewImage" xml:space="preserve">
+        <value>Preview image</value>
+    </data>
+  <data name="SourceFileSummary" xml:space="preserve">
+        <value>Source file summary</value>
+    </data>
+  <data name="OriginalFilesCount" xml:space="preserve">
+        <value>original</value>
+    </data>
+  <data name="PreviewPagesCount" xml:space="preserve">
+        <value>previews</value>
+    </data>
+  <data name="NoPageNumber" xml:space="preserve">
+        <value>No page</value>
+    </data>
   <data name="AmountSummary" xml:space="preserve">
         <value>Amount summary</value>
     </data>

@@ -35,7 +35,8 @@ public static class InvoiceMappingExtensions
                 .Select(x => x.ToDto())
                 .ToList(),
             SourceFiles = invoice.SourceFiles
-                .OrderBy(x => x.PageNumber ?? int.MaxValue)
+                .OrderBy(x => x.PageNumber.HasValue ? 1 : 0)
+                .ThenBy(x => x.PageNumber ?? int.MaxValue)
                 .ThenBy(x => x.CreatedAt)
                 .ThenBy(x => x.OriginalFileName)
                 .Select(x => x.ToDto())

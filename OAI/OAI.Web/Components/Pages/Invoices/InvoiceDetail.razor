@@ -351,7 +351,8 @@
                                         <a class="btn btn-outline-primary oai-icon-button align-self-start"
                                            href="@GetDownloadUrl(SelectedSourceFile.Id)"
                                            target="_blank"
-                                           rel="noopener">
+                                           rel="noopener"
+                                           aria-label="@($"{L["DownloadSourceFile"]}: {GetSourceFileLabel(SelectedSourceFile)}")">
                                             <Icon Name="mdi:download-outline" Size="18" />
                                             <span>@L["DownloadSourceFile"]</span>
                                         </a>
@@ -366,44 +367,80 @@
                                 }
                                 else if (SelectedSourceFile is not null)
                                 {
-                                    @if (OrderedSourceFiles.Count > 1)
-                                    {
-                                        <div class="row g-3 align-items-end mb-3">
-                                            <div class="col-12 col-md-5 col-xl-4">
-                                                <label class="form-label fw-semibold" for="sourceFileSelector">
-                                                    @L["SelectSourcePage"]
-                                                </label>
-                                                <select id="sourceFileSelector"
-                                                        class="form-select"
-                                                        value="@SelectedSourceFile.Id"
-                                                        @onchange="OnSelectedSourceFileChanged">
+                                    <div class="source-file-list mb-3">
+                                        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3">
+                                            <div>
+                                                <h4 class="h6 fw-bold mb-1">@L["SourceFileList"]</h4>
+                                                <p class="text-secondary mb-0">@L["SourceFileListDescription"]</p>
+                                            </div>
+
+                                            <div class="d-flex flex-wrap gap-2" aria-label="@L["SourceFileSummary"]">
+                                                <span class="source-file-summary-card badge text-bg-light border">
+                                                    @OrderedSourceFiles.Count @L["SourceFiles"]
+                                                </span>
+                                                <span class="source-file-summary-card badge text-bg-light border">
+                                                    @OriginalSourceFileCount @L["OriginalFilesCount"]
+                                                </span>
+                                                <span class="source-file-summary-card badge text-bg-light border">
+                                                    @PreviewPageSourceFileCount @L["PreviewPagesCount"]
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="source-file-table table table-hover align-middle mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">@L["SourceFileType"]</th>
+                                                        <th scope="col">@L["SourceFileName"]</th>
+                                                        <th scope="col">@L["SourceFilePage"]</th>
+                                                        <th scope="col">@L["SourceFileContentType"]</th>
+                                                        <th scope="col">@L["SourceFileSize"]</th>
+                                                        <th scope="col">@L["SourceFileCreatedAt"]</th>
+                                                        <th scope="col" class="text-lg-end">@L["Actions"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
                                                     @foreach (var sourceFile in OrderedSourceFiles)
                                                     {
-                                                        <option value="@sourceFile.Id">@GetSourceFileLabel(sourceFile)</option>
+                                                        <tr class="@GetSourceFileRowClass(sourceFile)">
+                                                            <td>
+                                                                <span class="@GetSourceFileTypeBadgeClass(sourceFile)">
+                                                                    @GetSourceFileTypeLabel(sourceFile)
+                                                                </span>
+                                                            </td>
+                                                            <td class="fw-semibold text-break">@DisplayOrFallback(sourceFile.OriginalFileName)</td>
+                                                            <td>
+                                                                @(sourceFile.PageNumber is null
+                                                                    ? L["NoPageNumber"].Value
+                                                                    : L["PageNumberLabel", sourceFile.PageNumber].Value)
+                                                            </td>
+                                                            <td class="text-break">@DisplayOrFallback(sourceFile.ContentType)</td>
+                                                            <td>@FormatFileSize(sourceFile.FileSizeBytes)</td>
+                                                            <td>@FormatDateTime(sourceFile.CreatedAt)</td>
+                                                            <td>
+                                                                <div class="source-file-actions d-flex flex-wrap gap-2 justify-content-lg-end">
+                                                                    <button type="button"
+                                                                            class="btn btn-sm btn-outline-primary oai-icon-button"
+                                                                            aria-label="@($"{L["PreviewSourceFile"]}: {GetSourceFileLabel(sourceFile)}")"
+                                                                            @onclick="() => SelectSourceFile(sourceFile.Id)">
+                                                                        <Icon Name="mdi:eye-outline" Size="16" />
+                                                                        <span>@L["PreviewSourceFile"]</span>
+                                                                    </button>
+                                                                    <a class="btn btn-sm btn-outline-secondary oai-icon-button"
+                                                                       href="@GetDownloadUrl(sourceFile.Id)"
+                                                                       target="_blank"
+                                                                       rel="noopener"
+                                                                       aria-label="@($"{L["DownloadSourceFile"]}: {GetSourceFileLabel(sourceFile)}")">
+                                                                        <Icon Name="mdi:download-outline" Size="16" />
+                                                                        <span>@L["DownloadSourceFile"]</span>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
                                                     }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    }
-
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-12 col-md-4">
-                                            <div class="border rounded-3 p-3 h-100">
-                                                <div class="text-secondary small mb-1">@L["OriginalFile"]</div>
-                                                <div class="fw-semibold text-break">@DisplayOrFallback(SelectedSourceFile.OriginalFileName)</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-4">
-                                            <div class="border rounded-3 p-3 h-100">
-                                                <div class="text-secondary small mb-1">@L["ContentType"]</div>
-                                                <div class="fw-semibold text-break">@DisplayOrFallback(SelectedSourceFile.ContentType)</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-4">
-                                            <div class="border rounded-3 p-3 h-100">
-                                                <div class="text-secondary small mb-1">@L["FileSize"]</div>
-                                                <div class="fw-semibold">@FormatFileSize(SelectedSourceFile.FileSizeBytes)</div>
-                                            </div>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
 

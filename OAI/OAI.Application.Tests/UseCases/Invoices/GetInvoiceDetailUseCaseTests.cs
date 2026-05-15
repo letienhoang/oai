@@ -43,7 +43,7 @@ public sealed class GetInvoiceDetailUseCaseTests
     }
 
     [Fact]
-    public async Task ExecuteAsync_OrdersSourceFilesByPageNumber()
+    public async Task ExecuteAsync_OrdersSourceFilesWithOriginalFileFirstThenPageNumber()
     {
         var invoiceRepository = new FakeInvoiceRepository();
         var invoice = CreateInvoice();
@@ -80,7 +80,7 @@ public sealed class GetInvoiceDetailUseCaseTests
             InvoiceId = invoice.Id
         });
 
-        Assert.Equal([1, 2, null], result.SourceFiles.Select(x => x.PageNumber));
+        Assert.Equal([null, 1, 2], result.SourceFiles.Select(x => x.PageNumber));
     }
 
     private static GetInvoiceDetailUseCase CreateUseCase(FakeInvoiceRepository invoiceRepository)

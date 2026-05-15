@@ -93,10 +93,17 @@ public partial class InvoiceDetail
 
     private IReadOnlyList<InvoiceSourceFileDto> OrderedSourceFiles =>
         Invoice?.SourceFiles
-            .OrderBy(x => x.PageNumber ?? int.MaxValue)
+            .OrderBy(x => x.PageNumber.HasValue ? 1 : 0)
+            .ThenBy(x => x.PageNumber ?? int.MaxValue)
             .ThenBy(x => x.CreatedAt)
             .ThenBy(x => x.OriginalFileName)
             .ToList() ?? [];
+
+    private int OriginalSourceFileCount =>
+        OrderedSourceFiles.Count(x => x.PageNumber is null);
+
+    private int PreviewPageSourceFileCount =>
+        OrderedSourceFiles.Count(x => x.PageNumber is not null);
 
     private InvoiceSourceFileDto? SelectedSourceFile
     {
@@ -504,10 +511,9 @@ public partial class InvoiceDetail
         SelectedSourceFileId = selected?.Id;
     }
 
-    private void OnSelectedSourceFileChanged(ChangeEventArgs args)
+    private void SelectSourceFile(Guid sourceFileId)
     {
-        if (Guid.TryParse(args.Value?.ToString(), out var sourceFileId))
-            SelectedSourceFileId = sourceFileId;
+        SelectedSourceFileId = sourceFileId;
     }
 
     private static string GetPreviewUrl(Guid sourceFileId)
@@ -528,6 +534,43 @@ public partial class InvoiceDetail
         return string.IsNullOrWhiteSpace(sourceFile.OriginalFileName)
             ? L["SourceFile"].Value
             : sourceFile.OriginalFileName;
+    }
+
+    private string GetSourceFileRowClass(InvoiceSourceFileDto sourceFile)
+    {
+        return SelectedSourceFile?.Id == sourceFile.Id
+            ? "source-file-row-selected table-active"
+            : string.Empty;
+    }
+
+    private string GetSourceFileTypeLabel(InvoiceSourceFileDto sourceFile)
+    {
+        if (sourceFile.PageNumber is not null)
+            return IsImageContentType(sourceFile.ContentType)
+                ? L["PreviewImage"].Value
+                : L["PagePreview"].Value;
+
+        if (IsPdfContentType(sourceFile.ContentType))
+            return "PDF";
+
+        if (IsImageContentType(sourceFile.ContentType))
+            return L["SourceFileTypeImage"].Value;
+
+        return L["OriginalFile"].Value;
+    }
+
+    private string GetSourceFileTypeBadgeClass(InvoiceSourceFileDto sourceFile)
+    {
+        if (sourceFile.PageNumber is not null)
+            return "source-file-type-badge badge text-bg-info";
+
+        if (IsPdfContentType(sourceFile.ContentType))
+            return "source-file-type-badge badge text-bg-danger";
+
+        if (IsImageContentType(sourceFile.ContentType))
+            return "source-file-type-badge badge text-bg-success";
+
+        return "source-file-type-badge badge text-bg-secondary";
     }
 
     private static bool IsPdfContentType(string? contentType)
