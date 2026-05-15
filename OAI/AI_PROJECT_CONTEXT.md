@@ -92,10 +92,11 @@ Important use cases include:
 - Get audit logs
 - Vendor list/options/upsert
 - System settings
+- Process upload batches and batch files
 
 ### OAI.Infrastructure
 
-Contains EF Core persistence, repository implementations, file storage, OCR service, AI parser, audit interceptor, identity seed, demo data seed/reset, and system health services.
+Contains EF Core persistence, repository implementations, file storage, OCR service, PDF processing, AI parser, audit interceptor, background jobs, identity seed, demo data seed/reset, and system health services.
 
 Important services:
 
@@ -103,6 +104,7 @@ Important services:
 - `AuditTrailInterceptor`
 - `FileStorageService`
 - `TesseractOcrService`
+- PDF text extraction, page rendering, preview storage, and OCR services
 - `RuleBasedInvoiceTextParser`
 - `OpenAiInvoiceTextParser`
 - `HybridInvoiceTextParser`
@@ -122,7 +124,15 @@ Blazor Web App UI with localized pages, authentication, role/permission-based au
 Completed:
 
 - Invoice upload page
+- Upload batch processing with Hangfire background jobs
+- Upload batch status and detail tracking
+- File type detection for images, PDFs, ZIP archives, and unsupported files
 - File storage integration
+- Source file storage and InvoiceSourceFiles metadata tracking
+- Secure source file preview/download APIs
+- Source file viewer and source file list in Invoice Detail
+- Text-based PDF embedded text extraction
+- Scanned PDF page rendering, preview storage, OCR, and merged raw text
 - OCR wrapper using Tesseract
 - Rule-based invoice text parser
 - AI/LLM parser
@@ -343,7 +353,7 @@ Important: `MapDemoDataEndpoints()` only maps endpoints. It does not automatical
 
 ## 9. Current Project Status
 
-The project has moved beyond the old Phase 6A/6B context. The current state is:
+The project has moved beyond the old Phase 6A/6B context. v1.3.0 is prepared after Phase 10 completion. The current state is:
 
 ```txt
 Phase 7A: Localization and authentication foundation - completed
@@ -351,6 +361,7 @@ Phase 7B: Authorization, roles, users, and audit user info - completed
 Phase 7C: Filtering and data scope - completed
 Phase 7D: UX/detail improvements and vendor management - completed
 Phase 7E: Demo/dev tooling and system health - completed
+Phase 10: Upload batch processing, PDF processing, and source file viewer - completed
 ```
 
 Recently completed task range includes approximately T43-T67:
@@ -401,6 +412,6 @@ Potential technical follow-up tasks:
 - Persist filters in query string.
 - Add user management page for administrators.
 - Add export/report features.
-- Add PDF invoice support.
+- Start Phase 11 roadmap work.
 - Add Docker deployment and GitHub Actions CI.
 ```

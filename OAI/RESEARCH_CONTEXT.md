@@ -96,8 +96,8 @@ Current implementation:
 
 - Tesseract OCR engine.
 - Language setting: `eng+vie`.
-- Image invoice support is prioritized.
-- PDF invoice support is a possible future extension.
+- Image invoice support remains available.
+- PDF invoice support has been added in Phase 10 with embedded text extraction, scanned page rendering, page preview storage, and OCR for rendered pages.
 
 Observed OCR limitations:
 
@@ -212,8 +212,9 @@ This supports traceability of invoice edits, approval decisions, vendor changes,
 
 The project is now broader than OCR-only extraction. It is a complete invoice processing workflow system with:
 
-- upload and file storage;
+- upload, batch processing, and file storage;
 - OCR extraction;
+- PDF embedded text extraction and scanned PDF page OCR;
 - AI-assisted parsing;
 - rule-based fallback parsing;
 - structured invoice persistence;
@@ -223,6 +224,8 @@ The project is now broader than OCR-only extraction. It is a complete invoice pr
 - vendor management;
 - dashboard and filtering;
 - audit logs;
+- secure source file preview/download;
+- invoice source file viewer;
 - authentication and authorization;
 - localization;
 - demo and system health tools.
@@ -579,7 +582,7 @@ The system contributes:
 
 ## 14. Current System State
 
-The project has completed major implementation phases up to the current Phase 7 polish/dev-tooling stage.
+The project has completed major implementation phases through Phase 10. v1.3.0 is prepared after Phase 10 completion.
 
 Completed areas include:
 
@@ -597,6 +600,10 @@ Completed areas include:
 - Demo data seed/reset tools
 - System health/status panel
 - EF money precision configuration
+- Upload batch processing with Hangfire background jobs
+- Image/PDF/ZIP file type detection
+- PDF embedded text extraction and scanned page rendering/OCR
+- Source file storage, preview/download APIs, and Invoice Detail source file viewer
 ```
 
 The old `NEXT_TASKS.md` and `TASK_HISTORY.md` files were removed. The current state should now be inferred from:
@@ -632,6 +639,6 @@ Current source code on develop
 4. Add field-level audit change view.
 5. Improve OCR/AI comparison screen layout.
 6. Persist list/dashboard/audit filters in query string.
-7. Add PDF invoice support.
+7. Start Phase 11 roadmap work.
 8. Add Docker and CI/CD if time allows.
 ```

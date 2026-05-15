@@ -6,8 +6,23 @@ The system allows users to upload invoice images, extract text using OCR, parse 
 
 ## Current version
 
-- Current version: 1.1.0
-- Focus: UI/UX polish, public layout separation, toast notifications, icon buttons, tooltip support, localization updates, regression testing.
+- Current release: v1.3.0
+- Focus: Phase 10 upload batch processing, background jobs, PDF processing, source file storage, secure source file APIs, and the source file viewer UI.
+
+Highlights:
+
+- Batch upload processing with Hangfire background jobs
+- Upload batch status and detail tracking
+- File type detection for Image, PDF, ZIP, and unsupported files
+- Text-based PDF embedded text extraction
+- Scanned PDF page rendering
+- PDF page preview storage
+- OCR for rendered PDF pages and merged raw text
+- Secure source file download API
+- Secure source file preview API
+- Source file viewer in Invoice Detail
+- Invoice source file list
+- Improved source file metadata tracking through InvoiceSourceFiles
 
 ## Thesis topic
 
@@ -219,22 +234,20 @@ The UI supports English and Vietnamese using `.resx` resource files.
 - Default language: English
 - Supported languages: English, Vietnamese
 - Language switcher is available in both authenticated and public layouts.
-- English and Vietnamese resources are updated for v1.1.0.
+- English and Vietnamese resources are maintained for the current release.
 
-### v1.1.0 highlights
+### v1.3.0 highlights
 
-- ConfirmDialog async callback issue fixed.
-- Login, NotFound, and AccessDenied separated from MainLayout using PublicLayout.
-- ApplicationInfo configuration added.
-- Footer shows application metadata/version.
-- Bootstrap Toast service/container added.
-- Common action alerts replaced with toast notifications.
-- Iconify rendering support added.
-- Sidebar, navigation, action, and table buttons converted to icons.
-- Bootstrap tooltip initialization added.
-- Invoice Detail header and Overview tab improved.
-- Localization resources updated.
-- Main workflows regression-tested.
+- Upload batch processing with Hangfire background jobs.
+- Batch status API and batch detail UI.
+- File type detection for image, PDF, ZIP, and unsupported uploads.
+- Embedded text extraction for text-based PDFs.
+- Scanned PDF page rendering and page preview storage.
+- OCR support for rendered PDF pages with merged raw text processing.
+- Secure source file download and preview APIs.
+- Source file viewer and source file list in Invoice Detail.
+- Shared file storage configuration across Web/API/Worker.
+- InvoiceSourceFiles metadata tracking.
 
 ### Filtering and paging
 
@@ -423,13 +436,13 @@ A recommended demo flow:
 1. Verify public Login page does not expose internal navigation.
 2. Log in as Administrator or Accountant.
 3. Open Dashboard and show date range filters.
-4. Upload a sample invoice image and confirm upload feedback appears immediately.
+4. Upload a sample invoice image or PDF and confirm batch status feedback appears.
 5. Verify toast notifications.
 6. Open Invoice List and use filters.
 7. Open Invoice Detail.
 8. Show Overview, Line Items, Validation, and Extraction History tabs.
 9. Verify icon tooltips.
-10. Open extraction result detail to show raw OCR text and structured JSON.
+10. Open source file preview and extraction result detail to show source content, raw text, and structured JSON.
 11. Edit invoice data and revalidate.
 12. Approve or reject the invoice.
 13. Open Audit Logs and view audit detail dialog.
@@ -452,7 +465,7 @@ This project demonstrates:
 
 ## Notes
 
-- The project currently focuses on image invoices. PDF support can be added in a later phase.
+- The project supports image and PDF invoice uploads, with ZIP upload packages processed as batches.
 - OpenAI API billing is separate from ChatGPT Plus.
 - If OpenAI fails or quota is insufficient, the system can fall back to rule-based parsing.
 - Keep secrets out of `appsettings.json`.
