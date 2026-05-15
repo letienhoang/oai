@@ -127,6 +127,7 @@ app.MapStaticAssets();
 
 app.MapLocalizationEndpoints();
 app.MapAuthEndpoints();
+app.MapFileEndpoints();
 
 if (app.Environment.IsDevelopment())
 {

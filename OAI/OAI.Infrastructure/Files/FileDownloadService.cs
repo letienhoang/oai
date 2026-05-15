@@ -125,9 +125,12 @@ public sealed class FileDownloadService : IFileDownloadService
         if (!File.Exists(physicalPath))
         {
             _logger.LogWarning(
-                "Invoice source file metadata exists but physical file is missing. FileId: {FileId}, PhysicalPath: {PhysicalPath}",
+                "Invoice source file metadata exists but physical file is missing. FileId: {FileId}, StoredPath: {StoredPath}, PhysicalPath: {PhysicalPath}, BasePath: {BasePath}, RootPath: {RootPath}",
                 fileId,
-                physicalPath);
+                storedPath,
+                physicalPath,
+                _basePath,
+                _options.RootPath);
 
             return Failed(
                 DownloadableFileErrorCode.PhysicalFileMissing,

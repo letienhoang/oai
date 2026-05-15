@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using OAI.Application.Files;
@@ -78,6 +79,42 @@ public sealed class FileDownloadServiceTests
             DeleteDirectory(root);
         }
     }
+
+    [Fact]
+    public async Task GetDownloadableFileAsync_LogsStorageDetailsWhenPhysicalFileIsMissing()
+    {
+        var root = CreateTempDirectory();
+
+        try
+        {
+            await using var dbContext = CreateDbContext();
+            var sourceFile = await AddSourceFileAsync(
+                dbContext,
+                "storage/invoices/missing.pdf",
+                "invoice.pdf",
+                "application/pdf",
+                123);
+            var logger = new CapturingLogger<FileDownloadService>();
+            var service = CreateService(dbContext, root, logger: logger);
+
+            var result = await service.GetDownloadableFileAsync(sourceFile.Id);
+
+            Assert.False(result.Succeeded);
+            Assert.Contains(
+                logger.Entries,
+                entry =>
+                    entry.LogLevel == LogLevel.Warning &&
+                    entry.Message.Contains(sourceFile.Id.ToString(), StringComparison.OrdinalIgnoreCase) &&
+                    entry.Message.Contains("storage/invoices/missing.pdf", StringComparison.Ordinal) &&
+                    entry.Message.Contains(Path.GetFullPath(root), StringComparison.OrdinalIgnoreCase) &&
+                    entry.Message.Contains("storage", StringComparison.Ordinal));
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
 
     [Fact]
     public async Task GetDownloadableFileAsync_RejectsUnsafePathTraversal()
@@ -434,7 +471,8 @@ public sealed class FileDownloadServiceTests
     private static FileDownloadService CreateService(
         OaiDbContext dbContext,
         string basePath,
-        string rootPath = "storage")
+        string rootPath = "storage",
+        ILogger<FileDownloadService>? logger = null)
         => new(
             dbContext,
             Microsoft.Extensions.Options.Options.Create(new FileStorageOptions
@@ -443,7 +481,7 @@ public sealed class FileDownloadServiceTests
                 RootPath = rootPath,
                 InvoiceFolder = "invoices"
             }),
-            NullLogger<FileDownloadService>.Instance);
+            logger ?? NullLogger<FileDownloadService>.Instance);
 
     private static OaiDbContext CreateDbContext()
     {
@@ -538,6 +576,39 @@ public sealed class FileDownloadServiceTests
         if (Directory.Exists(directory))
         {
             Directory.Delete(directory, recursive: true);
+        }
+    }
+
+    private sealed class CapturingLogger<T> : ILogger<T>
+    {
+        public List<LogEntry> Entries { get; } = [];
+
+        public IDisposable BeginScope<TState>(TState state)
+            where TState : notnull
+            => NullScope.Instance;
+
+        public bool IsEnabled(LogLevel logLevel)
+            => true;
+
+        public void Log<TState>(
+            LogLevel logLevel,
+            EventId eventId,
+            TState state,
+            Exception? exception,
+            Func<TState, Exception?, string> formatter)
+        {
+            Entries.Add(new LogEntry(logLevel, formatter(state, exception)));
+        }
+    }
+
+    private sealed record LogEntry(LogLevel LogLevel, string Message);
+
+    private sealed class NullScope : IDisposable
+    {
+        public static readonly NullScope Instance = new();
+
+        public void Dispose()
+        {
         }
     }
 }
