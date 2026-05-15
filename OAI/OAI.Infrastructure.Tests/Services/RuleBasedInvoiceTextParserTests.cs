@@ -138,6 +138,143 @@ public sealed class RuleBasedInvoiceTextParserTests
         Assert.Equal(100.00m, result.DeclaredSubtotal);
     }
 
+    [Fact]
+    public void ParseInternal_ParsesLumenDigitalServicesPdfText()
+    {
+        var result = _parser.ParseInternal(
+            LumenDigitalServicesText,
+            "pdf-sample-01-valid-digital-services.pdf",
+            1m,
+            "PdfEmbeddedText");
+
+        Assert.NotNull(result);
+        Assert.Equal("LUMEN DIGITAL SERVICES CO, LTD", result.VendorName);
+        Assert.Equal("LDS-2026-041", result.InvoiceNumber);
+        Assert.Equal(new DateOnly(2026, 5, 6), result.IssueDate);
+        Assert.Equal(new DateOnly(2026, 5, 13), result.DueDate);
+        Assert.Equal("VND", result.Currency);
+        Assert.Equal(2700000m, result.DeclaredSubtotal);
+        Assert.Equal(270000m, result.DeclaredTaxAmount);
+        Assert.Equal(2970000m, result.DeclaredTotalAmount);
+        Assert.InRange(result.LineItems.Count, 1, 2);
+        Assert.All(result.LineItems, item =>
+        {
+            Assert.InRange(item.TaxRate, 0m, 100m);
+            Assert.NotEqual(11806.13m, item.TaxRate);
+        });
+        Assert.Collection(
+            result.LineItems,
+            item =>
+            {
+                Assert.Equal("Invoice data extraction configuration", item.Description);
+                Assert.Equal(1m, item.Quantity);
+                Assert.Equal(1800000m, item.UnitPrice);
+                Assert.Equal(10m, item.TaxRate);
+            },
+            item =>
+            {
+                Assert.Equal("Monthly support package", item.Description);
+                Assert.Equal(2m, item.Quantity);
+                Assert.Equal(450000m, item.UnitPrice);
+                Assert.Equal(10m, item.TaxRate);
+            });
+    }
+
+    [Fact]
+    public void ParseInternal_DoesNotParseTaxCodeAsTaxAmount()
+    {
+        var result = _parser.ParseInternal(
+            """
+            LUMEN DIGITAL SERVICES CO., LTD
+            Tax code: 0318765432
+            Invoice Number LDS-2026-041
+            Subtotal 2,700,000 VND
+            Total 2,970,000 VND
+            """,
+            "invoice.pdf",
+            1m,
+            "Test");
+
+        Assert.NotNull(result);
+        Assert.Equal(0m, result.DeclaredTaxAmount);
+        Assert.All(result.LineItems, item => Assert.InRange(item.TaxRate, 0m, 100m));
+    }
+
+    [Fact]
+    public void ParseInternal_ParsesVatLineWithPercentageAsMoneyAmount()
+    {
+        var result = _parser.ParseInternal(
+            """
+            LUMEN DIGITAL SERVICES CO., LTD
+            Invoice Number LDS-2026-041
+            Subtotal 2,700,000 VND
+            VAT 10% 270,000 VND
+            Total 2,970,000 VND
+            """,
+            "invoice.pdf",
+            1m,
+            "Test");
+
+        Assert.NotNull(result);
+        Assert.Equal(270000m, result.DeclaredTaxAmount);
+        Assert.Equal(10m, result.LineItems.Single().TaxRate);
+    }
+
+    [Fact]
+    public void ParseInternal_ParsesInvoiceNumberFromSameLineWithoutColon()
+    {
+        var result = _parser.ParseInternal(
+            """
+            LUMEN DIGITAL SERVICES CO., LTD
+            Invoice Number LDS-2026-041 Invoice Date 06/05/2026
+            Total 2,970,000 VND
+            """,
+            "invoice.pdf",
+            1m,
+            "Test");
+
+        Assert.NotNull(result);
+        Assert.Equal("LDS-2026-041", result.InvoiceNumber);
+    }
+
+    [Fact]
+    public void ParseInternal_DoesNotAcceptCustomerDueDateLineAsInvoiceNumber()
+    {
+        var result = _parser.ParseInternal(
+            """
+            LUMEN DIGITAL SERVICES CO., LTD
+            Invoice Number
+            Customer Harbor Trading Joint Stock Company Due Date 13/05/2026
+            Total 2,970,000 VND
+            """,
+            "invoice.pdf",
+            1m,
+            "Test");
+
+        Assert.NotNull(result);
+        Assert.StartsWith("UNREAD-", result.InvoiceNumber);
+    }
+
+    [Fact]
+    public void ParseInternal_ResetsInferredTaxRateWhenItExceedsOneHundred()
+    {
+        var result = _parser.ParseInternal(
+            """
+            LUMEN DIGITAL SERVICES CO., LTD
+            Invoice Number LDS-2026-041
+            Subtotal 100.00
+            VAT 150.00
+            Total 200.00
+            """,
+            "invoice.pdf",
+            1m,
+            "Test");
+
+        Assert.NotNull(result);
+        Assert.Equal(150m, result.DeclaredTaxAmount);
+        Assert.All(result.LineItems, item => Assert.Equal(0m, item.TaxRate));
+    }
+
     private static string BuildInvoiceText(string totalText)
         =>
             $"""
@@ -147,4 +284,23 @@ public sealed class RuleBasedInvoiceTextParserTests
             Due Date: 2026-05-15
             {totalText}
             """;
+
+    private const string LumenDigitalServicesText =
+        """
+        LUMEN DIGITAL SERVICES CO., LTD
+        Tax code: 0318765432
+        Address: 45 Vo Van Tan, Ward 6, District 3, Ho Chi Minh City
+        Phone: 028-3812-4501 | Email: billing@lumendigital.vn
+        COMMERCIAL INVOICE
+        Invoice Number LDS-2026-041 Invoice Date 06/05/2026
+        Customer Harbor Trading Joint Stock Company Due Date 13/05/2026
+        Currency VND Payment Method Bank transfer
+        Line Items
+        No Description Qty Unit Price Amount
+        1 Invoice data extraction configuration 1 1,800,000 VND 1,800,000 VND
+        2 Monthly support package 2 450,000 VND 900,000 VND
+        Subtotal 2,700,000 VND
+        VAT 10% 270,000 VND
+        Total 2,970,000 VND
+        """;
 }

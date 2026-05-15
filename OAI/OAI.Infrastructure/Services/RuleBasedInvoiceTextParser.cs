@@ -74,7 +74,6 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         "gst amount",
         "taxes",
         "vat",
-        "tax",
         "tax amount",
         "vat amount",
         "thuế",
@@ -111,6 +110,69 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
 
     private static readonly string[] KnownAmountLabels =
         [.. SubtotalLabels, .. TaxLabels, .. TotalLabels];
+
+    private static readonly string[] MetadataLabels =
+    [
+        "tax code",
+        "tax no",
+        "tax number",
+        "tax id",
+        "vat code",
+        "vat number",
+        "mst",
+        "mã số thuế",
+        "customer tax id",
+        "customer tax code",
+        "phone",
+        "tel",
+        "email",
+        "address",
+        "invoice number",
+        "invoice no",
+        "date",
+        "invoice date",
+        "due date",
+        "customer",
+        "currency",
+        "payment"
+    ];
+
+    private static readonly string[] FollowingInvoiceNumberLabels =
+    [
+        "invoice date",
+        "issue date",
+        "issued date",
+        "date",
+        "due date",
+        "customer",
+        "currency",
+        "payment",
+        "payment method",
+        "address",
+        "phone",
+        "email"
+    ];
+
+    private static readonly string[] InvoiceNumberRejectLabels =
+    [
+        "customer",
+        "due date",
+        "invoice date",
+        "payment",
+        "currency",
+        "address",
+        "phone",
+        "email"
+    ];
+
+    private static readonly string[] StrictInvoiceCodePatterns =
+    [
+        @"(?i)\b(?<value>[A-Z]{2,10}-\d{4}-\d{2,6})\b",
+        @"(?i)\b(?<value>INV[-\/]?\d{4}[-\/]?\d{3,})\b",
+        @"(?i)\b(?<value>INV[-\/]?[A-Z0-9]+[-\/]?[A-Z0-9]+)\b",
+        @"(?i)\b(?<value>[A-Z]{2,}[-\/]\d{4}[-\/]\d{2,})\b",
+        @"(?i)\b(?<value>HD[-\/]?\d{4}[-\/]?\d{2,})\b"
+    ];
 
     private static readonly Regex AmountRegex = new(
         @"(?<![\w])(?:[$€₫]\s*)?(?<value>\d{1,3}(?:[,.]\d{3})+(?:[,.]\d{1,2})?|\d+(?:[,.]\d{1,2})?)(?:\s*(?:USD|EUR|VND|VNĐ|đ|₫))?(?![\w])",
@@ -186,7 +248,7 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         var taxAmount =
             ExtractAmountByLabel(
                 lines,
-                AmountSelection.First,
+                AmountSelection.Last,
                 allowContainedLabel: false,
                 TaxLabels) ?? 0m;
 
@@ -224,13 +286,64 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
             return null;
 
         var totalValue = totalAmount.Value;
+        if (taxAmount < 0)
+        {
+            _logger.LogWarning(
+                "Parsed invoice tax amount was negative and has been reset. SourceFileName: {SourceFileName}, TaxAmount: {TaxAmount}, TotalAmount: {TotalAmount}",
+                sourceFileName,
+                taxAmount,
+                totalValue);
+            taxAmount = 0m;
+        }
+
+        if (taxAmount > totalValue)
+        {
+            _logger.LogWarning(
+                "Parsed invoice tax amount exceeded total and has been reset. SourceFileName: {SourceFileName}, TaxAmount: {TaxAmount}, TotalAmount: {TotalAmount}",
+                sourceFileName,
+                taxAmount,
+                totalValue);
+            taxAmount = 0m;
+        }
+
         var subtotalValue = subtotal ?? Math.Max(totalValue - taxAmount, 0m);
+        if (subtotalValue < 0)
+        {
+            _logger.LogWarning(
+                "Parsed invoice subtotal was negative and has been reset. SourceFileName: {SourceFileName}, Subtotal: {Subtotal}, TotalAmount: {TotalAmount}",
+                sourceFileName,
+                subtotalValue,
+                totalValue);
+            subtotalValue = 0m;
+        }
+
+        if (subtotalValue > totalValue && taxAmount > 0)
+        {
+            _logger.LogWarning(
+                "Parsed invoice subtotal exceeded total while tax was present. SourceFileName: {SourceFileName}, Subtotal: {Subtotal}, TaxAmount: {TaxAmount}, TotalAmount: {TotalAmount}",
+                sourceFileName,
+                subtotalValue,
+                taxAmount,
+                totalValue);
+        }
 
         var lineItems = ExtractLineItems(lines);
 
         var inferredTaxRate = subtotalValue > 0 && taxAmount > 0
             ? Math.Round(taxAmount / subtotalValue * 100m, 2, MidpointRounding.AwayFromZero)
             : 0m;
+
+        if (inferredTaxRate is < 0m or > 100m)
+        {
+            _logger.LogWarning(
+                "Inferred invoice tax rate was outside the allowed range and has been reset. SourceFileName: {SourceFileName}, Subtotal: {Subtotal}, TaxAmount: {TaxAmount}, TotalAmount: {TotalAmount}, InferredTaxRate: {InferredTaxRate}",
+                sourceFileName,
+                subtotalValue,
+                taxAmount,
+                totalValue,
+                inferredTaxRate);
+            inferredTaxRate = 0m;
+        }
 
         if (lineItems.Count == 0)
         {
@@ -256,6 +369,16 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
                 })
                 .ToList();
         }
+
+        _logger.LogInformation(
+            "Invoice parsed successfully using rule-based parser. SourceFileName: {SourceFileName}, InvoiceNumber: {InvoiceNumber}, Subtotal: {Subtotal}, TaxAmount: {TaxAmount}, TotalAmount: {TotalAmount}, InferredTaxRate: {InferredTaxRate}, LineItemCount: {LineItemCount}",
+            sourceFileName,
+            invoiceNumber,
+            subtotalValue,
+            taxAmount,
+            totalValue,
+            inferredTaxRate,
+            lineItems.Count);
 
         return new ExtractedInvoiceDto
         {
@@ -288,19 +411,11 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
     {
         var normalizedText = string.Join("\n", lines);
 
-        var invoiceCodePatterns = new[]
-        {
-            @"(?i)\b(?<value>INV[-\/]?\d{4}[-\/]?\d{3,})\b",
-            @"(?i)\b(?<value>INV[-\/]?[A-Z0-9]+[-\/]?[A-Z0-9]+)\b",
-            @"(?i)\b(?<value>[A-Z]{2,}[-\/]\d{4}[-\/]\d{2,})\b",
-            @"(?i)\b(?<value>HD[-\/]?\d{4}[-\/]?\d{2,})\b"
-        };
-
-        var invoiceCode = TryRegexGroup(normalizedText, invoiceCodePatterns, "value");
+        var invoiceCode = TryRegexGroup(normalizedText, StrictInvoiceCodePatterns, "value");
         if (IsLikelyInvoiceNumber(invoiceCode))
             return invoiceCode;
 
-        invoiceCode = TryRegexGroup(rawText, invoiceCodePatterns, "value");
+        invoiceCode = TryRegexGroup(rawText, StrictInvoiceCodePatterns, "value");
         if (IsLikelyInvoiceNumber(invoiceCode))
             return invoiceCode;
 
@@ -317,8 +432,15 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
 
             var valuePart = GetValueAfterColon(line);
 
-            if (IsLikelyInvoiceNumber(valuePart))
-                return valuePart;
+            var sameLineSegment = valuePart ?? RemoveLeadingLabel(line, InvoiceNumberLabels);
+            sameLineSegment = StopAtFollowingLabel(sameLineSegment, FollowingInvoiceNumberLabels);
+
+            var sameLineCode = TryRegexGroup(sameLineSegment, StrictInvoiceCodePatterns, "value");
+            if (IsLikelyInvoiceNumber(sameLineCode))
+                return sameLineCode;
+
+            if (IsCompactInvoiceNumberToken(sameLineSegment))
+                return sameLineSegment.Trim();
 
             for (var j = i + 1; j < Math.Min(i + 8, lines.Count); j++)
             {
@@ -327,12 +449,12 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
                 if (LineStartsWithAnyLabel(candidate, "invoice date", "due date", "date", "ngày"))
                     continue;
 
-                var code = TryRegexGroup(candidate, invoiceCodePatterns, "value");
+                var code = TryRegexGroup(candidate, StrictInvoiceCodePatterns, "value");
 
                 if (IsLikelyInvoiceNumber(code))
                     return code;
 
-                if (IsLikelyInvoiceNumber(candidate))
+                if (IsCompactInvoiceNumberToken(candidate))
                     return candidate;
             }
         }
@@ -365,7 +487,76 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         if (normalized.Length < 4)
             return false;
 
+        if (normalized.Length > 50)
+            return false;
+
+        if (Regex.Matches(normalized, @"\b[\p{L}\p{N}]+\b").Count > 6)
+            return false;
+
+        if (InvoiceNumberRejectLabels.Any(label =>
+                normalized.Contains(label, StringComparison.OrdinalIgnoreCase)))
+        {
+            return false;
+        }
+
+        if (Regex.IsMatch(normalized, @"\d{1,4}[\/\.\-]\d{1,2}[\/\.\-]\d{2,4}"))
+            return false;
+
         return normalized.Any(char.IsDigit);
+    }
+
+    private static bool IsCompactInvoiceNumberToken(string? value)
+    {
+        if (!IsLikelyInvoiceNumber(value))
+            return false;
+
+        var normalized = value!.Trim();
+        if (normalized.Contains(' '))
+            return false;
+
+        return Regex.IsMatch(
+            normalized,
+            @"^[A-Z0-9][A-Z0-9\-\/#_.]*\d[A-Z0-9\-\/#_.]*$",
+            RegexOptions.IgnoreCase);
+    }
+
+    private static string RemoveLeadingLabel(string line, params string[] labels)
+    {
+        var normalizedLine = NormalizeLabel(line);
+        var matchingLabel = labels
+            .Select(label => new
+            {
+                Original = label,
+                Normalized = NormalizeLabel(label)
+            })
+            .Where(label => normalizedLine.StartsWith(label.Normalized, StringComparison.OrdinalIgnoreCase))
+            .OrderByDescending(label => label.Normalized.Length)
+            .FirstOrDefault();
+
+        if (matchingLabel is null)
+            return line;
+
+        var pattern = @"^\s*" + Regex.Escape(matchingLabel.Original).Replace(@"\ ", @"\s+") + @"\b[:#]?\s*";
+        return Regex.Replace(line, pattern, string.Empty, RegexOptions.IgnoreCase).Trim();
+    }
+
+    private static string StopAtFollowingLabel(string value, params string[] labels)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return string.Empty;
+
+        var earliestIndex = value.Length;
+
+        foreach (var label in labels)
+        {
+            var pattern = $@"\b{Regex.Escape(label).Replace(@"\ ", @"\s+")}\b";
+            var match = Regex.Match(value, pattern, RegexOptions.IgnoreCase);
+
+            if (match.Success && match.Index > 0 && match.Index < earliestIndex)
+                earliestIndex = match.Index;
+        }
+
+        return value[..earliestIndex].Trim();
     }
 
     private static string GenerateUnreadInvoiceNumber()
@@ -512,6 +703,9 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         {
             var line = lines[i];
 
+            if (IsIdentifierOrMetadataLine(line))
+                continue;
+
             if (!LineMatchesAnyLabel(line, allowContainedLabel, labels))
                 continue;
 
@@ -522,7 +716,9 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
 
             for (var j = i + 1; j < Math.Min(i + 9, lines.Count); j++)
             {
-                if (IsCurrencyOnlyLine(lines[j]) || IsLikelyLabelOnlyLine(lines[j]))
+                if (IsCurrencyOnlyLine(lines[j])
+                    || IsLikelyLabelOnlyLine(lines[j])
+                    || IsIdentifierOrMetadataLine(lines[j]))
                 {
                     continue;
                 }
@@ -541,7 +737,7 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         var lineNo = 1;
 
         var lineItemRegex = new Regex(
-            @"^(?<desc>.+?)\s+(?<qty>\d+(?:[.,]\d+)?)\s+(?<unit>\d{1,3}(?:[,.]\d{3})*(?:[,.]\d{1,2})?|\d+)\s+(?<amount>\d{1,3}(?:[,.]\d{3})*(?:[,.]\d{1,2})?|\d+)$",
+            @"^(?:(?<lineNo>\d+)\s+)?(?<desc>.+?)\s+(?<qty>\d+(?:[.,]\d+)?)\s+(?<unit>\d{1,3}(?:[,.]\d{3})+(?:[,.]\d{1,2})?|\d+(?:[,.]\d{1,2})?)(?:\s*(?:USD|EUR|VND|VNĐ|đ|₫))?\s+(?<amount>\d{1,3}(?:[,.]\d{3})+(?:[,.]\d{1,2})?|\d+(?:[,.]\d{1,2})?)(?:\s*(?:USD|EUR|VND|VNĐ|đ|₫))?$",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         foreach (var line in lines)
@@ -563,14 +759,23 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
             if (!TryParseAmount(match.Groups["unit"].Value, out var unitPrice))
                 continue;
 
+            var parsedLineNo = lineNo;
+            if (int.TryParse(match.Groups["lineNo"].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var explicitLineNo)
+                && explicitLineNo > 0)
+            {
+                parsedLineNo = explicitLineNo;
+            }
+
             items.Add(new InvoiceLineItemRequestDto
             {
-                LineNo = lineNo++,
+                LineNo = parsedLineNo,
                 Description = desc,
                 Quantity = qty,
                 UnitPrice = unitPrice,
                 TaxRate = 0
             });
+
+            lineNo = Math.Max(lineNo + 1, parsedLineNo + 1);
         }
 
         return items;
@@ -597,6 +802,9 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
 
         foreach (Match match in matches)
         {
+            if (IsPercentageMatch(text, match))
+                continue;
+
             var value = match.Groups["value"].Value;
 
             if (TryParseAmount(value, out amount))
@@ -617,6 +825,9 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
 
         for (var i = matches.Count - 1; i >= 0; i--)
         {
+            if (IsPercentageMatch(text, matches[i]))
+                continue;
+
             var value = matches[i].Groups["value"].Value;
 
             if (TryParseAmount(value, out amount))
@@ -626,6 +837,17 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         return false;
     }
 
+    private static bool IsPercentageMatch(string text, Match match)
+    {
+        var nextIndex = match.Index + match.Length;
+        while (nextIndex < text.Length && char.IsWhiteSpace(text[nextIndex]))
+        {
+            nextIndex++;
+        }
+
+        return nextIndex < text.Length && text[nextIndex] == '%';
+    }
+
     private static decimal? InferTotalFromLargestAmount(string rawText)
     {
         var candidates = new List<decimal>();
@@ -633,6 +855,10 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         foreach (Match match in AmountRegex.Matches(rawText))
         {
             if (IsLikelyDateOrIdentifierAmount(rawText, match))
+                continue;
+
+            var line = GetContainingLine(rawText, match.Index);
+            if (IsIdentifierOrMetadataLine(line) || IsPercentageMatch(line, MatchInLine(match, rawText, line)))
                 continue;
 
             if (!TryParseAmount(match.Groups["value"].Value, out var amount))
@@ -645,6 +871,27 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         }
 
         return candidates.Count == 0 ? null : candidates.Max();
+    }
+
+    private static Match MatchInLine(Match match, string rawText, string line)
+    {
+        var lineStart = rawText.LastIndexOf('\n', Math.Max(0, match.Index));
+        lineStart = lineStart < 0 ? 0 : lineStart + 1;
+        var lineMatchIndex = Math.Max(0, match.Index - lineStart);
+
+        return AmountRegex.Match(line, lineMatchIndex);
+    }
+
+    private static string GetContainingLine(string text, int index)
+    {
+        var start = text.LastIndexOf('\n', Math.Max(0, index));
+        start = start < 0 ? 0 : start + 1;
+
+        var end = text.IndexOf('\n', index);
+        if (end < 0)
+            end = text.Length;
+
+        return text[start..end];
     }
 
     private static bool IsLikelyDateOrIdentifierAmount(string rawText, Match match)
@@ -859,6 +1106,40 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
             normalized,
             @"^(USD|EUR|VND|VNĐ|đ|\$|€|₫)$",
             RegexOptions.IgnoreCase);
+    }
+
+    private static bool IsIdentifierOrMetadataLine(string line)
+    {
+        if (string.IsNullOrWhiteSpace(line))
+            return false;
+
+        var normalizedLine = NormalizeLabel(line);
+
+        if (MetadataLabels.Any(label =>
+                LabelStartsWithWholePhrase(normalizedLine, NormalizeLabel(label))))
+        {
+            return true;
+        }
+
+        if (Regex.IsMatch(line, @"\b[A-Z]{2,10}-\d{4}-\d{2,6}\b", RegexOptions.IgnoreCase))
+            return true;
+
+        if (Regex.IsMatch(line, @"\d{1,4}[\/\.\-]\d{1,2}[\/\.\-]\d{2,4}"))
+            return true;
+
+        if (Regex.IsMatch(line, @"\b\d{2,4}[-.\s]\d{3,5}[-.\s]\d{3,5}\b"))
+            return true;
+
+        return false;
+    }
+
+    private static bool LabelStartsWithWholePhrase(string normalizedLine, string normalizedLabel)
+    {
+        if (string.IsNullOrWhiteSpace(normalizedLabel))
+            return false;
+
+        return normalizedLine == normalizedLabel
+            || normalizedLine.StartsWith(normalizedLabel + " ", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsLikelyLabelOnlyLine(string line)
