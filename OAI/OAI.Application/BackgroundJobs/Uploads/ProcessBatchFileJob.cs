@@ -378,6 +378,14 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
             return;
         }
 
+        _logger.LogInformation(
+            "PDF embedded text extracted. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, PageCount: {PageCount}, TextLength: {TextLength}, TextPreview: {TextPreview}",
+            uploadBatchFile.Id,
+            uploadBatchFile.OriginalFileName,
+            extraction.PageCount,
+            extraction.FullText.Length,
+            CreateSafeTextPreview(extraction.FullText, 1000));
+
         var extracted = await _invoiceExtractionService.ExtractFromTextAsync(
             extraction.FullText,
             uploadBatchFile.OriginalFileName,
@@ -522,5 +530,23 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return vendor;
+    }
+
+    private static string CreateSafeTextPreview(string? text, int maxLength)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return string.Empty;
+
+        var preview = text
+            .Replace("\r\n", "\n")
+            .Replace('\r', '\n')
+            .Trim();
+
+        if (maxLength < 0)
+            maxLength = 0;
+
+        return preview.Length <= maxLength
+            ? preview
+            : string.Concat(preview.AsSpan(0, maxLength), "...");
     }
 }

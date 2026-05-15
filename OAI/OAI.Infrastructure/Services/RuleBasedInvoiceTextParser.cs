@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using OAI.Application.Abstractions.Services;
 using OAI.Application.Invoices.Dtos;
 
@@ -7,6 +9,125 @@ namespace OAI.Infrastructure.Services;
 
 public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
 {
+    private static readonly string[] InvoiceNumberLabels =
+    [
+        "invoice number",
+        "invoice no",
+        "invoice #",
+        "inv no",
+        "inv #",
+        "document number",
+        "bill number",
+        "reference",
+        "reference number",
+        "số hóa đơn",
+        "mã hóa đơn"
+    ];
+
+    private static readonly string[] InvoiceDateLabels =
+    [
+        "date",
+        "invoice date",
+        "issue date",
+        "issued date",
+        "billing date",
+        "document date",
+        "ngày",
+        "ngày hóa đơn",
+        "ngày lập"
+    ];
+
+    private static readonly string[] DueDateLabels =
+    [
+        "due date",
+        "payment due",
+        "payment due date",
+        "pay by",
+        "due",
+        "hạn thanh toán",
+        "ngày đến hạn"
+    ];
+
+    private static readonly string[] SubtotalLabels =
+    [
+        "sub total",
+        "subtotal",
+        "net total",
+        "net amount",
+        "amount before tax",
+        "total before tax",
+        "pre-tax total",
+        "taxable amount",
+        "before tax",
+        "tạm tính",
+        "cộng tiền hàng",
+        "tiền hàng",
+        "giá trị trước thuế"
+    ];
+
+    private static readonly string[] TaxLabels =
+    [
+        "tax total",
+        "sales tax",
+        "vat total",
+        "gst",
+        "gst amount",
+        "taxes",
+        "vat",
+        "tax",
+        "tax amount",
+        "vat amount",
+        "thuế",
+        "thuế gtgt",
+        "tiền thuế",
+        "tiền thuế gtgt"
+    ];
+
+    private static readonly string[] TotalLabels =
+    [
+        "invoice total",
+        "total due",
+        "balance due",
+        "amount payable",
+        "payment total",
+        "total payable",
+        "total incl. vat",
+        "total including tax",
+        "total after tax",
+        "final total",
+        "payable amount",
+        "total",
+        "grand total",
+        "total amount",
+        "amount due",
+        "thành tiền",
+        "số tiền thanh toán",
+        "tổng thanh toán",
+        "tổng giá trị thanh toán",
+        "tổng cộng",
+        "tổng tiền",
+        "thanh toán"
+    ];
+
+    private static readonly string[] KnownAmountLabels =
+        [.. SubtotalLabels, .. TaxLabels, .. TotalLabels];
+
+    private static readonly Regex AmountRegex = new(
+        @"(?<![\w])(?:[$€₫]\s*)?(?<value>\d{1,3}(?:[,.]\d{3})+(?:[,.]\d{1,2})?|\d+(?:[,.]\d{1,2})?)(?:\s*(?:USD|EUR|VND|VNĐ|đ|₫))?(?![\w])",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private readonly ILogger<RuleBasedInvoiceTextParser> _logger;
+
+    public RuleBasedInvoiceTextParser()
+        : this(NullLogger<RuleBasedInvoiceTextParser>.Instance)
+    {
+    }
+
+    public RuleBasedInvoiceTextParser(ILogger<RuleBasedInvoiceTextParser> logger)
+    {
+        _logger = logger;
+    }
+
     public Task<ExtractedInvoiceDto?> ParseAsync(
         string rawText,
         string sourceFileName,
@@ -42,12 +163,12 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
             vendorName = "Unknown Vendor";
 
         var issueDate =
-            ExtractDateByLabel(lines, "invoice date", "issue date", "ngày hóa đơn", "ngày lập")
+            ExtractDateByLabel(lines, InvoiceDateLabels)
             ?? ExtractDateByIndex(rawText, 0)
             ?? DateOnly.FromDateTime(DateTime.UtcNow);
 
         var dueDate =
-            ExtractDateByLabel(lines, "due date", "payment due", "pay by", "hạn thanh toán", "ngày đến hạn")
+            ExtractDateByLabel(lines, DueDateLabels)
             ?? ExtractDateByIndex(rawText, 1);
 
         if (dueDate == issueDate)
@@ -58,39 +179,45 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         var subtotal =
             ExtractAmountByLabel(
                 lines,
-                "subtotal",
-                "net amount",
-                "amount before tax",
-                "before tax",
-                "tạm tính",
-                "cộng tiền hàng",
-                "tiền hàng");
+                AmountSelection.First,
+                allowContainedLabel: false,
+                SubtotalLabels);
 
         var taxAmount =
             ExtractAmountByLabel(
                 lines,
-                "vat",
-                "tax",
-                "tax amount",
-                "vat amount",
-                "thuế",
-                "thuế gtgt",
-                "tiền thuế") ?? 0m;
+                AmountSelection.First,
+                allowContainedLabel: false,
+                TaxLabels) ?? 0m;
 
         var totalAmount =
             ExtractAmountByLabel(
                 lines,
-                "total",
-                "grand total",
-                "total amount",
-                "amount due",
-                "tổng cộng",
-                "tổng tiền",
-                "thanh toán");
+                AmountSelection.Last,
+                allowContainedLabel: true,
+                TotalLabels);
 
         if (totalAmount is null && subtotal is not null)
         {
             totalAmount = subtotal.Value + taxAmount;
+            _logger.LogInformation(
+                "Inferred invoice total from subtotal and tax. SourceFileName: {SourceFileName}, Subtotal: {Subtotal}, TaxAmount: {TaxAmount}, TotalAmount: {TotalAmount}",
+                sourceFileName,
+                subtotal.Value,
+                taxAmount,
+                totalAmount.Value);
+        }
+
+        if (totalAmount is null)
+        {
+            totalAmount = InferTotalFromLargestAmount(rawText);
+            if (totalAmount is not null)
+            {
+                _logger.LogInformation(
+                    "Inferred invoice total from largest amount candidate. SourceFileName: {SourceFileName}, TotalAmount: {TotalAmount}",
+                    sourceFileName,
+                    totalAmount.Value);
+            }
         }
 
         if (totalAmount is null)
@@ -183,11 +310,7 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
 
             if (!LineStartsWithAnyLabel(
                     line,
-                    "invoice number",
-                    "invoice no",
-                    "inv no",
-                    "số hóa đơn",
-                    "mã hóa đơn"))
+                    InvoiceNumberLabels))
             {
                 continue;
             }
@@ -373,37 +496,38 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         return TryParseDate(value, out var date) ? date : null;
     }
 
-    private static decimal? ExtractAmountByLabel(IReadOnlyList<string> lines, params string[] labels)
+    private enum AmountSelection
+    {
+        First,
+        Last
+    }
+
+    private static decimal? ExtractAmountByLabel(
+        IReadOnlyList<string> lines,
+        AmountSelection selection,
+        bool allowContainedLabel,
+        params string[] labels)
     {
         for (var i = 0; i < lines.Count; i++)
         {
             var line = lines[i];
 
-            if (!LineStartsWithAnyLabel(line, labels))
+            if (!LineMatchesAnyLabel(line, allowContainedLabel, labels))
                 continue;
 
             var valuePart = GetValueAfterColon(line);
 
-            if (TryFindAmount(valuePart, out var amountFromSameLine))
+            if (TryFindAmount(valuePart ?? line, selection, out var amountFromSameLine))
                 return amountFromSameLine;
 
-            for (var j = i + 1; j < Math.Min(i + 4, lines.Count); j++)
+            for (var j = i + 1; j < Math.Min(i + 9, lines.Count); j++)
             {
-                if (LineStartsWithAnyLabel(
-                        lines[j],
-                        "subtotal",
-                        "vat",
-                        "tax",
-                        "total",
-                        "grand total",
-                        "tạm tính",
-                        "thuế",
-                        "tổng"))
+                if (IsCurrencyOnlyLine(lines[j]) || IsLikelyLabelOnlyLine(lines[j]))
                 {
                     continue;
                 }
 
-                if (TryFindAmount(lines[j], out var amountFromNextLine))
+                if (TryFindAmount(lines[j], selection, out var amountFromNextLine))
                     return amountFromNextLine;
             }
         }
@@ -453,15 +577,23 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
     }
 
     private static bool TryFindAmount(string? text, out decimal amount)
+        => TryFindFirstAmount(text, out amount);
+
+    private static bool TryFindAmount(string? text, AmountSelection selection, out decimal amount)
+    {
+        return selection == AmountSelection.Last
+            ? TryFindLastAmount(text, out amount)
+            : TryFindFirstAmount(text, out amount);
+    }
+
+    private static bool TryFindFirstAmount(string? text, out decimal amount)
     {
         amount = 0m;
 
         if (string.IsNullOrWhiteSpace(text))
             return false;
 
-        var matches = Regex.Matches(
-            text,
-            @"(?<value>\d{1,3}(?:[,.]\d{3})*(?:[,.]\d{1,2})?|\d+)");
+        var matches = AmountRegex.Matches(text);
 
         foreach (Match match in matches)
         {
@@ -470,6 +602,71 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
             if (TryParseAmount(value, out amount))
                 return true;
         }
+
+        return false;
+    }
+
+    private static bool TryFindLastAmount(string? text, out decimal amount)
+    {
+        amount = 0m;
+
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+
+        var matches = AmountRegex.Matches(text);
+
+        for (var i = matches.Count - 1; i >= 0; i--)
+        {
+            var value = matches[i].Groups["value"].Value;
+
+            if (TryParseAmount(value, out amount))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static decimal? InferTotalFromLargestAmount(string rawText)
+    {
+        var candidates = new List<decimal>();
+
+        foreach (Match match in AmountRegex.Matches(rawText))
+        {
+            if (IsLikelyDateOrIdentifierAmount(rawText, match))
+                continue;
+
+            if (!TryParseAmount(match.Groups["value"].Value, out var amount))
+                continue;
+
+            if (amount <= 0)
+                continue;
+
+            candidates.Add(amount);
+        }
+
+        return candidates.Count == 0 ? null : candidates.Max();
+    }
+
+    private static bool IsLikelyDateOrIdentifierAmount(string rawText, Match match)
+    {
+        var value = match.Groups["value"].Value;
+
+        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var intValue)
+            && intValue is >= 1900 and <= 2100)
+        {
+            return true;
+        }
+
+        var start = Math.Max(0, match.Index - 8);
+        var length = Math.Min(rawText.Length - start, match.Length + 16);
+        var context = rawText.Substring(start, length);
+
+        if (Regex.IsMatch(context, @"\d{1,4}[\/\.\-]\d{1,2}[\/\.\-]\d{1,4}"))
+            return true;
+
+        var digitsOnly = Regex.Replace(value, @"\D", string.Empty);
+        if (digitsOnly.Length >= 7 && !value.Contains('.') && !value.Contains(','))
+            return true;
 
         return false;
     }
@@ -625,6 +822,64 @@ public sealed class RuleBasedInvoiceTextParser : IInvoiceTextParser
         {
             var normalizedLabel = NormalizeLabel(label);
             return normalizedLine.StartsWith(normalizedLabel, StringComparison.OrdinalIgnoreCase);
+        });
+    }
+
+    private static bool LineMatchesAnyLabel(
+        string line,
+        bool allowContainedLabel,
+        params string[] labels)
+    {
+        if (LineStartsWithAnyLabel(line, labels))
+            return true;
+
+        if (!allowContainedLabel)
+            return false;
+
+        var normalizedLine = NormalizeLabel(line);
+
+        return labels.Any(label =>
+        {
+            var normalizedLabel = NormalizeLabel(label);
+            if (string.IsNullOrWhiteSpace(normalizedLabel))
+                return false;
+
+            return Regex.IsMatch(
+                normalizedLine,
+                $@"(^| ){Regex.Escape(normalizedLabel)}( |$)",
+                RegexOptions.IgnoreCase);
+        });
+    }
+
+    private static bool IsCurrencyOnlyLine(string line)
+    {
+        var normalized = line.Trim();
+
+        return Regex.IsMatch(
+            normalized,
+            @"^(USD|EUR|VND|VNĐ|đ|\$|€|₫)$",
+            RegexOptions.IgnoreCase);
+    }
+
+    private static bool IsLikelyLabelOnlyLine(string line)
+    {
+        if (TryFindAmount(line, out _))
+            return false;
+
+        if (!line.Any(char.IsLetter))
+            return false;
+
+        var normalizedLine = NormalizeLabel(line);
+        if (string.IsNullOrWhiteSpace(normalizedLine))
+            return true;
+
+        return KnownAmountLabels.Any(label =>
+        {
+            var normalizedLabel = NormalizeLabel(label);
+            return normalizedLine == normalizedLabel
+                || normalizedLine.StartsWith(normalizedLabel + " ", StringComparison.OrdinalIgnoreCase)
+                || normalizedLine.EndsWith(" " + normalizedLabel, StringComparison.OrdinalIgnoreCase)
+                || normalizedLine.Contains(" " + normalizedLabel + " ", StringComparison.OrdinalIgnoreCase);
         });
     }
 

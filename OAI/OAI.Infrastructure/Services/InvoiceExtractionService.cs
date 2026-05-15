@@ -77,18 +77,51 @@ public sealed class InvoiceExtractionService : IInvoiceExtractionService
         }
     }
 
-    public Task<ExtractedInvoiceDto?> ExtractFromTextAsync(
+    public async Task<ExtractedInvoiceDto?> ExtractFromTextAsync(
         string rawText,
         string sourceName = "raw-text",
         decimal confidenceScore = 1.0m,
         string engineName = "RawText",
         CancellationToken cancellationToken = default)
     {
-        return _invoiceTextParser.ParseAsync(
+        var normalizedSourceName = string.IsNullOrWhiteSpace(sourceName) ? "raw-text" : sourceName;
+        var normalizedEngineName = string.IsNullOrWhiteSpace(engineName) ? "RawText" : engineName;
+
+        var extracted = await _invoiceTextParser.ParseAsync(
             rawText,
-            string.IsNullOrWhiteSpace(sourceName) ? "raw-text" : sourceName,
+            normalizedSourceName,
             confidenceScore,
-            string.IsNullOrWhiteSpace(engineName) ? "RawText" : engineName,
+            normalizedEngineName,
             cancellationToken);
+
+        if (extracted is null)
+        {
+            _logger.LogWarning(
+                "Cannot parse invoice data from raw text. SourceName: {SourceName}, EngineName: {EngineName}, TextLength: {TextLength}, TextPreview: {TextPreview}",
+                normalizedSourceName,
+                normalizedEngineName,
+                rawText?.Length ?? 0,
+                CreateSafeTextPreview(rawText, 1000));
+        }
+
+        return extracted;
+    }
+
+    private static string CreateSafeTextPreview(string? text, int maxLength)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return string.Empty;
+
+        var preview = text
+            .Replace("\r\n", "\n")
+            .Replace('\r', '\n')
+            .Trim();
+
+        if (maxLength < 0)
+            maxLength = 0;
+
+        return preview.Length <= maxLength
+            ? preview
+            : string.Concat(preview.AsSpan(0, maxLength), "...");
     }
 }
