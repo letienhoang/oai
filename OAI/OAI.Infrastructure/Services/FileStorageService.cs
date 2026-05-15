@@ -14,8 +14,19 @@ public sealed class FileStorageService : IFileStorageService
     public FileStorageService(IOptions<FileStorageOptions> options,  ILogger<FileStorageService> logger)
     {
         _options = options.Value;
-        _basePath = GetBasePath(_options.BasePath);
         _logger = logger;
+        _basePath = GetBasePath(_options.BasePath);
+
+        if (string.IsNullOrWhiteSpace(_options.BasePath))
+        {
+            _logger.LogWarning(
+                "FileStorage:BasePath is empty. Storage will be resolved relative to AppContext.BaseDirectory. This may break multi-process Web/API/Worker setups.");
+        }
+
+        _logger.LogInformation(
+            "File storage base path resolved to {BasePath}. RootPath: {RootPath}",
+            _basePath,
+            _options.RootPath);
     }
 
     public async Task<string> SaveAsync(
@@ -107,15 +118,21 @@ public sealed class FileStorageService : IFileStorageService
         return Task.CompletedTask;
     }
 
-    private string GetPhysicalPath(string path)
+    public string GetPhysicalPath(string path)
     {
+        if (string.IsNullOrWhiteSpace(path))
+            return _basePath;
+
         var normalized = path.Replace('/', Path.DirectorySeparatorChar);
 
         if (Path.IsPathRooted(normalized))
-            return normalized;
+            return Path.GetFullPath(normalized);
 
-        return Path.Combine(_basePath, normalized);
+        return Path.GetFullPath(Path.Combine(_basePath, normalized));
     }
+
+    public string GetStorageRootPhysicalPath()
+        => GetPhysicalPath(_options.RootPath);
 
     private static string NormalizePath(string path)
         => path.Replace('\\', '/');

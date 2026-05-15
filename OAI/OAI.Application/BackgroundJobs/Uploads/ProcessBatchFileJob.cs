@@ -17,6 +17,7 @@ namespace OAI.Application.BackgroundJobs.Uploads;
 public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 {
     private readonly IUploadBatchFileRepository _uploadBatchFileRepository;
+    private readonly IFileStorageService _fileStorageService;
     private readonly IFileTypeDetectionService _fileTypeDetectionService;
     private readonly IPdfTextExtractionService _pdfTextExtractionService;
     private readonly IPdfPageRenderingService _pdfPageRenderingService;
@@ -31,6 +32,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
 
     public ProcessBatchFileJob(
         IUploadBatchFileRepository uploadBatchFileRepository,
+        IFileStorageService fileStorageService,
         IFileTypeDetectionService fileTypeDetectionService,
         IPdfTextExtractionService pdfTextExtractionService,
         IPdfPageRenderingService pdfPageRenderingService,
@@ -44,6 +46,7 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         ILogger<ProcessBatchFileJob> logger)
     {
         _uploadBatchFileRepository = uploadBatchFileRepository;
+        _fileStorageService = fileStorageService;
         _fileTypeDetectionService = fileTypeDetectionService;
         _pdfTextExtractionService = pdfTextExtractionService;
         _pdfPageRenderingService = pdfPageRenderingService;
@@ -95,7 +98,27 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
             uploadBatchFile.MarkProcessing();
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            await using var stream = File.OpenRead(uploadBatchFile.StoredFilePath);
+            await using var stream = await _fileStorageService.OpenReadAsync(
+                uploadBatchFile.StoredFilePath,
+                cancellationToken);
+
+            if (stream is null)
+            {
+                uploadBatchFile.MarkFailed(
+                    "Uploaded source file was not found in storage. The file may have been moved or the storage path is misconfigured.");
+
+                uploadBatchFile.UploadBatch?.RefreshFileCounters();
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                _logger.LogWarning(
+                    "Uploaded source file was not found. UploadBatchFileId: {UploadBatchFileId}, FileName: {FileName}, StoredFilePath: {StoredFilePath}",
+                    uploadBatchFile.Id,
+                    uploadBatchFile.OriginalFileName,
+                    uploadBatchFile.StoredFilePath);
+
+                return;
+            }
 
             var detection = await _fileTypeDetectionService.DetectAsync(
                 stream,
@@ -396,16 +419,17 @@ public sealed class ProcessBatchFileJob : IProcessBatchFileJob
         Stream pdfStream,
         CancellationToken cancellationToken)
     {
-        var storedFileDirectory = Path.GetDirectoryName(uploadBatchFile.StoredFilePath);
+        var sourcePhysicalPath = _fileStorageService.GetPhysicalPath(uploadBatchFile.StoredFilePath);
+        var storedFileDirectory = Path.GetDirectoryName(sourcePhysicalPath);
         if (string.IsNullOrWhiteSpace(storedFileDirectory))
         {
-            storedFileDirectory = Directory.GetCurrentDirectory();
+            storedFileDirectory = _fileStorageService.GetStorageRootPhysicalPath();
         }
 
-        var outputDirectory = Path.Combine(
+        var outputDirectory = Path.GetFullPath(Path.Combine(
             storedFileDirectory,
             "rendered",
-            uploadBatchFile.Id.ToString("N"));
+            uploadBatchFile.Id.ToString("N")));
 
         var options = new PdfPageRenderingOptions
         {
