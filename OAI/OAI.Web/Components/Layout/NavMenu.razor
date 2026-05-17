@@ -37,6 +37,15 @@
             </NavLink>
         </AuthorizeView>
 
+        <AuthorizeView Policy="@ApplicationPolicies.UploadInvoices">
+            <NavLink class="nav-link app-nav-link" href="/mobile/capture">
+                <span class="nav-icon">
+                    <Icon Name="mdi:camera-outline" Size="20" />
+                </span>
+                <span>@L["MobileCapturePageTitle"]</span>
+            </NavLink>
+        </AuthorizeView>
+
         <AuthorizeView Policy="@ApplicationPolicies.ViewInvoices">
             <NavLink class="nav-link app-nav-link" href="/invoices">
                 <span class="nav-icon">

@@ -360,6 +360,57 @@
   <data name="UploadInvoiceTitle" xml:space="preserve">
         <value>Upload Invoice</value>
     </data>
+  <data name="MobileCapturePageTitle" xml:space="preserve">
+        <value>Mobile capture</value>
+    </data>
+  <data name="MobileCaptureTitle" xml:space="preserve">
+        <value>Mobile invoice capture</value>
+    </data>
+  <data name="MobileCaptureSubtitle" xml:space="preserve">
+        <value>Capture or upload an invoice image/PDF from a mobile device.</value>
+    </data>
+  <data name="MobileCaptureSelectFile" xml:space="preserve">
+        <value>Select invoice file</value>
+    </data>
+  <data name="MobileCaptureSupportedFormats" xml:space="preserve">
+        <value>Supported formats: JPG, PNG, TIFF, PDF. Maximum file size: 20 MB.</value>
+    </data>
+  <data name="MobileCaptureSelectedFile" xml:space="preserve">
+        <value>Selected file</value>
+    </data>
+  <data name="MobileCaptureUpload" xml:space="preserve">
+        <value>Upload and process</value>
+    </data>
+  <data name="MobileCaptureReset" xml:space="preserve">
+        <value>Reset</value>
+    </data>
+  <data name="MobileCaptureQueuedTitle" xml:space="preserve">
+        <value>Upload queued</value>
+    </data>
+  <data name="MobileCaptureQueuedMessage" xml:space="preserve">
+        <value>Your invoice file has been queued for background processing.</value>
+    </data>
+  <data name="MobileCaptureBatchCode" xml:space="preserve">
+        <value>Batch code</value>
+    </data>
+  <data name="MobileCaptureTotalFiles" xml:space="preserve">
+        <value>Total files</value>
+    </data>
+  <data name="MobileCaptureBackgroundJobId" xml:space="preserve">
+        <value>Background job ID</value>
+    </data>
+  <data name="MobileCaptureOpenDesktopUpload" xml:space="preserve">
+        <value>Open desktop upload page</value>
+    </data>
+  <data name="MobileCaptureUnsupportedFileFormat" xml:space="preserve">
+        <value>Unsupported file format. Please select an image or PDF file.</value>
+    </data>
+  <data name="MobileCaptureFileRequired" xml:space="preserve">
+        <value>Please select an invoice file before uploading.</value>
+    </data>
+  <data name="MobileCaptureFileTooLarge" xml:space="preserve">
+        <value>File size exceeds the 20 MB limit.</value>
+    </data>
   <data name="UploadInvoiceSubtitle" xml:space="preserve">
         <value>Upload invoice files so the system can store them, process OCR or PDF text, extract data, and create invoice records.</value>
     </data>

@@ -17,6 +17,25 @@ public sealed class InvoiceUploadMarkupTests
             uploadPage);
     }
 
+    [Fact]
+    public async Task MobileCaptureMarkup_ContainsMobileUploadRouteAndControls()
+    {
+        var mobileCapturePage = await File.ReadAllTextAsync(FindRepositoryFile(
+            "OAI.Web",
+            "Components",
+            "Pages",
+            "Mobile",
+            "MobileCapture.razor"));
+
+        Assert.Contains("@page \"/mobile/capture\"", mobileCapturePage);
+        Assert.Contains("MobileCapturePageTitle", mobileCapturePage);
+        Assert.Contains("<InputFile", mobileCapturePage);
+        Assert.Contains("accept=\"image/*,.pdf,application/pdf\"", mobileCapturePage);
+        Assert.DoesNotContain(".zip", mobileCapturePage, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("MobileCaptureSupportedFormats", mobileCapturePage);
+        Assert.Contains("MobileCaptureUpload", mobileCapturePage);
+    }
+
     private static string FindRepositoryFile(params string[] pathSegments)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
