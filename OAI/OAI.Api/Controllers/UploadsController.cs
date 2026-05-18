@@ -212,7 +212,8 @@ public sealed class UploadsController : ControllerBase
     }
     
     [HttpGet("{batchId:guid}")]
-    [Authorize(Policy = ApplicationPolicies.UploadInvoices)]
+    [AllowAnonymous]
+    [InternalApiKeyAuthorize]
     [ProducesResponseType(typeof(UploadBatchStatusResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -245,7 +246,8 @@ public sealed class UploadsController : ControllerBase
     }
 
     [HttpGet("{batchId:guid}/files")]
-    [Authorize(Policy = ApplicationPolicies.UploadInvoices)]
+    [AllowAnonymous]
+    [InternalApiKeyAuthorize]
     [ProducesResponseType(typeof(IReadOnlyList<UploadBatchFileStatusResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
