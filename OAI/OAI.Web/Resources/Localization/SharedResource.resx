@@ -411,6 +411,15 @@
   <data name="MobileCaptureFileTooLarge" xml:space="preserve">
         <value>File size exceeds the 20 MB limit.</value>
     </data>
+  <data name="MobileCaptureApiUnauthorized" xml:space="preserve">
+        <value>The upload API rejected the request because the current user is not authenticated.</value>
+    </data>
+  <data name="MobileCaptureApiForbidden" xml:space="preserve">
+        <value>The upload API rejected the request because the current user does not have permission to upload invoices.</value>
+    </data>
+  <data name="MobileCaptureApiUploadFailed" xml:space="preserve">
+        <value>The mobile upload API request failed. Please check that OAI.Api is running and review the logs.</value>
+    </data>
   <data name="UploadInvoiceSubtitle" xml:space="preserve">
         <value>Upload invoice files so the system can store them, process OCR or PDF text, extract data, and create invoice records.</value>
     </data>

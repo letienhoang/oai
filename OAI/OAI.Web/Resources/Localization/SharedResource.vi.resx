@@ -411,6 +411,15 @@
   <data name="MobileCaptureFileTooLarge" xml:space="preserve">
         <value>Dung lượng file vượt quá giới hạn 20 MB.</value>
     </data>
+  <data name="MobileCaptureApiUnauthorized" xml:space="preserve">
+        <value>API upload từ chối yêu cầu vì người dùng hiện tại chưa được xác thực.</value>
+    </data>
+  <data name="MobileCaptureApiForbidden" xml:space="preserve">
+        <value>API upload từ chối yêu cầu vì người dùng hiện tại không có quyền tải hóa đơn.</value>
+    </data>
+  <data name="MobileCaptureApiUploadFailed" xml:space="preserve">
+        <value>Yêu cầu upload qua API cho mobile thất bại. Vui lòng kiểm tra OAI.Api đã chạy và xem log.</value>
+    </data>
   <data name="UploadInvoiceSubtitle" xml:space="preserve">
         <value>Tải lên tệp hóa đơn để hệ thống lưu trữ, xử lý OCR hoặc văn bản PDF, trích xuất dữ liệu và tạo bản ghi hóa đơn.</value>
     </data>

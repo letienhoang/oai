@@ -2,13 +2,11 @@ using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
-using OAI.Application.Abstractions.BackgroundJobs;
-using OAI.Application.Abstractions.BackgroundJobs.Uploads;
 using OAI.Application.Abstractions.Services;
-using OAI.Application.Uploads.Dtos;
 using OAI.Infrastructure.Identity;
 using OAI.Web.Localization;
 using OAI.Web.Services;
+using OAI.Web.Services.Uploads;
 
 namespace OAI.Web.Components.Pages.Mobile;
 
@@ -27,10 +25,7 @@ public partial class MobileCapture
     };
 
     [Inject]
-    private IUploadPackageService UploadPackageService { get; set; } = default!;
-
-    [Inject]
-    private IBackgroundJobClient BackgroundJobClient { get; set; } = default!;
+    private IMobileUploadApiClient MobileUploadApiClient { get; set; } = default!;
 
     [Inject]
     private ICurrentUserContext CurrentUserContext { get; set; } = default!;
@@ -125,39 +120,53 @@ public partial class MobileCapture
         {
             Logger.LogInformation("Start mobile invoice capture upload. FileName: {FileName}", SelectedFile.Name);
 
-            await using var stream = SelectedFile.OpenReadStream(MaxFileSize);
-
-            var packageResult = await UploadPackageService.CreateAsync(
-                new CreateUploadPackageRequestDto(
-                    FileName: SelectedFile.Name,
-                    ContentType: string.IsNullOrWhiteSpace(SelectedFile.ContentType)
-                        ? "application/octet-stream"
-                        : SelectedFile.ContentType,
-                    FileSizeBytes: SelectedFile.Size,
-                    Content: stream,
-                    UploadedByUserId: TryParseCurrentUserId(),
-                    UploadedByUserName: CurrentUserContext.UserName),
-                CancellationToken.None);
-
-            var backgroundJobId = await BackgroundJobClient.EnqueueAsync<IProcessUploadBatchJob>(
-                job => job.ProcessAsync(packageResult.UploadBatchId, CancellationToken.None),
-                BackgroundJobQueues.Uploads,
+            var response = await MobileUploadApiClient.UploadAsync(
+                SelectedFile,
+                MaxFileSize,
+                CurrentUserContext.UserId,
+                CurrentUserContext.UserName,
                 CancellationToken.None);
 
             UploadResult = new MobileCaptureUploadResult(
-                UploadBatchId: packageResult.UploadBatchId,
-                BatchCode: packageResult.BatchCode,
-                TotalFiles: packageResult.TotalFiles,
-                BackgroundJobId: backgroundJobId,
-                Status: "Queued");
+                UploadBatchId: response.UploadBatchId,
+                BatchCode: response.BatchCode,
+                TotalFiles: response.TotalFiles,
+                BackgroundJobId: response.BackgroundJobId ?? "N/A",
+                Status: response.Status);
 
             ToastService.Success(L["MobileCaptureQueuedMessage"]);
 
             Logger.LogInformation(
-                "Mobile invoice upload package queued. UploadBatchId: {UploadBatchId}, BatchCode: {BatchCode}, BackgroundJobId: {BackgroundJobId}",
+                "Mobile invoice upload queued through OAI.Api. UploadBatchId: {UploadBatchId}, BatchCode: {BatchCode}, BackgroundJobId: {BackgroundJobId}",
                 UploadResult.UploadBatchId,
                 UploadResult.BatchCode,
                 UploadResult.BackgroundJobId);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            ErrorMessage = ex.Message.Contains("not allowed", StringComparison.OrdinalIgnoreCase)
+                ? L["MobileCaptureApiForbidden"]
+                : L["MobileCaptureApiUnauthorized"];
+
+            ToastService.Error(ErrorMessage);
+
+            Logger.LogWarning(
+                ex,
+                "Mobile invoice capture upload was rejected by OAI.Api. FileName: {FileName}",
+                SelectedFile.Name);
+        }
+        catch (InvalidOperationException ex)
+        {
+            ErrorMessage = string.IsNullOrWhiteSpace(ex.Message)
+                ? L["MobileCaptureApiUploadFailed"]
+                : ex.Message;
+
+            ToastService.Error(ErrorMessage);
+
+            Logger.LogWarning(
+                ex,
+                "Mobile invoice capture API upload failed. FileName: {FileName}",
+                SelectedFile.Name);
         }
         catch (Exception ex)
         {
@@ -197,13 +206,6 @@ public partial class MobileCapture
             return $"{bytes / 1024d:N1} KB";
 
         return $"{bytes / 1024d / 1024d:N1} MB";
-    }
-
-    private Guid? TryParseCurrentUserId()
-    {
-        return Guid.TryParse(CurrentUserContext.UserId, out var userId)
-            ? userId
-            : null;
     }
 
     private sealed record MobileCaptureUploadResult(

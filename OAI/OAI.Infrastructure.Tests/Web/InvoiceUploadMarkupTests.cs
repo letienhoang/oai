@@ -37,6 +37,23 @@ public sealed class InvoiceUploadMarkupTests
         Assert.Contains("MobileCaptureUpload", mobileCapturePage);
     }
 
+    [Fact]
+    public async Task MobileCaptureCodeBehind_UploadsThroughApiClient()
+    {
+        var mobileCaptureCodeBehind = await File.ReadAllTextAsync(FindRepositoryFile(
+            "OAI.Web",
+            "Components",
+            "Pages",
+            "Mobile",
+            "MobileCapture.razor.cs"));
+
+        Assert.Contains("IMobileUploadApiClient", mobileCaptureCodeBehind);
+        Assert.Contains("MobileUploadApiClient.UploadAsync", mobileCaptureCodeBehind);
+        Assert.DoesNotContain("IUploadPackageService", mobileCaptureCodeBehind);
+        Assert.DoesNotContain("IBackgroundJobClient", mobileCaptureCodeBehind);
+        Assert.DoesNotContain("IProcessUploadBatchJob", mobileCaptureCodeBehind);
+    }
+
     private static string FindRepositoryFile(params string[] pathSegments)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

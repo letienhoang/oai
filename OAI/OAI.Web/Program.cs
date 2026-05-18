@@ -2,6 +2,7 @@ using System.Globalization;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 using OAI.Application;
 using OAI.Application.Abstractions.Services;
 using OAI.Infrastructure;
@@ -13,6 +14,7 @@ using OAI.Web.Endpoints;
 using OAI.Web.Localization;
 using OAI.Web.Options;
 using OAI.Web.Services;
+using OAI.Web.Services.Uploads;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,22 @@ builder.Services.AddOaiHangfireStorage(builder.Configuration);
 
 builder.Services.AddOptions<ApplicationInfoOptions>()
     .Bind(builder.Configuration.GetRequiredSection("ApplicationInfo"));
+
+builder.Services.AddOptions<OaiApiOptions>()
+    .Bind(builder.Configuration.GetRequiredSection("Api"));
+
+builder.Services.Configure<InternalApiOptions>(
+    builder.Configuration.GetRequiredSection("InternalApi"));
+
+builder.Services.AddHttpClient<IMobileUploadApiClient, MobileUploadApiClient>((serviceProvider, client) =>
+{
+    var options = serviceProvider.GetRequiredService<IOptions<OaiApiOptions>>().Value;
+
+    if (string.IsNullOrWhiteSpace(options.BaseUrl))
+        throw new InvalidOperationException("Api:BaseUrl is required.");
+
+    client.BaseAddress = new Uri(options.BaseUrl.TrimEnd('/') + "/");
+});
 
 builder.Services.Configure<IdentitySeedOptions>(
     builder.Configuration.GetSection("IdentitySeed"));
