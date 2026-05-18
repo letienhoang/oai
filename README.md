@@ -24,6 +24,10 @@ Highlights:
 - Invoice source file list
 - Improved source file metadata tracking through InvoiceSourceFiles
 
+## Roadmap notes
+
+- v1.5.0 / Phase 12A: T130 defines the audit anomaly detection dataset schema for invoice-level feature extraction. Synthetic data generation and Logistic Regression model training are planned for later tasks.
+
 ## Thesis topic
 
 **English:** Design and implementation of an invoice processing system using OCR and AI-assisted information extraction.

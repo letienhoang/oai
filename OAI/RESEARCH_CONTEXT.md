@@ -584,6 +584,8 @@ The system contributes:
 
 The project has completed major implementation phases through Phase 10. v1.3.0 is prepared after Phase 10 completion.
 
+Phase 12A / v1.5.0 research preparation has started with T130, which defines the invoice-level audit anomaly dataset schema. Later tasks will generate the synthetic normal/anomaly dataset, normalize features, train a lightweight Logistic Regression model, export model weights, and wire C# inference.
+
 Completed areas include:
 
 ```txt
