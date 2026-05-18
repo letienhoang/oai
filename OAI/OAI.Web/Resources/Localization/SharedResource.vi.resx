@@ -360,6 +360,66 @@
   <data name="UploadInvoiceTitle" xml:space="preserve">
         <value>Upload hóa đơn</value>
     </data>
+  <data name="MobileCapturePageTitle" xml:space="preserve">
+        <value>Chụp hóa đơn trên điện thoại</value>
+    </data>
+  <data name="MobileCaptureTitle" xml:space="preserve">
+        <value>Chụp hóa đơn trên điện thoại</value>
+    </data>
+  <data name="MobileCaptureSubtitle" xml:space="preserve">
+        <value>Chụp hoặc tải lên ảnh/PDF hóa đơn từ thiết bị di động.</value>
+    </data>
+  <data name="MobileCaptureSelectFile" xml:space="preserve">
+        <value>Chọn file hóa đơn</value>
+    </data>
+  <data name="MobileCaptureSupportedFormats" xml:space="preserve">
+        <value>Định dạng hỗ trợ: ảnh chụp từ camera, JPG, PNG, TIFF, PDF. Dung lượng tối đa: 20 MB.</value>
+    </data>
+  <data name="MobileCaptureSelectedFile" xml:space="preserve">
+        <value>File đã chọn</value>
+    </data>
+  <data name="MobileCaptureUpload" xml:space="preserve">
+        <value>Tải lên và xử lý</value>
+    </data>
+  <data name="MobileCaptureReset" xml:space="preserve">
+        <value>Đặt lại</value>
+    </data>
+  <data name="MobileCaptureQueuedTitle" xml:space="preserve">
+        <value>Đã đưa vào hàng đợi</value>
+    </data>
+  <data name="MobileCaptureQueuedMessage" xml:space="preserve">
+        <value>File hóa đơn đã được đưa vào hàng đợi xử lý nền.</value>
+    </data>
+  <data name="MobileCaptureBatchCode" xml:space="preserve">
+        <value>Mã batch</value>
+    </data>
+  <data name="MobileCaptureTotalFiles" xml:space="preserve">
+        <value>Tổng số file</value>
+    </data>
+  <data name="MobileCaptureBackgroundJobId" xml:space="preserve">
+        <value>Mã background job</value>
+    </data>
+  <data name="MobileCaptureOpenDesktopUpload" xml:space="preserve">
+        <value>Mở trang upload đầy đủ</value>
+    </data>
+  <data name="MobileCaptureUnsupportedFileFormat" xml:space="preserve">
+        <value>Định dạng file không được hỗ trợ. Vui lòng chọn ảnh hoặc PDF.</value>
+    </data>
+  <data name="MobileCaptureFileRequired" xml:space="preserve">
+        <value>Vui lòng chọn file hóa đơn trước khi tải lên.</value>
+    </data>
+  <data name="MobileCaptureFileTooLarge" xml:space="preserve">
+        <value>Dung lượng file vượt quá giới hạn 20 MB.</value>
+    </data>
+  <data name="MobileCaptureApiUnauthorized" xml:space="preserve">
+        <value>API upload từ chối yêu cầu vì người dùng hiện tại chưa được xác thực.</value>
+    </data>
+  <data name="MobileCaptureApiForbidden" xml:space="preserve">
+        <value>API upload từ chối yêu cầu vì người dùng hiện tại không có quyền tải hóa đơn.</value>
+    </data>
+  <data name="MobileCaptureApiUploadFailed" xml:space="preserve">
+        <value>Yêu cầu upload qua API cho mobile thất bại. Vui lòng kiểm tra OAI.Api đã chạy và xem log.</value>
+    </data>
   <data name="UploadInvoiceSubtitle" xml:space="preserve">
         <value>Tải lên tệp hóa đơn để hệ thống lưu trữ, xử lý OCR hoặc văn bản PDF, trích xuất dữ liệu và tạo bản ghi hóa đơn.</value>
     </data>
@@ -1487,5 +1547,65 @@
     </data>
   <data name="Ok" xml:space="preserve">
         <value>OK</value>
+    </data>
+  <data name="MobileUploadResultPageTitle" xml:space="preserve">
+        <value>Kết quả upload trên điện thoại</value>
+    </data>
+  <data name="MobileUploadResultTitle" xml:space="preserve">
+        <value>Kết quả upload</value>
+    </data>
+  <data name="MobileUploadResultSubtitle" xml:space="preserve">
+        <value>Theo dõi trạng thái xử lý file hóa đơn tải lên từ điện thoại.</value>
+    </data>
+  <data name="MobileUploadResultLoading" xml:space="preserve">
+        <value>Đang tải kết quả upload...</value>
+    </data>
+  <data name="MobileUploadResultLoadFailed" xml:space="preserve">
+        <value>Không thể tải kết quả upload. Vui lòng kiểm tra OAI.Api đã chạy và thử lại.</value>
+    </data>
+  <data name="MobileUploadResultReload" xml:space="preserve">
+        <value>Tải lại</value>
+    </data>
+  <data name="MobileUploadResultBackToCapture" xml:space="preserve">
+        <value>Quay lại chụp hóa đơn</value>
+    </data>
+  <data name="MobileUploadResultProgress" xml:space="preserve">
+        <value>Tiến độ xử lý</value>
+    </data>
+  <data name="MobileUploadResultFiles" xml:space="preserve">
+        <value>File đã tải lên</value>
+    </data>
+  <data name="MobileUploadResultNoFiles" xml:space="preserve">
+        <value>Không tìm thấy file nào trong batch upload này.</value>
+    </data>
+  <data name="MobileUploadResultViewInvoice" xml:space="preserve">
+        <value>Xem hóa đơn</value>
+    </data>
+  <data name="MobileUploadResultCreatedAt" xml:space="preserve">
+        <value>Thời điểm tạo</value>
+    </data>
+  <data name="MobileUploadResultCompletedAt" xml:space="preserve">
+        <value>Thời điểm hoàn tất</value>
+    </data>
+  <data name="MobileUploadResultProcessedFiles" xml:space="preserve">
+        <value>File đã xử lý</value>
+    </data>
+  <data name="MobileUploadResultFailedFiles" xml:space="preserve">
+        <value>File lỗi</value>
+    </data>
+  <data name="MobileUploadResultPendingFiles" xml:space="preserve">
+        <value>File đang chờ</value>
+    </data>
+  <data name="MobileUploadResultProcessingFiles" xml:space="preserve">
+        <value>File đang xử lý</value>
+    </data>
+  <data name="MobileUploadResultRetryPendingFiles" xml:space="preserve">
+        <value>File chờ thử lại</value>
+    </data>
+  <data name="MobileUploadResultUnsupportedFiles" xml:space="preserve">
+        <value>File không hỗ trợ</value>
+    </data>
+  <data name="MobileUploadResultErrorMessage" xml:space="preserve">
+        <value>Thông báo lỗi</value>
     </data>
 </root>

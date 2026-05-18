@@ -399,6 +399,13 @@ dotnet run --project OAI.Web/OAI.Web.csproj
 
 Then open the local URL printed by the application.
 
+## Mobile/PWA Capture
+
+- `/mobile/capture` supports camera-friendly invoice capture.
+- `/mobile/uploads/{batchId}` shows the mobile processing result.
+- `manifest.webmanifest` allows install-like behavior on supported mobile browsers.
+- Offline processing is not enabled yet because OAI uses authenticated server/API flows.
+
 ## Default development accounts
 
 The Development configuration can seed these users:

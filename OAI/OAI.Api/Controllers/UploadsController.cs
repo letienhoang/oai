@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OAI.Api.Contracts.Uploads;
+using OAI.Api.Security;
 using OAI.Application.Abstractions.BackgroundJobs;
 using OAI.Application.Abstractions.BackgroundJobs.Uploads;
 using OAI.Application.Abstractions.Persistence;
@@ -13,7 +14,6 @@ using OAI.Infrastructure.Identity;
 
 namespace OAI.Api.Controllers;
 
-[Authorize(Policy = ApplicationPolicies.UploadInvoices)]
 [ApiController]
 [Route("api/uploads")]
 [Produces("application/json")]
@@ -58,6 +58,8 @@ public sealed class UploadsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status413PayloadTooLarge)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [RequestSizeLimit(MaxFileSize)]
+    [AllowAnonymous]
+    [InternalApiKeyAuthorize]
     public async Task<IActionResult> UploadPackage(
         [FromForm] UploadInvoiceRequest request,
         CancellationToken cancellationToken)
@@ -119,6 +121,10 @@ public sealed class UploadsController : ControllerBase
 
             await using var stream = file.OpenReadStream();
 
+            var uploadedByUserId = Guid.TryParse(request.UploadedByUserId, out var userId)
+                ? userId
+                : (Guid?)null;
+
             var result = await _uploadPackageService.CreateAsync(
                 new CreateUploadPackageRequestDto(
                     FileName: file.FileName,
@@ -127,8 +133,10 @@ public sealed class UploadsController : ControllerBase
                         : file.ContentType,
                     FileSizeBytes: file.Length,
                     Content: stream,
-                    UploadedByUserId: null,
-                    UploadedByUserName: User.Identity?.Name),
+                    UploadedByUserId: uploadedByUserId,
+                    UploadedByUserName: string.IsNullOrWhiteSpace(request.UploadedByUserName)
+                        ? User.Identity?.Name
+                        : request.UploadedByUserName),
                 cancellationToken);
             
             var backgroundJobId = await _backgroundJobClient.EnqueueAsync<IProcessUploadBatchJob>(
@@ -204,6 +212,8 @@ public sealed class UploadsController : ControllerBase
     }
     
     [HttpGet("{batchId:guid}")]
+    [AllowAnonymous]
+    [InternalApiKeyAuthorize]
     [ProducesResponseType(typeof(UploadBatchStatusResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -236,6 +246,8 @@ public sealed class UploadsController : ControllerBase
     }
 
     [HttpGet("{batchId:guid}/files")]
+    [AllowAnonymous]
+    [InternalApiKeyAuthorize]
     [ProducesResponseType(typeof(IReadOnlyList<UploadBatchFileStatusResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]

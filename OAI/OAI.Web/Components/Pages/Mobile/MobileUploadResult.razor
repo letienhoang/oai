@@ -1,0 +1,158 @@
+@page "/mobile/uploads/{BatchId:guid}"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.UploadInvoices)]
+
+<PageTitle>@L["MobileUploadResultPageTitle"]</PageTitle>
+
+<section class="mb-4">
+    <h1 class="fw-bold mb-1">@L["MobileUploadResultTitle"]</h1>
+    <p class="text-secondary mb-0">
+        @L["MobileUploadResultSubtitle"]
+    </p>
+</section>
+
+<section class="row justify-content-center">
+    <div class="col-12 col-md-9 col-lg-7">
+        <div class="d-grid gap-2 d-sm-flex mb-3">
+            <button class="btn btn-outline-primary btn-lg oai-icon-button justify-content-center"
+                    disabled="@IsLoading"
+                    @onclick="ReloadAsync">
+                @if (IsLoading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                }
+                else
+                {
+                    <Icon Name="mdi:refresh" Size="20" />
+                }
+                <span>@L["MobileUploadResultReload"]</span>
+            </button>
+
+            <button class="btn btn-outline-secondary btn-lg oai-icon-button justify-content-center"
+                    @onclick="BackToCapture">
+                <Icon Name="mdi:camera-outline" Size="20" />
+                <span>@L["MobileUploadResultBackToCapture"]</span>
+            </button>
+        </div>
+
+        @if (IsLoading && Batch is null)
+        {
+            <div class="alert alert-info d-flex align-items-center">
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span>@L["MobileUploadResultLoading"]</span>
+            </div>
+        }
+        else if (!string.IsNullOrWhiteSpace(ErrorMessage) && Batch is null)
+        {
+            <div class="alert alert-danger">
+                @ErrorMessage
+            </div>
+        }
+        else if (Batch is not null)
+        {
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+                    {
+                        <div class="alert alert-warning small mb-3">
+                            @ErrorMessage
+                        </div>
+                    }
+
+                    <div class="d-flex flex-column gap-2 mb-4">
+                        <span class="badge align-self-start @GetStatusBadgeClass(Batch.Status)">
+                            @Batch.Status
+                        </span>
+                        <h2 class="h4 fw-bold mb-0 text-break">@Batch.BatchCode</h2>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="fw-semibold">@L["MobileUploadResultProgress"]</div>
+                            <div class="text-secondary small">@ProgressPercent%</div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-valuenow="@ProgressPercent" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: @ProgressPercent%"></div>
+                        </div>
+                    </div>
+
+                    <dl class="row small mb-0">
+                        <dt class="col-7">@L["MobileCaptureTotalFiles"]</dt>
+                        <dd class="col-5 text-end">@Batch.TotalFiles</dd>
+
+                        <dt class="col-7">@L["MobileUploadResultProcessedFiles"]</dt>
+                        <dd class="col-5 text-end">@Batch.ProcessedFiles</dd>
+
+                        <dt class="col-7">@L["MobileUploadResultFailedFiles"]</dt>
+                        <dd class="col-5 text-end">@Batch.FailedFiles</dd>
+
+                        <dt class="col-7">@L["MobileUploadResultPendingFiles"]</dt>
+                        <dd class="col-5 text-end">@Batch.PendingFiles</dd>
+
+                        <dt class="col-7">@L["MobileUploadResultProcessingFiles"]</dt>
+                        <dd class="col-5 text-end">@Batch.ProcessingFiles</dd>
+
+                        <dt class="col-7">@L["MobileUploadResultRetryPendingFiles"]</dt>
+                        <dd class="col-5 text-end">@Batch.RetryPendingFiles</dd>
+
+                        <dt class="col-7">@L["MobileUploadResultUnsupportedFiles"]</dt>
+                        <dd class="col-5 text-end">@Batch.UnsupportedFiles</dd>
+
+                        <dt class="col-5">@L["MobileUploadResultCreatedAt"]</dt>
+                        <dd class="col-7 text-end">@FormatDateTime(Batch.CreatedAt)</dd>
+
+                        @if (Batch.CompletedAt is not null)
+                        {
+                            <dt class="col-5">@L["MobileUploadResultCompletedAt"]</dt>
+                            <dd class="col-7 text-end">@FormatDateTime(Batch.CompletedAt.Value)</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-3">@L["MobileUploadResultFiles"]</h2>
+
+                    @if (Batch.Files.Count == 0)
+                    {
+                        <p class="text-secondary mb-0">@L["MobileUploadResultNoFiles"]</p>
+                    }
+                    else
+                    {
+                        <div class="d-flex flex-column gap-3">
+                            @foreach (var file in Batch.Files.OrderBy(x => x.CreatedAt))
+                            {
+                                <div class="border rounded-3 p-3">
+                                    <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                        <div class="fw-semibold text-break">@file.OriginalFileName</div>
+                                        <span class="badge @GetStatusBadgeClass(file.Status)">
+                                            @file.Status
+                                        </span>
+                                    </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(file.ErrorMessage))
+                                    {
+                                        <div class="alert alert-danger small mb-3">
+                                            <div class="fw-semibold">@L["MobileUploadResultErrorMessage"]</div>
+                                            <div>@file.ErrorMessage</div>
+                                        </div>
+                                    }
+
+                                    @if (file.InvoiceId is not null)
+                                    {
+                                        <a class="btn btn-sm btn-outline-primary oai-icon-button"
+                                           href="@($"/invoices/{file.InvoiceId}")">
+                                            <Icon Name="mdi:file-document-outline" Size="16" />
+                                            <span>@L["MobileUploadResultViewInvoice"]</span>
+                                        </a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>

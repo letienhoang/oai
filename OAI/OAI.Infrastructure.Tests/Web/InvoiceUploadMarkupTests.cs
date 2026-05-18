@@ -17,6 +17,43 @@ public sealed class InvoiceUploadMarkupTests
             uploadPage);
     }
 
+    [Fact]
+    public async Task MobileCaptureMarkup_ContainsMobileUploadRouteAndControls()
+    {
+        var mobileCapturePage = await File.ReadAllTextAsync(FindRepositoryFile(
+            "OAI.Web",
+            "Components",
+            "Pages",
+            "Mobile",
+            "MobileCapture.razor"));
+
+        Assert.Contains("@page \"/mobile/capture\"", mobileCapturePage);
+        Assert.Contains("MobileCapturePageTitle", mobileCapturePage);
+        Assert.Contains("<InputFile", mobileCapturePage);
+        Assert.Contains("accept=\"image/*,.pdf,application/pdf\"", mobileCapturePage);
+        Assert.Contains("capture=\"environment\"", mobileCapturePage);
+        Assert.DoesNotContain(".zip", mobileCapturePage, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("MobileCaptureSupportedFormats", mobileCapturePage);
+        Assert.Contains("MobileCaptureUpload", mobileCapturePage);
+    }
+
+    [Fact]
+    public async Task MobileCaptureCodeBehind_UploadsThroughApiClient()
+    {
+        var mobileCaptureCodeBehind = await File.ReadAllTextAsync(FindRepositoryFile(
+            "OAI.Web",
+            "Components",
+            "Pages",
+            "Mobile",
+            "MobileCapture.razor.cs"));
+
+        Assert.Contains("IMobileUploadApiClient", mobileCaptureCodeBehind);
+        Assert.Contains("MobileUploadApiClient.UploadAsync", mobileCaptureCodeBehind);
+        Assert.DoesNotContain("IUploadPackageService", mobileCaptureCodeBehind);
+        Assert.DoesNotContain("IBackgroundJobClient", mobileCaptureCodeBehind);
+        Assert.DoesNotContain("IProcessUploadBatchJob", mobileCaptureCodeBehind);
+    }
+
     private static string FindRepositoryFile(params string[] pathSegments)
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

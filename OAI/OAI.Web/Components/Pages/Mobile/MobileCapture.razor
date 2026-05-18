@@ -1,0 +1,113 @@
+@page "/mobile/capture"
+@rendermode InteractiveServer
+@attribute [Authorize(Policy = ApplicationPolicies.UploadInvoices)]
+
+<PageTitle>@L["MobileCapturePageTitle"]</PageTitle>
+
+<section class="mb-4">
+    <h1 class="fw-bold mb-1">@L["MobileCaptureTitle"]</h1>
+    <p class="text-secondary mb-0">
+        @L["MobileCaptureSubtitle"]
+    </p>
+</section>
+
+<section class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold mb-3">@L["MobileCaptureSelectFile"]</h2>
+
+                <div class="border border-2 border-dashed rounded-4 p-4 text-center bg-light">
+                    <div class="fs-1 mb-3">&#x1F4F1;</div>
+
+                    <p class="text-secondary small mb-4">
+                        @L["MobileCaptureSupportedFormats"]
+                    </p>
+
+                    <InputFile OnChange="@HandleFileSelectedAsync"
+                               accept="image/*,.pdf,application/pdf"
+                               capture="environment"
+                               class="form-control form-control-lg" />
+                </div>
+
+                @if (SelectedFileName is not null)
+                {
+                    <div class="alert alert-info mt-4 mb-0">
+                        <div class="fw-bold mb-1">@L["MobileCaptureSelectedFile"]</div>
+                        <div class="text-break">@SelectedFileName</div>
+                        <div class="small text-secondary">@SelectedFileSizeText</div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+                {
+                    <div class="alert alert-danger mt-4 mb-0">
+                        @ErrorMessage
+                    </div>
+                }
+
+                @if (IsUploading)
+                {
+                    <div class="alert alert-info mt-4 mb-0 d-flex align-items-center">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <span>@L["Processing"]</span>
+                    </div>
+                }
+
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-primary btn-lg oai-icon-button justify-content-center"
+                            disabled="@(!CanUpload || IsUploading)"
+                            @onclick="UploadAsync">
+                        @if (IsUploading)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            <span>@L["Processing"]</span>
+                        }
+                        else
+                        {
+                            <Icon Name="mdi:cloud-upload-outline" Size="20" />
+                            <span>@L["MobileCaptureUpload"]</span>
+                        }
+                    </button>
+
+                    <button class="btn btn-outline-secondary btn-lg oai-icon-button justify-content-center"
+                            disabled="@IsUploading"
+                            @onclick="ResetForm">
+                        <Icon Name="mdi:refresh" Size="20" />
+                        <span>@L["MobileCaptureReset"]</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        @if (UploadResult is not null)
+        {
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold mb-2">@L["MobileCaptureQueuedTitle"]</h2>
+                    <p class="text-secondary small mb-3">@L["MobileCaptureQueuedMessage"]</p>
+
+                    <dl class="row small mb-0">
+                        <dt class="col-5">@L["Status"]</dt>
+                        <dd class="col-7">
+                            <span class="badge text-bg-info">@UploadResult.Status</span>
+                        </dd>
+
+                        <dt class="col-5">@L["MobileCaptureBatchCode"]</dt>
+                        <dd class="col-7 text-break"><code>@UploadResult.BatchCode</code></dd>
+
+                        <dt class="col-5">@L["MobileCaptureTotalFiles"]</dt>
+                        <dd class="col-7">@UploadResult.TotalFiles</dd>
+
+                        <dt class="col-5">@L["MobileCaptureBackgroundJobId"]</dt>
+                        <dd class="col-7 text-break"><code>@UploadResult.BackgroundJobId</code></dd>
+                    </dl>
+                </div>
+            </div>
+        }
+
+        <a class="btn btn-link w-100 mt-3" href="/invoices/upload">
+            @L["MobileCaptureOpenDesktopUpload"]
+        </a>
+    </div>
+</section>
