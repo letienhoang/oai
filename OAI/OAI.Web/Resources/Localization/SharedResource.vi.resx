@@ -1548,4 +1548,64 @@
   <data name="Ok" xml:space="preserve">
         <value>OK</value>
     </data>
+  <data name="MobileUploadResultPageTitle" xml:space="preserve">
+        <value>Kết quả upload trên điện thoại</value>
+    </data>
+  <data name="MobileUploadResultTitle" xml:space="preserve">
+        <value>Kết quả upload</value>
+    </data>
+  <data name="MobileUploadResultSubtitle" xml:space="preserve">
+        <value>Theo dõi trạng thái xử lý file hóa đơn tải lên từ điện thoại.</value>
+    </data>
+  <data name="MobileUploadResultLoading" xml:space="preserve">
+        <value>Đang tải kết quả upload...</value>
+    </data>
+  <data name="MobileUploadResultLoadFailed" xml:space="preserve">
+        <value>Không thể tải kết quả upload. Vui lòng kiểm tra OAI.Api đã chạy và thử lại.</value>
+    </data>
+  <data name="MobileUploadResultReload" xml:space="preserve">
+        <value>Tải lại</value>
+    </data>
+  <data name="MobileUploadResultBackToCapture" xml:space="preserve">
+        <value>Quay lại chụp hóa đơn</value>
+    </data>
+  <data name="MobileUploadResultProgress" xml:space="preserve">
+        <value>Tiến độ xử lý</value>
+    </data>
+  <data name="MobileUploadResultFiles" xml:space="preserve">
+        <value>File đã tải lên</value>
+    </data>
+  <data name="MobileUploadResultNoFiles" xml:space="preserve">
+        <value>Không tìm thấy file nào trong batch upload này.</value>
+    </data>
+  <data name="MobileUploadResultViewInvoice" xml:space="preserve">
+        <value>Xem hóa đơn</value>
+    </data>
+  <data name="MobileUploadResultCreatedAt" xml:space="preserve">
+        <value>Thời điểm tạo</value>
+    </data>
+  <data name="MobileUploadResultCompletedAt" xml:space="preserve">
+        <value>Thời điểm hoàn tất</value>
+    </data>
+  <data name="MobileUploadResultProcessedFiles" xml:space="preserve">
+        <value>File đã xử lý</value>
+    </data>
+  <data name="MobileUploadResultFailedFiles" xml:space="preserve">
+        <value>File lỗi</value>
+    </data>
+  <data name="MobileUploadResultPendingFiles" xml:space="preserve">
+        <value>File đang chờ</value>
+    </data>
+  <data name="MobileUploadResultProcessingFiles" xml:space="preserve">
+        <value>File đang xử lý</value>
+    </data>
+  <data name="MobileUploadResultRetryPendingFiles" xml:space="preserve">
+        <value>File chờ thử lại</value>
+    </data>
+  <data name="MobileUploadResultUnsupportedFiles" xml:space="preserve">
+        <value>File không hỗ trợ</value>
+    </data>
+  <data name="MobileUploadResultErrorMessage" xml:space="preserve">
+        <value>Thông báo lỗi</value>
+    </data>
 </root>

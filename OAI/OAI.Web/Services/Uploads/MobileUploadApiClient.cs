@@ -25,6 +25,53 @@ public sealed class MobileUploadApiClient : IMobileUploadApiClient
         _internalApiOptions = internalApiOptions.Value;
     }
 
+    public async Task<MobileUploadBatchStatusResponse> GetBatchStatusAsync(
+        Guid batchId,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(_internalApiOptions.ApiKey))
+        {
+            throw new InvalidOperationException("InternalApi:ApiKey is required.");
+        }
+
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"api/uploads/{batchId}");
+        request.Headers.Add(InternalApiKeyHeaderName, _internalApiOptions.ApiKey);
+
+        using var response = await _httpClient.SendAsync(request, cancellationToken);
+
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            throw new UnauthorizedAccessException(
+                "The API rejected the upload status request because the current user is not authenticated.");
+        }
+
+        if (response.StatusCode == HttpStatusCode.Forbidden)
+        {
+            throw new UnauthorizedAccessException(
+                "The API rejected the upload status request because the current user is not allowed to upload invoices.");
+        }
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            throw new InvalidOperationException($"Upload batch '{batchId}' was not found.");
+        }
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            throw new InvalidOperationException(
+                string.IsNullOrWhiteSpace(error)
+                    ? $"Upload status API returned {(int)response.StatusCode}."
+                    : error);
+        }
+
+        var result = await response.Content.ReadFromJsonAsync<MobileUploadBatchStatusResponse>(
+            cancellationToken: cancellationToken);
+
+        return result ?? throw new InvalidOperationException("Upload status API returned an empty response.");
+    }
+
     public async Task<MobileUploadApiResponse> UploadAsync(
         IBrowserFile file,
         long maxFileSize,

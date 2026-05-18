@@ -4,6 +4,10 @@ namespace OAI.Web.Services.Uploads;
 
 public interface IMobileUploadApiClient
 {
+    Task<MobileUploadBatchStatusResponse> GetBatchStatusAsync(
+        Guid batchId,
+        CancellationToken cancellationToken);
+
     Task<MobileUploadApiResponse> UploadAsync(
         IBrowserFile file,
         long maxFileSize,

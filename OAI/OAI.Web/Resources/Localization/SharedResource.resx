@@ -1548,4 +1548,64 @@
   <data name="Ok" xml:space="preserve">
         <value>OK</value>
     </data>
+  <data name="MobileUploadResultPageTitle" xml:space="preserve">
+        <value>Mobile upload result</value>
+    </data>
+  <data name="MobileUploadResultTitle" xml:space="preserve">
+        <value>Upload result</value>
+    </data>
+  <data name="MobileUploadResultSubtitle" xml:space="preserve">
+        <value>Track the processing status of your mobile invoice upload.</value>
+    </data>
+  <data name="MobileUploadResultLoading" xml:space="preserve">
+        <value>Loading upload result...</value>
+    </data>
+  <data name="MobileUploadResultLoadFailed" xml:space="preserve">
+        <value>Unable to load upload result. Please check that OAI.Api is running and try again.</value>
+    </data>
+  <data name="MobileUploadResultReload" xml:space="preserve">
+        <value>Reload</value>
+    </data>
+  <data name="MobileUploadResultBackToCapture" xml:space="preserve">
+        <value>Back to capture</value>
+    </data>
+  <data name="MobileUploadResultProgress" xml:space="preserve">
+        <value>Processing progress</value>
+    </data>
+  <data name="MobileUploadResultFiles" xml:space="preserve">
+        <value>Uploaded files</value>
+    </data>
+  <data name="MobileUploadResultNoFiles" xml:space="preserve">
+        <value>No files were found in this upload batch.</value>
+    </data>
+  <data name="MobileUploadResultViewInvoice" xml:space="preserve">
+        <value>View invoice</value>
+    </data>
+  <data name="MobileUploadResultCreatedAt" xml:space="preserve">
+        <value>Created at</value>
+    </data>
+  <data name="MobileUploadResultCompletedAt" xml:space="preserve">
+        <value>Completed at</value>
+    </data>
+  <data name="MobileUploadResultProcessedFiles" xml:space="preserve">
+        <value>Processed files</value>
+    </data>
+  <data name="MobileUploadResultFailedFiles" xml:space="preserve">
+        <value>Failed files</value>
+    </data>
+  <data name="MobileUploadResultPendingFiles" xml:space="preserve">
+        <value>Pending files</value>
+    </data>
+  <data name="MobileUploadResultProcessingFiles" xml:space="preserve">
+        <value>Processing files</value>
+    </data>
+  <data name="MobileUploadResultRetryPendingFiles" xml:space="preserve">
+        <value>Retry pending files</value>
+    </data>
+  <data name="MobileUploadResultUnsupportedFiles" xml:space="preserve">
+        <value>Unsupported files</value>
+    </data>
+  <data name="MobileUploadResultErrorMessage" xml:space="preserve">
+        <value>Error message</value>
+    </data>
 </root>

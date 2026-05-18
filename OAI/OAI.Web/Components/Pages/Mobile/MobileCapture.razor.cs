@@ -42,6 +42,9 @@ public partial class MobileCapture
     [Inject]
     private IToastService ToastService { get; set; } = default!;
 
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
     private IBrowserFile? SelectedFile { get; set; }
 
     private string? SelectedFileName { get; set; }
@@ -141,6 +144,8 @@ public partial class MobileCapture
                 UploadResult.UploadBatchId,
                 UploadResult.BatchCode,
                 UploadResult.BackgroundJobId);
+
+            NavigationManager.NavigateTo($"/mobile/uploads/{UploadResult.UploadBatchId}");
         }
         catch (UnauthorizedAccessException ex)
         {
