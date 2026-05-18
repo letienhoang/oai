@@ -101,3 +101,21 @@ audit_duration_minutes
 ```
 
 This order is mirrored by `OAI.Application.AuditAnomaly.AuditAnomalyFeatureNames` so future training, exported model weights, and C# inference stay aligned.
+
+## T131 Normal Sample Generation
+
+Phase 12A T131 generates the deterministic normal-only seed dataset at:
+
+```txt
+docs/ml/generated/audit_anomaly_normal_1000.csv
+```
+
+Regenerate it from the `OAI` repository folder with:
+
+```powershell
+python tools/ml/generate_audit_anomaly_normal_samples.py
+```
+
+The script uses only the Python standard library, reads the canonical CSV header from `docs/ml/audit_anomaly_dataset_sample.csv`, and writes exactly 1000 rows with `label = 0`. The output is deterministic because the generator uses a fixed random seed and stable UUID derivation for generated invoice ids.
+
+T131 intentionally creates only normal samples. Anomaly samples will be generated later in T132, before normalization and model training tasks are added.

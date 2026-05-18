@@ -81,6 +81,51 @@ public sealed class AuditAnomalyDatasetSchemaTests
         Assert.Equal(ExpectedCsvColumns, actualColumns);
     }
 
+    [Fact]
+    public void GeneratedNormalCsv_ShouldContainOnlyNormalSamplesWithCanonicalHeader()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var samplePath = Path.Combine(repositoryRoot, "docs", "ml", "audit_anomaly_dataset_sample.csv");
+        var generatedPath = Path.Combine(repositoryRoot, "docs", "ml", "generated", "audit_anomaly_normal_1000.csv");
+
+        Assert.True(File.Exists(generatedPath), $"Generated normal dataset was not found at {generatedPath}.");
+
+        var sampleHeader = File.ReadLines(samplePath).First().Split(',');
+        var generatedLines = File.ReadAllLines(generatedPath);
+        var generatedHeader = generatedLines[0].Split(',');
+
+        Assert.Equal(sampleHeader, generatedHeader);
+        Assert.Equal(1000, generatedLines.Length - 1);
+
+        var indexes = generatedHeader
+            .Select((column, index) => new { column, index })
+            .ToDictionary(item => item.column, item => item.index, StringComparer.Ordinal);
+
+        var forbiddenFlags = new[]
+        {
+            "edited_after_approved",
+            "exported_after_rejected",
+            "currency_changed",
+            "has_reopened_invoice",
+            "total_tax_mismatch",
+            "repeated_processing_attempts"
+        };
+
+        foreach (var line in generatedLines.Skip(1))
+        {
+            var columns = line.Split(',');
+
+            Assert.Equal(generatedHeader.Length, columns.Length);
+            Assert.Equal("0", columns[indexes["label"]]);
+            Assert.Equal(string.Empty, columns[indexes["anomaly_reason_codes"]]);
+
+            foreach (var forbiddenFlag in forbiddenFlags)
+            {
+                Assert.Equal("0", columns[indexes[forbiddenFlag]]);
+            }
+        }
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

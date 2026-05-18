@@ -1,0 +1,1001 @@
+sample_id,invoice_id,generated_scenario,label,edit_count,approve_count,reject_count,status_changed_count,distinct_user_count,validation_count,export_count,subtotal_change_ratio,tax_change_ratio,total_change_ratio,vendor_changed,invoice_number_changed,currency_changed,edited_after_approved,exported_after_rejected,outside_business_hours,has_deleted_line_item,has_reopened_invoice,total_tax_mismatch,repeated_processing_attempts,minutes_between_create_and_approve,max_updates_within_10_minutes,audit_duration_minutes,anomaly_reason_codes,notes
+NORMAL-0001,1135454a-fb8e-5d85-a392-8107765c709e,normal_two_user_review,0,2,1,0,1,2,1,0,0.013,0.023,0.013,0,0,0,0,0,0,0,0,0,0,17,1,121,,Two reviewers participated in a normal approval workflow.
+NORMAL-0002,6ec84a4b-cfd3-554f-84a9-c4ea09126751,normal_two_user_review,0,2,1,0,1,3,2,0,0.010,0.022,0.015,0,0,0,0,0,0,0,0,0,0,303,1,631,,Two reviewers participated in a normal approval workflow.
+NORMAL-0003,ff4783a0-485e-5a5d-a07c-62834b0dea49,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,164,1,266,,Invoice followed a low-touch review and approval path.
+NORMAL-0004,5845f70c-37b6-5c38-ba6d-2e4845a0d1c3,normal_minor_correction,0,2,1,0,1,1,2,0,0.008,0.030,0.013,1,0,0,0,0,0,0,0,0,0,85,1,425,,Small pre-approval correction resolved during routine review.
+NORMAL-0005,ebc274bc-ac7a-53c6-8957-314a7a5be60f,normal_straight_through,0,1,1,0,1,1,0,0,0.012,0.009,0.009,0,0,0,0,0,0,0,0,0,0,346,0,652,,Invoice followed a low-touch review and approval path.
+NORMAL-0006,dbcd18ef-8d39-5bf9-8956-67b4e9d51c16,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,15,0,113,,Invoice followed a low-touch review and approval path.
+NORMAL-0007,59330b1b-59bd-5b38-9959-338f7ea48503,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,422,1,1141,,Invoice followed a low-touch review and approval path.
+NORMAL-0008,6a65c38e-e234-5490-a022-9a4a35e69ace,normal_minor_correction,0,1,1,0,1,1,1,0,0.007,0.006,0.007,0,0,0,0,0,0,0,0,0,0,134,0,267,,Small pre-approval correction resolved during routine review.
+NORMAL-0009,c0629eb1-80dc-59bd-91e4-93d60fc6065b,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,419,0,608,,Invoice followed a low-touch review and approval path.
+NORMAL-0010,d9de8cd7-8985-5d3c-a0b4-e4d4c183941b,normal_two_user_review,0,2,1,0,1,3,1,0,0.012,0.018,0.014,0,0,0,0,0,0,0,0,0,0,168,0,379,,Two reviewers participated in a normal approval workflow.
+NORMAL-0011,27dbb976-20d7-5589-9f13-bbd97d8880d9,normal_exported_after_approval,0,0,1,0,1,2,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,393,1,810,,Invoice was exported only after approval.
+NORMAL-0012,bcd9871e-9c9f-58f7-b50c-05bb67e1a7a7,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,210,1,298,,Invoice followed a low-touch review and approval path.
+NORMAL-0013,b562234c-7d52-5721-8ce1-3c794da75316,normal_validation_then_approval,0,2,1,0,2,1,2,1,0.034,0.025,0.035,0,0,0,0,0,0,0,0,0,0,250,1,906,,Validation was rerun before ordinary approval.
+NORMAL-0014,54c3db08-08c5-52a5-bd0a-e2673bea87c7,normal_straight_through,0,1,1,0,1,1,0,0,0.001,0.008,0.003,0,0,0,0,0,1,0,0,0,0,345,0,349,,Invoice followed a low-touch review and approval path.
+NORMAL-0015,bbb37086-d133-5142-af88-7aea9fdb25aa,normal_straight_through,0,1,1,0,1,1,1,0,0.010,0.008,0.010,0,0,0,0,0,0,0,0,0,0,29,0,202,,Invoice followed a low-touch review and approval path.
+NORMAL-0016,34314e0e-a90a-5dd2-98f0-9dfa663d0404,normal_minor_correction,0,1,1,0,1,1,2,0,0.015,0.003,0.013,0,0,0,0,0,0,0,0,0,0,519,2,867,,Small pre-approval correction resolved during routine review.
+NORMAL-0017,664111fd-bd08-5b05-b23a-a6005640a5b6,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,1189,1,1260,,Invoice followed a low-touch review and approval path.
+NORMAL-0018,4ca41daa-bcf0-5bd9-8d2a-64f4ac76267a,normal_straight_through,0,1,1,0,1,2,2,1,0.004,0.003,0.002,0,0,0,0,0,0,0,0,0,0,1067,1,1636,,Invoice followed a low-touch review and approval path.
+NORMAL-0019,b853ee43-adb7-52b8-b7fd-4131ed1106f7,normal_validation_then_approval,0,1,1,0,2,2,1,0,0.010,0.016,0.010,0,0,0,0,0,0,0,0,0,0,321,0,644,,Validation was rerun before ordinary approval.
+NORMAL-0020,80005f53-2a85-5100-8736-6250dc682e8a,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,839,0,951,,Invoice followed a low-touch review and approval path.
+NORMAL-0021,111fceea-0aa2-5f1f-ba76-0f227352c2c8,normal_straight_through,0,0,1,0,1,1,2,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1330,0,1716,,Invoice followed a low-touch review and approval path.
+NORMAL-0022,104648f3-c245-599a-99fa-3b7da49a7aee,normal_validation_then_approval,0,2,1,0,2,1,2,0,0.013,0.027,0.014,0,0,0,0,0,0,0,0,0,0,91,1,442,,Validation was rerun before ordinary approval.
+NORMAL-0023,d88b3ddf-772f-5e09-8c59-c468032b0709,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,147,0,321,,Invoice followed a low-touch review and approval path.
+NORMAL-0024,747b42aa-b287-5deb-8a81-588a62c2f510,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,32,1,371,,Invoice followed a low-touch review and approval path.
+NORMAL-0025,899f2461-a794-5c52-a39f-0acee07d03e7,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.011,0.004,0.007,0,0,0,0,0,0,0,0,0,0,644,1,717,,Validation was rerun before ordinary approval.
+NORMAL-0026,c268fc7a-4fa7-5aaa-8d92-8fa6d825bae6,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.008,0.015,0.008,0,0,0,0,0,0,0,0,0,0,16,0,227,,Validation was rerun before ordinary approval.
+NORMAL-0027,22338079-a2bb-5e3e-b5d5-3da9cf09bff7,normal_exported_after_approval,0,1,1,0,1,1,1,1,0.005,0.009,0.004,0,0,0,0,0,0,0,0,0,0,1398,0,1551,,Invoice was exported only after approval.
+NORMAL-0028,671d9080-f7a0-5b14-bb9a-87e5a87d9835,normal_validation_then_approval,0,0,1,0,1,1,1,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,967,0,1245,,Validation was rerun before ordinary approval.
+NORMAL-0029,60d528ea-aeac-5bee-98d4-a2110ca9b9a8,normal_two_user_review,0,2,1,0,2,3,1,0,0.015,0.008,0.016,0,0,0,0,0,0,0,0,0,0,587,0,890,,Two reviewers participated in a normal approval workflow.
+NORMAL-0030,9e9b689f-994a-54d3-a68c-f16ef2caed23,normal_minor_correction,0,1,1,0,1,1,1,1,0.007,0.007,0.006,0,0,0,0,0,0,0,0,0,0,78,1,100,,Small pre-approval correction resolved during routine review.
+NORMAL-0031,bf9d61e6-9fc8-5330-a96f-302fe0ff0e4f,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,53,1,56,,Invoice followed a low-touch review and approval path.
+NORMAL-0032,617dc00b-5bdb-53ed-bfda-d195107a784c,normal_pending_review,0,1,0,0,1,1,1,0,0.008,0.006,0.009,0,0,0,0,0,0,0,0,0,0,0,2,2099,,Invoice remains in pending review with no approval or export.
+NORMAL-0033,d7819d54-52d4-5bb8-b418-35e182819365,normal_validation_then_approval,0,2,1,0,1,1,1,1,0.011,0.007,0.013,0,0,0,0,0,0,0,0,0,0,54,0,679,,Validation was rerun before ordinary approval.
+NORMAL-0034,76f1e27a-045b-54ca-a53f-bdf1ba4a4d09,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,308,0,618,,Invoice followed a low-touch review and approval path.
+NORMAL-0035,92b32001-7689-5f15-8a46-e018fb292815,normal_two_user_review,0,2,1,0,2,2,1,0,0.009,0.017,0.009,0,0,0,0,0,0,0,0,0,0,38,0,379,,Two reviewers participated in a normal approval workflow.
+NORMAL-0036,b7d1e5b3-f1ab-5dab-8f20-af589a92cdac,normal_minor_correction,0,1,1,0,1,2,1,1,0.004,0.011,0.003,0,0,0,0,0,0,0,0,0,0,461,1,1020,,Small pre-approval correction resolved during routine review.
+NORMAL-0037,8215b05d-a8c1-561b-a8ac-ea8e56adabe9,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,303,1,624,,Invoice followed a low-touch review and approval path.
+NORMAL-0038,17d32f61-9a50-583e-84e1-cd257b0b367c,normal_minor_correction,0,1,1,0,1,1,2,0,0.010,0.005,0.009,0,0,0,0,0,0,0,0,0,0,464,0,556,,Small pre-approval correction resolved during routine review.
+NORMAL-0039,9abf8c86-3b78-5cf0-b569-727ce046a8ac,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.007,0.010,0.005,0,0,0,0,0,0,0,0,0,0,268,2,583,,Validation was rerun before ordinary approval.
+NORMAL-0040,cd86b133-8ae1-5f0d-9cf5-c65fa9e3045e,normal_validation_then_approval,0,3,1,0,1,1,2,0,0.013,0.046,0.017,0,0,0,0,0,1,0,0,0,0,514,0,832,,Validation was rerun before ordinary approval.
+NORMAL-0041,aa82fa0f-cfe3-551a-9675-15ec3c95089d,normal_exported_after_approval,0,2,1,0,1,1,0,1,0.015,0.032,0.015,0,0,0,0,0,0,0,0,0,0,63,0,704,,Invoice was exported only after approval.
+NORMAL-0042,dd5d9ac7-9f78-5da5-9b9c-36f4bcd6ad73,normal_minor_correction,0,2,1,0,1,2,2,1,0.010,0.023,0.010,0,0,0,0,0,0,0,0,0,0,37,1,675,,Small pre-approval correction resolved during routine review.
+NORMAL-0043,71e2ce17-6886-5a60-b7a7-39249531861d,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,343,0,531,,Invoice followed a low-touch review and approval path.
+NORMAL-0044,5851adfa-4278-545b-a66b-73a978cd6eec,normal_minor_correction,0,2,1,0,1,1,1,0,0.026,0.016,0.024,1,0,0,0,0,0,0,0,0,0,388,0,646,,Small pre-approval correction resolved during routine review.
+NORMAL-0045,5049574f-d03c-5b08-87e5-fa0487762650,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.003,0,0,0,0,0,1,0,0,0,0,215,1,571,,Invoice followed a low-touch review and approval path.
+NORMAL-0046,3dec05fb-a0a2-5d0e-ba0d-91edf526ddce,normal_validation_then_approval,0,1,1,0,1,2,1,0,0.006,0.012,0.004,0,0,0,0,0,0,0,0,0,0,124,0,439,,Validation was rerun before ordinary approval.
+NORMAL-0047,bc22d7e3-1446-5b93-bc9f-b49ddbf4f4c4,normal_straight_through,0,2,1,0,1,1,0,0,0.021,0.011,0.018,0,0,0,0,0,0,0,0,0,0,38,0,117,,Invoice followed a low-touch review and approval path.
+NORMAL-0048,0da722bd-f1c0-546e-9901-680c7c997fc8,normal_minor_correction,0,3,1,0,1,1,1,0,0.025,0.013,0.023,0,0,0,0,0,0,0,0,0,0,811,2,958,,Small pre-approval correction resolved during routine review.
+NORMAL-0049,f18eb904-788b-5e98-a980-5f7913a55b83,normal_two_user_review,0,2,1,0,1,3,1,0,0.015,0.019,0.014,0,0,0,0,0,0,0,0,0,0,189,0,217,,Two reviewers participated in a normal approval workflow.
+NORMAL-0050,01aeb564-e42c-5f3a-a4c2-f760d4bb1d44,normal_exported_after_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,421,1,767,,Invoice was exported only after approval.
+NORMAL-0051,8fc966fa-6dff-51e8-b691-36a08ff6316a,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,179,1,286,,Invoice followed a low-touch review and approval path.
+NORMAL-0052,a5d82ce9-0b5e-5da4-8e69-949639f6379a,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1769,,Invoice remains in pending review with no approval or export.
+NORMAL-0053,fd85d886-89c0-5458-ba77-70745a7a63b7,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,37,1,605,,Invoice followed a low-touch review and approval path.
+NORMAL-0054,b934d61d-da4b-550d-9e6b-a0a5a060cf9a,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,28,0,346,,Invoice followed a low-touch review and approval path.
+NORMAL-0055,d44089a9-b810-5015-92dd-fbfc0c8b2ee6,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.007,0.002,0.007,0,0,0,0,0,1,0,0,0,0,1094,0,1263,,Validation was rerun before ordinary approval.
+NORMAL-0056,43a13a14-aa2a-538c-9b24-911f61d22ca6,normal_exported_after_approval,0,1,1,0,2,1,0,1,0.006,0.003,0.008,0,0,0,0,0,0,0,0,0,0,778,0,1148,,Invoice was exported only after approval.
+NORMAL-0057,ec4e4afc-5b89-5e08-88b3-a7e28d0b88cc,normal_minor_correction,0,3,1,0,1,1,2,0,0.011,0.030,0.012,0,0,0,0,0,0,0,0,0,0,281,2,439,,Small pre-approval correction resolved during routine review.
+NORMAL-0058,05c97d7c-f691-5c37-857f-703bd6a86cc8,normal_validation_then_approval,0,3,1,0,1,1,1,0,0.028,0.009,0.023,0,0,0,0,0,0,0,0,0,0,855,0,1001,,Validation was rerun before ordinary approval.
+NORMAL-0059,e432b983-830d-5732-9c29-089f4c84f265,normal_pending_review,0,3,0,0,1,1,1,0,0.017,0.016,0.015,0,0,0,0,0,0,0,0,0,0,0,1,2427,,Invoice remains in pending review with no approval or export.
+NORMAL-0060,33d1b7a1-2def-5ff4-abd2-1d8793458880,normal_minor_correction,0,2,1,0,1,2,1,0,0.005,0.010,0.004,0,0,0,0,0,0,0,0,0,0,806,0,973,,Small pre-approval correction resolved during routine review.
+NORMAL-0061,7229f191-9818-5bd2-b8d8-b659c6251d02,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,61,1,210,,Invoice was exported only after approval.
+NORMAL-0062,bbdd9e61-08b9-535f-8500-35300ea0d305,normal_pending_review,0,2,0,0,0,1,0,0,0.029,0.026,0.026,0,0,0,0,0,0,0,0,0,0,0,0,1226,,Invoice remains in pending review with no approval or export.
+NORMAL-0063,57a770a6-44e4-5665-9ed4-569b852cab01,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,436,1,570,,Invoice was exported only after approval.
+NORMAL-0064,ebd0dd46-3655-5071-803f-6df8d01bc466,normal_minor_correction,0,2,1,0,1,1,1,1,0.029,0.005,0.028,0,0,0,0,0,0,0,0,0,0,233,1,550,,Small pre-approval correction resolved during routine review.
+NORMAL-0065,8fcd4d59-7439-57d9-9dda-8e5ccde90913,normal_minor_correction,0,2,1,0,1,2,1,0,0.026,0.002,0.023,0,0,0,0,0,0,0,0,0,0,23,1,318,,Small pre-approval correction resolved during routine review.
+NORMAL-0066,9d133dba-fa94-5923-9e37-f109115998d7,normal_minor_correction,0,1,1,0,1,1,1,0,0.007,0.001,0.004,0,0,0,0,0,0,0,0,0,0,89,0,238,,Small pre-approval correction resolved during routine review.
+NORMAL-0067,6d83b9cd-b2d1-53c9-812a-52aa0bf4a185,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.000,0.003,0.002,0,0,0,0,0,0,0,0,0,0,300,2,546,,Validation was rerun before ordinary approval.
+NORMAL-0068,a6de417e-768d-5ec9-a943-1629705eca73,normal_minor_correction,0,1,1,0,1,1,1,0,0.006,0.011,0.008,0,0,0,0,0,0,0,0,0,0,538,1,734,,Small pre-approval correction resolved during routine review.
+NORMAL-0069,dad4aad6-8264-5b41-a796-84027185171f,normal_exported_after_approval,0,1,1,0,1,2,1,1,0.012,0.017,0.010,0,0,0,0,0,0,0,0,0,0,399,0,606,,Invoice was exported only after approval.
+NORMAL-0070,684a4fa2-dabc-57e3-867c-8f9fde2f1510,normal_minor_correction,0,3,1,0,1,3,2,1,0.032,0.028,0.032,0,0,0,0,0,0,0,0,0,0,1190,3,1902,,Small pre-approval correction resolved during routine review.
+NORMAL-0071,64934fca-3223-5bb1-a247-537ba6b1abb3,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,72,1,384,,Invoice followed a low-touch review and approval path.
+NORMAL-0072,69a9cc4c-aa46-5539-b9a5-c08de3b2bf66,normal_straight_through,0,0,1,0,1,2,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,691,1,731,,Invoice followed a low-touch review and approval path.
+NORMAL-0073,944a474b-8693-5077-9736-2f8cd0a152eb,normal_pending_review,0,0,0,0,1,2,2,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,0,1,2411,,Invoice remains in pending review with no approval or export.
+NORMAL-0074,615e4d24-c65c-5071-9700-1787b32bd124,normal_exported_after_approval,0,0,1,0,2,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,77,1,152,,Invoice was exported only after approval.
+NORMAL-0075,bf087308-8ff0-5eb1-8dfe-78fa8cb13b67,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,1,0,0,0,0,483,1,612,,Invoice followed a low-touch review and approval path.
+NORMAL-0076,e88fc739-9309-5cd8-8ee7-5f8c2ab37606,normal_minor_correction,0,1,1,0,1,1,1,0,0.008,0.009,0.007,0,0,0,0,0,0,0,0,0,0,1140,2,1362,,Small pre-approval correction resolved during routine review.
+NORMAL-0077,c36a6e1c-70fc-5239-8f84-2afc4affae83,normal_straight_through,0,1,1,0,1,1,0,1,0.005,0.007,0.003,0,0,0,0,0,0,0,0,0,0,897,1,1588,,Invoice followed a low-touch review and approval path.
+NORMAL-0078,86c5c1a4-07c0-5a19-ad5d-bf6e762642fa,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1141,0,1609,,Invoice followed a low-touch review and approval path.
+NORMAL-0079,13df545f-a1d9-5919-816d-df45f627b786,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,360,1,600,,Invoice followed a low-touch review and approval path.
+NORMAL-0080,7ee21070-f9d2-5286-a546-b8fa2cf68dec,normal_validation_then_approval,0,0,1,0,1,2,1,0,0.000,0.000,0.001,0,0,0,0,0,1,0,0,0,0,861,0,1180,,Validation was rerun before ordinary approval.
+NORMAL-0081,d2a9ac57-dbb2-587e-95f4-252e908b8bdb,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.009,0.010,0.009,0,0,0,0,0,0,0,0,0,0,156,1,289,,Validation was rerun before ordinary approval.
+NORMAL-0082,0cdda1c6-ddd2-5386-a61d-01270524fdb6,normal_straight_through,0,1,1,0,1,2,1,1,0.001,0.005,0.000,0,0,0,0,0,0,0,0,0,0,459,0,930,,Invoice followed a low-touch review and approval path.
+NORMAL-0083,9f42fd39-ada9-5257-86ef-30a5e6939033,normal_minor_correction,0,3,1,0,1,1,1,0,0.017,0.023,0.021,0,0,0,0,0,0,0,0,0,0,223,2,310,,Small pre-approval correction resolved during routine review.
+NORMAL-0084,54aae329-9246-5180-b95a-b588fc25d82a,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1018,0,1201,,Invoice followed a low-touch review and approval path.
+NORMAL-0085,9c7e6edb-0359-5284-9a75-2e088c6d674e,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.010,0.005,0.008,0,0,0,0,0,0,0,0,0,0,178,1,316,,Validation was rerun before ordinary approval.
+NORMAL-0086,b8cb7c96-207b-5aa0-ac2b-e3f1e2a0db19,normal_exported_after_approval,0,1,1,0,1,1,2,1,0.010,0.006,0.007,0,0,0,0,0,0,0,0,0,0,18,0,292,,Invoice was exported only after approval.
+NORMAL-0087,b83fc644-54c1-51c0-bb2a-f768be061255,normal_minor_correction,0,1,1,0,1,2,1,1,0.007,0.014,0.008,0,0,0,0,0,0,0,0,0,0,701,2,1328,,Small pre-approval correction resolved during routine review.
+NORMAL-0088,1a5ae661-c95d-57b9-b060-299a09fe57b1,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,742,0,1098,,Invoice followed a low-touch review and approval path.
+NORMAL-0089,09056bd8-3c4e-5fe7-94ed-4f9adf0bf54f,normal_straight_through,0,1,1,0,1,1,0,1,0.010,0.004,0.008,0,0,0,0,0,0,0,0,0,0,77,0,221,,Invoice followed a low-touch review and approval path.
+NORMAL-0090,25108a59-4331-5bfc-b024-83b760d44e9f,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1417,1,1681,,Invoice was exported only after approval.
+NORMAL-0091,eec58dcd-9842-5673-9e34-fccf1569b169,normal_minor_correction,0,3,1,0,1,1,1,1,0.013,0.018,0.013,0,0,0,0,0,0,0,0,0,0,378,1,528,,Small pre-approval correction resolved during routine review.
+NORMAL-0092,8994415a-38c0-5e45-af8f-e92d3b2fe2d3,normal_pending_review,0,3,0,0,0,1,0,0,0.023,0.022,0.025,0,0,0,0,0,0,0,0,0,0,0,0,722,,Invoice remains in pending review with no approval or export.
+NORMAL-0093,cf66fee1-7e0e-5d98-990e-28b41c204ed9,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,169,0,456,,Invoice followed a low-touch review and approval path.
+NORMAL-0094,bf403285-f841-5acd-b4e8-075ba466b726,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,561,1,739,,Invoice followed a low-touch review and approval path.
+NORMAL-0095,e355077f-8091-5e73-859b-6905dd098a79,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,181,0,294,,Invoice followed a low-touch review and approval path.
+NORMAL-0096,ea95ee66-faf0-5f00-9d56-5ac659dc5ccc,normal_exported_after_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,398,0,477,,Invoice was exported only after approval.
+NORMAL-0097,90458718-9d62-5fc6-8ec9-bac24314be2c,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1145,,Invoice remains in pending review with no approval or export.
+NORMAL-0098,25981352-ea43-51dc-89b4-194b3e7eda38,normal_two_user_review,0,2,1,0,1,2,1,1,0.006,0.025,0.009,0,0,0,0,0,0,0,0,0,0,35,1,334,,Two reviewers participated in a normal approval workflow.
+NORMAL-0099,556678ad-c5af-51fb-b79e-df9d1bcbcb56,normal_straight_through,0,2,1,0,1,1,0,0,0.008,0.003,0.008,0,0,0,0,0,0,0,0,0,0,488,0,608,,Invoice followed a low-touch review and approval path.
+NORMAL-0100,33e357b0-e622-5c32-8c76-c61c845ce47c,normal_validation_then_approval,0,2,1,0,1,1,1,0,0.018,0.008,0.016,0,0,0,0,0,0,0,0,0,0,65,0,206,,Validation was rerun before ordinary approval.
+NORMAL-0101,e089c19a-952f-5939-a09f-faaf8c0426f9,normal_minor_correction,0,1,1,0,1,1,2,1,0.008,0.010,0.007,0,0,0,0,0,0,0,0,0,0,873,1,1151,,Small pre-approval correction resolved during routine review.
+NORMAL-0102,3beecae7-7ce2-5664-bbff-210671c70bb6,normal_straight_through,0,1,1,0,1,2,0,0,0.010,0.008,0.008,0,0,0,0,0,0,0,0,0,0,18,1,120,,Invoice followed a low-touch review and approval path.
+NORMAL-0103,9b3f77bd-8ccf-56e5-a8c1-25ef35c67871,normal_validation_then_approval,0,1,1,0,2,1,2,1,0.011,0.009,0.012,0,0,0,0,0,0,0,0,0,0,472,2,592,,Validation was rerun before ordinary approval.
+NORMAL-0104,cff7745c-cae1-5dbd-89d0-e15d5c18021e,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,610,0,1182,,Invoice followed a low-touch review and approval path.
+NORMAL-0105,21715eb9-426c-5f11-9583-06b90279a3dd,normal_minor_correction,0,2,1,0,1,1,1,0,0.008,0.010,0.010,0,0,0,0,0,0,0,0,0,0,1221,1,1424,,Small pre-approval correction resolved during routine review.
+NORMAL-0106,f609a80d-34ac-59db-ba07-23742636b095,normal_straight_through,0,0,1,0,1,2,0,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,809,1,983,,Invoice followed a low-touch review and approval path.
+NORMAL-0107,0e185d1c-9d1a-553f-9b38-71cfa382b26b,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,605,,Invoice remains in pending review with no approval or export.
+NORMAL-0108,ff378fce-dc02-5bc3-9ec4-ec0c42b47301,normal_pending_review,0,1,0,0,0,1,0,0,0.006,0.006,0.004,0,0,0,0,0,0,0,0,0,0,0,2,2588,,Invoice remains in pending review with no approval or export.
+NORMAL-0109,c4a01877-9902-5919-8164-ff9025bc0b6b,normal_minor_correction,0,1,1,0,1,2,1,0,0.009,0.006,0.011,0,0,0,0,0,0,0,0,0,0,366,1,643,,Small pre-approval correction resolved during routine review.
+NORMAL-0110,f4ae52a8-56aa-5407-a0b6-667e575ba6e6,normal_two_user_review,0,1,1,0,1,3,2,1,0.014,0.001,0.013,0,0,0,0,0,1,0,0,0,0,129,1,450,,Two reviewers participated in a normal approval workflow.
+NORMAL-0111,66db22e7-9c0e-5d6d-a2c1-be4c267e4d2f,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,470,1,968,,Invoice followed a low-touch review and approval path.
+NORMAL-0112,22d177c8-210d-5fee-afaa-148a6e209402,normal_straight_through,0,1,1,0,1,1,1,1,0.002,0.009,0.001,0,0,0,0,0,0,0,0,0,0,226,0,765,,Invoice followed a low-touch review and approval path.
+NORMAL-0113,93621e4f-48d8-5f7e-8c22-a0a54a45be7f,normal_exported_after_approval,0,1,1,0,1,1,1,1,0.006,0.010,0.008,0,0,0,0,0,0,0,0,0,0,35,1,426,,Invoice was exported only after approval.
+NORMAL-0114,3ce549c6-486d-5d88-a086-1b0b4bbb1f13,normal_straight_through,0,1,1,0,1,1,0,0,0.006,0.007,0.006,0,0,0,0,0,0,0,0,0,0,411,0,649,,Invoice followed a low-touch review and approval path.
+NORMAL-0115,b295c503-f67d-503c-bb38-fbaf68eba0d5,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,74,0,374,,Invoice followed a low-touch review and approval path.
+NORMAL-0116,18c6927f-3cd5-5d18-8999-dd64846c68c7,normal_straight_through,0,0,1,0,1,2,1,0,0.000,0.000,0.000,0,0,0,0,0,1,0,0,0,0,23,1,113,,Invoice followed a low-touch review and approval path.
+NORMAL-0117,13973d4a-3efd-584b-a38b-4eb9f33664df,normal_validation_then_approval,0,0,1,0,1,1,2,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,425,1,554,,Validation was rerun before ordinary approval.
+NORMAL-0118,4da41ae4-46c5-5d98-a927-93fad4a34203,normal_exported_after_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,132,0,747,,Invoice was exported only after approval.
+NORMAL-0119,fab7cf16-e4fd-57ff-9903-d1357e66ee48,normal_validation_then_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,57,1,476,,Validation was rerun before ordinary approval.
+NORMAL-0120,2401ef33-0878-5bcb-bb59-c776fd561df6,normal_exported_after_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,43,2,180,,Invoice was exported only after approval.
+NORMAL-0121,fe3a374c-f999-5269-84bd-4222b5a33020,normal_pending_review,0,1,0,0,0,2,1,0,0.005,0.005,0.002,0,0,0,0,0,0,0,0,0,0,0,0,1347,,Invoice remains in pending review with no approval or export.
+NORMAL-0122,b1472b1e-24a2-5259-8b82-9ae920dd3809,normal_pending_review,0,0,0,0,0,2,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,0,278,,Invoice remains in pending review with no approval or export.
+NORMAL-0123,d1a913ea-a6df-50f7-90a2-efca36e9ba72,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,76,0,308,,Invoice followed a low-touch review and approval path.
+NORMAL-0124,5c0d786a-e644-542f-8dda-e93a9b7eb265,normal_exported_after_approval,0,1,1,0,1,2,0,1,0.013,0.003,0.008,0,0,0,0,0,0,0,0,0,0,154,0,721,,Invoice was exported only after approval.
+NORMAL-0125,9d4f4ef0-fef5-516a-bad8-c7dd025004e3,normal_two_user_review,0,2,1,0,1,2,2,0,0.019,0.012,0.020,0,0,0,0,0,0,0,0,0,0,509,0,736,,Two reviewers participated in a normal approval workflow.
+NORMAL-0126,8c5963a6-3c00-5e36-b41f-e53a000762d9,normal_straight_through,0,0,1,0,1,2,2,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,252,1,315,,Invoice followed a low-touch review and approval path.
+NORMAL-0127,ae00ae29-978b-5252-97d1-88de234089fc,normal_validation_then_approval,0,3,1,0,2,1,2,0,0.027,0.017,0.022,0,0,0,0,0,0,0,0,0,0,1054,0,1369,,Validation was rerun before ordinary approval.
+NORMAL-0128,fe51cf49-bcf1-559a-b627-91e0c1584f89,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1150,1,1446,,Invoice followed a low-touch review and approval path.
+NORMAL-0129,c418babd-f8b4-5c9d-a7ec-cf216781b2fc,normal_pending_review,0,2,0,0,1,1,0,0,0.001,0.015,0.001,0,0,0,0,0,0,0,0,0,0,0,0,1297,,Invoice remains in pending review with no approval or export.
+NORMAL-0130,5117bee4-ad3c-5bd8-a8be-a0b74b077dc7,normal_minor_correction,0,3,1,0,1,1,1,0,0.035,0.010,0.028,0,0,0,0,0,0,0,0,0,0,1258,0,1489,,Small pre-approval correction resolved during routine review.
+NORMAL-0131,8eecb4c2-b54d-5555-b3ea-cc737cad8f68,normal_exported_after_approval,0,0,1,0,2,1,2,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,513,0,604,,Invoice was exported only after approval.
+NORMAL-0132,31fec30d-6702-59fa-a043-2078819a04ff,normal_exported_after_approval,0,1,1,0,1,2,2,1,0.005,0.007,0.003,0,0,0,0,0,0,0,0,0,0,29,0,172,,Invoice was exported only after approval.
+NORMAL-0133,2410c20f-a3c0-5353-88c6-31e611c785b7,normal_straight_through,0,2,1,0,1,1,0,1,0.016,0.010,0.016,0,0,0,0,0,0,0,0,0,0,173,0,418,,Invoice followed a low-touch review and approval path.
+NORMAL-0134,b9cbb129-ec4b-5fb3-8ae7-0509cd1381b5,normal_pending_review,0,0,0,0,1,2,2,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,0,1,603,,Invoice remains in pending review with no approval or export.
+NORMAL-0135,d9387d05-d083-5b63-884b-b0bd0bd8f6b0,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.011,0.009,0.009,0,0,0,0,0,0,0,0,0,0,55,0,402,,Validation was rerun before ordinary approval.
+NORMAL-0136,5964d4c8-68ac-5ca3-aa29-44215ddb5295,normal_pending_review,0,1,0,0,1,1,0,0,0.005,0.009,0.006,0,0,0,0,0,0,0,0,0,0,0,2,2861,,Invoice remains in pending review with no approval or export.
+NORMAL-0137,82a80b6a-ed65-5afa-bc5b-695209d90955,normal_minor_correction,0,2,1,0,1,2,1,1,0.023,0.016,0.019,0,0,0,0,0,0,0,0,0,0,414,2,509,,Small pre-approval correction resolved during routine review.
+NORMAL-0138,60c22b01-8946-54da-a6a5-80e88b9fbd20,normal_validation_then_approval,0,3,1,0,2,1,2,1,0.022,0.046,0.023,0,0,0,0,0,1,0,0,0,0,77,0,398,,Validation was rerun before ordinary approval.
+NORMAL-0139,5e2a358a-f0dd-52fb-9cf2-c6f9dd134e42,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,111,0,752,,Invoice was exported only after approval.
+NORMAL-0140,cfb3f33f-1a74-5a2d-80fc-0bf8ce395cf8,normal_validation_then_approval,0,2,1,0,2,2,1,0,0.024,0.010,0.023,0,0,0,0,0,0,0,0,0,0,1281,1,1406,,Validation was rerun before ordinary approval.
+NORMAL-0141,95143247-7d4e-592b-99bf-3ac896d740d6,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1238,0,1757,,Invoice followed a low-touch review and approval path.
+NORMAL-0142,7ee104c5-a718-5fa6-96fd-c9de5839e373,normal_exported_after_approval,0,2,1,0,1,1,0,1,0.014,0.023,0.014,0,0,0,0,0,0,0,0,0,0,631,1,1351,,Invoice was exported only after approval.
+NORMAL-0143,6bbabe81-16cb-503f-b7c9-614df72471ae,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1058,0,1265,,Invoice was exported only after approval.
+NORMAL-0144,7fa48025-6dbd-5a6c-ab02-a8ffc5e7f198,normal_pending_review,0,0,0,0,1,2,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,0,0,1823,,Invoice remains in pending review with no approval or export.
+NORMAL-0145,849a21b5-f6e9-56f2-8a23-97c57ca51a6c,normal_validation_then_approval,0,1,1,0,2,2,1,0,0.004,0.012,0.003,0,0,0,0,0,0,0,0,0,0,232,2,235,,Validation was rerun before ordinary approval.
+NORMAL-0146,90c45d72-c7c7-5a00-8a9a-109b48edd5d2,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1130,0,1198,,Invoice followed a low-touch review and approval path.
+NORMAL-0147,6779eee8-a894-596d-a14f-2d6ff9541028,normal_minor_correction,0,3,1,0,1,1,1,0,0.016,0.030,0.021,0,0,0,0,0,0,1,0,0,0,737,1,1033,,Small pre-approval correction resolved during routine review.
+NORMAL-0148,f0491192-1042-527a-a7ed-1d0d51b49a16,normal_validation_then_approval,0,2,1,0,1,1,2,0,0.015,0.004,0.012,0,0,0,0,0,0,0,0,0,0,284,1,507,,Validation was rerun before ordinary approval.
+NORMAL-0149,a4f1d63d-6e88-5645-8bcd-4d2af837c070,normal_exported_after_approval,0,1,1,0,2,1,0,1,0.008,0.014,0.010,0,0,0,0,0,1,0,0,0,0,179,1,390,,Invoice was exported only after approval.
+NORMAL-0150,f51ed299-be13-5d14-ac19-0d6243ee2bd5,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,1,0,0,0,0,419,0,579,,Invoice followed a low-touch review and approval path.
+NORMAL-0151,4ca9845f-3103-588f-8134-3ff0ed53f4b1,normal_exported_after_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,626,2,1216,,Invoice was exported only after approval.
+NORMAL-0152,1a20603c-31b1-59ce-a116-1df128932f62,normal_minor_correction,0,3,1,0,1,1,1,0,0.038,0.002,0.030,0,0,0,0,0,0,0,0,0,0,122,0,149,,Small pre-approval correction resolved during routine review.
+NORMAL-0153,3a3766ab-7059-55a9-b8e2-81385160f369,normal_validation_then_approval,0,2,1,0,1,2,1,0,0.021,0.023,0.018,0,0,0,0,0,0,0,0,0,0,89,1,273,,Validation was rerun before ordinary approval.
+NORMAL-0154,34558f1b-46a1-56c1-b62d-e7b0d0eeb3ec,normal_straight_through,0,1,1,0,1,1,1,0,0.008,0.010,0.009,0,0,0,0,0,0,0,0,0,0,346,0,557,,Invoice followed a low-touch review and approval path.
+NORMAL-0155,bdd2efba-6dc6-59a6-bc92-b0aa33830dee,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,324,0,582,,Invoice followed a low-touch review and approval path.
+NORMAL-0156,7f54564e-afdb-5604-8420-08795968f870,normal_minor_correction,0,2,1,0,1,1,1,0,0.013,0.020,0.015,0,0,0,0,0,0,0,0,0,0,1233,0,1273,,Small pre-approval correction resolved during routine review.
+NORMAL-0157,30a26ade-636e-5f97-8c4f-34a0e655e097,normal_straight_through,0,2,1,0,1,1,1,0,0.017,0.008,0.018,0,0,0,0,0,0,0,0,0,0,923,0,1055,,Invoice followed a low-touch review and approval path.
+NORMAL-0158,4102a62f-495d-5bf8-88d1-4cc57555f56d,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1707,,Invoice remains in pending review with no approval or export.
+NORMAL-0159,291beeae-a285-5d21-a8ce-eee582f9909e,normal_exported_after_approval,0,1,1,0,1,1,1,1,0.011,0.009,0.011,0,0,0,0,0,0,0,0,0,0,204,1,543,,Invoice was exported only after approval.
+NORMAL-0160,39279f32-a615-5e36-bdc4-6f94e9de0ad0,normal_minor_correction,0,1,1,0,1,2,1,1,0.006,0.009,0.008,0,0,0,0,0,0,1,0,0,0,480,0,643,,Small pre-approval correction resolved during routine review.
+NORMAL-0161,d9f400c9-169d-5ad7-882d-4ec7f65066ac,normal_minor_correction,0,1,1,0,1,1,1,1,0.007,0.009,0.006,0,0,0,0,0,0,1,0,0,0,803,1,1459,,Small pre-approval correction resolved during routine review.
+NORMAL-0162,49112dda-d196-541b-badb-008eabc5dcb0,normal_validation_then_approval,0,2,1,0,2,1,2,0,0.022,0.023,0.022,0,0,0,0,0,0,0,0,0,0,382,0,436,,Validation was rerun before ordinary approval.
+NORMAL-0163,dca68568-c6c8-559e-8b4d-977d64f2f608,normal_validation_then_approval,0,2,1,0,1,1,1,0,0.011,0.031,0.016,0,0,0,0,0,1,0,0,0,0,131,0,314,,Validation was rerun before ordinary approval.
+NORMAL-0164,37e703da-70a1-5874-bfb9-6f23d7717204,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,905,1,1283,,Invoice followed a low-touch review and approval path.
+NORMAL-0165,73852bc8-2277-538b-8cf3-969c37a1a1b5,normal_exported_after_approval,0,2,1,0,1,1,1,1,0.004,0.015,0.006,0,0,0,0,0,0,0,0,0,0,20,2,162,,Invoice was exported only after approval.
+NORMAL-0166,7490d562-576c-56bb-b0a8-b6b91cb4ad66,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1056,1,1334,,Invoice followed a low-touch review and approval path.
+NORMAL-0167,b3df68ba-718b-5a89-b6a3-9882e79b3466,normal_pending_review,0,0,0,0,0,2,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,1694,,Invoice remains in pending review with no approval or export.
+NORMAL-0168,044cf3f9-7ad0-5e1e-8e46-10895530326e,normal_pending_review,0,2,0,0,0,1,0,0,0.014,0.002,0.010,0,0,0,0,0,0,0,0,0,0,0,1,1050,,Invoice remains in pending review with no approval or export.
+NORMAL-0169,4d7075c0-46f6-5e24-a72e-f678b82f0bb7,normal_straight_through,0,0,1,0,1,2,0,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,41,0,423,,Invoice followed a low-touch review and approval path.
+NORMAL-0170,d869c674-76ca-5434-9c4d-a61158cb51f8,normal_validation_then_approval,0,1,1,0,2,1,2,0,0.009,0.005,0.009,0,0,0,0,0,0,0,0,0,0,61,2,137,,Validation was rerun before ordinary approval.
+NORMAL-0171,25aedd99-2d3b-5a4c-ac8b-cfc3a8f6ffc6,normal_validation_then_approval,0,2,1,0,2,1,1,0,0.014,0.027,0.017,0,0,0,0,0,0,0,0,0,0,668,1,976,,Validation was rerun before ordinary approval.
+NORMAL-0172,edf37636-43be-5ae5-a13a-fa369e5ea9bf,normal_validation_then_approval,0,1,1,0,2,1,2,1,0.007,0.005,0.010,0,0,0,0,0,0,0,0,0,0,179,0,739,,Validation was rerun before ordinary approval.
+NORMAL-0173,9647822d-941c-583d-9333-b75ed960c5f7,normal_exported_after_approval,0,2,1,0,1,1,1,1,0.015,0.022,0.019,0,0,0,0,0,0,0,0,0,0,81,1,586,,Invoice was exported only after approval.
+NORMAL-0174,3e563cec-b9b2-5697-95e1-c847bc20b9ef,normal_minor_correction,0,1,1,0,1,1,1,0,0.013,0.007,0.010,0,0,0,0,0,0,0,0,0,0,1032,0,1212,,Small pre-approval correction resolved during routine review.
+NORMAL-0175,b0f682a0-2bfa-590a-8d86-b57d0a1cc80b,normal_validation_then_approval,0,2,1,0,1,2,1,0,0.022,0.008,0.018,0,0,0,0,0,0,0,0,0,0,298,0,462,,Validation was rerun before ordinary approval.
+NORMAL-0176,698611c6-cd22-5c79-ade3-7dda0033b588,normal_exported_after_approval,0,2,1,0,1,1,0,1,0.024,0.005,0.022,0,0,0,0,0,0,0,0,0,0,1035,0,1523,,Invoice was exported only after approval.
+NORMAL-0177,b70fca88-bfaa-50ea-9dbf-734ce97983e4,normal_exported_after_approval,0,1,1,0,1,1,1,1,0.014,0.009,0.011,0,0,0,0,0,0,0,0,0,0,398,1,429,,Invoice was exported only after approval.
+NORMAL-0178,d8ddd94b-3ff0-5368-bdbb-a5065c36dd74,normal_minor_correction,0,3,1,0,1,2,1,1,0.008,0.032,0.014,0,0,0,0,0,0,0,0,0,0,1092,0,1754,,Small pre-approval correction resolved during routine review.
+NORMAL-0179,7100df1c-84ec-5853-ba42-6ff041193bb8,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,2007,,Invoice remains in pending review with no approval or export.
+NORMAL-0180,80ae9553-6b46-5d04-968a-68d1ad0fbf32,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,432,1,791,,Invoice followed a low-touch review and approval path.
+NORMAL-0181,ab770050-d06f-51e1-b632-c3985616d8b1,normal_straight_through,0,1,1,0,1,1,0,1,0.005,0.014,0.007,0,0,0,0,0,0,0,0,0,0,893,0,1583,,Invoice followed a low-touch review and approval path.
+NORMAL-0182,86be6d92-8aac-5409-b7c6-1b3129193b71,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,435,2,1042,,Invoice followed a low-touch review and approval path.
+NORMAL-0183,f564d51b-bf28-5a38-a8d0-687cf08a8068,normal_straight_through,0,2,1,0,1,1,0,0,0.024,0.012,0.023,0,0,0,0,0,0,0,0,0,0,31,0,213,,Invoice followed a low-touch review and approval path.
+NORMAL-0184,a29ec5ab-9b50-55cd-bf1f-4b4a74d2d288,normal_pending_review,0,0,0,0,1,2,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,1900,,Invoice remains in pending review with no approval or export.
+NORMAL-0185,0b5c8ee7-0bf2-5ef9-b0f7-aa20b4851f7f,normal_minor_correction,0,2,1,0,1,3,1,1,0.012,0.006,0.012,0,1,0,0,0,0,0,0,0,0,1344,2,1761,,Small pre-approval correction resolved during routine review.
+NORMAL-0186,b8abd17d-99f2-5007-a20b-f0385f8ecf52,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,243,1,588,,Invoice followed a low-touch review and approval path.
+NORMAL-0187,bb70f465-01ab-55ee-8747-be5ffa9fee41,normal_minor_correction,0,2,1,0,1,1,2,0,0.024,0.023,0.024,0,0,0,0,0,0,0,0,0,0,347,0,571,,Small pre-approval correction resolved during routine review.
+NORMAL-0188,aa1df458-20bf-51ef-b36e-d15630e99ea0,normal_minor_correction,0,1,1,0,1,1,2,0,0.006,0.015,0.010,0,0,0,0,0,0,0,0,0,0,74,1,164,,Small pre-approval correction resolved during routine review.
+NORMAL-0189,48fcedaa-7173-5052-a112-2a6b9e56db48,normal_validation_then_approval,0,3,1,0,1,1,2,0,0.027,0.039,0.026,0,0,0,0,0,0,0,0,0,0,473,2,749,,Validation was rerun before ordinary approval.
+NORMAL-0190,238e6389-2961-526c-86ba-0b6eb4fd5762,normal_straight_through,0,1,1,0,1,1,1,0,0.001,0.005,0.002,0,0,0,0,0,0,0,0,0,0,684,0,864,,Invoice followed a low-touch review and approval path.
+NORMAL-0191,6819491e-df1f-5a0b-ba46-4b0f68894828,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.008,0.006,0.009,0,0,0,0,0,0,0,0,0,0,324,0,883,,Invoice was exported only after approval.
+NORMAL-0192,fb840c86-9ae2-5c28-a230-9619f8cdcc95,normal_exported_after_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,58,0,591,,Invoice was exported only after approval.
+NORMAL-0193,344785a9-04a3-553b-9b62-4c35985b0302,normal_minor_correction,0,2,1,0,1,1,1,1,0.011,0.008,0.012,0,0,0,0,0,0,0,0,0,0,72,0,775,,Small pre-approval correction resolved during routine review.
+NORMAL-0194,e38076d3-8296-59a6-8b18-78614e6c93d7,normal_validation_then_approval,0,2,1,0,2,1,1,0,0.012,0.012,0.014,0,0,0,0,0,0,0,0,0,0,41,0,149,,Validation was rerun before ordinary approval.
+NORMAL-0195,9f0af41b-fadb-5b01-ac5f-5eaf9731c7bb,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,76,0,182,,Invoice followed a low-touch review and approval path.
+NORMAL-0196,0da2dbbb-cf3b-58c5-8284-3ac7122bcd12,normal_pending_review,0,0,0,0,0,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,2699,,Invoice remains in pending review with no approval or export.
+NORMAL-0197,a5339205-6055-5718-95d3-1560779009e9,normal_validation_then_approval,0,1,1,0,1,1,1,1,0.005,0.001,0.004,0,0,0,0,0,0,0,0,0,0,44,2,204,,Validation was rerun before ordinary approval.
+NORMAL-0198,2366c188-d4a6-5133-96dc-1b2edd8ec0ab,normal_minor_correction,0,2,1,0,1,1,2,0,0.030,0.021,0.026,0,0,0,0,0,0,0,0,0,0,366,1,690,,Small pre-approval correction resolved during routine review.
+NORMAL-0199,25653934-bcd2-5be2-9a61-6fd60eaeec6b,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,378,0,562,,Invoice followed a low-touch review and approval path.
+NORMAL-0200,f09ed941-b57c-56cf-9476-2b81e055ad89,normal_minor_correction,0,2,1,0,1,1,2,1,0.013,0.031,0.018,0,0,0,0,0,0,1,0,0,0,415,0,575,,Small pre-approval correction resolved during routine review.
+NORMAL-0201,a900b22b-c16b-518f-95c7-51e874da137e,normal_validation_then_approval,0,1,1,0,2,1,1,0,0.003,0.004,0.003,0,0,0,0,0,0,0,0,0,0,868,1,1169,,Validation was rerun before ordinary approval.
+NORMAL-0202,e7d58b68-e3ab-5474-ae39-9c8accc14e25,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,194,1,356,,Invoice followed a low-touch review and approval path.
+NORMAL-0203,db6cfedf-cd99-5f8c-8469-4c99601fd82f,normal_pending_review,0,1,0,0,1,2,1,0,0.005,0.006,0.007,0,0,0,0,0,0,0,0,0,0,0,0,2244,,Invoice remains in pending review with no approval or export.
+NORMAL-0204,128bc98e-4e88-598a-8469-8ca8a6771da9,normal_straight_through,0,1,1,0,1,1,1,0,0.006,0.011,0.005,0,0,0,0,0,0,0,0,0,0,736,1,952,,Invoice followed a low-touch review and approval path.
+NORMAL-0205,b9cb9586-4880-55da-92d5-88afbd790b5d,normal_minor_correction,0,2,1,0,1,3,1,0,0.017,0.009,0.018,0,0,0,0,0,0,0,0,0,0,383,0,472,,Small pre-approval correction resolved during routine review.
+NORMAL-0206,469b9c87-9ec1-59c6-b7ae-1d2304a446b3,normal_exported_after_approval,0,2,1,0,1,1,0,1,0.006,0.015,0.010,0,0,0,0,0,0,0,0,0,0,1400,2,1507,,Invoice was exported only after approval.
+NORMAL-0207,4760e510-7ce9-5421-807a-454af8aa170d,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.004,0.007,0.003,0,0,0,0,0,0,0,0,0,0,529,1,1228,,Invoice was exported only after approval.
+NORMAL-0208,ecda67b0-f23f-5cbe-8ec2-95bace82d587,normal_exported_after_approval,0,1,1,0,2,1,1,1,0.006,0.012,0.007,0,0,0,0,0,0,0,0,0,0,1046,2,1445,,Invoice was exported only after approval.
+NORMAL-0209,5c421ae1-c307-5687-b0bb-a66a914639ea,normal_exported_after_approval,0,2,1,0,1,1,1,1,0.029,0.016,0.029,0,0,0,0,0,0,0,0,0,0,1342,0,2001,,Invoice was exported only after approval.
+NORMAL-0210,d102328e-0ed5-5516-bcd6-f73a70a21c2c,normal_straight_through,0,1,1,0,1,2,0,1,0.007,0.013,0.011,0,0,0,0,0,0,0,0,0,0,1042,0,1599,,Invoice followed a low-touch review and approval path.
+NORMAL-0211,da07c923-2304-5f59-9f78-87c2c215ea1d,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,278,1,819,,Invoice followed a low-touch review and approval path.
+NORMAL-0212,caa2b047-b322-559e-98a0-67d1c10fcd33,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,759,0,850,,Invoice followed a low-touch review and approval path.
+NORMAL-0213,becfdfa1-acf4-5684-b097-75d1d9011904,normal_two_user_review,0,1,1,0,1,2,1,0,0.013,0.005,0.011,0,0,0,0,0,0,0,0,0,0,1182,0,1492,,Two reviewers participated in a normal approval workflow.
+NORMAL-0214,ea425f41-6ba9-592b-8a14-13c6cb5d8b3f,normal_minor_correction,0,1,1,0,1,1,2,0,0.005,0.016,0.007,0,0,0,0,0,0,0,0,0,0,333,2,411,,Small pre-approval correction resolved during routine review.
+NORMAL-0215,87f712a0-ac3f-589c-ba2c-bb333c824cc5,normal_validation_then_approval,0,1,1,0,2,1,2,0,0.006,0.008,0.005,0,0,0,0,0,0,0,0,0,0,198,0,480,,Validation was rerun before ordinary approval.
+NORMAL-0216,8eccbd92-235e-56be-8fda-abb863354dec,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,320,0,853,,Invoice followed a low-touch review and approval path.
+NORMAL-0217,1e044bbc-a4e0-51ce-86cf-278a7ac66123,normal_minor_correction,0,2,1,0,1,2,1,1,0.023,0.019,0.022,0,0,0,0,0,0,0,0,0,0,919,1,1456,,Small pre-approval correction resolved during routine review.
+NORMAL-0218,02d9d980-1341-5933-b95c-ccb14ddec56d,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,64,0,339,,Invoice followed a low-touch review and approval path.
+NORMAL-0219,a512dcfa-c3df-5b6a-96f4-f1a17c4214fa,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,688,1,933,,Invoice followed a low-touch review and approval path.
+NORMAL-0220,61395a9f-a099-5454-b7f7-77fabf298369,normal_validation_then_approval,0,0,1,0,1,1,2,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,98,2,264,,Validation was rerun before ordinary approval.
+NORMAL-0221,8da4a690-37d0-57ab-ab86-d7ce80e489e7,normal_minor_correction,0,1,1,0,1,2,1,0,0.015,0.010,0.014,0,1,0,0,0,0,0,0,0,0,404,1,467,,Small pre-approval correction resolved during routine review.
+NORMAL-0222,cd910a54-a5db-57af-8c8f-0f765d48f61c,normal_pending_review,0,1,0,0,0,2,1,0,0.007,0.010,0.006,0,0,0,0,0,0,0,0,0,0,0,0,605,,Invoice remains in pending review with no approval or export.
+NORMAL-0223,4bd678fc-3537-500c-9c08-8ccdaa8dbff7,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.016,0.011,0.016,0,0,0,0,0,0,0,0,0,0,1029,1,1142,,Validation was rerun before ordinary approval.
+NORMAL-0224,6b3d5884-ae21-5224-8e31-138a30997568,normal_minor_correction,0,3,1,0,1,1,2,1,0.020,0.004,0.020,0,0,0,0,0,0,0,0,0,0,1026,2,1571,,Small pre-approval correction resolved during routine review.
+NORMAL-0225,ef96d7c7-792a-546f-99fd-e34b0c06ce63,normal_two_user_review,0,2,1,0,2,2,1,0,0.004,0.009,0.005,0,0,0,0,0,0,0,0,0,0,187,0,363,,Two reviewers participated in a normal approval workflow.
+NORMAL-0226,dd8b8f43-87c9-59cb-a9cb-77c2fe597cb7,normal_minor_correction,0,1,1,0,1,1,1,0,0.013,0.006,0.014,0,1,0,0,0,0,0,0,0,0,396,0,721,,Small pre-approval correction resolved during routine review.
+NORMAL-0227,d4655610-e93b-5436-b17b-5560f42f6e53,normal_pending_review,0,2,0,0,1,1,2,0,0.008,0.010,0.006,0,0,0,0,0,0,0,0,0,0,0,1,1707,,Invoice remains in pending review with no approval or export.
+NORMAL-0228,fb632ccb-378e-5e3e-8b92-6536b5e9be7b,normal_validation_then_approval,0,0,1,0,2,2,1,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,199,2,301,,Validation was rerun before ordinary approval.
+NORMAL-0229,986dd055-b192-585a-92ff-f64a5cdce645,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1414,0,1758,,Invoice followed a low-touch review and approval path.
+NORMAL-0230,0c6c0798-d098-59a9-8b02-84a26e719792,normal_validation_then_approval,0,3,1,0,1,1,1,0,0.012,0.013,0.013,0,0,0,0,0,0,0,0,0,0,684,2,884,,Validation was rerun before ordinary approval.
+NORMAL-0231,426c9b23-146c-5557-88a0-cc4a5927792a,normal_minor_correction,0,1,1,0,1,1,2,1,0.007,0.002,0.007,0,1,0,0,0,0,0,0,0,0,544,2,1021,,Small pre-approval correction resolved during routine review.
+NORMAL-0232,b280ef1e-ebc5-5792-8bbd-f9f642015f50,normal_pending_review,0,0,0,0,1,1,2,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,1,1185,,Invoice remains in pending review with no approval or export.
+NORMAL-0233,4b3affec-f1dd-5069-a701-c193985eff59,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,0,1,2594,,Invoice remains in pending review with no approval or export.
+NORMAL-0234,1c45c1db-09df-5b7d-b6e9-ea068a5e254d,normal_straight_through,0,0,1,0,1,2,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,80,0,332,,Invoice followed a low-touch review and approval path.
+NORMAL-0235,889616b1-07e3-5707-834d-3d7921c8465b,normal_validation_then_approval,0,2,1,0,1,1,2,0,0.014,0.010,0.014,0,0,0,0,0,0,0,0,0,0,1436,2,1522,,Validation was rerun before ordinary approval.
+NORMAL-0236,49b1aa3a-9a05-59e0-97a4-2fc8357cf92a,normal_validation_then_approval,0,1,1,0,2,1,2,0,0.003,0.009,0.003,0,0,0,0,0,0,0,0,0,0,400,0,537,,Validation was rerun before ordinary approval.
+NORMAL-0237,af4e6632-9e22-5ee9-bf16-72f7b082c0c5,normal_straight_through,0,1,1,0,1,1,1,1,0.010,0.015,0.013,0,0,0,0,0,0,0,0,0,0,204,1,267,,Invoice followed a low-touch review and approval path.
+NORMAL-0238,84c51a44-79fe-5558-bba3-d38c3e455ea4,normal_minor_correction,0,2,1,0,1,2,1,0,0.005,0.017,0.009,0,0,0,0,0,0,1,0,0,0,80,1,141,,Small pre-approval correction resolved during routine review.
+NORMAL-0239,025c37d0-bdc5-5626-838a-4d823f55ad1b,normal_straight_through,0,1,1,0,1,1,0,0,0.007,0.008,0.004,0,0,0,0,0,0,0,0,0,0,37,2,228,,Invoice followed a low-touch review and approval path.
+NORMAL-0240,3b0a9881-ae89-58f0-b0e1-f34bd128ac28,normal_minor_correction,0,2,1,0,1,2,1,0,0.008,0.026,0.009,0,0,0,0,0,0,0,0,0,0,84,1,262,,Small pre-approval correction resolved during routine review.
+NORMAL-0241,61995a21-0a71-5cb2-9e2c-6ef6a2f54a2a,normal_validation_then_approval,0,1,1,0,1,1,2,1,0.008,0.007,0.006,0,0,0,0,0,0,0,0,0,0,215,0,547,,Validation was rerun before ordinary approval.
+NORMAL-0242,a8464351-e594-53b4-a528-f9be427e8924,normal_exported_after_approval,0,1,1,0,1,3,0,1,0.012,0.011,0.015,0,0,0,0,0,0,0,0,0,0,234,1,411,,Invoice was exported only after approval.
+NORMAL-0243,df16bcb1-3fc8-537e-935e-68c3268759f5,normal_minor_correction,0,1,1,0,1,1,2,0,0.012,0.014,0.015,0,0,0,0,0,0,0,0,0,0,575,0,665,,Small pre-approval correction resolved during routine review.
+NORMAL-0244,e0e5bc62-37b6-50c4-af1c-164727a9d0ed,normal_exported_after_approval,0,1,1,0,2,1,1,1,0.012,0.011,0.014,0,0,0,0,0,0,0,0,0,0,145,2,580,,Invoice was exported only after approval.
+NORMAL-0245,cc3d2027-5e56-5829-890c-d080edf3421f,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,93,1,514,,Invoice followed a low-touch review and approval path.
+NORMAL-0246,adb8958b-ebc4-551f-b8f7-5d606c15e43e,normal_straight_through,0,2,1,0,1,1,2,0,0.014,0.019,0.015,0,0,0,0,0,0,0,0,0,0,940,0,1121,,Invoice followed a low-touch review and approval path.
+NORMAL-0247,f5575f32-0e99-5928-b060-e0d22c05a0c7,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,793,0,975,,Invoice followed a low-touch review and approval path.
+NORMAL-0248,75539eb4-1f10-5945-9a3f-812c59fd77e3,normal_minor_correction,0,1,1,0,1,1,1,0,0.013,0.005,0.011,0,0,0,0,0,0,0,0,0,0,469,1,702,,Small pre-approval correction resolved during routine review.
+NORMAL-0249,5c1cfe21-e1d9-586d-9692-51a6cc6e70ce,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,810,0,1149,,Invoice followed a low-touch review and approval path.
+NORMAL-0250,72ca1e4e-6aa3-54b7-96c8-50d13f4651fc,normal_exported_after_approval,0,1,1,0,2,1,0,1,0.005,0.014,0.010,0,0,0,0,0,0,0,0,0,0,354,0,427,,Invoice was exported only after approval.
+NORMAL-0251,a52f1741-922d-5416-a137-c6c2d2edc97e,normal_straight_through,0,2,1,0,1,1,0,1,0.010,0.008,0.012,0,0,0,0,0,0,0,0,0,0,70,0,676,,Invoice followed a low-touch review and approval path.
+NORMAL-0252,a35bf3f1-d8ae-5381-b066-c0a33018b71f,normal_pending_review,0,2,0,0,1,1,0,0,0.024,0.024,0.023,0,0,0,0,0,0,0,0,0,0,0,2,957,,Invoice remains in pending review with no approval or export.
+NORMAL-0253,c1ef3a1d-174d-57c3-b70b-a97690d0fae9,normal_exported_after_approval,0,1,1,0,1,2,1,1,0.011,0.010,0.012,0,0,0,0,0,0,0,0,0,0,1388,2,1417,,Invoice was exported only after approval.
+NORMAL-0254,7e1b3c4b-1923-56f3-b5ca-624dbb3adffe,normal_minor_correction,0,2,1,0,1,1,2,1,0.019,0.007,0.018,0,0,0,0,0,0,0,0,0,0,134,0,813,,Small pre-approval correction resolved during routine review.
+NORMAL-0255,87ec8053-298c-585a-8f68-63151b678e7f,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,40,1,376,,Invoice followed a low-touch review and approval path.
+NORMAL-0256,c85d4604-2e1d-5b50-8ad5-e8d0212dbbca,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1435,1,1584,,Invoice followed a low-touch review and approval path.
+NORMAL-0257,93d19b8c-2b45-5ad7-ba59-795ceca37393,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1894,,Invoice remains in pending review with no approval or export.
+NORMAL-0258,f1fb5480-0b3c-541b-ab9e-ca0564098ba2,normal_minor_correction,0,1,1,0,1,1,2,0,0.005,0.004,0.005,0,0,0,0,0,0,1,0,0,0,227,0,482,,Small pre-approval correction resolved during routine review.
+NORMAL-0259,21812fc0-f51a-5e4d-909b-48f49ecf7fd2,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,138,0,164,,Invoice followed a low-touch review and approval path.
+NORMAL-0260,20105407-b583-5ba9-aca5-908f061b0c55,normal_exported_after_approval,0,1,1,0,2,1,0,1,0.008,0.007,0.010,0,0,0,0,0,0,0,0,0,0,29,0,137,,Invoice was exported only after approval.
+NORMAL-0261,9f1d2a23-a1f8-5764-9c37-685de7020f24,normal_two_user_review,0,1,1,0,1,3,2,0,0.006,0.017,0.010,0,0,0,0,0,0,0,0,0,0,1417,0,1747,,Two reviewers participated in a normal approval workflow.
+NORMAL-0262,70960229-035a-571c-b837-3c62c3719f21,normal_two_user_review,0,1,1,0,1,2,2,1,0.007,0.007,0.009,0,0,0,0,0,0,0,0,0,0,402,2,530,,Two reviewers participated in a normal approval workflow.
+NORMAL-0263,9877b7a3-b3d9-59ce-9bed-69d958c7826f,normal_exported_after_approval,0,2,1,0,1,2,0,1,0.014,0.010,0.012,0,0,0,0,0,0,0,0,0,0,891,0,1188,,Invoice was exported only after approval.
+NORMAL-0264,34f3ca2d-016c-5229-8b23-b6bcc6703a96,normal_two_user_review,0,2,1,0,2,2,1,0,0.025,0.022,0.021,0,0,0,0,0,0,0,0,0,0,84,1,308,,Two reviewers participated in a normal approval workflow.
+NORMAL-0265,9d8e3ec8-6b5e-5eae-9f88-337391805578,normal_straight_through,0,1,1,0,1,1,0,0,0.007,0.005,0.004,0,0,0,0,0,0,0,0,0,0,879,0,1124,,Invoice followed a low-touch review and approval path.
+NORMAL-0266,7ee6e891-baa3-539e-9e8f-8c905cb52313,normal_straight_through,0,1,1,0,1,1,1,0,0.009,0.007,0.011,0,0,0,0,0,0,0,0,0,0,63,0,298,,Invoice followed a low-touch review and approval path.
+NORMAL-0267,889fc44b-df89-5d0e-aa18-36db2604ff47,normal_pending_review,0,1,0,0,0,1,1,0,0.006,0.008,0.008,0,0,0,0,0,0,0,0,0,0,0,0,529,,Invoice remains in pending review with no approval or export.
+NORMAL-0268,ecd54daf-8a98-5b1f-bc09-d1c03ef9130d,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,123,0,146,,Invoice followed a low-touch review and approval path.
+NORMAL-0269,394e150b-0446-51ba-8ccc-9e9a43ba8b59,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1018,,Invoice remains in pending review with no approval or export.
+NORMAL-0270,0cd019e3-06e8-5061-a9e6-a4a87e6ee77a,normal_validation_then_approval,0,2,1,0,2,2,1,1,0.013,0.013,0.010,0,0,0,0,0,0,0,0,0,0,880,0,951,,Validation was rerun before ordinary approval.
+NORMAL-0271,18a38482-1b95-5743-8dde-0cb7c9885783,normal_exported_after_approval,0,2,1,0,2,1,0,1,0.031,0.011,0.025,0,0,0,0,0,0,0,0,0,0,18,0,676,,Invoice was exported only after approval.
+NORMAL-0272,3ccc7fbf-c783-5703-b5aa-391142e0c3a6,normal_minor_correction,0,3,1,0,1,1,2,0,0.028,0.009,0.024,0,0,0,0,0,0,0,0,0,0,315,0,488,,Small pre-approval correction resolved during routine review.
+NORMAL-0273,8a78071f-bf12-57cc-90d7-b7b977ce4d37,normal_minor_correction,0,2,1,0,1,1,1,0,0.015,0.004,0.013,0,0,0,0,0,0,1,0,0,0,159,2,199,,Small pre-approval correction resolved during routine review.
+NORMAL-0274,0774d95a-ebcf-535d-8850-eea29a2572a9,normal_validation_then_approval,0,1,1,0,2,1,2,0,0.008,0.011,0.010,0,0,0,0,0,0,0,0,0,0,1073,2,1286,,Validation was rerun before ordinary approval.
+NORMAL-0275,85c7e91a-3b13-594d-90a4-07ff6e9aa377,normal_minor_correction,0,2,1,0,1,1,1,0,0.029,0.026,0.028,0,0,0,0,0,0,0,0,0,0,929,1,1214,,Small pre-approval correction resolved during routine review.
+NORMAL-0276,ebce3483-6000-57eb-8999-6fb17a4c6563,normal_straight_through,0,1,1,0,1,1,1,0,0.005,0.007,0.004,0,0,0,0,0,0,0,0,0,0,404,0,614,,Invoice followed a low-touch review and approval path.
+NORMAL-0277,469b38cb-6765-5c5b-a50d-485aaeff824e,normal_two_user_review,0,1,1,0,1,2,2,1,0.008,0.013,0.011,0,0,0,0,0,0,0,0,0,0,825,1,913,,Two reviewers participated in a normal approval workflow.
+NORMAL-0278,3f92f603-a136-5d1e-8687-f1124e5595b6,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,315,0,651,,Invoice followed a low-touch review and approval path.
+NORMAL-0279,db2bca31-a7db-53bc-bf56-39905f6dfa3b,normal_minor_correction,0,2,1,0,1,1,2,0,0.004,0.013,0.004,0,0,0,0,0,1,0,0,0,0,455,0,633,,Small pre-approval correction resolved during routine review.
+NORMAL-0280,a6624875-31cc-5ccd-8dd4-0048c8d12f6a,normal_validation_then_approval,0,2,1,0,1,2,1,1,0.012,0.014,0.011,0,0,0,0,0,0,0,0,0,0,914,1,1093,,Validation was rerun before ordinary approval.
+NORMAL-0281,b0b57318-9c52-5e58-9e49-c47a26f3db2c,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,1,0,0,0,0,1194,0,1468,,Invoice followed a low-touch review and approval path.
+NORMAL-0282,9012d79c-187d-5f0c-93c4-7c3fe7831680,normal_minor_correction,0,1,1,0,1,2,2,0,0.015,0.012,0.016,0,0,0,0,0,0,1,0,0,0,445,3,766,,Small pre-approval correction resolved during routine review.
+NORMAL-0283,37597184-49e6-5609-a0df-8430ca86cc9d,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,1281,,Invoice remains in pending review with no approval or export.
+NORMAL-0284,167a6652-134d-5027-8a0b-ea9013896986,normal_pending_review,0,0,0,0,0,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,0,0,34,,Invoice remains in pending review with no approval or export.
+NORMAL-0285,57dd55b1-57f3-5ea5-a7a4-f4c77c1fcf87,normal_two_user_review,0,2,1,0,2,2,1,0,0.008,0.010,0.007,0,0,0,0,0,0,0,0,0,0,323,0,660,,Two reviewers participated in a normal approval workflow.
+NORMAL-0286,34453749-b624-5604-88b7-cac4449b9d03,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1364,0,1529,,Invoice followed a low-touch review and approval path.
+NORMAL-0287,a33310f7-c4bf-5f67-81ac-2ab9b23ef037,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,108,0,337,,Invoice followed a low-touch review and approval path.
+NORMAL-0288,f4b18b4d-2a8c-5789-bcaf-2fc410ca1d36,normal_straight_through,0,1,1,0,1,1,0,1,0.007,0.014,0.010,0,0,0,0,0,0,0,0,0,0,324,1,694,,Invoice followed a low-touch review and approval path.
+NORMAL-0289,8a27f6c4-9512-5a26-bccd-86d3f854f78e,normal_minor_correction,0,2,1,0,1,1,2,0,0.004,0.024,0.007,0,0,0,0,0,0,0,0,0,0,22,2,158,,Small pre-approval correction resolved during routine review.
+NORMAL-0290,d39f9594-048a-58f8-87a0-c93a6235159e,normal_minor_correction,0,1,1,0,1,1,1,0,0.009,0.015,0.010,0,0,0,0,0,0,0,0,0,0,384,0,676,,Small pre-approval correction resolved during routine review.
+NORMAL-0291,94f0b291-a0fc-5efc-a7d4-d3caa323a4e0,normal_straight_through,0,1,1,0,1,1,1,0,0.005,0.002,0.006,0,0,0,0,0,0,0,0,0,0,125,0,372,,Invoice followed a low-touch review and approval path.
+NORMAL-0292,fce6e297-5ab9-5360-8961-ce80a52014dd,normal_straight_through,0,1,1,0,1,2,1,0,0.005,0.012,0.005,0,0,0,0,0,0,0,0,0,0,1343,0,1444,,Invoice followed a low-touch review and approval path.
+NORMAL-0293,d5dd91fb-afe6-5a1a-bc96-9ecbe97bf81a,normal_straight_through,0,1,1,0,1,1,0,0,0.001,0.009,0.000,0,0,0,0,0,0,0,0,0,0,73,2,329,,Invoice followed a low-touch review and approval path.
+NORMAL-0294,49f70bc8-9552-5f07-be35-4c10bf5e5ff7,normal_minor_correction,0,2,1,0,1,2,2,0,0.022,0.015,0.019,0,0,0,0,0,0,0,0,0,0,371,1,593,,Small pre-approval correction resolved during routine review.
+NORMAL-0295,0d7ab04e-4b98-5503-9ca1-91fcc9bbe814,normal_minor_correction,0,3,1,0,1,1,1,0,0.016,0.024,0.019,0,0,0,0,0,0,0,0,0,0,193,1,395,,Small pre-approval correction resolved during routine review.
+NORMAL-0296,7ad4f378-b945-5595-8ad7-3867a0e63738,normal_pending_review,0,2,0,0,0,2,1,0,0.017,0.010,0.018,0,0,0,0,0,0,0,0,0,0,0,2,1003,,Invoice remains in pending review with no approval or export.
+NORMAL-0297,17970b02-c5ba-5762-8034-38ac1677884a,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,28,1,182,,Invoice followed a low-touch review and approval path.
+NORMAL-0298,96a57ee4-5f15-5cd1-8552-c7dffa99d4c0,normal_two_user_review,0,1,1,0,2,2,1,0,0.007,0.007,0.008,0,0,0,0,0,0,0,0,0,0,510,0,734,,Two reviewers participated in a normal approval workflow.
+NORMAL-0299,0ca9ba0e-cef0-5382-9b0f-93e3d08571ab,normal_minor_correction,0,1,1,0,1,1,1,0,0.012,0.006,0.009,0,0,0,0,0,0,0,0,0,0,1169,0,1335,,Small pre-approval correction resolved during routine review.
+NORMAL-0300,e45e42b4-8239-5059-bde5-44467f77fe30,normal_pending_review,0,1,0,0,1,1,1,0,0.005,0.010,0.005,0,0,0,0,0,0,0,0,0,0,0,2,1533,,Invoice remains in pending review with no approval or export.
+NORMAL-0301,87b664f2-1eeb-50f1-94e1-815f5bf36457,normal_two_user_review,0,2,1,0,1,2,1,1,0.020,0.020,0.019,0,0,0,0,0,0,0,0,0,0,188,2,566,,Two reviewers participated in a normal approval workflow.
+NORMAL-0302,e9c1c9c6-459a-5d44-90c1-7a2c72da6ca9,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,40,0,250,,Invoice followed a low-touch review and approval path.
+NORMAL-0303,f894d8e9-d48f-5ab4-b6ed-f51fe9313fed,normal_two_user_review,0,3,1,0,2,3,2,0,0.029,0.003,0.026,0,0,0,0,0,0,0,0,0,0,431,1,504,,Two reviewers participated in a normal approval workflow.
+NORMAL-0304,d44afba4-b990-5a61-b809-41dc8472084b,normal_minor_correction,0,1,1,0,1,1,2,0,0.001,0.009,0.003,0,0,0,0,0,0,1,0,0,0,177,1,190,,Small pre-approval correction resolved during routine review.
+NORMAL-0305,cdfde288-8916-5305-9e88-63d70c69641e,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,810,1,917,,Invoice followed a low-touch review and approval path.
+NORMAL-0306,02ecc11c-522c-563c-9cf4-2ca8f994dd7e,normal_straight_through,0,2,1,0,1,1,0,0,0.006,0.010,0.004,0,0,0,0,0,0,0,0,0,0,87,0,295,,Invoice followed a low-touch review and approval path.
+NORMAL-0307,ff7aeb20-0539-53ec-8398-53e1ced10c74,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1491,,Invoice remains in pending review with no approval or export.
+NORMAL-0308,e923bb36-3b8d-58ad-bcc5-e567458e9961,normal_pending_review,0,1,0,0,0,1,2,0,0.006,0.005,0.008,0,0,0,0,0,0,0,0,0,0,0,1,406,,Invoice remains in pending review with no approval or export.
+NORMAL-0309,4e540e19-0099-553c-bbb8-d8e6b2f71b33,normal_minor_correction,0,3,1,0,1,1,2,1,0.022,0.018,0.022,0,0,0,0,0,0,0,0,0,0,62,0,533,,Small pre-approval correction resolved during routine review.
+NORMAL-0310,3ee3720a-bc9f-5a15-a20b-cb3c0277c68f,normal_exported_after_approval,0,1,1,0,1,3,0,1,0.005,0.008,0.003,0,0,0,0,0,0,0,0,0,0,1112,1,1226,,Invoice was exported only after approval.
+NORMAL-0311,ea7258bd-2f84-5b26-bae2-952e56f1b393,normal_pending_review,0,1,0,0,1,2,1,0,0.016,0.005,0.011,0,0,0,0,0,0,0,0,0,0,0,0,57,,Invoice remains in pending review with no approval or export.
+NORMAL-0312,ad4ae95e-5b07-5915-9479-63f50f1f9fff,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,588,0,639,,Invoice followed a low-touch review and approval path.
+NORMAL-0313,f2d1b2b4-f032-5136-8d8a-f5240caf3170,normal_pending_review,0,1,0,0,1,1,1,0,0.003,0.003,0.002,0,0,0,0,0,0,0,0,0,0,0,1,936,,Invoice remains in pending review with no approval or export.
+NORMAL-0314,d1056e4e-e678-55e2-85e3-7691d8eaf628,normal_minor_correction,0,1,1,0,1,1,1,0,0.003,0.005,0.001,0,0,0,0,0,0,0,0,0,0,1149,1,1479,,Small pre-approval correction resolved during routine review.
+NORMAL-0315,5c80302c-ef27-5e96-80c6-015dde79dff4,normal_two_user_review,0,2,1,0,1,2,2,1,0.025,0.032,0.026,0,0,0,0,0,0,0,0,0,0,756,1,1383,,Two reviewers participated in a normal approval workflow.
+NORMAL-0316,e5578700-7757-5cd9-a59b-470b0c7d9f6d,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,169,1,440,,Invoice was exported only after approval.
+NORMAL-0317,a36fc68c-7420-5209-95fc-3a82ede9f456,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,483,1,662,,Invoice followed a low-touch review and approval path.
+NORMAL-0318,f85060d2-8eb6-5dab-94cd-6712987a7e2c,normal_minor_correction,0,1,1,0,1,1,1,0,0.011,0.012,0.010,0,0,0,0,0,0,0,0,0,0,27,0,42,,Small pre-approval correction resolved during routine review.
+NORMAL-0319,204389ce-35d3-553a-8b8d-85b9c9361a99,normal_straight_through,0,2,1,0,1,2,0,0,0.010,0.009,0.010,0,0,0,0,0,0,0,0,0,0,1057,0,1273,,Invoice followed a low-touch review and approval path.
+NORMAL-0320,14744d43-0ac7-503c-9c42-d74cf010c575,normal_pending_review,0,0,0,0,0,2,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,2713,,Invoice remains in pending review with no approval or export.
+NORMAL-0321,c65a39df-ceca-59ad-9fee-e290d3fd9e4b,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.016,0.012,0.016,0,0,0,0,0,0,0,0,0,0,349,0,560,,Validation was rerun before ordinary approval.
+NORMAL-0322,b01f94a8-53ce-5803-8f57-75fa44a8591e,normal_straight_through,0,1,1,0,1,1,0,1,0.001,0.013,0.006,0,0,0,0,0,0,0,0,0,0,130,1,540,,Invoice followed a low-touch review and approval path.
+NORMAL-0323,0113dc12-fe6a-505c-8ca6-a9953d99db3b,normal_minor_correction,0,2,1,0,1,1,1,1,0.027,0.016,0.024,0,0,0,0,0,0,0,0,0,0,389,0,567,,Small pre-approval correction resolved during routine review.
+NORMAL-0324,74e4c440-bf88-5519-b279-a8dfe4303235,normal_two_user_review,0,1,1,0,1,2,2,1,0.006,0.016,0.006,0,0,0,0,0,0,0,0,0,0,912,1,1463,,Two reviewers participated in a normal approval workflow.
+NORMAL-0325,ae866713-f4cd-5915-9b47-078618b30545,normal_minor_correction,0,1,1,0,1,1,1,1,0.005,0.007,0.002,0,0,0,0,0,0,0,0,0,0,44,2,287,,Small pre-approval correction resolved during routine review.
+NORMAL-0326,e721ea65-32c1-59d5-b8b6-9dc0f9034396,normal_straight_through,0,1,1,0,1,1,1,0,0.005,0.014,0.007,0,0,0,0,0,0,0,0,0,0,719,0,1069,,Invoice followed a low-touch review and approval path.
+NORMAL-0327,ab8c5965-3550-5899-9c73-c6dbd853f557,normal_minor_correction,0,2,1,0,1,1,1,1,0.022,0.006,0.021,1,0,0,0,0,0,0,0,0,0,160,1,645,,Small pre-approval correction resolved during routine review.
+NORMAL-0328,7ae6cf2b-40c4-520e-9011-afce71bbbbd5,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1295,1,1578,,Invoice followed a low-touch review and approval path.
+NORMAL-0329,e233ea6a-58bc-5cb1-a7d0-5552e4bd8d27,normal_exported_after_approval,0,1,1,0,1,2,1,1,0.009,0.004,0.006,0,0,0,0,0,0,0,0,0,0,551,1,932,,Invoice was exported only after approval.
+NORMAL-0330,dec04046-2bef-504f-a32f-050ebc3a8079,normal_exported_after_approval,0,1,1,0,2,2,1,1,0.003,0.007,0.005,0,0,0,0,0,0,0,0,0,0,213,0,898,,Invoice was exported only after approval.
+NORMAL-0331,72e33766-e245-5d01-aa8e-96d2bdf9000d,normal_minor_correction,0,2,1,0,1,1,2,1,0.014,0.006,0.012,0,0,0,0,0,0,0,0,0,0,467,0,808,,Small pre-approval correction resolved during routine review.
+NORMAL-0332,0a1db4e3-05fc-5e94-8ed4-1b813868058a,normal_pending_review,0,1,0,0,1,1,1,0,0.007,0.011,0.006,0,0,0,0,0,0,0,0,0,0,0,2,2035,,Invoice remains in pending review with no approval or export.
+NORMAL-0333,12bd6d53-3297-5ded-bb00-4a67bb222d0d,normal_exported_after_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,311,0,713,,Invoice was exported only after approval.
+NORMAL-0334,e99f9b7c-d60e-53ef-a89b-d0b005fa2e76,normal_validation_then_approval,0,2,1,0,1,1,2,1,0.004,0.011,0.005,0,0,0,0,0,0,0,0,0,0,627,0,744,,Validation was rerun before ordinary approval.
+NORMAL-0335,9adaa4d4-81a9-53b1-8889-944ed1eb7ac6,normal_two_user_review,0,2,1,0,2,3,1,1,0.018,0.026,0.019,0,0,0,0,0,0,0,0,0,0,832,0,1167,,Two reviewers participated in a normal approval workflow.
+NORMAL-0336,80ea516c-6742-556b-8785-4bdda0837aeb,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.006,0.009,0.004,0,0,0,0,0,0,0,0,0,0,750,0,1019,,Validation was rerun before ordinary approval.
+NORMAL-0337,58f969df-26ca-55af-9df1-f49f666e3593,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,193,,Invoice remains in pending review with no approval or export.
+NORMAL-0338,02e4abbe-91b2-5f04-939a-7d7d8c021e23,normal_minor_correction,0,1,1,0,1,1,2,1,0.002,0.006,0.004,0,0,0,0,0,0,0,0,0,0,1191,1,1312,,Small pre-approval correction resolved during routine review.
+NORMAL-0339,2d405f5a-b77d-5168-a469-410262357a8f,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,135,0,311,,Invoice followed a low-touch review and approval path.
+NORMAL-0340,cb2d6105-e846-5021-8b08-cf740e2d14f2,normal_minor_correction,0,1,1,0,1,1,1,1,0.006,0.006,0.007,0,0,0,0,0,0,0,0,0,0,77,0,193,,Small pre-approval correction resolved during routine review.
+NORMAL-0341,02018911-49dd-57c0-a6ff-3d3546411b56,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,968,1,1264,,Invoice followed a low-touch review and approval path.
+NORMAL-0342,f87fcf8b-d04c-5119-9fc3-61deea5bd3be,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,2,703,,Invoice remains in pending review with no approval or export.
+NORMAL-0343,b530e2dd-cd4a-56a5-92c1-7caa497b6992,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,191,0,489,,Invoice followed a low-touch review and approval path.
+NORMAL-0344,f399bf59-4c2f-54f0-a300-47c2ca43e456,normal_minor_correction,0,1,1,0,1,1,1,0,0.010,0.006,0.008,0,0,0,0,0,0,0,0,0,0,88,0,139,,Small pre-approval correction resolved during routine review.
+NORMAL-0345,54532aa9-1d4f-57e5-a6ed-48e0aea36ee5,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,31,0,201,,Invoice followed a low-touch review and approval path.
+NORMAL-0346,637b2b80-46a2-5054-ab7a-c4776f8680dd,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,411,1,549,,Invoice followed a low-touch review and approval path.
+NORMAL-0347,045383ad-017c-551a-b3ae-dd43e15c08eb,normal_pending_review,0,2,0,0,1,1,1,0,0.020,0.011,0.022,0,0,0,0,0,0,0,0,0,0,0,1,1124,,Invoice remains in pending review with no approval or export.
+NORMAL-0348,4c7d4f29-c8dc-505f-b6cd-28cef1e3af50,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1009,0,1406,,Invoice was exported only after approval.
+NORMAL-0349,3987666b-9f5c-5392-9d75-b0b096f8b89e,normal_exported_after_approval,0,0,1,0,1,2,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,57,0,743,,Invoice was exported only after approval.
+NORMAL-0350,e8bb1ebd-6d10-57c9-9723-8958210a5d9d,normal_validation_then_approval,0,1,1,0,2,1,2,1,0.007,0.016,0.011,0,0,0,0,0,0,0,0,0,0,890,1,1608,,Validation was rerun before ordinary approval.
+NORMAL-0351,5be5b6d1-af9e-5f4c-824e-01e6b81adc24,normal_two_user_review,0,2,1,0,2,2,2,1,0.016,0.008,0.012,0,0,0,0,0,0,0,0,0,0,421,1,916,,Two reviewers participated in a normal approval workflow.
+NORMAL-0352,eb87dd0c-029f-5470-8d69-7b5240ba7115,normal_minor_correction,0,2,1,0,1,2,2,0,0.018,0.008,0.017,1,0,0,0,0,0,0,0,0,0,56,1,93,,Small pre-approval correction resolved during routine review.
+NORMAL-0353,156c5d4c-93e0-5ca6-a874-89f0691ca725,normal_minor_correction,0,1,1,0,1,2,2,0,0.011,0.009,0.009,0,0,0,0,0,0,0,0,0,0,441,0,631,,Small pre-approval correction resolved during routine review.
+NORMAL-0354,f3b27206-fd93-5c79-af8b-e1b7b9b4a0b3,normal_validation_then_approval,0,2,1,0,2,1,1,1,0.014,0.002,0.013,0,0,0,0,0,0,0,0,0,0,71,1,160,,Validation was rerun before ordinary approval.
+NORMAL-0355,640431ad-5f72-5014-8c51-830b9bee5119,normal_pending_review,0,1,0,0,1,1,2,0,0.001,0.012,0.005,0,0,0,0,0,0,0,0,0,0,0,1,122,,Invoice remains in pending review with no approval or export.
+NORMAL-0356,0982f0ef-863d-53ce-91bc-72c501d71420,normal_two_user_review,0,2,1,0,1,2,2,1,0.019,0.024,0.020,0,0,0,0,0,0,0,0,0,0,228,0,380,,Two reviewers participated in a normal approval workflow.
+NORMAL-0357,a994d44c-b0c0-57f2-a916-233343219e6a,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,300,2,949,,Invoice was exported only after approval.
+NORMAL-0358,609945db-7685-5f0c-a1b2-e36bdcc6a217,normal_minor_correction,0,2,1,0,1,1,1,1,0.007,0.016,0.006,0,0,0,0,0,0,0,0,0,0,1004,1,1108,,Small pre-approval correction resolved during routine review.
+NORMAL-0359,d9077834-a8e2-5ef8-a460-e35cd4644a03,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,338,1,444,,Invoice followed a low-touch review and approval path.
+NORMAL-0360,41958c22-a577-599f-8776-d46ead52601e,normal_validation_then_approval,0,1,1,0,1,1,1,1,0.002,0.006,0.001,0,0,0,0,0,0,0,0,0,0,489,0,694,,Validation was rerun before ordinary approval.
+NORMAL-0361,ea9915c0-b74b-58ea-a877-2565e20b5161,normal_minor_correction,0,1,1,0,1,2,1,0,0.003,0.010,0.005,0,0,0,0,0,0,0,0,0,0,741,1,756,,Small pre-approval correction resolved during routine review.
+NORMAL-0362,774c5230-9ed3-56f7-ac23-a30f5484a073,normal_minor_correction,0,1,1,0,1,1,2,0,0.011,0.003,0.008,0,0,0,0,0,0,0,0,0,0,1208,0,1235,,Small pre-approval correction resolved during routine review.
+NORMAL-0363,44a309ed-43ea-5b51-a4c2-ad2e55bb6272,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,361,0,550,,Invoice was exported only after approval.
+NORMAL-0364,5a2f2bb4-ce26-5d41-ad62-bfee13362c4c,normal_exported_after_approval,0,0,1,0,2,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,74,0,351,,Invoice was exported only after approval.
+NORMAL-0365,7669ab82-e4c4-5914-b712-04aa54ba1430,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,261,0,606,,Invoice followed a low-touch review and approval path.
+NORMAL-0366,10946021-c708-52ab-a7e0-7a19ddedeec9,normal_minor_correction,0,1,1,0,1,1,1,1,0.008,0.016,0.012,0,0,0,0,0,0,0,0,0,0,302,1,715,,Small pre-approval correction resolved during routine review.
+NORMAL-0367,3a374261-276b-5ac1-b540-79295db77a44,normal_exported_after_approval,0,1,1,0,2,1,1,1,0.007,0.007,0.010,0,0,0,0,0,0,0,0,0,0,177,1,825,,Invoice was exported only after approval.
+NORMAL-0368,a124772f-82b4-59a3-9510-e40eded181f6,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,221,0,547,,Invoice followed a low-touch review and approval path.
+NORMAL-0369,39063441-c3f8-5d55-a464-c90f16763735,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,270,,Invoice remains in pending review with no approval or export.
+NORMAL-0370,3d19be42-40f7-5e4b-9106-f11165cc0b70,normal_validation_then_approval,0,2,1,0,1,1,2,1,0.029,0.019,0.026,0,0,0,0,0,0,0,0,0,0,813,0,1324,,Validation was rerun before ordinary approval.
+NORMAL-0371,76258fe9-e19e-5918-9877-579d21647f36,normal_straight_through,0,1,1,0,1,1,1,0,0.014,0.004,0.012,0,0,0,0,0,0,0,0,0,0,27,1,250,,Invoice followed a low-touch review and approval path.
+NORMAL-0372,95323eff-b2e2-551b-b459-1de0ea763043,normal_pending_review,0,0,0,0,1,2,2,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1577,,Invoice remains in pending review with no approval or export.
+NORMAL-0373,a30556c2-f6c9-5522-abfb-7caca413f685,normal_minor_correction,0,2,1,0,1,1,1,0,0.027,0.026,0.029,0,0,0,0,0,0,0,0,0,0,1206,0,1308,,Small pre-approval correction resolved during routine review.
+NORMAL-0374,e7c2b5bf-2494-54dd-a051-594fb6a73945,normal_minor_correction,0,1,1,0,1,1,2,0,0.005,0.007,0.003,0,0,0,0,0,0,0,0,0,0,174,1,310,,Small pre-approval correction resolved during routine review.
+NORMAL-0375,748a4606-735c-5534-b0a1-e3fa3c0a4def,normal_straight_through,0,1,1,0,1,1,0,0,0.013,0.012,0.015,0,0,0,0,0,0,0,0,0,0,479,0,708,,Invoice followed a low-touch review and approval path.
+NORMAL-0376,5006cb29-a9be-50f0-b9bf-9b629208366c,normal_minor_correction,0,1,1,0,1,1,1,0,0.015,0.006,0.013,0,1,0,0,0,0,0,0,0,0,595,1,913,,Small pre-approval correction resolved during routine review.
+NORMAL-0377,64286843-c898-5637-b6c0-837cd951c884,normal_minor_correction,0,2,1,0,1,2,1,0,0.015,0.005,0.011,0,0,0,0,0,0,1,0,0,0,373,1,449,,Small pre-approval correction resolved during routine review.
+NORMAL-0378,fe1d46c2-fcc4-5107-9434-f5fb4b6308ac,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,649,0,962,,Invoice followed a low-touch review and approval path.
+NORMAL-0379,bcce112d-06af-5364-bc5a-65d8ce0b5baa,normal_exported_after_approval,0,1,1,0,1,1,2,1,0.008,0.011,0.006,0,0,0,0,0,0,0,0,0,0,88,0,653,,Invoice was exported only after approval.
+NORMAL-0380,a8e084cc-ab73-59a3-a617-256b92baf6f7,normal_pending_review,0,1,0,0,1,1,2,0,0.009,0.007,0.009,0,0,0,0,0,0,0,0,0,0,0,1,2225,,Invoice remains in pending review with no approval or export.
+NORMAL-0381,afb79635-f5ac-539b-9224-1bd695630a1b,normal_validation_then_approval,0,1,1,0,1,2,2,0,0.015,0.004,0.011,0,0,0,0,0,0,0,0,0,0,18,1,359,,Validation was rerun before ordinary approval.
+NORMAL-0382,07a46a96-34e3-51df-8a5c-aa0bd79ba344,normal_minor_correction,0,2,1,0,1,1,2,1,0.023,0.023,0.022,0,0,0,0,0,0,0,0,0,0,132,0,328,,Small pre-approval correction resolved during routine review.
+NORMAL-0383,738adea4-5c26-584d-aa52-6319887fb49d,normal_two_user_review,0,1,1,0,2,2,2,0,0.003,0.013,0.002,0,0,0,0,0,0,0,0,0,0,285,1,341,,Two reviewers participated in a normal approval workflow.
+NORMAL-0384,5e3bf115-af56-5ecc-af87-acb7834a1c5e,normal_minor_correction,0,1,1,0,1,2,2,0,0.008,0.007,0.009,0,0,0,0,0,0,0,0,0,0,457,0,508,,Small pre-approval correction resolved during routine review.
+NORMAL-0385,fba21172-92e2-5612-92a6-ecc4fb2de0ea,normal_straight_through,0,1,1,0,1,1,1,0,0.008,0.003,0.010,0,0,0,0,0,0,0,0,0,0,590,0,847,,Invoice followed a low-touch review and approval path.
+NORMAL-0386,0a6e72a3-925b-52a7-8b2e-f709e03b4a5d,normal_straight_through,0,1,1,0,1,1,0,1,0.011,0.012,0.013,0,0,0,0,0,0,0,0,0,0,1237,0,1274,,Invoice followed a low-touch review and approval path.
+NORMAL-0387,957f9761-8b06-5ffb-a3e5-c1d01343c902,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1115,,Invoice remains in pending review with no approval or export.
+NORMAL-0388,82c7f9cb-aa90-586a-bb65-40b0533a71ad,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,148,0,199,,Invoice followed a low-touch review and approval path.
+NORMAL-0389,d4c55f5f-79af-5d8c-a6ec-66ddd8950a23,normal_minor_correction,0,2,1,0,1,2,2,1,0.015,0.018,0.016,0,0,0,0,0,0,1,0,0,0,418,0,902,,Small pre-approval correction resolved during routine review.
+NORMAL-0390,8a06b2e7-9ebc-5ebd-aaa8-2fafc5b87c59,normal_pending_review,0,0,0,0,0,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,1759,,Invoice remains in pending review with no approval or export.
+NORMAL-0391,8b92f5f3-0071-5542-aed4-2468dd32d7ea,normal_straight_through,0,1,1,0,1,1,1,1,0.011,0.006,0.011,0,0,0,0,0,0,0,0,0,0,1159,1,1262,,Invoice followed a low-touch review and approval path.
+NORMAL-0392,fcd0fb21-08e3-5163-89b7-c80ea516bc29,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1170,0,1578,,Invoice followed a low-touch review and approval path.
+NORMAL-0393,66d39343-06d1-5c2e-8c2d-c559875491fa,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.016,0.004,0.015,0,0,0,0,0,0,0,0,0,0,23,0,227,,Validation was rerun before ordinary approval.
+NORMAL-0394,e6624d1e-a078-5d90-b72a-0d51e8baf017,normal_minor_correction,0,2,1,0,1,1,2,0,0.025,0.026,0.026,0,0,0,0,0,0,0,0,0,0,417,0,635,,Small pre-approval correction resolved during routine review.
+NORMAL-0395,15b10b89-a07a-5ad9-9f9a-7142a2019a47,normal_pending_review,0,0,0,0,1,2,2,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,953,,Invoice remains in pending review with no approval or export.
+NORMAL-0396,c11f1b89-3a51-59e9-b9ca-87e40363cda8,normal_minor_correction,0,1,1,0,1,2,1,0,0.008,0.008,0.010,0,0,0,0,0,0,0,0,0,0,323,2,404,,Small pre-approval correction resolved during routine review.
+NORMAL-0397,d7635b97-58aa-55ad-a4b9-af9cc374ba40,normal_validation_then_approval,0,0,1,0,1,1,2,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,28,1,122,,Validation was rerun before ordinary approval.
+NORMAL-0398,2c1e0ea5-8438-5292-b552-24a2cbdeb32e,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,2369,,Invoice remains in pending review with no approval or export.
+NORMAL-0399,baf4ea01-7578-5838-827a-370fa58550a8,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,826,0,896,,Invoice followed a low-touch review and approval path.
+NORMAL-0400,7cc18ee8-12f9-566b-82b0-6f496d980297,normal_straight_through,0,1,1,0,1,1,0,0,0.009,0.004,0.011,0,0,0,0,0,0,0,0,0,0,855,0,894,,Invoice followed a low-touch review and approval path.
+NORMAL-0401,06d430a6-eb6e-51b9-8b75-3d7dd1e4eced,normal_minor_correction,0,1,1,0,1,2,1,0,0.010,0.006,0.007,0,0,0,0,0,0,0,0,0,0,710,1,979,,Small pre-approval correction resolved during routine review.
+NORMAL-0402,da76d84f-e934-59e7-b00e-1ea753ca2c47,normal_minor_correction,0,2,1,0,1,1,1,0,0.021,0.016,0.018,0,0,0,0,0,0,0,0,0,0,464,1,609,,Small pre-approval correction resolved during routine review.
+NORMAL-0403,a1f53391-7c52-5e3c-a2f0-7628ed000aa5,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,826,0,1190,,Invoice was exported only after approval.
+NORMAL-0404,2c8eb0ed-d6cb-5bc8-b903-6018acaf2488,normal_straight_through,0,2,1,0,1,2,2,1,0.022,0.029,0.024,0,0,0,0,0,0,0,0,0,0,19,0,153,,Invoice followed a low-touch review and approval path.
+NORMAL-0405,ebdd7a2e-8cea-50f4-939a-6ba42600ed0b,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,668,0,1109,,Invoice was exported only after approval.
+NORMAL-0406,85569424-e693-58df-8187-d8d181360dfd,normal_straight_through,0,2,1,0,1,1,0,1,0.019,0.010,0.017,0,0,0,0,0,0,0,0,0,0,62,0,269,,Invoice followed a low-touch review and approval path.
+NORMAL-0407,de82b52e-e82a-598c-86df-d6e55d0a40ef,normal_validation_then_approval,0,1,1,0,2,1,1,0,0.016,0.009,0.012,0,0,0,0,0,0,0,0,0,0,222,0,424,,Validation was rerun before ordinary approval.
+NORMAL-0408,b8038d43-844c-5138-bac2-d0310f96a4cf,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,414,1,564,,Invoice followed a low-touch review and approval path.
+NORMAL-0409,2e959df0-ac2f-5620-973c-213d27b8c2b4,normal_straight_through,0,1,1,0,1,2,0,0,0.006,0.013,0.008,0,0,0,0,0,0,0,0,0,0,865,0,1079,,Invoice followed a low-touch review and approval path.
+NORMAL-0410,7c9fa0b6-2ad7-52ab-b3c1-d1de900eaecc,normal_minor_correction,0,2,1,0,1,1,1,0,0.021,0.010,0.022,0,0,0,0,0,0,0,0,0,0,1198,2,1467,,Small pre-approval correction resolved during routine review.
+NORMAL-0411,e2a0c0c0-013d-5c62-8046-6d585357025c,normal_exported_after_approval,0,0,1,0,2,2,2,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,569,1,1018,,Invoice was exported only after approval.
+NORMAL-0412,83bde5bb-1a67-5341-8618-2330ba8181f7,normal_minor_correction,0,1,1,0,1,1,1,0,0.005,0.011,0.003,0,0,0,0,0,0,0,0,0,0,844,1,965,,Small pre-approval correction resolved during routine review.
+NORMAL-0413,190b8405-f135-5843-abcd-c4f9ac7345d8,normal_validation_then_approval,0,1,1,0,1,2,2,1,0.010,0.013,0.012,0,0,0,0,0,0,0,0,0,0,982,0,1306,,Validation was rerun before ordinary approval.
+NORMAL-0414,e849d6da-68d9-51e9-9bec-d9f666ace829,normal_validation_then_approval,0,2,1,0,2,1,2,1,0.021,0.017,0.023,0,0,0,0,0,0,0,0,0,0,268,0,799,,Validation was rerun before ordinary approval.
+NORMAL-0415,dec73f1c-fff3-58aa-9f2d-7ea653946f9d,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1300,1,1339,,Invoice followed a low-touch review and approval path.
+NORMAL-0416,3787090e-569d-5581-939a-2a49414a3297,normal_straight_through,0,1,1,0,1,1,1,1,0.014,0.011,0.017,0,0,0,0,0,0,0,0,0,0,305,1,609,,Invoice followed a low-touch review and approval path.
+NORMAL-0417,d112ffc3-4418-583a-8c6d-adcd9a7de154,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,34,,Invoice remains in pending review with no approval or export.
+NORMAL-0418,d4efaf28-e6f0-5fad-9d2e-9b542cbfa66a,normal_minor_correction,0,3,1,0,1,1,2,0,0.015,0.023,0.017,0,0,0,0,0,0,0,0,0,0,418,2,694,,Small pre-approval correction resolved during routine review.
+NORMAL-0419,9453e5ca-3d4a-5790-bfff-21821efc7ee8,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,62,0,185,,Invoice followed a low-touch review and approval path.
+NORMAL-0420,f2fd2e3e-acaf-5e4e-8777-55cd286dd55e,normal_pending_review,0,1,0,0,1,2,0,0,0.007,0.014,0.007,0,0,0,0,0,0,0,0,0,0,0,1,1965,,Invoice remains in pending review with no approval or export.
+NORMAL-0421,8ebfbac6-3003-5556-bb20-6a7eebef2583,normal_pending_review,0,1,0,0,0,1,0,0,0.004,0.010,0.003,0,0,0,0,0,0,0,0,0,0,0,0,568,,Invoice remains in pending review with no approval or export.
+NORMAL-0422,fca4f6e1-264e-5e9c-8a9f-892c6b0d1331,normal_validation_then_approval,0,0,1,0,1,2,2,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,589,2,1274,,Validation was rerun before ordinary approval.
+NORMAL-0423,a3380322-5fd9-5e30-95ed-620e8c03ad4c,normal_exported_after_approval,0,1,1,0,2,1,0,1,0.001,0.008,0.000,0,0,0,0,0,0,0,0,0,0,122,2,555,,Invoice was exported only after approval.
+NORMAL-0424,a17e62bb-5615-5e14-b412-00313c1d89fe,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,358,0,648,,Invoice followed a low-touch review and approval path.
+NORMAL-0425,4e8291ea-aa28-5978-84a0-483805299972,normal_validation_then_approval,0,2,1,0,1,1,2,0,0.019,0.014,0.016,0,0,0,0,0,0,0,0,0,0,1345,0,1703,,Validation was rerun before ordinary approval.
+NORMAL-0426,72de22a0-da4c-5022-9507-76e2429102b1,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,285,0,639,,Invoice followed a low-touch review and approval path.
+NORMAL-0427,8e293e43-49e3-5ba0-8c67-0c97f5c9247f,normal_validation_then_approval,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1100,0,1100,,Validation was rerun before ordinary approval.
+NORMAL-0428,5ccd9e18-5017-5825-ae4b-ba9f3386adc8,normal_minor_correction,0,1,1,0,1,1,2,0,0.005,0.008,0.009,0,0,0,0,0,0,0,0,0,0,258,1,559,,Small pre-approval correction resolved during routine review.
+NORMAL-0429,270a6aef-a632-5bd5-b176-a07e996b95ab,normal_exported_after_approval,0,1,1,0,1,2,0,1,0.008,0.008,0.008,0,0,0,0,0,0,0,0,0,0,708,0,831,,Invoice was exported only after approval.
+NORMAL-0430,39c41c88-e8c9-58e5-91a7-94550ebdbf92,normal_straight_through,0,1,1,0,1,1,0,0,0.007,0.006,0.005,0,0,0,0,0,0,0,0,0,0,970,0,989,,Invoice followed a low-touch review and approval path.
+NORMAL-0431,c97d8a6c-e447-568e-8cf6-7b07e9ec57e5,normal_validation_then_approval,0,3,1,0,2,1,2,0,0.037,0.016,0.033,0,0,0,0,0,1,0,0,0,0,195,2,235,,Validation was rerun before ordinary approval.
+NORMAL-0432,1d999f95-4969-52e0-8087-e1377f2a1f80,normal_validation_then_approval,0,2,1,0,1,2,1,0,0.023,0.032,0.026,0,0,0,0,0,0,0,0,0,0,949,0,1042,,Validation was rerun before ordinary approval.
+NORMAL-0433,b7ff9adf-4e43-5727-a10c-d1e196bfb384,normal_exported_after_approval,0,1,1,0,1,1,1,1,0.005,0.008,0.009,0,0,0,0,0,0,0,0,0,0,65,1,420,,Invoice was exported only after approval.
+NORMAL-0434,730d1d3f-4726-5db9-9d23-d04b71c3614b,normal_exported_after_approval,0,1,1,0,2,1,1,1,0.003,0.007,0.002,0,0,0,0,0,0,0,0,0,0,90,2,293,,Invoice was exported only after approval.
+NORMAL-0435,de95990f-7fd3-5b9a-908b-32924bb66876,normal_minor_correction,0,2,1,0,1,1,1,1,0.008,0.013,0.011,0,0,0,0,0,0,0,0,0,0,416,0,1118,,Small pre-approval correction resolved during routine review.
+NORMAL-0436,07fa3de6-ba26-508b-884e-3c8206e12d3b,normal_minor_correction,0,1,1,0,1,2,2,0,0.004,0.009,0.007,0,0,0,0,0,0,0,0,0,0,321,1,455,,Small pre-approval correction resolved during routine review.
+NORMAL-0437,58f7cc32-335c-5f25-918d-b6708e94abe1,normal_two_user_review,0,2,1,0,2,2,2,1,0.014,0.018,0.013,0,0,0,0,0,0,0,0,0,0,18,2,97,,Two reviewers participated in a normal approval workflow.
+NORMAL-0438,837336b2-43c5-5da3-aa38-8bcaab8d37c7,normal_straight_through,0,1,1,0,1,1,0,1,0.010,0.003,0.008,0,0,0,0,0,0,0,0,0,0,1089,0,1507,,Invoice followed a low-touch review and approval path.
+NORMAL-0439,ac6b8bca-df4f-55bc-9ab1-d2475a3733e6,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,198,0,270,,Invoice followed a low-touch review and approval path.
+NORMAL-0440,d745f35f-7318-5128-a385-0803dd71c72f,normal_straight_through,0,1,1,0,1,1,1,1,0.006,0.004,0.007,0,0,0,0,0,0,0,0,0,0,404,0,880,,Invoice followed a low-touch review and approval path.
+NORMAL-0441,f3163f18-d808-53d6-9893-beb7f33870c6,normal_validation_then_approval,0,2,1,0,1,2,1,1,0.019,0.014,0.021,0,0,0,0,0,0,0,0,0,0,417,2,975,,Validation was rerun before ordinary approval.
+NORMAL-0442,cf189b9b-43ae-520d-9106-739545abd025,normal_minor_correction,0,2,1,0,1,2,1,0,0.012,0.012,0.010,0,0,0,0,0,0,0,0,0,0,812,1,911,,Small pre-approval correction resolved during routine review.
+NORMAL-0443,5d6a6dc7-5597-57bd-b17b-caecec155705,normal_minor_correction,0,2,1,0,1,1,2,0,0.016,0.024,0.015,0,0,0,0,0,0,0,0,0,0,156,0,385,,Small pre-approval correction resolved during routine review.
+NORMAL-0444,294ac006-7a7b-5af5-8a73-b985d4372ba4,normal_minor_correction,0,3,1,0,1,2,2,0,0.021,0.016,0.020,0,0,0,0,0,0,0,0,0,0,718,0,757,,Small pre-approval correction resolved during routine review.
+NORMAL-0445,12ca5bb7-93e2-578c-bdbb-1abab8f6728a,normal_straight_through,0,1,1,0,1,1,0,1,0.003,0.008,0.004,0,0,0,0,0,0,0,0,0,0,817,1,973,,Invoice followed a low-touch review and approval path.
+NORMAL-0446,3dafe3f3-95d3-5012-b536-0f6afd9c74d6,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,2,2304,,Invoice remains in pending review with no approval or export.
+NORMAL-0447,dd8bdd45-a8ce-568d-9c1b-a773c9c103b5,normal_minor_correction,0,1,1,0,1,1,1,0,0.005,0.009,0.003,0,0,0,0,0,0,0,0,0,0,238,0,311,,Small pre-approval correction resolved during routine review.
+NORMAL-0448,209f935a-a0b9-5ca7-859b-ad6035342527,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,785,0,1022,,Invoice followed a low-touch review and approval path.
+NORMAL-0449,c7c0a317-3ff2-54ba-99eb-88efef6955ea,normal_pending_review,0,1,0,0,0,1,1,0,0.007,0.004,0.004,0,0,0,0,0,0,0,0,0,0,0,0,1779,,Invoice remains in pending review with no approval or export.
+NORMAL-0450,0dcc048b-ecf4-54b3-9be0-f20b33d7d40b,normal_pending_review,0,1,0,0,0,1,1,0,0.006,0.005,0.004,0,0,0,0,0,0,0,0,0,0,0,0,1422,,Invoice remains in pending review with no approval or export.
+NORMAL-0451,5ac9ab68-68b6-510b-903e-62508bdf3682,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,96,0,300,,Invoice was exported only after approval.
+NORMAL-0452,12ef1ad5-998a-580d-8026-ed07065d7406,normal_exported_after_approval,0,3,1,0,1,1,1,1,0.023,0.030,0.026,0,0,0,0,0,0,0,0,0,0,834,0,1093,,Invoice was exported only after approval.
+NORMAL-0453,c6fd26c1-ae7f-5204-b911-5f3975983ab1,normal_exported_after_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1340,0,1744,,Invoice was exported only after approval.
+NORMAL-0454,cef0a3f9-9fcf-5787-90e4-69f88910b193,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,216,0,537,,Invoice followed a low-touch review and approval path.
+NORMAL-0455,7a93ea13-a9e8-5a02-a099-306117f0c34b,normal_pending_review,0,1,0,0,1,1,1,0,0.005,0.010,0.005,0,0,0,0,0,0,0,0,0,0,0,1,474,,Invoice remains in pending review with no approval or export.
+NORMAL-0456,93cb23b4-ce10-5cd7-a8f2-b7559648d3ae,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,76,0,595,,Invoice followed a low-touch review and approval path.
+NORMAL-0457,89e23b14-f3c6-5fd3-b6ec-924cf1fdbbc0,normal_minor_correction,0,1,1,0,1,2,2,0,0.001,0.012,0.004,0,0,0,0,0,0,0,0,0,0,396,0,503,,Small pre-approval correction resolved during routine review.
+NORMAL-0458,85578f9e-96eb-5a56-bcf8-be9fd3fa4d32,normal_minor_correction,0,3,1,0,1,1,1,0,0.008,0.018,0.010,0,0,0,0,0,0,0,0,0,0,223,2,271,,Small pre-approval correction resolved during routine review.
+NORMAL-0459,1975bb6b-0c81-549a-8795-36b0558dd831,normal_exported_after_approval,0,0,1,0,1,1,2,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,993,0,1334,,Invoice was exported only after approval.
+NORMAL-0460,b433998a-025b-5162-9d74-7536ca207ae1,normal_validation_then_approval,0,2,1,0,1,1,1,0,0.012,0.022,0.016,0,0,0,0,0,0,0,0,0,0,184,0,539,,Validation was rerun before ordinary approval.
+NORMAL-0461,eb00d806-7bed-5d7a-b3c5-8ee2942bdfae,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,63,1,73,,Invoice followed a low-touch review and approval path.
+NORMAL-0462,af99dd22-52f8-56b1-a23d-90a24f4c3c0c,normal_validation_then_approval,0,0,1,0,1,2,2,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,367,0,436,,Validation was rerun before ordinary approval.
+NORMAL-0463,b4686792-0bfa-5645-904d-97563e6f129a,normal_two_user_review,0,2,1,0,1,2,1,1,0.018,0.011,0.017,0,0,0,0,0,0,0,0,0,0,445,1,887,,Two reviewers participated in a normal approval workflow.
+NORMAL-0464,12f5f7ac-ed8c-5723-b7cf-fcf721567f39,normal_pending_review,0,1,0,0,1,1,1,0,0.002,0.006,0.003,0,0,0,0,0,0,0,0,0,0,0,0,2076,,Invoice remains in pending review with no approval or export.
+NORMAL-0465,d31f80fb-2726-50c7-bcbf-93535f17e012,normal_validation_then_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,317,1,904,,Validation was rerun before ordinary approval.
+NORMAL-0466,fc2129e3-7ec3-5158-96e5-e172e90b88ac,normal_pending_review,0,1,0,0,1,1,2,0,0.009,0.008,0.010,0,0,0,0,0,0,0,0,0,0,0,2,630,,Invoice remains in pending review with no approval or export.
+NORMAL-0467,81aff48b-07ea-5ba0-b9b8-262cb2f584c3,normal_straight_through,0,1,1,0,1,1,1,0,0.008,0.011,0.010,0,0,0,0,0,0,0,0,0,0,217,0,386,,Invoice followed a low-touch review and approval path.
+NORMAL-0468,dfe0cc0f-bb2e-5f69-9b2b-f958eb21a83e,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,30,0,95,,Invoice followed a low-touch review and approval path.
+NORMAL-0469,a6760f51-22e9-511a-a3b5-af4bfe99de3a,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,0,380,,Invoice remains in pending review with no approval or export.
+NORMAL-0470,74146a6d-cc85-5151-9af1-adc58acf6684,normal_pending_review,0,1,0,0,1,2,0,0,0.014,0.011,0.016,0,0,0,0,0,0,0,0,0,0,0,0,827,,Invoice remains in pending review with no approval or export.
+NORMAL-0471,9050bace-b0cc-5b21-a26c-9e0556abc381,normal_validation_then_approval,0,3,1,0,1,2,2,0,0.038,0.017,0.037,0,0,0,0,0,0,0,0,0,0,943,2,1028,,Validation was rerun before ordinary approval.
+NORMAL-0472,c15cf505-d3b9-5b57-8879-5bd140e4c93d,normal_minor_correction,0,1,1,0,1,1,2,1,0.012,0.002,0.008,0,0,0,0,0,0,0,0,0,0,58,1,350,,Small pre-approval correction resolved during routine review.
+NORMAL-0473,2170779f-b65c-5cab-a791-41430215a31b,normal_exported_after_approval,0,1,1,0,1,2,0,1,0.016,0.003,0.015,0,0,0,0,0,0,0,0,0,0,69,0,687,,Invoice was exported only after approval.
+NORMAL-0474,f7272b99-a499-5989-a889-085f17747750,normal_pending_review,0,2,0,0,1,1,2,0,0.013,0.013,0.013,0,0,0,0,0,0,0,0,0,0,0,1,2460,,Invoice remains in pending review with no approval or export.
+NORMAL-0475,c34e9411-30e4-5784-a256-43d675874897,normal_validation_then_approval,0,3,1,0,1,2,2,0,0.019,0.021,0.022,0,0,0,0,0,0,0,0,0,0,545,3,873,,Validation was rerun before ordinary approval.
+NORMAL-0476,6beb5626-0b3f-5b32-a339-c86d8ba72cf8,normal_validation_then_approval,0,0,1,0,2,1,2,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,72,0,419,,Validation was rerun before ordinary approval.
+NORMAL-0477,7c23255a-0300-5b28-8bd7-4c8eab6c9a5b,normal_pending_review,0,2,0,0,1,1,1,0,0.032,0.017,0.029,0,0,0,0,0,0,0,0,0,0,0,0,2634,,Invoice remains in pending review with no approval or export.
+NORMAL-0478,b3b8038e-e88d-540e-9e1f-ddf41a6c8c48,normal_minor_correction,0,1,1,0,1,1,1,0,0.015,0.006,0.015,0,0,0,0,0,0,0,0,0,0,344,1,674,,Small pre-approval correction resolved during routine review.
+NORMAL-0479,87f43c0c-cf6a-52e7-b9e0-086ea529e774,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1208,1,1279,,Invoice followed a low-touch review and approval path.
+NORMAL-0480,5e8aa1b3-b75e-54c6-8767-a46f48fbe588,normal_pending_review,0,0,0,0,1,2,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,0,1164,,Invoice remains in pending review with no approval or export.
+NORMAL-0481,fd3300a0-f878-5f77-a67d-20d594ea487a,normal_straight_through,0,1,1,0,1,1,1,1,0.015,0.007,0.016,0,0,0,0,0,1,0,0,0,0,789,0,1250,,Invoice followed a low-touch review and approval path.
+NORMAL-0482,eec3dd7d-1a7c-5c04-96f0-c259d5b45d60,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.002,0,0,0,0,0,1,0,0,0,0,599,0,828,,Invoice followed a low-touch review and approval path.
+NORMAL-0483,fd24161c-5845-5a5b-8c1c-f19f4e41518b,normal_minor_correction,0,2,1,0,1,1,1,1,0.009,0.020,0.010,0,0,0,0,0,1,0,0,0,0,1033,1,1077,,Small pre-approval correction resolved during routine review.
+NORMAL-0484,f438140b-24a4-5470-b164-4c6c84dd74fa,normal_exported_after_approval,0,2,1,0,1,2,0,1,0.026,0.018,0.027,0,0,0,0,0,0,0,0,0,0,153,0,575,,Invoice was exported only after approval.
+NORMAL-0485,1f944426-1e03-575e-b241-87846a397909,normal_pending_review,0,2,0,0,0,1,1,0,0.021,0.030,0.026,0,0,0,0,0,0,0,0,0,0,0,0,2004,,Invoice remains in pending review with no approval or export.
+NORMAL-0486,9869d837-01c8-57b3-8102-48744b2aab25,normal_straight_through,0,1,1,0,1,1,1,1,0.008,0.004,0.006,0,0,0,0,0,0,0,0,0,0,810,0,1212,,Invoice followed a low-touch review and approval path.
+NORMAL-0487,36221abf-1a8f-59f3-be93-95571956a0f1,normal_validation_then_approval,0,1,1,0,1,2,2,0,0.013,0.012,0.010,0,0,0,0,0,0,0,0,0,0,257,1,307,,Validation was rerun before ordinary approval.
+NORMAL-0488,c9a97c6a-54b8-534f-a75f-d47c7f25a730,normal_straight_through,0,0,1,0,1,1,2,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,74,0,439,,Invoice followed a low-touch review and approval path.
+NORMAL-0489,54a55763-1c1d-5330-a3e6-6a56c72c55ce,normal_validation_then_approval,0,3,1,0,1,3,1,1,0.036,0.023,0.033,0,0,0,0,0,0,0,0,0,0,28,1,666,,Validation was rerun before ordinary approval.
+NORMAL-0490,3d6da8ac-e65a-58c2-b374-7fed5f56ed93,normal_straight_through,0,2,1,0,1,1,1,0,0.031,0.010,0.029,0,0,0,0,0,0,0,0,0,0,15,0,34,,Invoice followed a low-touch review and approval path.
+NORMAL-0491,ef72cb95-ccbc-5b1d-b1fe-f0c188fcc8bd,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.006,0.007,0.009,0,0,0,0,0,0,0,0,0,0,1440,0,1667,,Validation was rerun before ordinary approval.
+NORMAL-0492,bd9b863a-b988-55be-8325-425bf81c0050,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,73,0,481,,Invoice followed a low-touch review and approval path.
+NORMAL-0493,462089b1-68f2-5872-94d1-16496da9515e,normal_two_user_review,0,2,1,0,2,3,2,0,0.014,0.012,0.017,0,0,0,0,0,0,0,0,0,0,93,0,112,,Two reviewers participated in a normal approval workflow.
+NORMAL-0494,d5b4d0bc-2667-58f4-85ba-907c66b386d0,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,134,1,230,,Invoice followed a low-touch review and approval path.
+NORMAL-0495,242bc152-6262-5b71-92bb-56769f560f80,normal_pending_review,0,0,0,0,0,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,1,962,,Invoice remains in pending review with no approval or export.
+NORMAL-0496,b21c0d94-26e2-500e-843a-d9b67323992c,normal_straight_through,0,2,1,0,1,1,0,1,0.033,0.015,0.032,0,0,0,0,0,0,0,0,0,0,22,1,472,,Invoice followed a low-touch review and approval path.
+NORMAL-0497,71dcf3f4-ae1f-552d-87eb-ee5c39934a25,normal_straight_through,0,1,1,0,1,1,1,1,0.004,0.006,0.001,0,0,0,0,0,0,0,0,0,0,147,1,256,,Invoice followed a low-touch review and approval path.
+NORMAL-0498,662f5455-ab38-54d1-8616-f471c1cf8945,normal_validation_then_approval,0,2,1,0,1,1,1,0,0.013,0.010,0.014,0,0,0,0,0,0,0,0,0,0,1131,0,1356,,Validation was rerun before ordinary approval.
+NORMAL-0499,c7201879-eff9-5914-a36d-213f512c8b6c,normal_minor_correction,0,1,1,0,1,2,1,0,0.004,0.010,0.005,0,0,0,0,0,0,0,0,0,0,754,1,1081,,Small pre-approval correction resolved during routine review.
+NORMAL-0500,6044587d-04d3-5cae-9d21-45c4b22f0c3a,normal_validation_then_approval,0,1,1,0,2,1,2,1,0.002,0.013,0.001,0,0,0,0,0,0,0,0,0,0,1046,2,1453,,Validation was rerun before ordinary approval.
+NORMAL-0501,e72ca82e-3447-50a2-8731-e12b02f4d568,normal_minor_correction,0,1,1,0,1,1,1,0,0.013,0.005,0.010,0,0,0,0,0,0,0,0,0,0,915,1,1206,,Small pre-approval correction resolved during routine review.
+NORMAL-0502,a1211dda-d4ac-508a-91f8-5967c3497efa,normal_validation_then_approval,0,1,1,0,2,2,1,1,0.008,0.007,0.011,0,0,0,0,0,0,0,0,0,0,907,1,1406,,Validation was rerun before ordinary approval.
+NORMAL-0503,63252843-a084-5cc2-95bc-333ec9e2b5d7,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,2771,,Invoice remains in pending review with no approval or export.
+NORMAL-0504,65bb5bba-1cb1-56e6-8b07-4d985f8dae7e,normal_pending_review,0,1,0,0,1,1,0,0,0.008,0.011,0.011,0,0,0,0,0,0,0,0,0,0,0,0,2764,,Invoice remains in pending review with no approval or export.
+NORMAL-0505,78694ac6-91dd-5347-ae05-19b7db7164a9,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.011,0.009,0.008,0,0,0,0,0,0,0,0,0,0,607,0,890,,Validation was rerun before ordinary approval.
+NORMAL-0506,ec1696d0-5367-5005-8d07-22ee3992fbe7,normal_two_user_review,0,3,1,0,2,2,2,0,0.012,0.009,0.010,0,0,0,0,0,0,0,0,0,0,102,0,402,,Two reviewers participated in a normal approval workflow.
+NORMAL-0507,162c071d-c1e8-523a-ab96-cc5b53fed969,normal_straight_through,0,1,1,0,1,1,0,0,0.011,0.011,0.010,0,0,0,0,0,0,0,0,0,0,360,0,717,,Invoice followed a low-touch review and approval path.
+NORMAL-0508,f1ba3696-c360-55f9-8588-09ca7ff3397a,normal_minor_correction,0,1,1,0,1,2,2,0,0.005,0.013,0.006,0,0,0,0,0,0,0,0,0,0,828,2,950,,Small pre-approval correction resolved during routine review.
+NORMAL-0509,30336dc0-4cb5-566b-99b0-e092df8fe219,normal_two_user_review,0,1,1,0,1,2,1,0,0.013,0.016,0.013,0,0,0,0,0,0,0,0,0,0,442,2,690,,Two reviewers participated in a normal approval workflow.
+NORMAL-0510,3f15d78a-ca4e-5f77-bb84-36e5b52cafa9,normal_validation_then_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,394,1,936,,Validation was rerun before ordinary approval.
+NORMAL-0511,61abe92e-0875-5f18-9aa6-588b918fc8e8,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1138,0,1418,,Invoice followed a low-touch review and approval path.
+NORMAL-0512,c4ba96cf-f436-5ab1-bd2a-c6619a2f3aa2,normal_validation_then_approval,0,1,1,0,1,2,1,0,0.011,0.004,0.010,0,0,0,0,0,0,0,0,0,0,75,1,200,,Validation was rerun before ordinary approval.
+NORMAL-0513,d117f0e8-ac06-5299-8a5e-cf9f1cfe1da5,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1313,1,1606,,Invoice followed a low-touch review and approval path.
+NORMAL-0514,9ae89d01-69df-54cd-aa44-9e355b624966,normal_minor_correction,0,1,1,0,1,1,1,0,0.011,0.013,0.013,0,0,0,0,0,0,0,0,0,0,206,2,221,,Small pre-approval correction resolved during routine review.
+NORMAL-0515,e74405fb-bff6-5dde-8544-4ae210c843f3,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,88,0,242,,Invoice followed a low-touch review and approval path.
+NORMAL-0516,d127b58f-e1be-5dc5-8d27-0e65c1540d0b,normal_two_user_review,0,2,1,0,2,2,2,0,0.018,0.019,0.016,0,0,0,0,0,0,0,0,0,0,93,1,178,,Two reviewers participated in a normal approval workflow.
+NORMAL-0517,c2589f0e-1862-5483-aaba-223978a8f129,normal_minor_correction,0,2,1,0,1,1,1,0,0.012,0.013,0.014,1,0,0,0,0,0,0,0,0,0,75,0,187,,Small pre-approval correction resolved during routine review.
+NORMAL-0518,a9a03f8c-24ed-595a-a5b7-63d1848a6ac6,normal_validation_then_approval,0,2,1,0,1,1,1,1,0.030,0.016,0.026,0,0,0,0,0,0,0,0,0,0,1331,0,1897,,Validation was rerun before ordinary approval.
+NORMAL-0519,3ffd5ebe-7003-5822-907e-27b37b934bdf,normal_validation_then_approval,0,1,1,0,1,1,1,1,0.005,0.006,0.005,0,0,0,0,0,0,0,0,0,0,434,1,470,,Validation was rerun before ordinary approval.
+NORMAL-0520,54ada08c-cdad-5ac7-97e7-df7ebd09e4fe,normal_minor_correction,0,1,1,0,1,1,2,0,0.011,0.012,0.011,0,0,0,0,0,0,0,0,0,0,21,1,324,,Small pre-approval correction resolved during routine review.
+NORMAL-0521,26a62cd2-9d40-563b-9707-0f8ba194f49f,normal_validation_then_approval,0,0,1,0,1,1,2,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,381,0,649,,Validation was rerun before ordinary approval.
+NORMAL-0522,c6ad2b04-05fd-5b1d-9db7-70fba08d504c,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,58,1,186,,Invoice was exported only after approval.
+NORMAL-0523,29e9dafa-8709-5a3c-b622-b377b8416e91,normal_pending_review,0,2,0,0,0,2,1,0,0.017,0.029,0.019,0,0,0,0,0,0,0,0,0,0,0,0,55,,Invoice remains in pending review with no approval or export.
+NORMAL-0524,243aa2ba-8294-5b41-91b7-77924fcc0a18,normal_minor_correction,0,2,1,0,1,1,2,0,0.028,0.021,0.029,0,0,0,0,0,0,0,0,0,0,450,1,631,,Small pre-approval correction resolved during routine review.
+NORMAL-0525,8cea7519-cb1f-5b04-a855-b5e1bcc14739,normal_minor_correction,0,1,1,0,1,1,2,0,0.010,0.002,0.009,0,0,0,0,0,0,0,0,0,0,1180,1,1444,,Small pre-approval correction resolved during routine review.
+NORMAL-0526,4244f0e6-fa7b-5d5a-904a-57ebb181c350,normal_two_user_review,0,2,1,0,2,2,1,0,0.008,0.029,0.014,0,0,0,0,0,0,0,0,0,0,41,0,219,,Two reviewers participated in a normal approval workflow.
+NORMAL-0527,f46dd4cf-8a0c-5d97-87e8-172169d19809,normal_exported_after_approval,0,1,1,0,1,1,1,1,0.004,0.005,0.001,0,0,0,0,0,0,0,0,0,0,975,1,1577,,Invoice was exported only after approval.
+NORMAL-0528,8ff7b4e6-9fc6-5964-b8bd-c79d0581e5ae,normal_pending_review,0,1,0,0,1,1,0,0,0.011,0.013,0.008,0,0,0,0,0,0,0,0,0,0,0,1,1174,,Invoice remains in pending review with no approval or export.
+NORMAL-0529,d3254526-0e5a-598e-ab26-0287c201a30e,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,121,0,800,,Invoice followed a low-touch review and approval path.
+NORMAL-0530,9ae0bc97-c7a4-5c45-9748-a87b028b35ae,normal_straight_through,0,1,1,0,1,2,0,1,0.011,0.007,0.012,0,0,0,0,0,0,0,0,0,0,1192,0,1236,,Invoice followed a low-touch review and approval path.
+NORMAL-0531,bfff1cda-eac0-5db5-a484-8d0c16b0d200,normal_minor_correction,0,1,1,0,1,1,2,1,0.011,0.007,0.008,0,0,0,0,0,0,0,0,0,0,561,1,1169,,Small pre-approval correction resolved during routine review.
+NORMAL-0532,ca1f3273-2fc5-55af-9e00-246562532ada,normal_straight_through,0,1,1,0,1,1,0,1,0.005,0.004,0.006,0,0,0,0,0,0,0,0,0,0,381,0,1026,,Invoice followed a low-touch review and approval path.
+NORMAL-0533,aed4150b-f0c4-5cfb-94aa-f041f5dca2f3,normal_validation_then_approval,0,3,1,0,1,1,2,1,0.023,0.019,0.021,0,0,0,0,0,0,0,0,0,0,46,2,721,,Validation was rerun before ordinary approval.
+NORMAL-0534,a812097e-92cf-50d3-b3b8-3e7953e61128,normal_pending_review,0,0,0,0,0,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,2444,,Invoice remains in pending review with no approval or export.
+NORMAL-0535,8007e6c0-7fd5-535b-8fb3-7fa31d9ce17b,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.005,0.005,0.007,0,0,0,0,0,0,0,0,0,0,409,0,468,,Validation was rerun before ordinary approval.
+NORMAL-0536,08f8f1d9-8c71-5de2-a7d2-e8d390438579,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,103,0,801,,Invoice followed a low-touch review and approval path.
+NORMAL-0537,6e691e1f-8746-5377-8bb8-e2a57d7ea13f,normal_two_user_review,0,2,1,0,2,2,1,1,0.026,0.022,0.024,0,0,0,0,0,0,0,0,0,0,78,0,288,,Two reviewers participated in a normal approval workflow.
+NORMAL-0538,5d177164-4f6d-50b9-bc47-a9d7a4b334e7,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,42,1,346,,Invoice followed a low-touch review and approval path.
+NORMAL-0539,5748668d-eb30-5b50-8c37-1d12510be873,normal_validation_then_approval,0,1,1,0,1,2,1,1,0.009,0.015,0.007,0,0,0,0,0,0,0,0,0,0,26,0,60,,Validation was rerun before ordinary approval.
+NORMAL-0540,65b770b6-bf51-5562-a578-a4e4317befe8,normal_two_user_review,0,1,1,0,1,2,2,0,0.004,0.006,0.006,0,0,0,0,0,0,0,0,0,0,1378,0,1466,,Two reviewers participated in a normal approval workflow.
+NORMAL-0541,0b31e3bc-8bbe-500e-97ac-9484c2dbe933,normal_two_user_review,0,3,1,0,2,2,2,1,0.017,0.029,0.018,0,0,0,0,0,0,0,0,0,0,15,0,115,,Two reviewers participated in a normal approval workflow.
+NORMAL-0542,077d702a-e06f-579a-bd63-abb679627b14,normal_exported_after_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.003,0,0,0,0,0,1,0,0,0,0,1013,0,1334,,Invoice was exported only after approval.
+NORMAL-0543,8cdad33e-244d-54c5-b22d-2a9dcbc2e602,normal_minor_correction,0,2,1,0,1,1,1,1,0.023,0.008,0.020,0,0,0,0,0,0,0,0,0,0,231,0,622,,Small pre-approval correction resolved during routine review.
+NORMAL-0544,a2ebad60-e550-5626-b40d-e0deafcd2e2f,normal_pending_review,0,0,0,0,1,2,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,0,1185,,Invoice remains in pending review with no approval or export.
+NORMAL-0545,4c211355-b94b-5e4e-b700-71c699160bd6,normal_minor_correction,0,2,1,0,1,1,1,0,0.029,0.022,0.030,0,0,0,0,0,0,0,0,0,0,777,1,1024,,Small pre-approval correction resolved during routine review.
+NORMAL-0546,5b4fb5d9-1b47-5d05-95eb-f9c1a7c4d183,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,724,1,895,,Invoice followed a low-touch review and approval path.
+NORMAL-0547,20d9503c-c026-573d-896e-8bd8f92e41ff,normal_validation_then_approval,0,1,1,0,2,1,1,1,0.010,0.014,0.008,0,0,0,0,0,0,0,0,0,0,46,1,218,,Validation was rerun before ordinary approval.
+NORMAL-0548,db53a2cb-b4e9-5c9d-8805-d9f0df28874c,normal_pending_review,0,3,0,0,0,1,0,0,0.039,0.031,0.041,0,0,0,0,0,0,0,0,0,0,0,0,774,,Invoice remains in pending review with no approval or export.
+NORMAL-0549,a1eabe8a-847e-5591-81a0-5eb38bda8a2d,normal_pending_review,0,1,0,0,1,1,2,0,0.009,0.010,0.010,0,0,0,0,0,0,0,0,0,0,0,0,2404,,Invoice remains in pending review with no approval or export.
+NORMAL-0550,978e553a-38b1-5274-9e3e-467b8009e09d,normal_pending_review,0,2,0,0,1,1,1,0,0.013,0.018,0.015,0,0,0,0,0,0,0,0,0,0,0,0,1280,,Invoice remains in pending review with no approval or export.
+NORMAL-0551,9bec7827-3a5a-5666-bf18-f9df60404f89,normal_two_user_review,0,2,1,0,2,2,1,0,0.007,0.019,0.009,0,0,0,0,0,0,0,0,0,0,30,1,67,,Two reviewers participated in a normal approval workflow.
+NORMAL-0552,5e0b96ad-368d-5f20-aa1a-00d209f6102e,normal_pending_review,0,1,0,0,0,2,2,0,0.003,0.010,0.007,0,0,0,0,0,0,0,0,0,0,0,1,2813,,Invoice remains in pending review with no approval or export.
+NORMAL-0553,36350ddf-0e71-5461-bb21-a0fcb1d48fa8,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,292,0,492,,Invoice followed a low-touch review and approval path.
+NORMAL-0554,7a8aff68-48f7-5371-a2cf-810964250c7e,normal_exported_after_approval,0,2,1,0,2,1,1,1,0.012,0.022,0.015,0,0,0,0,0,0,0,0,0,0,306,1,629,,Invoice was exported only after approval.
+NORMAL-0555,13d110fe-9f53-56a2-8ced-e08758bd0781,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,207,1,466,,Invoice followed a low-touch review and approval path.
+NORMAL-0556,7ce1e80c-4db7-550e-a533-4448ace8b744,normal_pending_review,0,2,0,0,1,1,0,0,0.024,0.028,0.026,0,0,0,0,0,0,0,0,0,0,0,0,2472,,Invoice remains in pending review with no approval or export.
+NORMAL-0557,72d9412c-5011-5e32-8c2d-290f2a0c9d21,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,600,0,736,,Invoice was exported only after approval.
+NORMAL-0558,f63d9ba7-4d5f-5487-b9c3-bbf32475a4a2,normal_validation_then_approval,0,2,1,0,1,2,2,0,0.017,0.014,0.015,0,0,0,0,0,0,0,0,0,0,152,1,224,,Validation was rerun before ordinary approval.
+NORMAL-0559,64fa2360-085c-5a57-9214-52425d7ca61e,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,393,0,483,,Invoice followed a low-touch review and approval path.
+NORMAL-0560,2a60b1e3-b150-5de6-8800-0bdb9d4b90b6,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,0,1,518,,Invoice remains in pending review with no approval or export.
+NORMAL-0561,09213224-3264-5c0a-ad13-c0cf4c15216b,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,89,1,428,,Invoice followed a low-touch review and approval path.
+NORMAL-0562,40941416-bd42-55e2-a32b-0be9c36aee35,normal_pending_review,0,1,0,0,1,2,1,0,0.006,0.005,0.006,0,0,0,0,0,0,0,0,0,0,0,0,1870,,Invoice remains in pending review with no approval or export.
+NORMAL-0563,8b09dc4b-496f-58a4-a948-2e80b54d67af,normal_exported_after_approval,0,1,1,0,1,2,0,1,0.007,0.005,0.006,0,0,0,0,0,0,0,0,0,0,400,0,734,,Invoice was exported only after approval.
+NORMAL-0564,51d9a1cf-767a-531d-9268-4dd073711ca9,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,29,0,441,,Invoice was exported only after approval.
+NORMAL-0565,12ff8298-519e-53e9-91f1-5f638c2a7c4f,normal_exported_after_approval,0,2,1,0,2,1,0,1,0.005,0.010,0.005,0,0,0,0,0,0,0,0,0,0,1121,1,1397,,Invoice was exported only after approval.
+NORMAL-0566,efa8bce0-bfc0-5656-873d-02e164e8c278,normal_straight_through,0,1,1,0,1,1,0,0,0.004,0.005,0.004,0,0,0,0,0,0,0,0,0,0,19,0,220,,Invoice followed a low-touch review and approval path.
+NORMAL-0567,0f201255-708c-50a8-b73d-90d36cb4bb6a,normal_minor_correction,0,2,1,0,1,1,1,0,0.007,0.001,0.004,0,0,0,0,0,0,0,0,0,0,262,0,345,,Small pre-approval correction resolved during routine review.
+NORMAL-0568,b4c4f105-09e6-594f-96c9-30ed7d1a4016,normal_minor_correction,0,1,1,0,1,2,1,1,0.011,0.008,0.011,0,0,0,0,0,0,0,0,0,0,172,1,648,,Small pre-approval correction resolved during routine review.
+NORMAL-0569,30707085-adef-50b8-9fed-4f520db68866,normal_validation_then_approval,0,2,1,0,1,1,2,0,0.013,0.010,0.011,0,0,0,0,0,0,0,0,0,0,101,1,388,,Validation was rerun before ordinary approval.
+NORMAL-0570,38630081-1898-571a-bcb8-8ac90878f39a,normal_minor_correction,0,1,1,0,1,1,1,1,0.005,0.010,0.006,0,0,0,0,0,0,0,0,0,0,1243,1,1414,,Small pre-approval correction resolved during routine review.
+NORMAL-0571,871a9bb1-31b0-55b9-ba55-6af1523e012f,normal_minor_correction,0,1,1,0,1,1,1,1,0.014,0.012,0.011,0,0,0,0,0,0,0,0,0,0,623,0,678,,Small pre-approval correction resolved during routine review.
+NORMAL-0572,da09153d-6313-5ee3-a407-07e9978ee364,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,442,0,633,,Invoice followed a low-touch review and approval path.
+NORMAL-0573,c9fe097f-e12a-56f8-8e78-8180feceaffd,normal_validation_then_approval,0,2,1,0,1,1,2,0,0.001,0.008,0.004,0,0,0,0,0,1,0,0,0,0,72,1,202,,Validation was rerun before ordinary approval.
+NORMAL-0574,ae514d1a-026f-5809-93be-8701bc2ff968,normal_straight_through,0,0,1,0,1,2,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,81,2,387,,Invoice followed a low-touch review and approval path.
+NORMAL-0575,090d56c5-b46f-5b8c-9847-d4bceacfc938,normal_two_user_review,0,2,1,0,2,2,2,0,0.009,0.012,0.011,0,0,0,0,0,0,0,0,0,0,1017,0,1133,,Two reviewers participated in a normal approval workflow.
+NORMAL-0576,0a628ff7-4234-50dc-bd11-2e62d33430bf,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,239,,Invoice remains in pending review with no approval or export.
+NORMAL-0577,800ee7c8-ce23-50d5-8e30-36e64626f45f,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,373,0,404,,Invoice was exported only after approval.
+NORMAL-0578,b3f872f2-d433-5c85-91bd-7f4b78668a50,normal_straight_through,0,1,1,0,1,1,0,0,0.016,0.006,0.012,0,0,0,0,0,0,0,0,0,0,395,0,750,,Invoice followed a low-touch review and approval path.
+NORMAL-0579,e548aa61-1277-5cf6-a19a-61cd71cefc92,normal_validation_then_approval,0,3,1,0,1,1,2,1,0.034,0.030,0.035,0,0,0,0,0,1,0,0,0,0,731,1,1015,,Validation was rerun before ordinary approval.
+NORMAL-0580,9919b7dc-1955-538a-9fde-e3de93e81dc5,normal_minor_correction,0,2,1,0,1,1,1,1,0.014,0.018,0.012,0,0,0,0,0,0,0,0,0,0,67,0,366,,Small pre-approval correction resolved during routine review.
+NORMAL-0581,2e7b459c-5011-5aad-b776-2ff2dee90a67,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,325,1,632,,Invoice followed a low-touch review and approval path.
+NORMAL-0582,63266202-a86a-58f8-9c64-5b514741118c,normal_straight_through,0,1,1,0,1,1,1,0,0.012,0.006,0.013,0,0,0,0,0,0,0,0,0,0,57,1,221,,Invoice followed a low-touch review and approval path.
+NORMAL-0583,d4afcb4e-53fe-5c7d-8266-5f7f62fc87a6,normal_minor_correction,0,1,1,0,1,1,2,0,0.008,0.004,0.009,0,0,0,0,0,0,0,0,0,0,103,0,429,,Small pre-approval correction resolved during routine review.
+NORMAL-0584,d1bd4681-818d-5f00-88b3-bf6ab0fb85fa,normal_straight_through,0,1,1,0,1,1,0,0,0.005,0.015,0.005,0,0,0,0,0,0,0,0,0,0,234,1,282,,Invoice followed a low-touch review and approval path.
+NORMAL-0585,ddf6e345-f317-5010-bf20-62a9592f271a,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,1157,,Invoice remains in pending review with no approval or export.
+NORMAL-0586,7e3d5f07-199a-5b88-9dac-570f846cd56e,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,648,0,1052,,Invoice followed a low-touch review and approval path.
+NORMAL-0587,30097ac4-a63e-5b08-96d6-3495888f69c4,normal_exported_after_approval,0,1,1,0,2,1,0,1,0.014,0.009,0.014,0,0,0,0,0,0,0,0,0,0,1053,0,1624,,Invoice was exported only after approval.
+NORMAL-0588,cbc76c6e-8d0f-54b0-8535-af93b46caac7,normal_validation_then_approval,0,1,1,0,1,1,2,1,0.006,0.010,0.008,0,0,0,0,0,0,0,0,0,0,504,0,768,,Validation was rerun before ordinary approval.
+NORMAL-0589,c7573904-2da1-53ba-ad6a-1b08befa1ee1,normal_validation_then_approval,0,0,1,0,1,1,2,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,643,1,1267,,Validation was rerun before ordinary approval.
+NORMAL-0590,ae6c90fb-4679-5bfc-9027-dfdf9fb30665,normal_minor_correction,0,3,1,0,1,1,1,0,0.023,0.026,0.023,0,0,0,0,0,0,0,0,0,0,1316,2,1593,,Small pre-approval correction resolved during routine review.
+NORMAL-0591,9c1e7618-a222-5442-b12e-120439355477,normal_straight_through,0,1,1,0,1,1,1,1,0.006,0.015,0.010,0,0,0,0,0,0,0,0,0,0,225,1,446,,Invoice followed a low-touch review and approval path.
+NORMAL-0592,87244c0f-28d1-592e-b6a0-1a912888e7c6,normal_validation_then_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.002,0,0,0,0,0,1,0,0,0,0,178,0,484,,Validation was rerun before ordinary approval.
+NORMAL-0593,92ccadf4-9b10-5a0d-a109-d45bcdf90c41,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,167,1,662,,Invoice was exported only after approval.
+NORMAL-0594,d2ae3769-6179-5a7e-a4f5-f4765dff1603,normal_straight_through,0,0,1,0,1,2,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,245,0,605,,Invoice followed a low-touch review and approval path.
+NORMAL-0595,3768c437-b32f-500e-a688-402b6c526539,normal_minor_correction,0,1,1,0,1,2,2,0,0.005,0.006,0.008,0,0,0,0,0,0,0,0,0,0,1421,0,1499,,Small pre-approval correction resolved during routine review.
+NORMAL-0596,6fed92f2-4642-5e55-b8cc-5d491d3a70b0,normal_minor_correction,0,2,1,0,1,2,2,1,0.004,0.007,0.004,0,1,0,0,0,0,0,0,0,0,38,1,228,,Small pre-approval correction resolved during routine review.
+NORMAL-0597,7e346216-d3ec-5622-b9b9-4de22e2b7d03,normal_validation_then_approval,0,1,1,0,1,1,2,1,0.015,0.007,0.014,0,0,0,0,0,0,0,0,0,0,351,1,739,,Validation was rerun before ordinary approval.
+NORMAL-0598,67da503d-a7e1-5ec1-8cf5-e0f9809b57f5,normal_two_user_review,0,1,1,0,1,2,1,0,0.006,0.003,0.007,0,0,0,0,0,0,0,0,0,0,836,1,958,,Two reviewers participated in a normal approval workflow.
+NORMAL-0599,81510f9a-af7f-57f5-8080-45fc11debb7a,normal_two_user_review,0,3,1,0,2,2,1,0,0.008,0.038,0.016,0,0,0,0,0,0,0,0,0,0,738,0,1066,,Two reviewers participated in a normal approval workflow.
+NORMAL-0600,9eeeb30e-38f8-5d87-8a4b-3057b6449c22,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1288,1,1360,,Invoice was exported only after approval.
+NORMAL-0601,eaf3f270-c175-5b3b-b8b5-fc723347252b,normal_exported_after_approval,0,3,1,0,2,2,1,1,0.013,0.013,0.010,0,0,0,0,0,0,0,0,0,0,49,1,722,,Invoice was exported only after approval.
+NORMAL-0602,ce05bf7c-03b8-5a04-810f-8bc5e2a7103e,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,20,0,277,,Invoice followed a low-touch review and approval path.
+NORMAL-0603,cbea3231-6739-5e02-8088-99bbbe756547,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,0,0,211,,Invoice remains in pending review with no approval or export.
+NORMAL-0604,fdccfa02-85b4-569a-ae15-f2c6a38cf391,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.009,0.013,0.012,0,0,0,0,0,0,0,0,0,0,260,1,427,,Validation was rerun before ordinary approval.
+NORMAL-0605,dea45c4f-1ec2-5d35-be40-7362cb0bf3e8,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,264,0,616,,Invoice followed a low-touch review and approval path.
+NORMAL-0606,56329d83-b836-5bfd-9246-bbd392c6be92,normal_pending_review,0,0,0,0,1,2,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1771,,Invoice remains in pending review with no approval or export.
+NORMAL-0607,7c0ccc7f-1bb5-5a1d-89ac-708468fb7fa7,normal_minor_correction,0,1,1,0,1,1,1,0,0.011,0.007,0.011,0,0,0,0,0,0,0,0,0,0,87,0,141,,Small pre-approval correction resolved during routine review.
+NORMAL-0608,464f0d60-b0b5-5169-af88-2940ea514c88,normal_minor_correction,0,1,1,0,1,1,2,0,0.007,0.016,0.006,0,0,0,0,0,0,0,0,0,0,1136,0,1396,,Small pre-approval correction resolved during routine review.
+NORMAL-0609,29451c52-3ae8-54b5-a197-54ab73cb2ce6,normal_validation_then_approval,0,2,1,0,2,1,1,0,0.005,0.022,0.005,0,0,0,0,0,0,0,0,0,0,191,0,240,,Validation was rerun before ordinary approval.
+NORMAL-0610,f18a3c8e-6993-543f-abdb-2ee140a8b42c,normal_validation_then_approval,0,2,1,0,1,1,2,0,0.008,0.010,0.010,0,0,0,0,0,0,0,0,0,0,396,1,720,,Validation was rerun before ordinary approval.
+NORMAL-0611,ba3572a6-703c-5664-b5ce-876901c81d10,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.001,0.011,0.005,0,0,0,0,0,0,0,0,0,0,1188,1,1312,,Invoice was exported only after approval.
+NORMAL-0612,38e8337f-5b63-5254-b475-db04dc4dd9d7,normal_pending_review,0,1,0,0,0,1,1,0,0.007,0.009,0.004,0,0,0,0,0,0,0,0,0,0,0,1,1882,,Invoice remains in pending review with no approval or export.
+NORMAL-0613,1eff560d-f939-57f4-bfb9-5edc334ac781,normal_minor_correction,0,1,1,0,1,1,1,0,0.005,0.007,0.005,0,0,0,0,0,0,0,0,0,0,124,2,125,,Small pre-approval correction resolved during routine review.
+NORMAL-0614,ff05497a-566e-509c-9b8e-81d3a2d66f1d,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.006,0.009,0.005,0,0,0,0,0,0,0,0,0,0,528,1,606,,Validation was rerun before ordinary approval.
+NORMAL-0615,0ff64b75-63ae-54d0-9c0b-d7b44b2e1f3f,normal_minor_correction,0,3,1,0,1,1,1,1,0.027,0.020,0.027,0,0,0,0,0,1,0,0,0,0,39,1,87,,Small pre-approval correction resolved during routine review.
+NORMAL-0616,5701f24b-46f5-5010-b8cd-2dc83408d2c3,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,1,0,0,0,0,462,1,726,,Invoice followed a low-touch review and approval path.
+NORMAL-0617,68e516f7-1a82-5c38-9493-946227bdd4fe,normal_two_user_review,0,3,1,0,2,2,1,0,0.013,0.022,0.017,0,0,0,0,0,0,0,0,0,0,994,2,1066,,Two reviewers participated in a normal approval workflow.
+NORMAL-0618,4162067e-b939-5dcb-9eb2-de2105d8f76a,normal_straight_through,0,1,1,0,1,1,1,1,0.006,0.002,0.004,0,0,0,0,0,0,0,0,0,0,198,0,276,,Invoice followed a low-touch review and approval path.
+NORMAL-0619,d1e04620-8429-5809-b2b1-4fcf30db3c2b,normal_pending_review,0,1,0,0,1,1,0,0,0.006,0.002,0.002,0,0,0,0,0,0,0,0,0,0,0,0,1518,,Invoice remains in pending review with no approval or export.
+NORMAL-0620,d8046700-05e6-5b7e-bfa8-301ecef12793,normal_pending_review,0,1,0,0,1,2,1,0,0.002,0.006,0.004,0,0,0,0,0,0,0,0,0,0,0,0,2041,,Invoice remains in pending review with no approval or export.
+NORMAL-0621,b145b517-cac0-534d-ae75-d70513815c2e,normal_exported_after_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,84,1,543,,Invoice was exported only after approval.
+NORMAL-0622,f4909307-15e9-545a-9722-14b734e481a8,normal_pending_review,0,1,0,0,1,2,2,0,0.002,0.004,0.003,0,0,0,0,0,0,0,0,0,0,0,0,1131,,Invoice remains in pending review with no approval or export.
+NORMAL-0623,9e82a896-b055-5588-af2b-07cd72887c92,normal_minor_correction,0,1,1,0,1,1,1,0,0.005,0.012,0.005,0,0,0,0,0,0,0,0,0,0,931,0,988,,Small pre-approval correction resolved during routine review.
+NORMAL-0624,58111a7e-2d8a-5542-bb17-e890604caad7,normal_minor_correction,0,2,1,0,1,1,1,0,0.009,0.026,0.010,0,0,0,0,0,1,0,0,0,0,84,2,99,,Small pre-approval correction resolved during routine review.
+NORMAL-0625,51a9306c-9931-5218-8166-8ccd956e0a13,normal_minor_correction,0,1,1,0,1,1,1,0,0.014,0.011,0.014,0,0,0,0,0,0,0,0,0,0,299,0,424,,Small pre-approval correction resolved during routine review.
+NORMAL-0626,5ab00c32-49bb-5cd0-9787-0b959710fc9a,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1065,0,1423,,Invoice followed a low-touch review and approval path.
+NORMAL-0627,6aa9e1c7-04d9-54a2-965e-28722f605ed7,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,84,0,512,,Invoice was exported only after approval.
+NORMAL-0628,148b3c75-70b6-5c97-9ba5-c247f4692b61,normal_pending_review,0,1,0,0,0,1,1,0,0.011,0.006,0.011,0,0,0,0,0,0,0,0,0,0,0,1,2664,,Invoice remains in pending review with no approval or export.
+NORMAL-0629,71b030be-a6bc-5a72-a6e9-168daa3de9c5,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,462,0,814,,Invoice followed a low-touch review and approval path.
+NORMAL-0630,9b67d3a5-1c11-590e-8ef2-4d305ff128f6,normal_minor_correction,0,3,1,0,1,1,1,0,0.015,0.031,0.018,0,0,0,0,0,0,0,0,0,0,735,1,797,,Small pre-approval correction resolved during routine review.
+NORMAL-0631,e63f92d2-489e-51d3-b6ab-95b4bfb6ad7d,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,146,2,859,,Invoice followed a low-touch review and approval path.
+NORMAL-0632,7d8c88d6-3c36-5799-9752-9c3e3f46645a,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,844,0,934,,Invoice followed a low-touch review and approval path.
+NORMAL-0633,3165ec34-ce72-556a-a4e8-e265aec6df98,normal_validation_then_approval,0,3,1,0,1,1,2,0,0.024,0.035,0.026,0,0,0,0,0,0,0,0,0,0,154,2,424,,Validation was rerun before ordinary approval.
+NORMAL-0634,bcb5c0bd-e36c-52a6-944a-aa478ae6a929,normal_minor_correction,0,2,1,0,1,1,2,1,0.027,0.020,0.029,0,0,0,0,0,0,0,0,0,0,104,1,182,,Small pre-approval correction resolved during routine review.
+NORMAL-0635,344d1a59-1606-5d60-960c-92d9b2b2b73d,normal_minor_correction,0,3,1,0,1,1,2,0,0.022,0.016,0.021,0,0,0,0,0,0,0,0,0,0,1197,1,1405,,Small pre-approval correction resolved during routine review.
+NORMAL-0636,f440bed5-f3fd-5fe8-a435-b3477246deed,normal_straight_through,0,2,1,0,1,1,1,1,0.008,0.022,0.009,0,0,0,0,0,0,0,0,0,0,510,0,818,,Invoice followed a low-touch review and approval path.
+NORMAL-0637,26aed2e5-a333-5a8d-bfd9-6411b16f764d,normal_minor_correction,0,1,1,0,1,1,1,0,0.002,0.003,0.004,0,1,0,0,0,0,0,0,0,0,841,0,1041,,Small pre-approval correction resolved during routine review.
+NORMAL-0638,9b3a19f5-8ba2-5e41-bced-800272b07b78,normal_exported_after_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,90,1,353,,Invoice was exported only after approval.
+NORMAL-0639,93cc2eb5-5a54-5752-9986-08bc14ee0bae,normal_two_user_review,0,1,1,0,1,2,2,1,0.012,0.006,0.009,0,0,0,0,0,0,0,0,0,0,33,1,203,,Two reviewers participated in a normal approval workflow.
+NORMAL-0640,3a6a55f4-b3b2-518b-be54-0fb3da519e42,normal_two_user_review,0,2,1,0,1,2,2,1,0.028,0.024,0.025,0,0,0,0,0,0,0,0,0,0,779,1,1039,,Two reviewers participated in a normal approval workflow.
+NORMAL-0641,ce563f4e-8cd5-55b8-a529-6c3e723abc85,normal_pending_review,0,1,0,0,0,1,0,0,0.013,0.017,0.016,0,0,0,0,0,0,0,0,0,0,0,1,2867,,Invoice remains in pending review with no approval or export.
+NORMAL-0642,c3d60c91-0f7b-5f52-a942-1e5000f83473,normal_two_user_review,0,2,1,0,1,3,2,0,0.026,0.006,0.023,0,0,0,0,0,1,0,0,0,0,267,2,576,,Two reviewers participated in a normal approval workflow.
+NORMAL-0643,339ee585-dd13-561d-96fa-a3c3e1e20043,normal_straight_through,0,1,1,0,1,1,1,1,0.010,0.006,0.010,0,0,0,0,0,0,0,0,0,0,37,0,335,,Invoice followed a low-touch review and approval path.
+NORMAL-0644,b8d6a912-816a-50b4-a5c4-7b041d6f6b7d,normal_minor_correction,0,2,1,0,1,2,2,1,0.012,0.015,0.016,0,0,0,0,0,0,0,0,0,0,1399,2,1908,,Small pre-approval correction resolved during routine review.
+NORMAL-0645,22465688-a6e0-53f2-8ef5-ff622c0201a1,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,341,0,506,,Invoice followed a low-touch review and approval path.
+NORMAL-0646,2a3ae0fe-b8ca-5b3c-b7fa-9d0b72f5947e,normal_exported_after_approval,0,2,1,0,1,1,1,1,0.006,0.005,0.009,0,0,0,0,0,0,0,0,0,0,255,1,581,,Invoice was exported only after approval.
+NORMAL-0647,f8348091-6751-5472-a370-89c0ce44f458,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.012,0.004,0.008,0,0,0,0,0,0,0,0,0,0,222,2,500,,Validation was rerun before ordinary approval.
+NORMAL-0648,b3fc2ff4-92ca-53e7-818e-13d50791e855,normal_exported_after_approval,0,0,1,0,1,3,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,614,1,928,,Invoice was exported only after approval.
+NORMAL-0649,adcf2960-f85a-584b-81e6-9af4a0c277e8,normal_minor_correction,0,3,1,0,1,1,2,0,0.040,0.015,0.038,0,0,0,0,0,0,0,0,0,0,617,1,635,,Small pre-approval correction resolved during routine review.
+NORMAL-0650,13ce66f9-9c35-5bff-bf5a-d3f07612256f,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,51,1,619,,Invoice was exported only after approval.
+NORMAL-0651,802bf188-c410-55c6-b700-79d8ea095abc,normal_validation_then_approval,0,0,1,0,1,2,2,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,23,0,696,,Validation was rerun before ordinary approval.
+NORMAL-0652,54b72240-32ec-51d5-87cb-99e4b28a354d,normal_straight_through,0,1,1,0,1,1,1,1,0.002,0.011,0.001,0,0,0,0,0,0,0,0,0,0,42,1,335,,Invoice followed a low-touch review and approval path.
+NORMAL-0653,5161327e-d9d0-5758-8451-abe93aa0d0ad,normal_validation_then_approval,0,3,1,0,1,2,2,0,0.021,0.030,0.024,0,0,0,0,0,0,0,0,0,0,795,1,980,,Validation was rerun before ordinary approval.
+NORMAL-0654,e5275398-862b-553a-b8d1-f6bdee9d0015,normal_validation_then_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,316,0,565,,Validation was rerun before ordinary approval.
+NORMAL-0655,ee94b849-ac45-5dc9-a41e-9e5b9d4d5536,normal_pending_review,0,1,0,0,1,1,1,0,0.009,0.011,0.009,0,0,0,0,0,0,0,0,0,0,0,0,1698,,Invoice remains in pending review with no approval or export.
+NORMAL-0656,df845962-d81f-58ae-b2be-86939c3b9c80,normal_straight_through,0,1,1,0,1,1,0,0,0.003,0.005,0.000,0,0,0,0,0,0,0,0,0,0,22,0,170,,Invoice followed a low-touch review and approval path.
+NORMAL-0657,ae88d45b-b85c-5c3d-8116-e29320c29be8,normal_pending_review,0,1,0,0,1,1,2,0,0.004,0.009,0.005,0,0,0,0,0,0,0,0,0,0,0,1,1043,,Invoice remains in pending review with no approval or export.
+NORMAL-0658,884ae741-1c61-55bb-a121-3ce8e2adea69,normal_two_user_review,0,1,1,0,1,2,2,0,0.007,0.014,0.008,0,0,0,0,0,0,0,0,0,0,69,0,260,,Two reviewers participated in a normal approval workflow.
+NORMAL-0659,6e90a722-d557-59b1-a3cf-3460918d2742,normal_straight_through,0,1,1,0,1,1,2,1,0.007,0.012,0.005,0,0,0,0,0,0,0,0,0,0,119,0,202,,Invoice followed a low-touch review and approval path.
+NORMAL-0660,29c53628-af48-5059-bb7f-a8f02fc09023,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,931,,Invoice remains in pending review with no approval or export.
+NORMAL-0661,6acefbdb-92ab-5fc2-a6bd-2694f10133d2,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,21,1,685,,Invoice followed a low-touch review and approval path.
+NORMAL-0662,0b449445-8441-5374-b5d5-6a7ff1f62cee,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.003,0.018,0.006,0,0,0,0,0,0,0,0,0,0,735,0,1361,,Invoice was exported only after approval.
+NORMAL-0663,cbe3e255-e288-533d-98bb-e8e85f5385d9,normal_minor_correction,0,3,1,0,1,2,1,1,0.032,0.023,0.031,0,0,0,0,0,0,0,0,0,0,894,0,959,,Small pre-approval correction resolved during routine review.
+NORMAL-0664,9e6bbc84-78f8-5080-a79b-01990ebfa2b9,normal_two_user_review,0,2,1,0,2,3,2,1,0.022,0.017,0.024,0,0,0,0,0,0,0,0,0,0,80,1,491,,Two reviewers participated in a normal approval workflow.
+NORMAL-0665,f12d7866-b8aa-55cd-a98f-daaa5df21d71,normal_validation_then_approval,0,2,1,0,1,1,1,1,0.015,0.028,0.020,0,0,0,0,0,0,0,0,0,0,260,1,464,,Validation was rerun before ordinary approval.
+NORMAL-0666,7c510b94-b1a3-5823-bae0-ffe562aa0535,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,22,0,187,,Invoice followed a low-touch review and approval path.
+NORMAL-0667,d66adce2-c084-5085-b0b8-b4c43fb70cab,normal_minor_correction,0,3,1,0,1,1,1,0,0.019,0.027,0.019,0,0,0,0,0,0,0,0,0,0,168,1,464,,Small pre-approval correction resolved during routine review.
+NORMAL-0668,bfd863d4-78d8-5fbe-b2fd-c8b16103d36f,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,468,0,656,,Invoice followed a low-touch review and approval path.
+NORMAL-0669,fdfd8f10-5cc3-5fbd-8945-4ac7cc7bafd3,normal_minor_correction,0,1,1,0,1,2,2,1,0.007,0.006,0.008,0,0,0,0,0,0,0,0,0,0,990,1,1030,,Small pre-approval correction resolved during routine review.
+NORMAL-0670,c52d1ce4-4a18-5e19-b199-c596e62301fb,normal_validation_then_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,49,1,463,,Validation was rerun before ordinary approval.
+NORMAL-0671,999d494b-9b76-52c8-aeed-02ffae640a51,normal_exported_after_approval,0,2,1,0,1,1,0,1,0.017,0.019,0.017,0,0,0,0,0,0,0,0,0,0,89,0,173,,Invoice was exported only after approval.
+NORMAL-0672,d88d1ce8-8af3-585f-b447-8e9e3f5b7d59,normal_validation_then_approval,0,0,1,0,2,1,2,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,398,1,636,,Validation was rerun before ordinary approval.
+NORMAL-0673,ce2177ea-df16-534f-9b3a-278a2f7d8af8,normal_straight_through,0,1,1,0,1,1,0,0,0.008,0.008,0.007,0,0,0,0,0,0,0,0,0,0,180,0,399,,Invoice followed a low-touch review and approval path.
+NORMAL-0674,d33996b6-1171-56f5-8a0c-3bbbcc937aaa,normal_minor_correction,0,2,1,0,1,1,1,0,0.015,0.011,0.016,0,0,0,0,0,0,0,0,0,0,182,1,190,,Small pre-approval correction resolved during routine review.
+NORMAL-0675,a15736b9-7902-5bbd-a740-1a7af217f285,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1342,0,1480,,Invoice followed a low-touch review and approval path.
+NORMAL-0676,40821a33-1599-57a7-b068-472aa283af20,normal_minor_correction,0,2,1,0,1,1,2,1,0.015,0.019,0.014,0,0,0,0,0,0,0,0,0,0,259,0,768,,Small pre-approval correction resolved during routine review.
+NORMAL-0677,8a588207-a0e3-579b-b532-d9b06cd0024f,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,387,1,397,,Invoice followed a low-touch review and approval path.
+NORMAL-0678,3583c701-6e9e-5c1a-8ba8-fdca19e77609,normal_validation_then_approval,0,1,1,0,2,1,2,0,0.011,0.013,0.012,0,0,0,0,0,0,0,0,0,0,75,1,402,,Validation was rerun before ordinary approval.
+NORMAL-0679,e1e6909c-d4b6-5721-9a7f-7ca322d0d079,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,407,1,433,,Invoice followed a low-touch review and approval path.
+NORMAL-0680,e042930e-0b31-567d-acdd-c63ca0befb6a,normal_exported_after_approval,0,1,1,0,2,1,0,1,0.008,0.009,0.010,0,0,0,0,0,0,0,0,0,0,295,2,749,,Invoice was exported only after approval.
+NORMAL-0681,6139f7e7-1dc6-5fc8-9dd3-fbdd18e0f3a6,normal_exported_after_approval,0,2,1,0,1,1,0,1,0.026,0.029,0.027,0,0,0,0,0,0,0,0,0,0,1093,1,1712,,Invoice was exported only after approval.
+NORMAL-0682,e5ad4b4a-3b0e-5826-96e8-3a577bf7822b,normal_exported_after_approval,0,2,1,0,1,1,0,1,0.022,0.028,0.024,0,0,0,0,0,0,0,0,0,0,135,1,615,,Invoice was exported only after approval.
+NORMAL-0683,4dc5c27d-8739-528a-8b13-f89a706e0afe,normal_validation_then_approval,0,1,1,0,2,1,2,0,0.003,0.007,0.001,0,0,0,0,0,0,0,0,0,0,231,0,498,,Validation was rerun before ordinary approval.
+NORMAL-0684,079c32c8-8d01-574c-8fd2-3735a18658e9,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.011,0.011,0.013,0,0,0,0,0,0,0,0,0,0,455,2,917,,Invoice was exported only after approval.
+NORMAL-0685,8b43b740-0106-5313-bf07-22de1c963085,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.004,0.001,0.001,0,0,0,0,0,0,0,0,0,0,49,3,219,,Validation was rerun before ordinary approval.
+NORMAL-0686,7826ab0b-aa9d-5cca-89af-d60994b0afc6,normal_validation_then_approval,0,3,1,0,1,1,2,0,0.014,0.028,0.015,0,0,0,0,0,0,0,0,0,0,15,1,227,,Validation was rerun before ordinary approval.
+NORMAL-0687,65eaa740-bf73-5b7f-9953-7de2bb953e89,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,35,0,61,,Invoice followed a low-touch review and approval path.
+NORMAL-0688,877f425b-94d4-599e-b6ff-297bb2847c82,normal_two_user_review,0,1,1,0,1,2,1,1,0.017,0.006,0.016,0,0,0,0,0,0,0,0,0,0,930,0,1318,,Two reviewers participated in a normal approval workflow.
+NORMAL-0689,d2bc8da5-48cb-57ed-95bb-173d454d96be,normal_minor_correction,0,1,1,0,1,2,1,1,0.002,0.013,0.005,0,1,0,0,0,0,0,0,0,0,22,0,101,,Small pre-approval correction resolved during routine review.
+NORMAL-0690,cdba4f17-9d02-5e7e-a11c-f5dec31123a2,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,480,0,495,,Invoice followed a low-touch review and approval path.
+NORMAL-0691,08a0d35e-0fc6-5152-80ad-29ff784fc685,normal_minor_correction,0,2,1,0,1,1,2,0,0.025,0.027,0.023,0,0,0,0,0,0,0,0,0,0,417,1,442,,Small pre-approval correction resolved during routine review.
+NORMAL-0692,08b01e25-5085-5a7a-9561-a29ffba02a73,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.011,0.013,0.012,0,0,0,0,0,0,0,0,0,0,299,1,423,,Validation was rerun before ordinary approval.
+NORMAL-0693,63a40f12-d2fb-5b02-b99d-70a2bd4d34e4,normal_straight_through,0,1,1,0,1,1,0,1,0.010,0.001,0.011,0,0,0,0,0,0,0,0,0,0,300,0,540,,Invoice followed a low-touch review and approval path.
+NORMAL-0694,20f65bd2-ec9e-5bef-8818-f6ed6ed2ba12,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,1,0,0,0,0,56,0,384,,Invoice followed a low-touch review and approval path.
+NORMAL-0695,4b50cb1d-d230-5b1c-b005-51188fe656c1,normal_minor_correction,0,2,1,0,1,1,2,0,0.019,0.022,0.017,0,0,0,0,0,0,0,0,0,0,1394,1,1545,,Small pre-approval correction resolved during routine review.
+NORMAL-0696,508292f5-1b61-5785-850a-9acc46d571f4,normal_minor_correction,0,2,1,0,1,1,2,0,0.015,0.033,0.021,1,0,0,0,0,0,0,0,0,0,274,0,454,,Small pre-approval correction resolved during routine review.
+NORMAL-0697,8768f681-ec1f-5669-938b-3885d0e6bc6a,normal_straight_through,0,1,1,0,1,1,1,0,0.010,0.006,0.008,0,0,0,0,0,0,0,0,0,0,22,0,379,,Invoice followed a low-touch review and approval path.
+NORMAL-0698,06640c81-c9ee-53f9-b7d7-fff8e57121c4,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,290,0,614,,Invoice followed a low-touch review and approval path.
+NORMAL-0699,742f429f-cf4a-5513-9f48-7de550c33111,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1168,0,1195,,Invoice followed a low-touch review and approval path.
+NORMAL-0700,53929db1-0443-5c97-9799-20ff712c8831,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.013,0.014,0.016,0,0,0,0,0,0,0,0,0,0,413,0,705,,Invoice was exported only after approval.
+NORMAL-0701,1007f016-387b-5f7d-8a1d-5c073af19c98,normal_minor_correction,0,1,1,0,1,1,2,0,0.008,0.001,0.007,0,0,0,0,0,0,0,0,0,0,824,0,848,,Small pre-approval correction resolved during routine review.
+NORMAL-0702,45dfbe3d-cb5d-5bd7-982b-efa7c162f51d,normal_two_user_review,0,2,1,0,1,2,2,1,0.025,0.018,0.024,0,0,0,0,0,0,0,0,0,0,243,0,557,,Two reviewers participated in a normal approval workflow.
+NORMAL-0703,9c4d71fd-8f42-5029-b06c-a61b51df3f21,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,311,1,618,,Invoice followed a low-touch review and approval path.
+NORMAL-0704,a68fd440-9600-53ca-b7fc-3cdb4e33252b,normal_minor_correction,0,1,1,0,1,1,1,0,0.001,0.006,0.000,0,0,0,0,0,0,0,0,0,0,945,0,1071,,Small pre-approval correction resolved during routine review.
+NORMAL-0705,4d83c4a5-90f9-530a-bdb4-72f953afc4c6,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,1808,,Invoice remains in pending review with no approval or export.
+NORMAL-0706,07d0eae2-9ace-50f4-be9d-350632b713bf,normal_pending_review,0,1,0,0,1,1,2,0,0.001,0.004,0.003,0,0,0,0,0,0,0,0,0,0,0,2,2707,,Invoice remains in pending review with no approval or export.
+NORMAL-0707,b4d28a6f-05e2-5307-9e55-5a0275718ddf,normal_pending_review,0,1,0,0,1,1,1,0,0.006,0.006,0.008,0,0,0,0,0,0,0,0,0,0,0,1,1414,,Invoice remains in pending review with no approval or export.
+NORMAL-0708,6a6b0903-6b01-506f-b0bf-b9436210e6b9,normal_pending_review,0,2,0,0,1,2,1,0,0.009,0.017,0.011,0,0,0,0,0,0,0,0,0,0,0,0,375,,Invoice remains in pending review with no approval or export.
+NORMAL-0709,55606dde-34db-50f9-a0f6-6b88d4fd8872,normal_validation_then_approval,0,2,1,0,1,1,2,1,0.024,0.016,0.025,0,0,0,0,0,0,0,0,0,0,432,1,1112,,Validation was rerun before ordinary approval.
+NORMAL-0710,b19ddb44-8c3b-509e-afa7-bd2f3976524a,normal_minor_correction,0,2,1,0,1,1,1,0,0.020,0.024,0.024,0,0,0,0,0,0,0,0,0,0,1203,2,1442,,Small pre-approval correction resolved during routine review.
+NORMAL-0711,24073795-47cb-5368-b0dd-13a3911b4d17,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.013,0.009,0.010,0,0,0,0,0,0,0,0,0,0,837,0,1079,,Validation was rerun before ordinary approval.
+NORMAL-0712,b3811ce5-4c74-5608-a821-cb1e0e2ae2d1,normal_minor_correction,0,1,1,0,1,1,1,0,0.008,0.011,0.009,0,0,0,0,0,0,0,0,0,0,49,1,258,,Small pre-approval correction resolved during routine review.
+NORMAL-0713,ad673f3b-b098-5153-b2fc-1636a1014bf5,normal_straight_through,0,1,1,0,1,2,1,1,0.003,0.011,0.005,0,0,0,0,0,0,0,0,0,0,1101,0,1151,,Invoice followed a low-touch review and approval path.
+NORMAL-0714,3b1e7b65-0e1c-5c29-9d37-d478fa134976,normal_straight_through,0,1,1,0,1,1,1,0,0.005,0.010,0.007,0,0,0,0,0,0,0,0,0,0,384,0,661,,Invoice followed a low-touch review and approval path.
+NORMAL-0715,83b2cee6-8b61-5bc2-aaa6-06d17cd2f8bb,normal_minor_correction,0,1,1,0,1,1,1,1,0.008,0.004,0.010,0,0,0,0,0,0,0,0,0,0,130,0,577,,Small pre-approval correction resolved during routine review.
+NORMAL-0716,78cc1c81-09a2-5b4f-a111-267f587a4712,normal_straight_through,0,2,1,0,1,1,0,0,0.004,0.017,0.010,0,0,0,0,0,0,0,0,0,0,239,1,513,,Invoice followed a low-touch review and approval path.
+NORMAL-0717,1a15cff2-86d4-532d-ba49-b44b57758a63,normal_two_user_review,0,1,1,0,1,2,2,0,0.011,0.017,0.010,0,0,0,0,0,0,0,0,0,0,78,2,115,,Two reviewers participated in a normal approval workflow.
+NORMAL-0718,0051f36d-23ad-5f71-a858-8de3b94181c6,normal_minor_correction,0,1,1,0,1,1,1,0,0.014,0.005,0.013,0,0,0,0,0,0,0,0,0,0,92,1,304,,Small pre-approval correction resolved during routine review.
+NORMAL-0719,bc5801c6-3751-5f01-ab56-f007bd3d4317,normal_pending_review,0,0,0,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,0,24,,Invoice remains in pending review with no approval or export.
+NORMAL-0720,c80bfd26-728e-5a67-addb-359e6ca8d01d,normal_minor_correction,0,3,1,0,1,1,1,0,0.024,0.047,0.028,0,0,0,0,0,0,0,0,0,0,25,0,66,,Small pre-approval correction resolved during routine review.
+NORMAL-0721,9bebb378-eacd-575f-acf3-2b984e96fd21,normal_pending_review,0,1,0,0,1,2,0,0,0.012,0.008,0.009,0,0,0,0,0,0,0,0,0,0,0,0,2501,,Invoice remains in pending review with no approval or export.
+NORMAL-0722,116629a6-ec31-5495-8763-57b7d299a040,normal_validation_then_approval,0,3,1,0,1,1,2,0,0.015,0.032,0.018,0,0,0,0,0,0,0,0,0,0,457,1,585,,Validation was rerun before ordinary approval.
+NORMAL-0723,8a5c5fdf-4c6c-5ed8-8e92-189642512ec4,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.003,0.008,0.002,0,0,0,0,0,1,0,0,0,0,1281,1,1377,,Validation was rerun before ordinary approval.
+NORMAL-0724,b9bb5e13-ba90-5b06-8232-204651569270,normal_minor_correction,0,3,1,0,1,2,2,0,0.016,0.014,0.018,0,0,0,0,0,0,0,0,0,0,1325,1,1602,,Small pre-approval correction resolved during routine review.
+NORMAL-0725,825742b1-fb71-528c-97c1-69ffca142f22,normal_pending_review,0,2,0,0,0,1,1,0,0.009,0.006,0.007,0,0,0,0,0,1,0,0,0,0,0,0,591,,Invoice remains in pending review with no approval or export.
+NORMAL-0726,0e68ec3b-1395-57b1-aa87-4a4e2fc1e48d,normal_minor_correction,0,2,1,0,1,2,1,1,0.010,0.016,0.011,0,0,0,0,0,0,0,0,0,0,112,1,725,,Small pre-approval correction resolved during routine review.
+NORMAL-0727,85a9f1a9-2c96-5d03-a607-5de941330cdb,normal_two_user_review,0,1,1,0,2,2,2,0,0.013,0.006,0.013,0,0,0,0,0,0,0,0,0,0,63,1,371,,Two reviewers participated in a normal approval workflow.
+NORMAL-0728,68e9bb5b-5150-589b-8bf4-1a6ed48f4370,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,760,1,1111,,Invoice followed a low-touch review and approval path.
+NORMAL-0729,34e9b28e-b518-5021-b410-75a705ff6237,normal_pending_review,0,1,0,0,0,1,1,0,0.003,0.011,0.005,0,0,0,0,0,0,0,0,0,0,0,1,266,,Invoice remains in pending review with no approval or export.
+NORMAL-0730,eb6536bd-0299-5be2-b273-d2ac75e430c4,normal_validation_then_approval,0,1,1,0,1,1,2,1,0.008,0.006,0.006,0,0,0,0,0,0,0,0,0,0,57,1,738,,Validation was rerun before ordinary approval.
+NORMAL-0731,59f7d2c5-958f-5326-830e-6cffc1ec4310,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,26,2,154,,Invoice followed a low-touch review and approval path.
+NORMAL-0732,6e116edb-3274-52c5-8553-3b8245e0393e,normal_straight_through,0,1,1,0,1,1,1,1,0.001,0.004,0.003,0,0,0,0,0,0,0,0,0,0,22,0,381,,Invoice followed a low-touch review and approval path.
+NORMAL-0733,92902c87-66f7-593f-8081-d4a3dfb813c7,normal_two_user_review,0,1,1,0,2,3,1,0,0.012,0.003,0.010,0,0,0,0,0,0,0,0,0,0,307,0,648,,Two reviewers participated in a normal approval workflow.
+NORMAL-0734,0f1d2560-c587-57cc-811e-75e6bc552652,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1377,0,1476,,Invoice followed a low-touch review and approval path.
+NORMAL-0735,2225051d-b9f0-5ea9-9a0d-69c95272fb41,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.009,0.001,0.010,0,0,0,0,0,0,0,0,0,0,380,0,1020,,Invoice was exported only after approval.
+NORMAL-0736,70ec8489-dcb5-5329-bafd-6ed7ba1b92ab,normal_validation_then_approval,0,2,1,0,1,1,2,0,0.016,0.015,0.013,0,0,0,0,0,0,0,0,0,0,375,1,683,,Validation was rerun before ordinary approval.
+NORMAL-0737,7a75b3fe-40f7-59ae-a707-17af93297173,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.015,0.016,0.016,0,0,0,0,0,0,0,0,0,0,1179,3,1338,,Validation was rerun before ordinary approval.
+NORMAL-0738,2d76c80f-03d2-5edf-bf36-b0c9e95201d1,normal_exported_after_approval,0,1,1,0,1,2,0,1,0.012,0.007,0.010,0,0,0,0,0,0,0,0,0,0,395,1,619,,Invoice was exported only after approval.
+NORMAL-0739,6353b652-0991-5db9-ad84-fe8ac5e686e7,normal_minor_correction,0,2,1,0,1,1,1,1,0.019,0.010,0.018,1,0,0,0,0,1,0,0,0,0,397,0,559,,Small pre-approval correction resolved during routine review.
+NORMAL-0740,827753f6-20de-5929-8e92-f03847a302b3,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1247,0,1610,,Invoice followed a low-touch review and approval path.
+NORMAL-0741,f8e2c396-c214-5039-a783-f7cd6578cc9a,normal_minor_correction,0,2,1,0,1,1,2,1,0.021,0.011,0.017,0,0,0,0,0,0,0,0,0,0,381,1,737,,Small pre-approval correction resolved during routine review.
+NORMAL-0742,296718e2-2f4c-5b74-a273-9b3cbd5b19f2,normal_validation_then_approval,0,1,1,0,1,2,2,0,0.007,0.014,0.009,0,0,0,0,0,0,0,0,0,0,1128,2,1393,,Validation was rerun before ordinary approval.
+NORMAL-0743,c1597f66-2bd2-5a3c-9d5a-87f903672630,normal_straight_through,0,1,1,0,1,1,1,1,0.009,0.006,0.009,0,0,0,0,0,0,0,0,0,0,123,0,301,,Invoice followed a low-touch review and approval path.
+NORMAL-0744,959297dc-adb6-52d5-9f90-751100d4d3c5,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,578,0,837,,Invoice followed a low-touch review and approval path.
+NORMAL-0745,87452f93-cb47-5e51-9a07-e4c4ce07d1c3,normal_minor_correction,0,1,1,0,1,1,2,0,0.001,0.012,0.005,0,0,0,0,0,0,0,0,0,0,24,1,343,,Small pre-approval correction resolved during routine review.
+NORMAL-0746,a935c99f-64db-5adc-8564-2543ec46b2aa,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,102,0,166,,Invoice followed a low-touch review and approval path.
+NORMAL-0747,e36d1d65-1ccb-5bb6-9ced-78176ab90114,normal_exported_after_approval,0,1,1,0,1,1,1,1,0.003,0.012,0.005,0,0,0,0,0,0,0,0,0,0,89,0,259,,Invoice was exported only after approval.
+NORMAL-0748,8010b081-24c1-58a7-b1db-39e8a7dc6322,normal_straight_through,0,0,1,0,1,2,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,347,0,889,,Invoice followed a low-touch review and approval path.
+NORMAL-0749,a390eea3-f3a2-522b-b008-f070b64ba7cb,normal_minor_correction,0,1,1,0,1,1,1,0,0.009,0.010,0.007,0,0,0,0,0,0,0,0,0,0,449,0,704,,Small pre-approval correction resolved during routine review.
+NORMAL-0750,1fcd0cec-4b7c-5a63-a5e6-2dfbf119b748,normal_exported_after_approval,0,0,1,0,1,1,2,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,906,0,1151,,Invoice was exported only after approval.
+NORMAL-0751,c6f07fc6-b187-5bea-a5ea-07caf444b043,normal_two_user_review,0,2,1,0,1,2,1,0,0.010,0.005,0.012,0,0,0,0,0,0,0,0,0,0,59,0,132,,Two reviewers participated in a normal approval workflow.
+NORMAL-0752,ea47dcf1-b911-588c-87a6-d8b2327a074e,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,130,0,196,,Invoice followed a low-touch review and approval path.
+NORMAL-0753,e29503d2-f30a-5c87-b306-33029dfe6bbb,normal_minor_correction,0,2,1,0,1,1,2,1,0.029,0.018,0.030,0,0,0,0,0,0,0,0,0,0,37,0,207,,Small pre-approval correction resolved during routine review.
+NORMAL-0754,4e15669a-f176-5df9-af3c-4fbc0e9d33b7,normal_validation_then_approval,0,2,1,0,2,1,1,1,0.022,0.016,0.022,0,0,0,0,0,0,0,0,0,0,59,0,156,,Validation was rerun before ordinary approval.
+NORMAL-0755,38347e09-edae-5e3b-b8ff-2ca977d3446c,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1320,1,1457,,Invoice followed a low-touch review and approval path.
+NORMAL-0756,1c0a14f4-d92d-5fe4-a968-bc53be72c30c,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,181,0,189,,Invoice followed a low-touch review and approval path.
+NORMAL-0757,8761c170-2fee-5cbe-b0fd-70b72659c780,normal_pending_review,0,1,0,0,0,1,1,0,0.013,0.012,0.010,0,0,0,0,0,0,0,0,0,0,0,1,2436,,Invoice remains in pending review with no approval or export.
+NORMAL-0758,067f7087-aa99-5990-ab3f-b668e2966329,normal_validation_then_approval,0,2,1,0,1,1,2,1,0.004,0.016,0.005,0,0,0,0,0,0,0,0,0,0,941,0,1322,,Validation was rerun before ordinary approval.
+NORMAL-0759,edb09c05-0e54-59e4-91ea-0862dd451e96,normal_validation_then_approval,0,3,1,0,2,1,2,0,0.027,0.010,0.021,0,0,0,0,0,0,0,0,0,0,33,1,248,,Validation was rerun before ordinary approval.
+NORMAL-0760,11b918ef-8e47-5fe0-9659-ccfec812b0b6,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,19,0,78,,Invoice followed a low-touch review and approval path.
+NORMAL-0761,710c04fa-4793-5643-b8df-3b675474236d,normal_validation_then_approval,0,1,1,0,2,1,2,0,0.004,0.006,0.006,0,0,0,0,0,0,0,0,0,0,79,1,340,,Validation was rerun before ordinary approval.
+NORMAL-0762,8881cd5d-e80d-5949-a8ec-5daaca1be328,normal_exported_after_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,135,0,697,,Invoice was exported only after approval.
+NORMAL-0763,04289e45-fbc1-5078-88c7-3c1af877aa70,normal_exported_after_approval,0,0,1,0,1,2,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,242,1,943,,Invoice was exported only after approval.
+NORMAL-0764,baeb7430-f413-5b2e-baaf-3bf0db447fbd,normal_pending_review,0,0,0,0,1,2,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,683,,Invoice remains in pending review with no approval or export.
+NORMAL-0765,8a519c1a-612a-5492-a3f6-208359d451b3,normal_straight_through,0,2,1,0,1,1,0,0,0.027,0.008,0.023,0,0,0,0,0,0,0,0,0,0,123,0,338,,Invoice followed a low-touch review and approval path.
+NORMAL-0766,a3da7cc6-3287-5fdd-b61e-64d123ecbd1f,normal_minor_correction,0,1,1,0,1,1,1,1,0.007,0.009,0.009,0,0,0,0,0,0,0,0,0,0,37,0,581,,Small pre-approval correction resolved during routine review.
+NORMAL-0767,fe80c19a-9e20-512e-86d0-5d0f934fc45b,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.007,0.010,0.009,0,0,0,0,0,0,0,0,0,0,78,0,502,,Invoice was exported only after approval.
+NORMAL-0768,cb5d92d9-e9de-549f-ab29-2f84a3013e88,normal_pending_review,0,2,0,0,1,2,1,0,0.033,0.023,0.030,0,0,0,0,0,0,0,0,0,0,0,0,2718,,Invoice remains in pending review with no approval or export.
+NORMAL-0769,f6d0338f-fafc-5d31-a57f-c8d43e93e822,normal_straight_through,0,1,1,0,1,1,0,1,0.004,0.015,0.007,0,0,0,0,0,0,0,0,0,0,923,0,1065,,Invoice followed a low-touch review and approval path.
+NORMAL-0770,991b81f7-20aa-5046-a51e-630dc9ab05bd,normal_pending_review,0,0,0,0,1,2,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,746,,Invoice remains in pending review with no approval or export.
+NORMAL-0771,900b0498-6a8e-565d-a02c-325495fb40ab,normal_minor_correction,0,2,1,0,1,1,1,0,0.014,0.010,0.012,0,0,0,0,0,0,0,0,0,0,1355,1,1660,,Small pre-approval correction resolved during routine review.
+NORMAL-0772,78328202-f2d5-5067-baae-cc6c5a83db04,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,369,0,525,,Invoice followed a low-touch review and approval path.
+NORMAL-0773,a8273803-d8f5-5cac-99c1-8698c11a0dca,normal_validation_then_approval,0,1,1,0,1,1,2,1,0.002,0.006,0.003,0,0,0,0,0,1,0,0,0,0,672,1,849,,Validation was rerun before ordinary approval.
+NORMAL-0774,6bd5a77c-17ec-5e98-a081-763dd52e723c,normal_minor_correction,0,1,1,0,1,1,2,0,0.007,0.007,0.005,0,1,0,0,0,0,0,0,0,0,1392,1,1743,,Small pre-approval correction resolved during routine review.
+NORMAL-0775,cfef8061-ecf7-5c1b-ae4b-3e6ded2aa4c9,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,453,0,592,,Invoice followed a low-touch review and approval path.
+NORMAL-0776,d4711063-a22a-58f4-8bcf-f2425acf18d1,normal_minor_correction,0,2,1,0,1,2,1,0,0.027,0.006,0.021,0,0,0,0,0,0,0,0,0,0,549,1,852,,Small pre-approval correction resolved during routine review.
+NORMAL-0777,d95e4630-4919-5bb8-87a6-230ebeb50214,normal_pending_review,0,1,0,0,1,1,1,0,0.001,0.014,0.003,0,0,0,0,0,0,0,0,0,0,0,1,571,,Invoice remains in pending review with no approval or export.
+NORMAL-0778,c7a093b6-8700-55ea-8e33-aa4b57f949b7,normal_pending_review,0,1,0,0,0,1,1,0,0.005,0.007,0.005,0,0,0,0,0,0,0,0,0,0,0,0,824,,Invoice remains in pending review with no approval or export.
+NORMAL-0779,4daee5f9-298f-5d85-8087-8243ec950c5e,normal_two_user_review,0,3,1,0,1,2,2,1,0.008,0.016,0.010,0,0,0,0,0,1,0,0,0,0,70,0,661,,Two reviewers participated in a normal approval workflow.
+NORMAL-0780,8370ad34-8dcd-5986-8f74-5299355518eb,normal_validation_then_approval,0,1,1,0,2,1,1,0,0.011,0.007,0.011,0,0,0,0,0,0,0,0,0,0,816,1,1064,,Validation was rerun before ordinary approval.
+NORMAL-0781,58ef9555-8511-5df2-aeb1-867d7201a22a,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1149,0,1271,,Invoice followed a low-touch review and approval path.
+NORMAL-0782,0329b310-b6ef-5174-8543-152204d90cc6,normal_straight_through,0,1,1,0,1,1,0,1,0.008,0.004,0.006,0,0,0,0,0,0,0,0,0,0,36,1,601,,Invoice followed a low-touch review and approval path.
+NORMAL-0783,03245b28-ce5b-5223-97af-cdf860a02a2c,normal_validation_then_approval,0,2,1,0,2,1,1,0,0.004,0.012,0.004,0,0,0,0,0,0,0,0,0,0,368,1,368,,Validation was rerun before ordinary approval.
+NORMAL-0784,b5a2673d-1265-5005-baef-c5a5e42a73b3,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.008,0.003,0.007,0,0,0,0,0,0,0,0,0,0,809,3,1074,,Validation was rerun before ordinary approval.
+NORMAL-0785,9bc9cab1-f3f6-5315-be17-8eb83f6bf819,normal_exported_after_approval,0,2,1,0,1,1,0,1,0.005,0.010,0.006,0,0,0,0,0,0,0,0,0,0,690,1,1236,,Invoice was exported only after approval.
+NORMAL-0786,51e60290-0a46-5fc4-ae1c-b970cd2209a4,normal_straight_through,0,2,1,0,1,1,0,0,0.029,0.017,0.025,0,0,0,0,0,0,0,0,0,0,157,2,176,,Invoice followed a low-touch review and approval path.
+NORMAL-0787,7ebfde94-cda9-51ce-b669-cc35ae39461b,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,416,0,633,,Invoice followed a low-touch review and approval path.
+NORMAL-0788,b8f96277-1e1c-54f6-b232-8739d76e5678,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,55,0,85,,Invoice followed a low-touch review and approval path.
+NORMAL-0789,18343f1f-1422-5d05-a95f-b1b6590dc0d3,normal_validation_then_approval,0,1,1,0,2,1,2,0,0.008,0.013,0.008,0,0,0,0,0,0,0,0,0,0,28,1,239,,Validation was rerun before ordinary approval.
+NORMAL-0790,f10a3105-5e4a-57f1-854f-52714f8d92b5,normal_exported_after_approval,0,2,1,0,1,1,1,1,0.021,0.013,0.022,0,0,0,0,0,0,0,0,0,0,192,1,230,,Invoice was exported only after approval.
+NORMAL-0791,09dc6a3f-34b0-575b-9d30-1cfd0d839aa7,normal_validation_then_approval,0,2,1,0,1,1,1,1,0.004,0.019,0.004,0,0,0,0,0,0,0,0,0,0,25,0,612,,Validation was rerun before ordinary approval.
+NORMAL-0792,5be307ba-904c-5d67-81b5-598ca234eff4,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,668,1,933,,Invoice followed a low-touch review and approval path.
+NORMAL-0793,a5e443d4-8fc1-5df0-b2ef-74ed316b0400,normal_minor_correction,0,3,1,0,1,1,1,0,0.015,0.026,0.016,0,1,0,0,0,0,0,0,0,0,187,1,437,,Small pre-approval correction resolved during routine review.
+NORMAL-0794,bf03e9e2-e41c-50ea-b104-437b006567c8,normal_pending_review,0,1,0,0,0,1,1,0,0.008,0.015,0.009,0,0,0,0,0,1,0,0,0,0,0,1,337,,Invoice remains in pending review with no approval or export.
+NORMAL-0795,b4efc6f4-9493-5f8a-b3c8-6c9577dffc1e,normal_straight_through,0,1,1,0,1,1,1,0,0.008,0.004,0.006,0,0,0,0,0,0,0,0,0,0,369,0,448,,Invoice followed a low-touch review and approval path.
+NORMAL-0796,7d4ef381-271e-55c8-b3fa-8fdb70e27fef,normal_two_user_review,0,1,1,0,2,2,2,0,0.007,0.004,0.009,0,0,0,0,0,0,0,0,0,0,281,2,304,,Two reviewers participated in a normal approval workflow.
+NORMAL-0797,f3fcb917-c314-526a-87c9-207dc55b6251,normal_two_user_review,0,2,1,0,2,2,1,0,0.018,0.009,0.016,0,0,0,0,0,0,0,0,0,0,435,1,600,,Two reviewers participated in a normal approval workflow.
+NORMAL-0798,90efd4d4-5022-5db5-8627-fcb63d86525a,normal_minor_correction,0,1,1,0,1,1,2,0,0.015,0.009,0.014,0,0,0,0,0,0,1,0,0,0,925,0,1256,,Small pre-approval correction resolved during routine review.
+NORMAL-0799,eeadea39-dcfa-5372-84e0-11488f764a23,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,559,1,694,,Invoice followed a low-touch review and approval path.
+NORMAL-0800,2775adb7-c436-52e0-800d-b383e6728ea8,normal_pending_review,0,1,0,0,1,1,0,0,0.007,0.013,0.007,0,0,0,0,0,0,0,0,0,0,0,0,562,,Invoice remains in pending review with no approval or export.
+NORMAL-0801,0cecabde-e3d0-52a7-bf91-c83fb63d7ed5,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,472,0,557,,Invoice followed a low-touch review and approval path.
+NORMAL-0802,5a4d705a-75ef-5e4a-b4ef-e0c49b1697ef,normal_two_user_review,0,2,1,0,1,2,2,0,0.012,0.015,0.015,0,0,0,0,0,0,0,0,0,0,1246,1,1404,,Two reviewers participated in a normal approval workflow.
+NORMAL-0803,4f6989e3-bf8e-57bd-8eed-7256da980454,normal_pending_review,0,1,0,0,1,1,1,0,0.010,0.011,0.009,0,0,0,0,0,0,0,0,0,0,0,2,2805,,Invoice remains in pending review with no approval or export.
+NORMAL-0804,262bb742-e1c1-5c0e-878c-9f8ca9c324dd,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,452,0,578,,Invoice followed a low-touch review and approval path.
+NORMAL-0805,61e459df-d913-55e9-84a3-187cdc207aa1,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,190,0,330,,Invoice followed a low-touch review and approval path.
+NORMAL-0806,428e0535-eba9-5385-a075-44a8b9bdc933,normal_straight_through,0,1,1,0,1,1,0,1,0.006,0.013,0.008,0,0,0,0,0,0,0,0,0,0,626,0,1066,,Invoice followed a low-touch review and approval path.
+NORMAL-0807,b9b693a7-f1e9-5664-8fef-291682a3b31f,normal_two_user_review,0,1,1,0,1,3,1,0,0.005,0.011,0.003,0,0,0,0,0,0,0,0,0,0,1274,1,1524,,Two reviewers participated in a normal approval workflow.
+NORMAL-0808,53e618ef-e2f0-58cd-8039-3f2796607545,normal_validation_then_approval,0,3,1,0,1,2,1,0,0.034,0.018,0.033,0,0,0,0,0,0,0,0,0,0,76,0,165,,Validation was rerun before ordinary approval.
+NORMAL-0809,17e34221-67b2-529a-a3bd-4194684a21cf,normal_minor_correction,0,2,1,0,1,1,1,1,0.026,0.033,0.029,0,0,0,0,0,0,0,0,0,0,514,1,872,,Small pre-approval correction resolved during routine review.
+NORMAL-0810,4dd8af98-45dc-5c85-8995-033a002cddf6,normal_exported_after_approval,0,2,1,0,1,1,2,1,0.008,0.026,0.009,0,0,0,0,0,0,0,0,0,0,298,1,859,,Invoice was exported only after approval.
+NORMAL-0811,61796fca-4bc1-5248-866b-7d7d07f1d35a,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,54,0,98,,Invoice followed a low-touch review and approval path.
+NORMAL-0812,b718a8c0-bfdd-58f3-9d38-280d8747f5e1,normal_minor_correction,0,1,1,0,1,1,2,1,0.006,0.001,0.006,0,0,0,0,0,0,0,0,0,0,159,0,549,,Small pre-approval correction resolved during routine review.
+NORMAL-0813,ad24abb2-5283-5469-9548-8842802372cb,normal_two_user_review,0,1,1,0,2,2,2,0,0.008,0.010,0.007,0,0,0,0,0,0,0,0,0,0,40,0,130,,Two reviewers participated in a normal approval workflow.
+NORMAL-0814,b10a1f72-2083-5b49-b6dd-12632f5e082d,normal_exported_after_approval,0,2,1,0,1,1,1,1,0.009,0.021,0.009,0,0,0,0,0,0,0,0,0,0,294,1,506,,Invoice was exported only after approval.
+NORMAL-0815,cf564094-eccc-5b01-aecb-ec756a835629,normal_pending_review,0,1,0,0,1,1,0,0,0.006,0.010,0.009,0,0,0,0,0,0,0,0,0,0,0,0,905,,Invoice remains in pending review with no approval or export.
+NORMAL-0816,b4f895ad-6e22-570b-8c55-9f9f650cba83,normal_straight_through,0,1,1,0,1,1,0,1,0.016,0.004,0.015,0,0,0,0,0,0,0,0,0,0,394,0,984,,Invoice followed a low-touch review and approval path.
+NORMAL-0817,7724cf94-7884-510a-9ffe-91e685b50d6b,normal_validation_then_approval,0,2,1,0,2,1,1,0,0.013,0.010,0.011,0,0,0,0,0,0,0,0,0,0,272,1,276,,Validation was rerun before ordinary approval.
+NORMAL-0818,9908d8eb-dd12-5278-9570-25ad27130e3f,normal_minor_correction,0,3,1,0,1,2,2,0,0.009,0.027,0.015,0,0,0,0,0,0,0,0,0,0,425,1,609,,Small pre-approval correction resolved during routine review.
+NORMAL-0819,f91322db-5dd7-590a-b4b4-9e029d80716d,normal_straight_through,0,2,1,0,1,1,0,0,0.025,0.013,0.025,0,0,0,0,0,0,0,0,0,0,432,1,572,,Invoice followed a low-touch review and approval path.
+NORMAL-0820,dce12ad1-5f27-5423-b251-9cebf541d4bb,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1367,0,1543,,Invoice followed a low-touch review and approval path.
+NORMAL-0821,97a3496c-2f54-509a-b079-2cdc24d87fc8,normal_straight_through,0,1,1,0,1,1,0,0,0.007,0.013,0.006,0,0,0,0,0,0,0,0,0,0,1389,0,1435,,Invoice followed a low-touch review and approval path.
+NORMAL-0822,87adb549-21ca-5e17-9954-20aa8f660cf9,normal_validation_then_approval,0,2,1,0,1,1,1,1,0.014,0.013,0.017,0,0,0,0,0,0,0,0,0,0,1080,0,1164,,Validation was rerun before ordinary approval.
+NORMAL-0823,110bd4f0-a66c-5710-97ac-f3b78700ad67,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1350,0,1352,,Invoice followed a low-touch review and approval path.
+NORMAL-0824,e0c8158a-1a5a-5f77-a0b9-8b320d0c184b,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,110,0,400,,Invoice followed a low-touch review and approval path.
+NORMAL-0825,658f1d8b-b34c-5635-8ca8-5d4897ab4785,normal_straight_through,0,1,1,0,1,1,1,1,0.011,0.013,0.011,0,0,0,0,0,0,0,0,0,0,1275,0,1345,,Invoice followed a low-touch review and approval path.
+NORMAL-0826,42b5471a-3b69-57c3-bfd8-beff76ecc029,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.007,0.005,0.007,0,0,0,0,0,0,0,0,0,0,19,1,62,,Invoice was exported only after approval.
+NORMAL-0827,306a950e-b3e0-5b32-ab74-cbb12aace864,normal_minor_correction,0,1,1,0,1,1,2,0,0.009,0.004,0.010,0,0,0,0,0,0,0,0,0,0,1013,1,1045,,Small pre-approval correction resolved during routine review.
+NORMAL-0828,52090d82-24cc-5db7-b37a-84a232299bc4,normal_exported_after_approval,0,2,1,0,1,1,1,1,0.009,0.018,0.013,0,0,0,0,0,0,0,0,0,0,307,1,505,,Invoice was exported only after approval.
+NORMAL-0829,516d9941-6042-5163-98cb-eaa0fdcb3bed,normal_minor_correction,0,1,1,0,1,2,1,1,0.006,0.010,0.009,0,0,0,0,0,0,0,0,0,0,945,3,1651,,Small pre-approval correction resolved during routine review.
+NORMAL-0830,79d5d10c-39d6-580e-9d92-3c1def05f553,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,3,2733,,Invoice remains in pending review with no approval or export.
+NORMAL-0831,a3f7e390-d9ae-5cd4-a5f3-12fd86f98231,normal_straight_through,0,0,1,0,1,2,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,25,0,401,,Invoice followed a low-touch review and approval path.
+NORMAL-0832,e949399b-0a59-55a5-9b61-32b54eaf87db,normal_minor_correction,0,2,1,0,1,1,1,1,0.015,0.011,0.017,0,0,0,0,0,0,0,0,0,0,118,0,319,,Small pre-approval correction resolved during routine review.
+NORMAL-0833,bb43ded0-718c-510a-a751-dfdb800fdcf9,normal_validation_then_approval,0,2,1,0,1,1,1,0,0.021,0.015,0.019,0,0,0,0,0,0,0,0,0,0,28,0,214,,Validation was rerun before ordinary approval.
+NORMAL-0834,486eb452-5d59-5146-9a35-c0022d9fb791,normal_minor_correction,0,1,1,0,1,1,1,0,0.005,0.003,0.005,0,1,0,0,0,0,0,0,0,0,1377,0,1737,,Small pre-approval correction resolved during routine review.
+NORMAL-0835,88ff35cb-9e35-58d5-8274-13eefbc4a390,normal_minor_correction,0,1,1,0,1,1,1,0,0.004,0.011,0.006,0,0,0,0,0,0,0,0,0,0,347,1,661,,Small pre-approval correction resolved during routine review.
+NORMAL-0836,d3bd3c70-d208-528e-acf6-838b58dd51d6,normal_validation_then_approval,0,1,1,0,1,1,1,1,0.006,0.004,0.004,0,0,0,0,0,0,0,0,0,0,367,0,728,,Validation was rerun before ordinary approval.
+NORMAL-0837,4418e72f-ace6-5f0c-8e0e-df652c56ecc3,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,0,0,1340,,Invoice remains in pending review with no approval or export.
+NORMAL-0838,2f72ae85-fa75-5ead-9547-06549405505a,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,2,163,,Invoice remains in pending review with no approval or export.
+NORMAL-0839,9f37da21-703f-5113-854e-e4165a9f9412,normal_validation_then_approval,0,0,1,0,2,2,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1126,0,1507,,Validation was rerun before ordinary approval.
+NORMAL-0840,9ba2e3da-5e67-5470-95a8-c27cb12780d0,normal_validation_then_approval,0,2,1,0,2,1,2,1,0.020,0.009,0.016,0,0,0,0,0,0,0,0,0,0,167,1,544,,Validation was rerun before ordinary approval.
+NORMAL-0841,6eadaf8f-9b62-5aa1-a9e1-443648a648ff,normal_straight_through,0,1,1,0,1,2,1,0,0.007,0.001,0.003,0,0,0,0,0,0,0,0,0,0,224,0,427,,Invoice followed a low-touch review and approval path.
+NORMAL-0842,d3aa43a4-a7a1-5857-bcad-356f9b63decd,normal_minor_correction,0,1,1,0,1,1,2,0,0.009,0.014,0.010,0,0,0,0,0,0,0,0,0,0,196,0,412,,Small pre-approval correction resolved during routine review.
+NORMAL-0843,7932090a-3979-5bcc-89ce-91293f02bcd0,normal_straight_through,0,1,1,0,1,1,1,1,0.006,0.017,0.007,0,0,0,0,0,0,0,0,0,0,103,1,539,,Invoice followed a low-touch review and approval path.
+NORMAL-0844,67e16629-e8c9-5cd5-98f0-367c5b998663,normal_validation_then_approval,0,0,1,0,1,1,2,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,114,0,216,,Validation was rerun before ordinary approval.
+NORMAL-0845,b19747fc-5d1b-51d0-a8e9-489c6137e57a,normal_straight_through,0,1,1,0,1,1,1,0,0.004,0.014,0.003,0,0,0,0,0,0,0,0,0,0,583,1,866,,Invoice followed a low-touch review and approval path.
+NORMAL-0846,15cc0c62-e293-5ffc-ad9a-ec16d826b374,normal_minor_correction,0,1,1,0,1,1,2,0,0.012,0.010,0.013,0,0,0,0,0,0,0,0,0,0,330,1,672,,Small pre-approval correction resolved during routine review.
+NORMAL-0847,a1197a28-1ece-5f59-b796-d7d1fd92d58d,normal_minor_correction,0,1,1,0,1,1,1,0,0.009,0.003,0.008,0,0,0,0,0,0,1,0,0,0,78,0,282,,Small pre-approval correction resolved during routine review.
+NORMAL-0848,d7b88880-4158-59b4-b205-a915a3257912,normal_minor_correction,0,2,1,0,1,1,1,1,0.028,0.009,0.027,0,0,0,0,0,0,0,0,0,0,82,1,120,,Small pre-approval correction resolved during routine review.
+NORMAL-0849,94da4975-a8cb-515c-bdcb-d02985bc3cc4,normal_minor_correction,0,1,1,0,1,1,1,1,0.016,0.007,0.011,0,0,0,0,0,0,0,0,0,0,984,0,1417,,Small pre-approval correction resolved during routine review.
+NORMAL-0850,f1473e0d-544d-54b3-bc8a-c48bc1e12e35,normal_exported_after_approval,0,0,1,0,1,3,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,144,0,721,,Invoice was exported only after approval.
+NORMAL-0851,5f6736a3-b120-5926-aab5-6ac054253e47,normal_two_user_review,0,3,1,0,2,2,2,0,0.025,0.034,0.025,0,0,0,0,0,0,0,0,0,0,44,2,174,,Two reviewers participated in a normal approval workflow.
+NORMAL-0852,23ec1208-6cb1-53c5-818f-1d1b2ea8ed91,normal_validation_then_approval,0,0,1,0,1,1,2,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,166,0,398,,Validation was rerun before ordinary approval.
+NORMAL-0853,2998010b-b68d-5b5a-ac29-322d11c9baba,normal_minor_correction,0,2,1,0,1,1,2,0,0.021,0.029,0.025,0,0,0,0,0,0,0,0,0,0,684,1,716,,Small pre-approval correction resolved during routine review.
+NORMAL-0854,1786fb39-ccf1-5474-a58a-6f1653613a3f,normal_two_user_review,0,2,1,0,1,2,2,0,0.027,0.024,0.025,0,0,0,0,0,0,0,0,0,0,363,1,708,,Two reviewers participated in a normal approval workflow.
+NORMAL-0855,ad8a8f7e-b056-51df-be95-d286bbe88244,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,735,0,1265,,Invoice followed a low-touch review and approval path.
+NORMAL-0856,ff6e786d-20e4-56b4-8a64-ac2cc0e6d515,normal_exported_after_approval,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,976,2,1000,,Invoice was exported only after approval.
+NORMAL-0857,d011b2f2-14c7-5539-9968-926002e1017c,normal_minor_correction,0,1,1,0,1,1,1,1,0.008,0.004,0.010,0,0,0,0,0,0,0,0,0,0,46,1,139,,Small pre-approval correction resolved during routine review.
+NORMAL-0858,181f172b-7847-5a35-85b9-b6d5acb1e587,normal_pending_review,0,3,0,0,1,1,1,0,0.009,0.045,0.017,0,0,0,0,0,0,0,0,0,0,0,1,2870,,Invoice remains in pending review with no approval or export.
+NORMAL-0859,a22f3ba9-eff6-56c8-b917-37a67a8d714a,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,667,1,800,,Invoice followed a low-touch review and approval path.
+NORMAL-0860,c8606865-7a70-5ca6-bd32-a471a9090c37,normal_minor_correction,0,2,1,0,1,1,1,0,0.006,0.009,0.006,0,0,0,0,0,0,0,0,0,0,31,1,73,,Small pre-approval correction resolved during routine review.
+NORMAL-0861,cc3b2be4-962f-578f-a68e-75adc62d6d16,normal_validation_then_approval,0,2,1,0,1,1,1,0,0.011,0.011,0.008,0,0,0,0,0,0,0,0,0,0,961,0,1095,,Validation was rerun before ordinary approval.
+NORMAL-0862,052ff8cb-0a8f-568f-8db8-8088e6c82540,normal_minor_correction,0,1,1,0,1,1,2,0,0.005,0.008,0.005,0,0,0,0,0,0,0,0,0,0,24,0,267,,Small pre-approval correction resolved during routine review.
+NORMAL-0863,3970d9fd-f8e1-5884-9426-d753e6cd9deb,normal_pending_review,0,2,0,0,1,1,1,0,0.022,0.025,0.023,0,0,0,0,0,0,0,0,0,0,0,0,1392,,Invoice remains in pending review with no approval or export.
+NORMAL-0864,57f1901f-a68b-5800-9ee8-c60f1c036a81,normal_validation_then_approval,0,2,1,0,2,1,1,1,0.007,0.014,0.006,0,0,0,0,0,0,0,0,0,0,305,2,793,,Validation was rerun before ordinary approval.
+NORMAL-0865,f8349a6a-25f2-5b6d-a86a-6bfe9aa227e7,normal_two_user_review,0,2,1,0,2,2,2,0,0.018,0.009,0.015,0,0,0,0,0,0,0,0,0,0,390,1,744,,Two reviewers participated in a normal approval workflow.
+NORMAL-0866,9215c88d-ce34-5e23-bca6-bc8875b191b6,normal_exported_after_approval,0,0,1,0,1,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,340,2,787,,Invoice was exported only after approval.
+NORMAL-0867,dc312b6e-5305-54d2-846d-8a8cc3a95ed8,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,1272,0,1297,,Invoice followed a low-touch review and approval path.
+NORMAL-0868,49973474-da59-5f52-8e11-88a4dfdebe4d,normal_minor_correction,0,1,1,0,1,1,1,0,0.010,0.007,0.011,0,1,0,0,0,0,0,0,0,0,179,0,494,,Small pre-approval correction resolved during routine review.
+NORMAL-0869,63cda9b9-9267-5764-a377-68822a086adb,normal_two_user_review,0,2,1,0,2,2,2,0,0.013,0.027,0.017,0,0,0,0,0,0,0,0,0,0,266,1,517,,Two reviewers participated in a normal approval workflow.
+NORMAL-0870,7fad9e23-b7c8-56da-b3fd-413a51349ea0,normal_minor_correction,0,3,1,0,1,1,1,0,0.035,0.016,0.035,0,0,0,0,0,0,0,0,0,0,718,1,865,,Small pre-approval correction resolved during routine review.
+NORMAL-0871,462a44a2-b48e-5c8e-8981-dd05fd55431b,normal_exported_after_approval,0,0,1,0,1,3,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,121,1,605,,Invoice was exported only after approval.
+NORMAL-0872,927b90a7-69ee-5059-8d1a-409c001364ef,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,910,0,1518,,Invoice followed a low-touch review and approval path.
+NORMAL-0873,69e0e3f7-b397-5379-93ec-e5a7d4dc88b1,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,434,0,534,,Invoice followed a low-touch review and approval path.
+NORMAL-0874,3e7c35b0-8e8f-570e-b8ed-2307ce3ffa9c,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,175,0,396,,Invoice followed a low-touch review and approval path.
+NORMAL-0875,7e661c6f-2bf7-5dbe-8a5b-16d9b6d2119a,normal_minor_correction,0,2,1,0,1,1,2,1,0.016,0.016,0.013,0,0,0,0,0,0,0,0,0,0,41,1,404,,Small pre-approval correction resolved during routine review.
+NORMAL-0876,b34c3de6-6088-5843-a360-f5d8436d1ada,normal_validation_then_approval,0,1,1,0,1,2,1,1,0.002,0.007,0.004,0,0,0,0,0,0,0,0,0,0,538,3,1217,,Validation was rerun before ordinary approval.
+NORMAL-0877,6365add3-a7cd-5a11-98fb-d6383c96912a,normal_exported_after_approval,0,1,1,0,1,1,1,1,0.009,0.007,0.009,0,0,0,0,0,0,0,0,0,0,565,1,1281,,Invoice was exported only after approval.
+NORMAL-0878,a4bd0352-b892-590d-a5bf-3dfcc1641ea2,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,144,0,390,,Invoice followed a low-touch review and approval path.
+NORMAL-0879,6805d89a-0859-5441-9fe1-740d86a54c1d,normal_validation_then_approval,0,0,1,0,1,1,2,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,46,1,359,,Validation was rerun before ordinary approval.
+NORMAL-0880,c3d65049-fd78-51e5-a983-25bf9a042ffd,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,0,2187,,Invoice remains in pending review with no approval or export.
+NORMAL-0881,fa1a974a-7427-51de-9fcd-abfdb6ac46f6,normal_straight_through,0,0,1,0,1,2,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,39,1,172,,Invoice followed a low-touch review and approval path.
+NORMAL-0882,e30bf9bd-284b-5a64-9991-c3044db656c3,normal_validation_then_approval,0,1,1,0,2,1,1,1,0.009,0.012,0.011,0,0,0,0,0,0,0,0,0,0,71,0,209,,Validation was rerun before ordinary approval.
+NORMAL-0883,5e08f39b-94b5-5bde-81ad-60f9815f4a4c,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,790,0,1231,,Invoice followed a low-touch review and approval path.
+NORMAL-0884,8683fc77-651e-50fc-affd-2315ff4d028b,normal_validation_then_approval,0,1,1,0,1,2,1,0,0.008,0.001,0.008,0,0,0,0,0,0,0,0,0,0,358,0,503,,Validation was rerun before ordinary approval.
+NORMAL-0885,40cc57c6-4703-5a90-92ab-c4dc155a0382,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,775,0,1071,,Invoice followed a low-touch review and approval path.
+NORMAL-0886,6874fcb3-0277-5828-86ae-50eaa86aa78d,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,34,0,210,,Invoice followed a low-touch review and approval path.
+NORMAL-0887,8a5a1922-cde8-56d4-a311-584cba400b83,normal_validation_then_approval,0,3,1,0,1,3,1,0,0.030,0.017,0.026,0,0,0,0,0,0,0,0,0,0,374,0,475,,Validation was rerun before ordinary approval.
+NORMAL-0888,78775e27-5ba0-5fdb-a005-ee49435d0ef8,normal_minor_correction,0,1,1,0,1,2,1,1,0.009,0.013,0.006,0,0,0,0,0,0,0,0,0,0,186,1,530,,Small pre-approval correction resolved during routine review.
+NORMAL-0889,fbe719c4-3e50-57a2-babb-e94ab11c7c21,normal_minor_correction,0,2,1,0,1,2,1,0,0.020,0.028,0.023,0,0,0,0,0,0,0,0,0,0,458,0,658,,Small pre-approval correction resolved during routine review.
+NORMAL-0890,f65e6b6d-dcae-5109-9a6a-b2ecbc8f9be1,normal_exported_after_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,88,1,703,,Invoice was exported only after approval.
+NORMAL-0891,760c35ed-c43f-50a7-9385-b1cbac9e1922,normal_validation_then_approval,0,0,1,0,1,2,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,249,1,579,,Validation was rerun before ordinary approval.
+NORMAL-0892,e041f795-4593-50a9-b000-f3052cead5ea,normal_pending_review,0,1,0,0,0,1,0,0,0.003,0.008,0.001,0,0,0,0,0,0,0,0,0,0,0,1,1932,,Invoice remains in pending review with no approval or export.
+NORMAL-0893,d820b028-7700-516c-801a-7cfdf178f71a,normal_validation_then_approval,0,2,1,0,1,1,2,0,0.014,0.006,0.011,0,0,0,0,0,0,0,0,0,0,149,1,358,,Validation was rerun before ordinary approval.
+NORMAL-0894,59c7e2b8-312b-593e-8c28-31052b83fbe7,normal_exported_after_approval,0,2,1,0,2,1,1,1,0.014,0.012,0.012,0,0,0,0,0,0,0,0,0,0,25,1,325,,Invoice was exported only after approval.
+NORMAL-0895,a1e6bb22-744c-50de-9d4d-7ca60fba3d99,normal_pending_review,0,1,0,0,0,1,1,0,0.011,0.011,0.012,0,0,0,0,0,0,0,0,0,0,0,1,50,,Invoice remains in pending review with no approval or export.
+NORMAL-0896,34c06d08-7677-5356-9895-3c4de4137002,normal_exported_after_approval,0,1,1,0,2,3,0,1,0.004,0.010,0.005,0,0,0,0,0,0,0,0,0,0,357,0,492,,Invoice was exported only after approval.
+NORMAL-0897,e64feb46-1dd1-569e-a4d0-2899f12c23ae,normal_minor_correction,0,2,1,0,1,1,2,0,0.005,0.024,0.008,0,0,0,0,0,0,0,0,0,0,92,1,132,,Small pre-approval correction resolved during routine review.
+NORMAL-0898,af25afe7-bb31-596b-986b-60aefaf2dbd6,normal_minor_correction,0,1,1,0,1,1,2,0,0.005,0.006,0.006,0,1,0,0,0,0,0,0,0,0,176,1,191,,Small pre-approval correction resolved during routine review.
+NORMAL-0899,5dadcd8c-780c-5511-ab3e-cc9fba47842b,normal_minor_correction,0,2,1,0,1,1,1,0,0.007,0.028,0.014,0,0,0,0,0,0,0,0,0,0,274,1,443,,Small pre-approval correction resolved during routine review.
+NORMAL-0900,f9ba3250-944b-5838-a5b3-fbdcb120c642,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,930,1,1095,,Invoice followed a low-touch review and approval path.
+NORMAL-0901,d765ae4d-aadf-5db6-9398-d287a568d4c5,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,203,0,917,,Invoice followed a low-touch review and approval path.
+NORMAL-0902,a25f2dbd-7c73-51ff-9f8f-4e7a4af400e5,normal_straight_through,0,1,1,0,1,1,0,1,0.014,0.011,0.014,0,0,0,0,0,0,0,0,0,0,321,0,789,,Invoice followed a low-touch review and approval path.
+NORMAL-0903,2b71661b-c4be-510f-b24b-2c1855f75823,normal_straight_through,0,1,1,0,1,1,0,1,0.003,0.010,0.007,0,0,0,0,0,0,0,0,0,0,674,0,986,,Invoice followed a low-touch review and approval path.
+NORMAL-0904,f3287e3b-9d97-5373-afc9-e95989cfe9c4,normal_straight_through,0,1,1,0,1,1,0,0,0.006,0.004,0.006,0,0,0,0,0,0,0,0,0,0,102,0,257,,Invoice followed a low-touch review and approval path.
+NORMAL-0905,6654b01e-1b54-51c6-9739-7e399e1bfe1e,normal_pending_review,0,1,0,0,1,1,1,0,0.005,0.016,0.007,0,0,0,0,0,0,0,0,0,0,0,0,198,,Invoice remains in pending review with no approval or export.
+NORMAL-0906,c54b1733-44ed-5775-ad03-0c038c0fca05,normal_exported_after_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,278,0,594,,Invoice was exported only after approval.
+NORMAL-0907,d4eaac3e-b2e5-5ddf-a431-2e28c207279d,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,50,0,328,,Invoice followed a low-touch review and approval path.
+NORMAL-0908,53624ccf-023e-56d1-93d9-e161fd4a17fc,normal_exported_after_approval,0,3,1,0,1,2,2,1,0.024,0.021,0.025,0,0,0,0,0,0,0,0,0,0,1022,1,1219,,Invoice was exported only after approval.
+NORMAL-0909,714a3964-cdf5-533e-8cea-ca8388982b31,normal_minor_correction,0,1,1,0,1,1,2,1,0.011,0.014,0.011,0,0,0,0,0,0,0,0,0,0,634,0,1056,,Small pre-approval correction resolved during routine review.
+NORMAL-0910,edee53cc-45c0-5cd7-a5bf-10ae3dc0a67a,normal_pending_review,0,2,0,0,1,1,0,0,0.008,0.025,0.010,0,0,0,0,0,0,0,0,0,0,0,2,1188,,Invoice remains in pending review with no approval or export.
+NORMAL-0911,7fa86308-efcb-5e47-bdfe-ce451d9e13eb,normal_minor_correction,0,2,1,0,1,1,2,0,0.028,0.003,0.023,0,0,0,0,0,0,0,0,0,0,195,0,333,,Small pre-approval correction resolved during routine review.
+NORMAL-0912,ba74e938-f576-5322-8287-4ed73438d577,normal_exported_after_approval,0,3,1,0,2,2,1,1,0.011,0.018,0.015,0,0,0,0,0,0,0,0,0,0,248,0,813,,Invoice was exported only after approval.
+NORMAL-0913,9e21a89d-a9a3-59ae-99a8-7ccf9c1aec33,normal_straight_through,0,0,1,0,1,2,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1220,0,1561,,Invoice followed a low-touch review and approval path.
+NORMAL-0914,1089f47e-8656-5697-8aae-2944aaa92342,normal_straight_through,0,1,1,0,1,1,0,1,0.006,0.008,0.005,0,0,0,0,0,0,0,0,0,0,15,0,330,,Invoice followed a low-touch review and approval path.
+NORMAL-0915,2dc66311-78c2-5765-9d1a-dafe75f986ba,normal_validation_then_approval,0,1,1,0,1,1,2,1,0.003,0.011,0.005,0,0,0,0,0,0,0,0,0,0,201,0,822,,Validation was rerun before ordinary approval.
+NORMAL-0916,3aee0ad6-d160-5801-aac1-37d82dc7bb48,normal_exported_after_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,256,1,703,,Invoice was exported only after approval.
+NORMAL-0917,102ce3b4-00f3-51bb-a9e4-0741237021eb,normal_minor_correction,0,1,1,0,1,1,2,1,0.005,0.007,0.003,0,0,0,0,0,0,0,0,0,0,422,0,840,,Small pre-approval correction resolved during routine review.
+NORMAL-0918,a636768b-0101-5ff2-a106-1af805714937,normal_validation_then_approval,0,2,1,0,1,1,1,1,0.026,0.020,0.028,0,0,0,0,0,0,0,0,0,0,256,1,753,,Validation was rerun before ordinary approval.
+NORMAL-0919,9919e868-2ccb-5ed4-bf78-3ef1fccb7648,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.004,0.003,0.001,0,0,0,0,0,0,0,0,0,0,408,1,1046,,Invoice was exported only after approval.
+NORMAL-0920,2a540240-477e-5bc0-a9c5-8d1049606e70,normal_straight_through,0,1,1,0,1,1,0,0,0.006,0.009,0.006,0,0,0,0,0,0,0,0,0,0,1301,1,1343,,Invoice followed a low-touch review and approval path.
+NORMAL-0921,75968d46-91a1-56ee-b779-2d90a6f60866,normal_pending_review,0,0,0,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,1820,,Invoice remains in pending review with no approval or export.
+NORMAL-0922,cf98c9bc-3c26-5dee-92d3-ed2cc7caa890,normal_exported_after_approval,0,1,1,0,1,2,1,1,0.006,0.007,0.006,0,0,0,0,0,0,0,0,0,0,236,1,584,,Invoice was exported only after approval.
+NORMAL-0923,498c4dec-6ffd-598c-8c4a-ae020581c8f2,normal_straight_through,0,1,1,0,1,1,0,1,0.009,0.009,0.012,0,0,0,0,0,0,0,0,0,0,172,1,755,,Invoice followed a low-touch review and approval path.
+NORMAL-0924,c8c3d2fd-ce0e-593c-9762-108c92d5df45,normal_pending_review,0,2,0,0,0,1,1,0,0.014,0.007,0.011,0,0,0,0,0,0,0,0,0,0,0,1,2477,,Invoice remains in pending review with no approval or export.
+NORMAL-0925,8dd74db4-edd5-57b4-81df-d4959b24e04c,normal_two_user_review,0,1,1,0,1,2,2,0,0.014,0.007,0.013,0,0,0,0,0,0,0,0,0,0,465,0,755,,Two reviewers participated in a normal approval workflow.
+NORMAL-0926,ddde8133-978c-5ee1-b398-c369fb1d8df7,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,85,1,277,,Invoice followed a low-touch review and approval path.
+NORMAL-0927,173d7d4b-4772-5bb2-a706-5355ba5e3374,normal_exported_after_approval,0,1,1,0,2,1,1,1,0.007,0.004,0.003,0,0,0,0,0,0,0,0,0,0,760,0,1295,,Invoice was exported only after approval.
+NORMAL-0928,4dced923-8fd6-5ca0-aceb-775439d748cc,normal_minor_correction,0,3,1,0,1,1,2,0,0.008,0.019,0.011,0,0,0,0,0,0,0,0,0,0,40,0,198,,Small pre-approval correction resolved during routine review.
+NORMAL-0929,83f22734-d94c-5348-8b5e-03a2ac50a160,normal_minor_correction,0,1,1,0,1,2,2,0,0.009,0.006,0.007,0,0,0,0,0,0,0,0,0,0,178,2,282,,Small pre-approval correction resolved during routine review.
+NORMAL-0930,28284aeb-11ca-5a1a-b79e-72ebe7d33a66,normal_two_user_review,0,2,1,0,2,2,1,0,0.031,0.010,0.027,0,0,0,0,0,0,0,0,0,0,238,0,298,,Two reviewers participated in a normal approval workflow.
+NORMAL-0931,69f93b55-4ef0-527a-acec-2280e5e84a63,normal_minor_correction,0,2,1,0,1,2,1,0,0.009,0.021,0.012,0,0,0,0,0,0,0,0,0,0,873,0,1165,,Small pre-approval correction resolved during routine review.
+NORMAL-0932,c198e0e9-cdaa-5b68-93cd-fa3f981eb6a4,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,259,1,579,,Invoice followed a low-touch review and approval path.
+NORMAL-0933,86dab94a-701c-572f-b93d-a86d90bbca72,normal_validation_then_approval,0,3,1,0,1,1,1,0,0.025,0.042,0.028,0,0,0,0,0,0,0,0,0,0,835,0,1194,,Validation was rerun before ordinary approval.
+NORMAL-0934,313ef79a-6c48-5791-8d54-407a66150c1b,normal_straight_through,0,0,1,0,1,2,0,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,36,0,291,,Invoice followed a low-touch review and approval path.
+NORMAL-0935,2303e195-6fd4-54df-b3a7-2901ac9d226b,normal_minor_correction,0,1,1,0,1,1,1,1,0.000,0.003,0.004,0,0,0,0,0,0,0,0,0,0,103,1,198,,Small pre-approval correction resolved during routine review.
+NORMAL-0936,698164aa-9d6c-597e-9fd3-4b48d0e9e62b,normal_pending_review,0,0,0,0,0,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,0,1,474,,Invoice remains in pending review with no approval or export.
+NORMAL-0937,b094860b-be50-5731-bfb7-76fe4b4a17ef,normal_validation_then_approval,0,1,1,0,1,2,2,0,0.013,0.009,0.011,0,0,0,0,0,0,0,0,0,0,56,0,153,,Validation was rerun before ordinary approval.
+NORMAL-0938,513b88f3-b565-5fcb-8cb0-a95a26778c93,normal_minor_correction,0,2,1,0,1,1,1,1,0.026,0.012,0.026,0,0,0,0,0,0,0,0,0,0,1428,1,1977,,Small pre-approval correction resolved during routine review.
+NORMAL-0939,f0d1ddb8-a8ea-5c4d-8c4b-7dd5412ad51a,normal_minor_correction,0,1,1,0,1,2,1,0,0.008,0.006,0.007,0,0,0,0,0,0,0,0,0,0,229,2,454,,Small pre-approval correction resolved during routine review.
+NORMAL-0940,9ac12b1d-5e8b-5010-bd4a-2aedb857ac18,normal_straight_through,0,1,1,0,1,1,0,0,0.009,0.014,0.011,0,0,0,0,0,0,0,0,0,0,51,0,296,,Invoice followed a low-touch review and approval path.
+NORMAL-0941,45d16a97-0ecd-5f8e-8a16-1390e589936c,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,31,0,167,,Invoice followed a low-touch review and approval path.
+NORMAL-0942,ba53856b-1020-5c69-9a1b-4d8910408f67,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,513,0,555,,Invoice followed a low-touch review and approval path.
+NORMAL-0943,aa7cab6f-99cc-5684-80ff-dda222e6fada,normal_two_user_review,0,3,1,0,1,2,2,0,0.016,0.037,0.022,0,0,0,0,0,0,0,0,0,0,83,0,157,,Two reviewers participated in a normal approval workflow.
+NORMAL-0944,9047ea2d-64c3-5365-8ffc-39bc81f40f27,normal_minor_correction,0,1,1,0,1,1,1,0,0.005,0.011,0.006,0,0,0,0,0,0,0,0,0,0,189,0,333,,Small pre-approval correction resolved during routine review.
+NORMAL-0945,bc295be7-1fb7-56a4-8507-3976d7da49a4,normal_minor_correction,0,1,1,0,1,1,2,0,0.012,0.006,0.009,0,0,0,0,0,0,0,0,0,0,1185,0,1213,,Small pre-approval correction resolved during routine review.
+NORMAL-0946,c8d7c610-d355-5052-b9a7-4356099a18ff,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1119,0,1424,,Invoice followed a low-touch review and approval path.
+NORMAL-0947,91a4f807-ef20-522f-afa1-e501491f5df7,normal_two_user_review,0,1,1,0,2,3,1,1,0.016,0.011,0.016,0,0,0,0,0,1,0,0,0,0,426,0,902,,Two reviewers participated in a normal approval workflow.
+NORMAL-0948,79e11a28-5eee-5759-ab5a-8e484d5cdfac,normal_pending_review,0,1,0,0,1,1,0,0,0.014,0.012,0.015,0,0,0,0,0,0,0,0,0,0,0,1,1899,,Invoice remains in pending review with no approval or export.
+NORMAL-0949,b3356fce-5dd8-5e78-b9f6-84f38a093aae,normal_minor_correction,0,1,1,0,1,1,1,1,0.004,0.007,0.005,0,0,0,0,0,0,0,0,0,0,125,0,840,,Small pre-approval correction resolved during routine review.
+NORMAL-0950,5430a8e2-c56d-5464-8c73-728896652547,normal_minor_correction,0,1,1,0,1,1,2,1,0.002,0.004,0.005,0,0,0,0,0,0,0,0,0,0,35,0,612,,Small pre-approval correction resolved during routine review.
+NORMAL-0951,b610c685-cd48-572e-b988-c135d651cedf,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.013,0.014,0.013,0,0,0,0,0,0,0,0,0,0,1063,1,1397,,Validation was rerun before ordinary approval.
+NORMAL-0952,277ce70f-b9fc-5f03-867b-02510fe7215c,normal_validation_then_approval,0,2,1,0,1,1,1,0,0.030,0.017,0.026,0,0,0,0,0,0,0,0,0,0,1162,0,1392,,Validation was rerun before ordinary approval.
+NORMAL-0953,69f1684a-51bd-5fba-8908-c29864a36454,normal_minor_correction,0,1,1,0,1,1,2,1,0.007,0.009,0.009,0,0,0,0,0,0,0,0,0,0,39,0,651,,Small pre-approval correction resolved during routine review.
+NORMAL-0954,ea8df843-372a-5a3b-a0fc-0bc429475f91,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,276,0,518,,Invoice followed a low-touch review and approval path.
+NORMAL-0955,5e2abc10-fe6c-589d-b682-5883651d6fed,normal_exported_after_approval,0,3,1,0,1,1,0,1,0.012,0.024,0.012,0,0,0,0,0,0,0,0,0,0,227,1,343,,Invoice was exported only after approval.
+NORMAL-0956,38b41d25-e644-564e-87eb-f16ab10d810c,normal_validation_then_approval,0,2,1,0,1,2,1,1,0.018,0.011,0.019,0,0,0,0,0,0,0,0,0,0,59,1,297,,Validation was rerun before ordinary approval.
+NORMAL-0957,cf199912-1c7d-55f5-977a-b7658160cffa,normal_straight_through,0,1,1,0,1,1,0,0,0.009,0.007,0.010,0,0,0,0,0,0,0,0,0,0,375,0,409,,Invoice followed a low-touch review and approval path.
+NORMAL-0958,8e3ebc7b-142c-5529-bf1a-36558c6e4aaf,normal_minor_correction,0,2,1,0,1,2,2,0,0.009,0.021,0.010,0,0,0,0,0,0,0,0,0,0,1169,0,1493,,Small pre-approval correction resolved during routine review.
+NORMAL-0959,b0ff3645-1d5e-576c-8fe6-927907e95037,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.000,0,0,0,0,0,1,0,0,0,0,819,1,1511,,Invoice followed a low-touch review and approval path.
+NORMAL-0960,98df7956-75c0-5751-a729-e2ed25c20ff1,normal_validation_then_approval,0,0,1,0,1,1,2,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1051,0,1317,,Validation was rerun before ordinary approval.
+NORMAL-0961,9b22afd3-7b05-5873-a6a2-f03385c97909,normal_pending_review,0,2,0,0,0,1,1,0,0.021,0.017,0.022,0,0,0,0,0,0,0,0,0,0,0,0,1618,,Invoice remains in pending review with no approval or export.
+NORMAL-0962,4c751f78-5464-5420-a107-b3182b92774c,normal_validation_then_approval,0,1,1,0,1,2,1,0,0.009,0.007,0.009,0,0,0,0,0,0,0,0,0,0,102,1,189,,Validation was rerun before ordinary approval.
+NORMAL-0963,a251c34b-8e64-5542-8448-b4b8305d4fd2,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,266,0,344,,Invoice followed a low-touch review and approval path.
+NORMAL-0964,94adbb94-6e30-516f-966f-252b5d2dd617,normal_validation_then_approval,0,1,1,0,1,1,2,1,0.006,0.015,0.008,0,0,0,0,0,0,0,0,0,0,475,1,915,,Validation was rerun before ordinary approval.
+NORMAL-0965,07cf4437-3382-5537-873a-3f5dd7dcb0c6,normal_validation_then_approval,0,1,1,0,2,1,1,1,0.007,0.011,0.010,0,0,0,0,0,0,0,0,0,0,380,0,711,,Validation was rerun before ordinary approval.
+NORMAL-0966,f3174afe-d5c7-58ad-95fb-404d8ea37495,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.014,0.016,0.011,0,0,0,0,0,0,0,0,0,0,532,0,756,,Validation was rerun before ordinary approval.
+NORMAL-0967,a774aee4-8a67-5558-a1c0-8175397e02e6,normal_exported_after_approval,0,2,1,0,2,1,1,1,0.007,0.020,0.012,0,0,0,0,0,0,0,0,0,0,370,0,984,,Invoice was exported only after approval.
+NORMAL-0968,4d44b203-0e04-5599-a554-5aafc7f8b7f8,normal_straight_through,0,1,1,0,1,1,0,0,0.016,0.012,0.015,0,0,0,0,0,0,0,0,0,0,294,1,451,,Invoice followed a low-touch review and approval path.
+NORMAL-0969,0a384081-cc64-5cc4-8d43-b8f9499ad921,normal_two_user_review,0,2,1,0,2,2,1,0,0.012,0.009,0.010,0,0,0,0,0,0,0,0,0,0,635,2,879,,Two reviewers participated in a normal approval workflow.
+NORMAL-0970,8b965575-69d7-5ec2-b452-4cd03ff318d9,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,682,1,855,,Invoice followed a low-touch review and approval path.
+NORMAL-0971,cde4c396-1bef-52ff-b91f-8327c7dec126,normal_minor_correction,0,2,1,0,1,1,2,0,0.015,0.009,0.011,0,0,0,0,0,0,0,0,0,0,349,1,579,,Small pre-approval correction resolved during routine review.
+NORMAL-0972,19fb83ac-3904-5608-bd5d-0d37c6391b2e,normal_validation_then_approval,0,2,1,0,2,1,1,0,0.004,0.003,0.004,0,0,0,0,0,0,0,0,0,0,1340,3,1623,,Validation was rerun before ordinary approval.
+NORMAL-0973,cb393d0f-8498-5485-af32-025a26e67c7e,normal_validation_then_approval,0,3,1,0,1,1,1,1,0.024,0.032,0.028,0,0,0,0,0,0,0,0,0,0,307,1,1016,,Validation was rerun before ordinary approval.
+NORMAL-0974,f788c5b2-4923-5ffa-876b-2ccec55ff50f,normal_pending_review,0,1,0,0,1,1,0,0,0.004,0.007,0.005,0,0,0,0,0,0,0,0,0,0,0,1,845,,Invoice remains in pending review with no approval or export.
+NORMAL-0975,fbb7f10f-6d77-534a-b389-a715d8475fa5,normal_minor_correction,0,1,1,0,1,1,2,1,0.010,0.009,0.007,0,0,0,0,0,0,0,0,0,0,302,0,327,,Small pre-approval correction resolved during routine review.
+NORMAL-0976,5d846f8f-575e-5a96-ad6c-8f790cd58600,normal_validation_then_approval,0,1,1,0,1,1,1,0,0.009,0.011,0.013,0,0,0,0,0,0,0,0,0,0,97,0,222,,Validation was rerun before ordinary approval.
+NORMAL-0977,121e0e5f-53b6-50a7-818c-5449286dc8f8,normal_validation_then_approval,0,1,1,0,1,1,2,0,0.017,0.005,0.014,0,0,0,0,0,0,0,0,0,0,1313,0,1491,,Validation was rerun before ordinary approval.
+NORMAL-0978,400aefc3-1d2f-596f-a3ee-47d410252739,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,289,0,518,,Invoice followed a low-touch review and approval path.
+NORMAL-0979,ba7f250e-3c83-5066-98f1-49bad4371245,normal_minor_correction,0,2,1,0,1,1,1,0,0.030,0.014,0.027,0,0,0,0,0,0,0,0,0,0,28,0,192,,Small pre-approval correction resolved during routine review.
+NORMAL-0980,0388c02c-fbb9-50cb-b1e9-6057cc70d4cf,normal_straight_through,0,0,1,0,1,1,1,0,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,356,0,569,,Invoice followed a low-touch review and approval path.
+NORMAL-0981,22047e1d-f55d-5f7c-b65b-1269f8b63d02,normal_pending_review,0,0,0,0,0,1,2,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,0,0,826,,Invoice remains in pending review with no approval or export.
+NORMAL-0982,64049fff-3b29-5953-8eff-ef7c754749e5,normal_validation_then_approval,0,0,1,0,1,1,1,0,0.000,0.000,0.002,0,0,0,0,0,0,0,0,0,0,1358,1,1403,,Validation was rerun before ordinary approval.
+NORMAL-0983,8462b877-f7d8-59c5-bf7b-ef84f4e53151,normal_minor_correction,0,1,1,0,1,1,1,0,0.013,0.007,0.011,0,0,0,0,0,0,0,0,0,0,1404,1,1761,,Small pre-approval correction resolved during routine review.
+NORMAL-0984,2b9e9c38-e40b-5934-a1b7-e99d06f039e8,normal_straight_through,0,0,1,0,1,1,0,0,0.000,0.000,0.003,0,0,0,0,0,0,0,0,0,0,465,0,777,,Invoice followed a low-touch review and approval path.
+NORMAL-0985,744af6d1-0195-53d9-875d-6dbb5764a7a0,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,106,1,622,,Invoice followed a low-touch review and approval path.
+NORMAL-0986,1c419740-4e1c-5d05-9b03-9c2ee3d597c1,normal_straight_through,0,0,1,0,1,1,0,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,20,0,660,,Invoice followed a low-touch review and approval path.
+NORMAL-0987,73250447-678e-5b27-8826-ee0b834f4eb0,normal_exported_after_approval,0,0,1,0,2,1,1,1,0.000,0.000,0.001,0,0,0,0,0,0,0,0,0,0,44,0,556,,Invoice was exported only after approval.
+NORMAL-0988,42f1185f-334f-5aeb-960b-5ecc9ce6e02b,normal_two_user_review,0,1,1,0,1,2,1,0,0.015,0.010,0.014,0,0,0,0,0,0,0,0,0,0,828,2,1009,,Two reviewers participated in a normal approval workflow.
+NORMAL-0989,e57d567c-4078-5fde-a682-18c1c051d152,normal_validation_then_approval,0,1,1,0,1,3,1,0,0.006,0.011,0.007,0,0,0,0,0,0,0,0,0,0,361,1,608,,Validation was rerun before ordinary approval.
+NORMAL-0990,fcd6fb4f-126f-5369-9769-46aa95b16320,normal_straight_through,0,0,1,0,1,1,1,1,0.000,0.000,0.000,0,0,0,0,0,0,0,0,0,0,1436,0,1566,,Invoice followed a low-touch review and approval path.
+NORMAL-0991,e975e962-e5f9-5e00-852d-f1e761b7c5c6,normal_pending_review,0,1,0,0,1,2,1,0,0.005,0.006,0.004,0,0,0,0,0,1,0,0,0,0,0,0,2583,,Invoice remains in pending review with no approval or export.
+NORMAL-0992,cced6323-5dc4-5ddb-9339-80cffcd9a5c0,normal_minor_correction,0,2,1,0,1,2,1,0,0.017,0.012,0.016,0,0,0,0,0,0,0,0,0,0,258,1,397,,Small pre-approval correction resolved during routine review.
+NORMAL-0993,3e427047-be29-52e2-828d-74dcdda4159d,normal_pending_review,0,1,0,0,1,1,1,0,0.013,0.014,0.013,0,0,0,0,0,0,0,0,0,0,0,0,2026,,Invoice remains in pending review with no approval or export.
+NORMAL-0994,bfe9f995-0032-5375-9f2b-57ef3262b0c9,normal_straight_through,0,1,1,0,1,1,1,0,0.007,0.004,0.009,0,0,0,0,0,0,0,0,0,0,290,1,403,,Invoice followed a low-touch review and approval path.
+NORMAL-0995,a3fee281-d9d6-57bb-b5ce-d2f3e0271656,normal_exported_after_approval,0,1,1,0,1,1,0,1,0.013,0.010,0.012,0,0,0,0,0,0,0,0,0,0,619,0,748,,Invoice was exported only after approval.
+NORMAL-0996,2347f611-b5d9-5031-9f2b-9e72a463362d,normal_minor_correction,0,2,1,0,1,1,1,0,0.010,0.013,0.009,0,0,0,0,0,0,0,0,0,0,86,1,442,,Small pre-approval correction resolved during routine review.
+NORMAL-0997,3208233a-561d-52d2-a81b-f4a30a62372e,normal_pending_review,0,1,0,0,1,2,0,0,0.011,0.007,0.008,0,0,0,0,0,0,0,0,0,0,0,0,787,,Invoice remains in pending review with no approval or export.
+NORMAL-0998,58f100ae-476f-5e2a-a057-80150424fc9c,normal_two_user_review,0,2,1,0,1,2,1,1,0.019,0.004,0.018,0,0,0,0,0,0,0,0,0,0,1053,0,1745,,Two reviewers participated in a normal approval workflow.
+NORMAL-0999,1d250ed8-967c-5f46-83f2-97528fc19f8c,normal_minor_correction,0,2,1,0,1,1,2,1,0.007,0.021,0.010,0,0,0,0,0,0,0,0,0,0,371,3,785,,Small pre-approval correction resolved during routine review.
+NORMAL-1000,793ee1f9-ef50-5793-9f39-b66dc8dfb111,normal_minor_correction,0,2,1,0,1,1,1,0,0.010,0.029,0.013,0,0,0,0,0,0,0,0,0,0,193,0,327,,Small pre-approval correction resolved during routine review.

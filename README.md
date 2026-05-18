@@ -26,7 +26,7 @@ Highlights:
 
 ## Roadmap notes
 
-- v1.5.0 / Phase 12A: T130 defines the audit anomaly detection dataset schema for invoice-level feature extraction. Synthetic data generation and Logistic Regression model training are planned for later tasks.
+- v1.5.0 / Phase 12A: T130 defines the audit anomaly detection dataset schema for invoice-level feature extraction. T131 adds a deterministic generator and committed CSV for 1000 normal audit anomaly samples. Anomaly generation and Logistic Regression model training are planned for later tasks.
 
 ## Thesis topic
 
