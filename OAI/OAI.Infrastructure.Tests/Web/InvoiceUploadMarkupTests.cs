@@ -31,6 +31,7 @@ public sealed class InvoiceUploadMarkupTests
         Assert.Contains("MobileCapturePageTitle", mobileCapturePage);
         Assert.Contains("<InputFile", mobileCapturePage);
         Assert.Contains("accept=\"image/*,.pdf,application/pdf\"", mobileCapturePage);
+        Assert.Contains("capture=\"environment\"", mobileCapturePage);
         Assert.DoesNotContain(".zip", mobileCapturePage, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("MobileCaptureSupportedFormats", mobileCapturePage);
         Assert.Contains("MobileCaptureUpload", mobileCapturePage);

@@ -373,7 +373,7 @@
         <value>Chọn file hóa đơn</value>
     </data>
   <data name="MobileCaptureSupportedFormats" xml:space="preserve">
-        <value>Định dạng hỗ trợ: JPG, PNG, TIFF, PDF. Dung lượng tối đa: 20 MB.</value>
+        <value>Định dạng hỗ trợ: ảnh chụp từ camera, JPG, PNG, TIFF, PDF. Dung lượng tối đa: 20 MB.</value>
     </data>
   <data name="MobileCaptureSelectedFile" xml:space="preserve">
         <value>File đã chọn</value>

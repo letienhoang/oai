@@ -373,7 +373,7 @@
         <value>Select invoice file</value>
     </data>
   <data name="MobileCaptureSupportedFormats" xml:space="preserve">
-        <value>Supported formats: JPG, PNG, TIFF, PDF. Maximum file size: 20 MB.</value>
+        <value>Supported formats: camera image, JPG, PNG, TIFF, PDF. Maximum file size: 20 MB.</value>
     </data>
   <data name="MobileCaptureSelectedFile" xml:space="preserve">
         <value>Selected file</value>
