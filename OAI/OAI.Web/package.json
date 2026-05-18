@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "copy:iconify": "node ./scripts/copy-iconify.js"
+  },
+  "dependencies": {
+    "iconify-icon": "^3.0.0"
+  }
+}
